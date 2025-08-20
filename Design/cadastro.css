@@ -1,0 +1,78 @@
+@import url("https://use.typekit.net/iom7tmt.css");
+
+
+:root{
+    --amarelo: #FFC74B;
+    --cinza: #E2E1DE;
+    --branco:#ffff;
+    --preto: #000;
+}
+
+*{
+    font-family: "poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body{
+    background-color: var(--cinza);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+
+}
+
+header{
+    width: 85%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid black;
+    
+}
+
+a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.logo{
+    width: 50%;
+}
+
+.content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 80%;
+    height: 25rem;
+}
+
+.formulario{
+    background-color: var(--branco);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 70%;
+    height: 90%;
+
+}
+
+.texto{
+    background-color: var(--amarelo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 30%;
+    height: 90%;
+
+}
+
+
