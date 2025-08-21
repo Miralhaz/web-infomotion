@@ -2,7 +2,7 @@
 
 
 :root{
-    --amarelo: #FFC74B;
+    --amarelo: #FFC74BF6;
     --cinza: #E2E1DE;
     --branco:#ffff;
     --preto: #000;
@@ -59,8 +59,9 @@ a{
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 70%;
+    width: 60%;
     height: 90%;
+    border-radius: 0 15px 15px 0;
 
 }
 
@@ -70,9 +71,48 @@ a{
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 30%;
+    width: 40%;
     height: 90%;
+    border-radius: 15px 0 0 15px;
 
+}
+
+.texto h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.texto p {
+    font-size: 1.2rem;
+    text-align: center;
+
+}
+
+.texto .titulo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    
+}
+
+.texto button {
+    cursor: pointer;
+    border-radius: 15px;
+    padding: 0.5rem;
+    width: 40%;
+    background-color: var(--amarelo);
+}
+
+.texto button:hover{
+    transition: 0.5s;
+    background-color: #eb8c3ea4;
+}
+
+.formulario h1{
+    font-size: 2.2rem;
+    font-weight: 600;
 }
 
 
