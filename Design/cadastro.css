@@ -6,6 +6,7 @@
     --cinza: #E2E1DE;
     --branco:#ffff;
     --preto: #000;
+    
 }
 
 *{
@@ -49,20 +50,8 @@ a{
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    width: 80%;
+    width: 75%;
     height: 25rem;
-}
-
-.formulario{
-    background-color: var(--branco);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 60%;
-    height: 90%;
-    border-radius: 0 15px 15px 0;
-
 }
 
 .texto{
@@ -72,14 +61,14 @@ a{
     justify-content: center;
     flex-direction: column;
     width: 40%;
-    height: 90%;
+    height: 100%;
     border-radius: 15px 0 0 15px;
 
 }
 
 .texto h1 {
     margin: 0;
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 600;
 }
 
@@ -103,16 +92,90 @@ a{
     padding: 0.5rem;
     width: 40%;
     background-color: var(--amarelo);
+    border-style: solid;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 .texto button:hover{
     transition: 0.5s;
-    background-color: #eb8c3ea4;
+    background-color: #ec863393;
+}
+
+.formulario{
+    background-color: var(--branco);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    width: 60%;
+    height: 100%;
+    border-radius: 0 15px 15px 0;
 }
 
 .formulario h1{
     font-size: 2.2rem;
     font-weight: 600;
+    margin: 0;
 }
+
+.formulario .ipts {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 1.5rem;
+}
+
+.formulario input {
+    background-color: var(--cinza);
+    border: 1px solid #000;
+    border-radius: 3px;
+    width: 100%;
+    padding: 0.6rem;
+
+}
+
+.formulario input::placeholder{
+    padding-left: 1.5rem;
+    color: var(--preto);
+    opacity: 50%;
+}
+
+.formulario button {
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: var(--amarelo);
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+    padding: 0.5rem;
+    width: 25%;
+
+}
+
+.formulario button:hover{
+    transition: 0.5s;
+    background-color: #ec8633e5;
+}
+
+.formulario .pessoa {
+    width: 1rem;
+}
+
+.formulario .ipt {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+svg {
+    margin-left: 0.5rem;
+    position: absolute;
+    opacity: 50%;
+}
+
 
 
