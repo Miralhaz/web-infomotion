@@ -134,16 +134,19 @@ a{
     border-radius: 3px;
     width: 100%;
     padding: 0.6rem;
+    padding-left: 2.5rem;
 
 }
 
 .formulario input::placeholder{
-    padding-left: 1.5rem;
     color: var(--preto);
     opacity: 50%;
 }
 
 .formulario button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 1rem;
     font-weight: 600;
     background-color: var(--amarelo);
@@ -177,5 +180,28 @@ svg {
     opacity: 50%;
 }
 
+
+@media (max-width: 700px){
+    .texto{
+        display: none;
+    }
+
+    .formulario {
+        width: 100%;
+        border-radius: 15px 15px 15px 15px;
+    }
+
+    .formulario .ipts {
+        width: 150%;
+    }
+
+    .formulario input {
+        width: 100%;
+    }
+
+    .formulario button {
+        width: fit-content;
+    }
+}
 
 
