@@ -1,0 +1,105 @@
+:root{
+    --amarelo: #FFC74BF6;
+    --cinza: #E2E1DE;
+    --branco:#ffff;
+    --preto: #000;
+    
+}
+
+*{
+    margin: 0;
+    font-family: Alegreya Sans SC;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    
+}
+
+.nav li {
+    font-size: 150%;
+    text-align: center;
+    width: 15%;
+}
+
+.nav li a{
+   text-decoration: none;
+   color: var(--preto);
+}
+.entrar{
+    background-color: var(--amarelo) ;
+    height: auto;
+    border: none;
+    border-radius: 15%;
+    padding: 0.5%;
+    font-size: 150%;
+}
+.nav{
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 2.5%;
+    
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 5%;
+    width: 10%;
+}
+
+.slogan {
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+  url("../imgs/Background-Institucional.png") no-repeat center center/cover;
+  height: 100vh; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--branco);
+}
+.container-slogan{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+.slogan .container-slogan {
+  max-width: 700px;
+  padding: 20px;
+}
+
+.slogan h2 {
+  font-size: 300%;
+  font-weight: bold;
+  margin-bottom: 2%;
+}
+
+.slogan p {
+  font-size: 200%;
+  margin-bottom: 2.5%;
+  color: var(--amarelo); 
+  width: 80%;
+}
+
+.slogan .btn {
+  display: inline-block;
+  background: var(--amarelo);
+  color: var(--preto);
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.slogan .btn:hover {
+  background: #d4ac0d;
+}
+
