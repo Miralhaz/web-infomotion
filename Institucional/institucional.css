@@ -1,9 +1,9 @@
 :root{
-    --amarelo: #FFC74BF6;
+    --amarelo: #ffc64b;
     --cinza: #E2E1DE;
     --branco:#ffff;
     --preto: #000;
-    
+    --cinzaEscuro: #1c1c1c;
 }
 
 *{
@@ -63,6 +63,7 @@
   text-align: center;
   color: var(--branco);
 }
+
 .container-slogan{
     display: flex;
     justify-content: center;
@@ -103,3 +104,146 @@
   background: #d4ac0d;
 }
 
+.sobre {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.sobre-container {
+  display: flex;
+  width: 100%;
+  height: 60vh;
+}
+
+.sobre-imagem {
+  position: relative;
+  flex: 1;
+  background: url('../imgs/Background2-Institucional.png') no-repeat center center/cover;
+  overflow: hidden;
+  
+}
+
+
+
+.sobre-imagem2::after {
+    content: "";
+    position: absolute;
+    left: -800px;
+    width: 50%;
+    height: 61%;
+    background: var(--amarelo);
+    transform: skewX(50deg);
+    z-index: 3;
+}
+.sobre-imagem3::after {
+    content: "";
+    position: absolute;
+    left: 800px;
+    width: 18%;
+    height: 61%;
+    background: var(--amarelo);
+    transform: skewX(50deg);
+    z-index: 5;
+}
+.sobre-imagem4::after {
+    content: "";
+    position: absolute;
+    right: 100px;
+    width: 50%;
+    height: 61%;
+    background: var(--cinzaEscuro);
+    transform: skewX(-50deg);
+    z-index: 4;
+}
+
+
+.sobre-texto {
+    flex: 1;
+    background: #1c1c1c;
+    color: white;
+    padding: 4%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 6;
+}
+
+.sobre-texto h2 {
+    margin-bottom: 20px;
+}
+
+.container-clientes{
+    display: flex;
+    width: 100%;
+    height: 80vh;
+}
+
+.clientes {
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+  url("../imgs/Background3-Institucional.png") no-repeat center center/cover;
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--branco);
+}
+.sobre-imagem-clientes::after {
+    content: "";
+    position: absolute;
+    left: -400px;
+    width: 30%;
+    height: 40%;
+    background: var(--cinzaEscuro);
+    transform: skewX(-50deg);
+    z-index: 4;
+}
+.sobre-imagem2-clientes::after {
+    content: "";
+    position: absolute;
+    right: -500px;
+    width: 30%;
+    height: 81.3%;
+    background: var(--amarelo);
+    transform: skewX(-50deg);
+    z-index: 4;
+}
+
+.container-cards{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2%;
+}
+
+.cards{
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+}
+.card{
+    background-color: #1c1c1c;
+    height: 25vh;
+    padding: 2%;
+    border-radius: 10%;
+}
+
+.clientes .btn {
+  display: inline-block;
+  background: var(--amarelo);
+  color: var(--preto);
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.slogan .btn:hover {
+  background: #d4ac0d;
+}
