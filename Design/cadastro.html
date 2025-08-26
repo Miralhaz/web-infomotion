@@ -30,12 +30,20 @@
         <section class="formulario">
             <h1>Cadastre-se</h1>
             <div class="ipts">
-                <label for="cnpj">Nome:</label>
+                <label for="cnpj">CNPJ:</label>
                 <div class="ipt" id="pessoa">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark-check" viewBox="0 0 16 16">
+                    <path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+                    <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+                    </svg>
+                    <input type="text" placeholder="CNPJ" id="cnpj">
+                </div>
+                <label for="nome">Nome:</label>
+                <div class="ipt" id="nome">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"  viewBox="0 0 16 16">
                     <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
                     </svg>
-                    <input type="text" placeholder="Nome" id="cnpj">
+                    <input type="text" placeholder="Nome" id="nome">
                 </div>
                 <label for="email">E-mail:</label>
                 <div class="ipt" id="envelope">
@@ -44,14 +52,6 @@
                     </svg>
                     <input type="text" placeholder="E-mail" id="email">
                 </div>
-                <label for="senha">Senha:</label>
-                <div class="ipt" id="senha">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"  viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M8 0a4 4 0 0 1 4 4v2.05a2.5 2.5 0 0 1 2 2.45v5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 13.5v-5a2.5 2.5 0 0 1 2-2.45V4a4 4 0 0 1 4-4m0 1a3 3 0 0 0-3 3v2h6V4a3 3 0 0 0-3-3"/>
-                    </svg>
-                    <input type="password" placeholder="Senha" id="senha">
-                </div>
-                
             </div>
             <button onclick="alert(confereRegex())">Cadastrar</button>
         </section>
