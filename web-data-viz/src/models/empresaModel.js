@@ -1,13 +1,13 @@
 var database = require("../database/config");
 
 function buscarPorId(id) {
-  var instrucaoSql = `SELECT * FROM empresa WHERE id = '${id}'`;
+  var instrucaoSql = `SELECT * FROM empresa WHERE id = ${id}`;
 
   return database.executar(instrucaoSql);
 }
 
 function listar() {
-  var instrucaoSql = `SELECT id, razao_social, cnpj, codigo_ativacao FROM empresa`;
+  var instrucaoSql = `SELECT id, nome, email, cnpj FROM empresa`;
 
   return database.executar(instrucaoSql);
 }
@@ -18,8 +18,8 @@ function buscarPorCnpj(cnpj) {
   return database.executar(instrucaoSql);
 }
 
-function cadastrar(razaoSocial, cnpj) {
-  var instrucaoSql = `INSERT INTO empresa (razao_social, cnpj) VALUES ('${razaoSocial}', '${cnpj}')`;
+function cadastrar(cnpj, nome, email) {
+  var instrucaoSql = `INSERT INTO empresa (nome, email, cnpj) VALUES ('${nome}', '${email}','${cnpj}')`;
 
   return database.executar(instrucaoSql);
 }

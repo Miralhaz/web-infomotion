@@ -1,0 +1,201 @@
+@import url("https://use.typekit.net/iom7tmt.css");
+
+
+:root{
+    --amarelo: #FFC74BF6;
+    --cinza: #E2E1DE;
+    --branco:#ffff;
+    --preto: #000;
+    
+}
+
+*{
+    font-family: "poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body{
+    background-color: var(--cinza);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+
+}
+
+header{
+    width: 85%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid black;
+    
+}
+
+a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.logo{
+    width: 50%;
+}
+
+.content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 75%;
+    height: 25rem;
+}
+
+.texto{
+    background-color: var(--amarelo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 40%;
+    height: 100%;
+    border-radius: 15px 0 0 15px;
+
+}
+
+.texto h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    font-weight: 600;
+}
+
+.texto p {
+    font-size: 1.2rem;
+    text-align: center;
+
+}
+
+.texto .titulo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    
+}
+
+.texto button {
+    cursor: pointer;
+    border-radius: 15px;
+    padding: 0.5rem;
+    width: 40%;
+    background-color: var(--amarelo);
+    border-style: solid;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.texto button:hover{
+    transition: 0.5s;
+    background-color: #ec863393;
+}
+
+.formulario{
+    background-color: var(--branco);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    width: 60%;
+    height: 100%;
+    border-radius: 0 15px 15px 0;
+}
+
+.formulario h1{
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.formulario .ipts {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+.formulario input {
+    background-color: var(--cinza);
+    border: 1px solid #000;
+    border-radius: 3px;
+    width: 100%;
+    padding: 0.6rem;
+    padding-left: 2.5rem;
+
+}
+
+.formulario input::placeholder{
+    color: var(--preto);
+    opacity: 50%;
+}
+
+.formulario button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: var(--amarelo);
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+    padding: 0.5rem;
+    width: 25%;
+
+}
+
+.formulario button:hover{
+    transition: 0.5s;
+    background-color: #ec8633e5;
+}
+
+.formulario .ipt {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+svg {
+    margin-left: 0.5rem;
+    position: absolute;
+    opacity: 50%;
+}
+
+@media (max-width: 800px){
+    .texto{
+        display: none;
+    }
+
+    .formulario {
+        width: 100%;
+        border-radius: 15px 15px 15px 15px;
+    }
+
+    .formulario .ipts {
+        width: 150%;
+    }
+
+    .formulario input {
+        width: 100%;
+    }
+
+    .formulario button {
+        width: fit-content;
+    }
+}
+
+
