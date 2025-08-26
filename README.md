@@ -1,5 +1,5 @@
 # InfoMotion
-![InfoMotion](prototipo/logo_infomotion.png)
+![InfoMotion](prototipo/logo_fundo_branco.png)
 <p> Um projeto feito por alunos da SPTech, no segundo semestre, para a disciplina de PI - Projeto e Inovação. </p>
 
 ## Índice
