@@ -1,4 +1,3 @@
-
 function confereRegex(){
     const campo = document.getElementById("cnpj").value;
 
@@ -24,4 +23,9 @@ function confereRegex(){
     }
 }
 
+function printarTamanhoTela() {
+    console.log(innerWidth)
+    console.log(innerHeight);
+}
 
+let print = setInterval(printarTamanhoTela(), 1000)
