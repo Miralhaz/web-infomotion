@@ -4,51 +4,33 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - InfoMotion</title>
-    <link rel="stylesheet" href="./css/cadastro.css">
-    <script src="js/login.js"></script>
+    <title>Cadastro - InfoMotion</title>
+    <link rel="stylesheet" href="css/cadastro.css">
+    <script src="regexCNPJ.js"></script>
 </head>
 
 <body>
-
-    <header>
-        <a href="#">
-            <img src="assets/logo.png" alt="Logo InfoMotion" class="logo">
-        </a>
-    </header>
-
-    <section class="content">
-        <section class="texto">
-            <div class="titulo">
-                <h1>Ainda não tem</h1>
-                <h1>conta?</h1>
+    <div class="container">
+        <div class="left-side">
+            <h1>Ainda não possui uma conta?</h1>
+            <h2>Crie sua conta <strong class="text-underline">gratuitamente </strong>agora mesmo!</h2>
+            <button style="width: 40%;">Cadastre-se</button>
+            <span><a href="#">Entre em contato</a></span>
+        </div>
+        <div class="rigth-side">
+            <img class="logo-img" src="img/logo.png" alt="">
+            <h1>Fazer login</h1>
+            <div class="input-container">
+                <label for="">E-mail</label>
+                <input type="text" placeholder="exemplo@email.com">
             </div>
-            <p>Caso não tenha uma conta clique no botão abaixo</p>
-            <button>Cadastrar-se</button>
-        </section>
-
-        <section class="formulario">
-            <h1>Fazer Login</h1>
-            <div class="ipts">
-                <label for="email">E-mail:</label>
-                <div class="ipt" id="envelope">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/>
-                    </svg>
-                    <input type="text" placeholder="E-mail" id="email">
-                </div>
-                <label for="senha">Senha:</label>
-                <div class="ipt" id="nome">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M8 0a4 4 0 0 1 4 4v2.05a2.5 2.5 0 0 1 2 2.45v5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 13.5v-5a2.5 2.5 0 0 1 2-2.45V4a4 4 0 0 1 4-4m0 1a3 3 0 0 0-3 3v2h6V4a3 3 0 0 0-3-3"/>
-                    </svg>      
-                    <input type="password" placeholder="Senha" id="senha">
-                </div>
+            <div class="input-container">
+                <label for="">Senha</label>
+                <input type="password" placeholder="************">
             </div>
-            <button onclick="entrar()">Entrar</button>
-        </section>
-    </section>
-    
+            <button style="width: 25%;">Entrar</button>
+        </div>
+    </div>
 </body>
 
 </html>
