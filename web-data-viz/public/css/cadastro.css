@@ -135,3 +135,31 @@ h2 {
     border-bottom: 3px solid var(--amarelo);
     margin-top: -500px;
 }
+
+@media screen and (max-width: 1294px) {
+    h1 {
+        font-size: 2.2rem;
+    }
+    h2 {
+        font-size: 1.3rem;
+    }
+    .logo-img {
+        width: 75%;
+        margin-top: 0;
+    }
+    input {
+        height: 35px;
+    }
+    .container button {
+        height: 45px;
+        background-color: var(--amarelo);
+        border: 0;
+        font-size: 1.4rem;
+    }
+    label {
+        font-size: 1.1rem;
+    }
+    .left-side span a {
+        font-size: 1rem;
+    }
+}
