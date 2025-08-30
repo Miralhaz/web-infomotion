@@ -1,30 +1,22 @@
-function validar_cadastrar(){
-    if(confereRegex()){
-        cadastrar()
-    } else {
-        alert('uauau')
-    }
-}
-  
+
 function cadastrar() {
     // aguardar();
 
-    var nomeVar = nome_empresa.value;
-    var cnpjVar = cnpj.value;    
-    if(cnpjVar.includes("-")){
-      cnpjVar = cnpjVar.replace(/[-./]/g, "");
-    }          
+    var nomeVar = nome.value;
+    var senhaVar = senha.value;
+    var emailVar = email.value;
+    var cnpjVar = sessionStorage.CNPJ_EMPRESA;    
 
-    console.log(nomeVar, cnpjVar)
 
     // Verificando se há algum campo em branco
     if (
       nomeVar == "" ||
-      cnpjVar == "" 
+      cnpjVar == "" ||
+      senhaVar == "" ||
+      emailVar == "" 
     ) {
       cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "(Mensagem de erro para todos os campos em branco)";
+      alert("(Mensagem de erro para todos os campos em branco)");
 
       finalizarAguardar();
       return false;
@@ -33,26 +25,24 @@ function cadastrar() {
     }
 
     // Enviando o valor da nova input
-    fetch("/empresas/cadastrar", {
+    fetch("/usuarios/cadastrar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        // crie um atributo que recebe o valor recuperado aqui
-        // Agora vá para o arquivo routes/usuario.js
         nomeServer: nomeVar,
-        cnpjServer: cnpjVar
+        cnpjServer: cnpjVar,
+        senhaServer: senhaVar,
+        emailServer: emailVar
+
       }),
     })
       .then(function (resposta) {
         console.log("resposta: ", resposta);
 
         if (resposta.ok) {
-          cardErro.style.display = "block";
-
-          mensagem_erro.innerHTML =
-            "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+          alert("Cadastro realizado com sucesso! Redirecionando para tela de login...");
 
           setTimeout(() => {
             window.location = "login.html";
@@ -94,31 +84,6 @@ function cadastrar() {
 
   function sumirMensagem() {
     cardErro.style.display = "none";
-}
-
-function confereRegex(){
-    const campo = document.getElementById("cnpj").value;
-
-    if(campo.includes(".")){
-        let regex = /\b\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\b/g;
-        let formatado = campo.match(regex);
-
-        if(formatado != null){
-            return true;
-        } else {
-            return false;
-        }
-
-    } else{
-        let regex = /\d{14}/g;
-        let formatado = campo.match(regex);
-
-        if(formatado != null){
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
 
 

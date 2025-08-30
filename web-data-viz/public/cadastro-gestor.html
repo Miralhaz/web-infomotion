@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro - InfoMotion</title>
     <link rel="stylesheet" href="css/cadastro.css">
-    <script src="regexCNPJ.js"></script>
+    <script src="js/cadastro-gestor.js"></script>
 </head>
 
 <style>
@@ -45,20 +45,20 @@
         </div>
         <div class="rigth-side">
             <img class="logo-img" src="img/logo.png" alt="">
-            <h1>Fazer login</h1>
+            <h1>Fazer Cadastro do gestor</h1>
             <div class="input-container">
                 <label for="">Nome:</label>
-                <input type="text" placeholder="Digite seu nome...">
+                <input type="text" placeholder="Digite seu nome..." id="nome">
             </div>
             <div class="input-container">
                 <label for="">E-mail:</label>
-                <input type="password" placeholder="exemplo@email.com">
+                <input type="text" placeholder="exemplo@email.com" id="email">
             </div>
             <div class="input-container">
                 <label for="">Senha:</label>
-                <input type="password" placeholder="***********">
+                <input type="password" placeholder="***********" id="senha">
             </div>
-            <button style="width: 25%;">Entrar</button>
+            <button style="width: 25%;" onclick="cadastrar()">Entrar</button>
         </div>
     </div>
 </body>
