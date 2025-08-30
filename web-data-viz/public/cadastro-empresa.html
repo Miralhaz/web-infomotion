@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro - InfoMotion</title>
     <link rel="stylesheet" href="css/cadastro.css">
-    <script src="regexCNPJ.js"></script>
+    <script src="js/cadastro.js"></script>
 </head>
 
 <body>
@@ -21,13 +21,13 @@
             <h1>Cadastre-se</h1>
             <div class="input-container">
                 <label for="">Nome:</label>
-                <input type="text" placeholder="Sua empresa aqui">
+                <input type="text" placeholder="Sua empresa aqui" id="nome_empresa">
             </div>
             <div class="input-container">
                 <label for="">CNPJ:</label>
-                <input type="password" placeholder="1234-1424-76">
+                <input type="text" placeholder="**.***.***/****-**" id="cnpj">
             </div>
-            <button style="width: 30%;">Cadastrar</button>
+            <button style="width: 30%;" onclick="validar_cadastrar()">Cadastrar</button>
         </div>
     </div>
 </body>

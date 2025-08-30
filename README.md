@@ -13,7 +13,7 @@
 - [x] Armazenamento dos dados na nuvem AWS.
 - [x] Cadastro e Login do Cliente.
 - [x] Sustentação abertura de chamados pelo Jira.
-- [x] Uso do Slack como meio de comunicação, para notificações.
+- [x] Uso do Slack como meio de comunicação, para notif-icações.
 - [x] Dashboard para tomada de decisão dos stakeholders.
 
 

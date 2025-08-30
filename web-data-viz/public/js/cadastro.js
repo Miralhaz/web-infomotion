@@ -10,15 +10,16 @@ function cadastrar() {
     // aguardar();
 
     var nomeVar = nome_empresa.value;
-    var emailVar = email.value;
-    var cnpjVar = cnpj.value;
+    var cnpjVar = cnpj.value;    
+    if(cnpjVar.includes("-")){
+      cnpjVar = cnpjVar.replace(/[-./]/g, "");
+    }          
 
-    console.log(nomeVar, emailVar, cnpjVar)
+    console.log(nomeVar, cnpjVar)
 
     // Verificando se há algum campo em branco
     if (
       nomeVar == "" ||
-      emailVar == "" ||
       cnpjVar == "" 
     ) {
       cardErro.style.display = "block";
@@ -41,7 +42,6 @@ function cadastrar() {
         // crie um atributo que recebe o valor recuperado aqui
         // Agora vá para o arquivo routes/usuario.js
         nomeServer: nomeVar,
-        emailServer: emailVar,
         cnpjServer: cnpjVar
       }),
     })
