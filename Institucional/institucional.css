@@ -1,3 +1,5 @@
+@import url("https://use.typekit.net/iom7tmt.css");
+
 :root{
     --amarelo: #ffc64b;
     --cinza: #E2E1DE;
@@ -8,7 +10,13 @@
 
 *{
     margin: 0;
-    font-family: Alegreya Sans SC;
+    font-family: "poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body{
+  overflow-x: hidden;
 }
 
 .container{
@@ -106,144 +114,227 @@
 
 .sobre {
   width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.sobre .container-sobre {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 5%;
+  gap: 5%;
+}
+
+/* Lado esquerdo */
+.sobre-esquerda {
+  flex: 1;
+}
+
+.sobre-esquerda h2 {
+    font-size: 3em;
+    font-weight: bold;
+    line-height: 1.3;
+    margin-bottom: 5%;
+    position: relative;
+}
+
+.sobre-esquerda h2::before {
+  content: "";
+  position: absolute;
+  left: -5%;
+  top: 10%;
+  width: 1%;
+  height: 100%;
+  background: #f4b41a; /* barra amarela */
+}
+
+.sobre-esquerda p {
+  text-align: left;
+  margin-bottom: 8%;
+  color: #333;
+  line-height: 1.5;
+  font-size: 1em;
+}
+
+.sobre-esquerda .btn {
+  background: #f4b41a;
+  padding: 1em 2em;
+  border-radius: 1%;
+  color: black;
+  font-weight: bold;
+}
+
+.sobre-esquerda .btn:hover {
+  background: #e0a600;
+}
+
+/* Lado direito */
+.sobre-direita {
+  flex: 1;
+  padding-left: 5%;
+}
+
+.sobre-direita h3 {
+  font-size: 1.5em;
+  margin-bottom: 10%;
+  font-weight: bold;
+  position: relative;
+}
+
+.sobre-direita h3::after {
+  content: "";
+  display: block;
+  width: 30%;
+  height: 0.3em;
+  background: #f4b41a;
+  margin-top: 2%;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 4%;
+  margin-bottom: 10%;
+}
+
+.icone{
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0;
+  padding: 1%;
 }
 
-.sobre-container {
-  display: flex;
-  width: 100%;
-  height: 60vh;
+.item h4 {
+  font-size: 1.2em;
+  margin-bottom: 2%;
+  font-weight: bold;
+  padding: 3%;
 }
 
-.sobre-imagem {
-  position: relative;
-  flex: 1;
-  background: url('../imgs/Background2-Institucional.png') no-repeat center center/cover;
-  overflow: hidden;
-  
-}
-
-
-
-.sobre-imagem2::after {
-    content: "";
-    position: absolute;
-    left: -800px;
-    width: 50%;
-    height: 61%;
-    background: var(--amarelo);
-    transform: skewX(50deg);
-    z-index: 3;
-}
-.sobre-imagem3::after {
-    content: "";
-    position: absolute;
-    left: 800px;
-    width: 18%;
-    height: 61%;
-    background: var(--amarelo);
-    transform: skewX(50deg);
-    z-index: 5;
-}
-.sobre-imagem4::after {
-    content: "";
-    position: absolute;
-    right: 100px;
-    width: 50%;
-    height: 61%;
-    background: var(--cinzaEscuro);
-    transform: skewX(-50deg);
-    z-index: 4;
-}
-
-
-.sobre-texto {
-    flex: 1;
-    background: #1c1c1c;
-    color: white;
-    padding: 4%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    z-index: 6;
-}
-
-.sobre-texto h2 {
-    margin-bottom: 20px;
-}
-
-.container-clientes{
-    display: flex;
-    width: 100%;
-    height: 80vh;
+.item p {
+  font-size: 0.9em;
+  color: #444;
+  line-height: 1.4;
+  text-align: left;
 }
 
 .clientes {
-  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-  url("../imgs/Background3-Institucional.png") no-repeat center center/cover;
- 
+  height: 100vh;
+  text-align: center;
+  padding: 5% 10%;
+  background: linear-gradient(to bottom, var(--branco), #696969);
+}
+
+.clientes h2 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 3%;
+  text-align: left;
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: var(--branco);
-}
-.sobre-imagem-clientes::after {
-    content: "";
-    position: absolute;
-    left: -400px;
-    width: 30%;
-    height: 40%;
-    background: var(--cinzaEscuro);
-    transform: skewX(-50deg);
-    z-index: 4;
-}
-.sobre-imagem2-clientes::after {
-    content: "";
-    position: absolute;
-    right: -500px;
-    width: 30%;
-    height: 81.3%;
-    background: var(--amarelo);
-    transform: skewX(-50deg);
-    z-index: 4;
+  gap: 0.5rem;
 }
 
-.container-cards{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 2%;
-}
-
-.cards{
-    display: flex;
-    flex-direction: row;
-    gap: 2%;
-}
-.card{
-    background-color: #1c1c1c;
-    height: 25vh;
-    padding: 2%;
-    border-radius: 10%;
-}
-
-.clientes .btn {
+.clientes h2 span {
   display: inline-block;
-  background: var(--amarelo);
-  color: var(--preto);
-  padding: 12px 24px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: 0.3s;
+  width: 0.4rem;
+  height: 4rem;
+  background: #f4b41a;
 }
 
-.slogan .btn:hover {
-  background: #d4ac0d;
+.cards {
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3%;
+  margin-bottom: 3%;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #fff;
+  border-radius: 0.8rem;
+  padding: 2rem;
+  width: 25%;
+  height: 30%;
+  min-width: 250px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.card:hover{
+ 
+  transition-duration: 1s;
+  border-radius: 0.8rem;
+  padding: 2rem;
+  width: 28%;
+  height: 33%;
+  min-width: 250px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+
+.card h3 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background: #f4b41a;
+  color: #000;
+  font-weight: bold;
+  border-radius: 0.4rem;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.btn:hover {
+  background: #d99a0f;
+}
+
+footer {
+  background-color: #fff;
+  padding: 2%;   
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+}
+
+.footer-col {
+  flex: 1;
+}
+
+.footer-col p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1% 0;
+  font-size: 90%;       
+  color: #000;
+}
+
+.footer-col.logo {
+  text-align: right;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-col.logo img {
+  max-width: 40%;      
+  height: auto;
 }
