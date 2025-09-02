@@ -40,6 +40,7 @@ label {
 
 h1 {
     font-size: 4rem;
+    text-align: center;
 }
 
 h2 {
@@ -65,6 +66,9 @@ h2 {
     background-color: var(--amarelo);
     border: 0;
     font-size: 2rem;
+    border: 4px solid var(--amarelo);
+    cursor: pointer;
+    transition: 0.1s ease-in-out;
 }
 
 .left-side {
@@ -136,6 +140,11 @@ h2 {
     margin-top: -500px;
 }
 
+.container button:hover {
+    background-color: transparent;
+    border: 4px solid var(--amarelo);
+}
+
 @media screen and (max-width: 1294px) {
     h1 {
         font-size: 2.2rem;
@@ -161,5 +170,15 @@ h2 {
     }
     .left-side span a {
         font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .left-side {
+        display: none;
+    }
+
+    .rigth-side {
+        width: 100%;
     }
 }
