@@ -7,7 +7,7 @@ function validar_cadastrar(){
 }
   
 function cadastrar() {
-    // aguardar();
+     aguardar();
 
     var nomeVar = nome_empresa.value;
     var cnpjVar = cnpj.value;    
