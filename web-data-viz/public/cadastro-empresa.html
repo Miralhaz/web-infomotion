@@ -7,7 +7,9 @@
     <title>Cadastro - InfoMotion</title>
     <link rel="stylesheet" href="css/cadastro.css">
     <script src="js/cadastro-empresa.js"></script>
+    <script src="js/sessao.js"></script>
 </head>
+
 
 <body>
     <div class="container">
@@ -29,6 +31,12 @@
             </div>
             <button style="width: 30%;" onclick="validar_cadastrar()">Cadastrar</button>
         </div>
+        <section id="section_aguardar" class="loading-section">
+	    <section class="quadrado">
+            	<section class="borda_aguardar"></section>
+	    </section>
+        </section>
+        <section id="section_erros_login"></section>
     </div>
 </body>
 

@@ -1,6 +1,6 @@
 
 function cadastrar() {
-    // aguardar();
+    aguardar();
 
     var nomeVar = nome.value;
     var senhaVar = senha.value;

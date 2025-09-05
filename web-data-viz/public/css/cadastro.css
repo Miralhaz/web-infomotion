@@ -31,7 +31,7 @@ body {
 }
 
 input {
-    height: 60px;
+    height: 40px;
 }
 
 label {
@@ -39,7 +39,7 @@ label {
 }
 
 h1 {
-    font-size: 4rem;
+    font-size: 2vw;
     text-align: center;
 }
 
@@ -62,7 +62,7 @@ h2 {
 
 
 .container button {
-    height: 75px;
+    height: 60px;
     background-color: var(--amarelo);
     border: 0;
     font-size: 2rem;
@@ -143,7 +143,15 @@ h2 {
 .container button:hover {
     background-color: transparent;
     border: 4px solid var(--amarelo);
+    color: black;
 }
+
+.container .left-side button:hover {
+    background-color: transparent;
+    border: 4px solid var(--amarelo);
+    color: white;
+}
+
 
 @media screen and (max-width: 1294px) {
     h1 {
@@ -181,4 +189,61 @@ h2 {
     .rigth-side {
         width: 100%;
     }
+}
+
+/*-----------------------AGUARDAR-------------------------------------*/
+
+#section_aguardar img {
+	width: 6rem;
+	height: fit-content;
+	position: relative;
+}
+
+.quadrado{
+	background-color: var(--azul);
+	padding: 4rem;
+	position: relative;
+	border-radius: 10px;
+	height: fit-content;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#section_aguardar .borda_aguardar {
+	position: absolute;
+	width: 4rem;
+	height: 4rem;
+	border-radius: 50%;
+	border: 0.2rem solid var(--amarelo);
+	border-top-color: var(--preto);
+	animation: linear infinite 1s aguardar;
+}
+
+@keyframes aguardar {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+#section_aguardar {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100vw;
+	background-color: rgba(0, 0, 0, 0.379);
+	justify-content: center;
+	align-items: center;
+}
+
+#section_erros_login {
+	display: none;
+	position: fixed;
+	left: 1rem;
+	bottom: 1rem;
+	background-color: var(--preto);
+	color: var(--amarelo);
+	padding: 2rem;
 }

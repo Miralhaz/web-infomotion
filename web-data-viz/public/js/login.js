@@ -1,6 +1,6 @@
 
 function entrar() {
-        //aguardar();
+        aguardar();
 
         var emailVar = email.value;
         var senhaVar = senha.value;
