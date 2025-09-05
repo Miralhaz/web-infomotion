@@ -26,6 +26,22 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  position: fixed;
+  background-color: var(--branco);
+  width: 100%;
+  z-index: 5;
+}
+
+.dentroHeader{
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 2.5%;
+  background-color: var(--branco);
+  z-index: 5;
 }
 
 .nav {
@@ -35,6 +51,9 @@ body {
   gap: 2.5%;
   justify-content: space-around;
   flex-wrap: wrap; /* evita quebra feia em telas menores */
+  background-color: var(--branco);
+  width: 100%;
+  z-index: 5;
 }
 
 .nav li {
@@ -56,7 +75,7 @@ body {
   border-radius: 8px;
   text-decoration: none;
   font-weight: bold;
-  transition: 0.6s ease-in;
+  
 }
 
 .nav li a.btn {
@@ -79,12 +98,89 @@ body {
 
 .logo {
   width: 10%;
+  z-index: 5;
+}
+
+.menu-hamburguer {
+  display: none;
+  position: absolute;
+  right: 1%;
+  z-index: 4;
+}
+
+#menu-toggle {
+  display: none;
+}
+
+.menu-icon {
+  width: 35px;
+  height: 30px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 5;
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+  text-align: center;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #ffffff;
+}
+
+.menu li {
+  margin: 20px 0;
+  
+}
+
+.linha {
+  height: 4px;
+  background: var(--amarelo);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  transform: scale(0);
+  transition: transform 0.5s ease-in-out;
+  z-index: 2;
+}
+#menu-toggle:checked + .menu-icon .linha:nth-child(1) {
+  transform: rotate(45deg) translate(13px, 13px);
+}
+
+#menu-toggle:checked + .menu-icon .linha:nth-child(2) {
+  opacity: 0;
+}
+
+#menu-toggle:checked + .menu-icon .linha:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+#menu-toggle:checked ~ .overlay {
+  transform: scale(1);
 }
 
 /*Slogan*/
 .slogan {
   background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-  url("./") no-repeat center center/cover;
+  url("../assets/imgs-Index/Background-Institucional.png") no-repeat center center/cover;
   min-height: 100vh; 
   display: flex;
   align-items: center;
@@ -151,6 +247,16 @@ body {
   min-width: 280px;
 }
 
+.sobre-esquerda::after {
+    content: "";
+    position: absolute;
+    top: 130%;
+    width: 0.2%;
+    right: 50%;
+    height: 130%;
+    background: var(--preto);
+}
+
 .abaixo-esquerda{
   display: flex;
   align-items: center;
@@ -201,7 +307,7 @@ body {
 .sobre-direita {
   flex: 1;
   min-width: 280px;
-  padding-left: 5%;
+  padding-left: 25%;
 }
 
 .sobre-direita h3 {
@@ -254,7 +360,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  min-height: 8vh;
+  min-height: auto;
   padding: 5% 10%;
   background: linear-gradient(to bottom, var(--branco), #696969);
   text-align: center;
@@ -363,18 +469,59 @@ footer {
 
 /*Responsividade*/
 @media (max-width: 1047px) {
-  .slogan h2 { font-size: 220%; }
-  .slogan p { font-size: 150%; }
-  .sobre .container-sobre { flex-direction: column; text-align: center; }
-  .sobre-esquerda h2::before { display: none; }
-  .item { flex-direction: column; align-items: center; }
-  .card { width: 45%; }
+  .sobre-esquerda::after {
+    display: none;
+}
+  .slogan h2 {
+     font-size: 220%; 
+    }
+  .slogan p {
+     font-size: 150%; 
+    }
+  .sobre .container-sobre {
+     flex-direction: column; text-align: center; 
+    }
+  .sobre-esquerda h2::before {
+     display: none; 
+    }
+  .item {
+     flex-direction: column; align-items: center; 
+    }
+  .card {
+     width: 45%; 
+    }
 }
 
 @media (max-width: 768px) {
-  .slogan h2 { font-size: 180%; }
-  .slogan p { font-size: 120%; width: 100%; }
-  .card { width: 100%; }
-  .footer-container { gap: 1rem; }
-  .footer-col.logo img { max-width: 60%; }
+  .menu-hamburguer {
+  display: block;
+  position: absolute;
+  left: 1%;
+  z-index: 4;
+  }
+
+  .nav li a {
+  color: var(--amarelo);
+  
+  }
+
+  .dentroHeader{
+  display: none;
+  }
+  
+  .slogan h2 {
+     font-size: 180%; 
+    }
+  .slogan p {
+     font-size: 120%; width: 100%; 
+    }
+  .card {
+     width: 100%; 
+    }
+  .footer-container {
+     gap: 1rem; 
+    }
+  .footer-col.logo img {
+     max-width: 60%; 
+    }
 }
