@@ -25,10 +25,10 @@ function aguardar() {
 }
 
 function finalizarAguardar(texto) {
-    var sectionAguardar = document.getElementById("section_aguardar");
-    sectionAguardar.style.display = "none";
-
+    var sectionAguardar = document.getElementById("section_aguardar"); 
     var sectionErrosLogin = document.getElementById("section_erros_login");
+
+
     if (texto) {
         sectionErrosLogin.style.display = "flex";
         sectionErrosLogin.innerHTML = texto;
@@ -37,4 +37,8 @@ function finalizarAguardar(texto) {
             sectionErrosLogin.style.display = 'none';
         }, 5000);
     }
+
+    setTimeout(() => {
+            sectionAguardar.style.display = "none";
+    }, 5000);
 }

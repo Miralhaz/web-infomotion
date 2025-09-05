@@ -1,13 +1,14 @@
 function validar_cadastrar(){
+    aguardar()
     if(confereRegex()){
         cadastrar()
     } else {
-        alert('CNPJ inválido, ele precisa ter 14 digitos')
+        finalizarAguardar('CNPJ inválido, ele precisa ter 14 digitos')
     }
 }
   
 function cadastrar() {
-     aguardar();
+    aguardar();
 
     var nomeVar = nome_empresa.value;
     var cnpjVar = cnpj.value;    
@@ -23,13 +24,10 @@ function cadastrar() {
       nomeVar == "" ||
       cnpjVar == "" 
     ) {
-      cardErro.style.display = "block";
-      alert("(Mensagem de erro para todos os campos em branco)");
+      finalizarAguardar("(Mensagem de erro para todos os campos em branco)");
 
-      finalizarAguardar();
       return false;
     } else {
-      setInterval(sumirMensagem, 5000);
     }
 
     // Enviando o valor da nova input
@@ -49,7 +47,7 @@ function cadastrar() {
         console.log("resposta: ", resposta);
 
         if (resposta.ok) {
-          alert("Cadastro realizado com sucesso! Redirecionando para tela de cadastro de gestor...");
+          finalizarAguardar("Cadastro realizado com sucesso! Redirecionando para tela de cadastro de gestor...");
 
           setTimeout(() => {
             window.location = "cadastro-gestor.html";
@@ -89,9 +87,7 @@ function cadastrar() {
       });
   }
 
-  function sumirMensagem() {
-    cardErro.style.display = "none";
-}
+
 
 function confereRegex(){
     const campo = document.getElementById("cnpj").value;
