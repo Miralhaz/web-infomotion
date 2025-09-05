@@ -6,13 +6,10 @@ function entrar() {
         var senhaVar = senha.value;
 
         if (emailVar == "" || senhaVar == "") {
-            cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
-            finalizarAguardar();
+            finalizarAguardar("(Mensagem de erro para todos os campos em branco)");
             return false;
         }
         else {
-            setInterval(sumirMensagem, 5000)
         }
 
         console.log("FORM LOGIN: ", emailVar);
@@ -47,7 +44,6 @@ function entrar() {
                 });
 
             } else {
-
                 console.log("Houve um erro ao tentar realizar o login!");
 
                 resposta.text().then(texto => {
@@ -63,6 +59,4 @@ function entrar() {
         return false;
     }
 
-    function sumirMensagem() {
-        cardErro.style.display = "none"
-    }
+

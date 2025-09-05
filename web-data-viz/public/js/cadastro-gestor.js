@@ -15,13 +15,13 @@ function cadastrar() {
       senhaVar == "" ||
       emailVar == "" 
     ) {
-      cardErro.style.display = "block";
-      alert("(Mensagem de erro para todos os campos em branco)");
+      
+      finalizarAguardar("(Mensagem de erro para todos os campos em branco)");
 
-      finalizarAguardar();
+      
       return false;
     } else {
-      setInterval(sumirMensagem, 5000);
+      
     }
 
     // Enviando o valor da nova input
@@ -42,7 +42,7 @@ function cadastrar() {
         console.log("resposta: ", resposta);
 
         if (resposta.ok) {
-          alert("Cadastro realizado com sucesso! Redirecionando para tela de login...");
+          finalizarAguardar("Cadastro realizado com sucesso! Redirecionando para tela de login...");
 
           setTimeout(() => {
             window.location = "login.html";
@@ -82,8 +82,6 @@ function cadastrar() {
       });
   }
 
-  function sumirMensagem() {
-    cardErro.style.display = "none";
-}
+
 
 
