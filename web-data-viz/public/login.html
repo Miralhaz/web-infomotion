@@ -15,11 +15,11 @@
         <div class="left-side">
             <h1>Ainda não possui uma conta?</h1>
             <h2>Crie sua conta <strong class="text-underline">gratuitamente </strong>agora mesmo!</h2>
-            <button style="width: 40%;">Cadastre-se</button>
-            <span><a href="#">Entre em contato</a></span>
+            <button onclick="redirecionar()">Cadastre-se</button>
+            <span><a href="https://infomotionmonitoramentos.atlassian.net/servicedesk/customer/portal/1">Entre em contato</a></span>
         </div>
         <div class="rigth-side">
-            <img class="logo-img" src="img/logo.png" alt="">
+            <a href="index.html"><img class="logo-img" src="img/logo.png" alt=""></a>
             <h1>Fazer login</h1>
             <div class="input-container">
                 <label for="">E-mail</label>
@@ -29,7 +29,7 @@
                 <label for="">Senha</label>
                 <input type="password" placeholder="************" id="senha">
             </div>
-            <button style="width: 25%;" onclick="entrar()">Entrar</button>
+            <button onclick="entrar()">Entrar</button>
         </div>
         <section id="section_aguardar" class="loading-section">
 	    <section class="quadrado">
@@ -39,5 +39,11 @@
         <section id="section_erros_login"></section>
     </div>
 </body>
+
+<script>
+    function redirecionar(){
+        window.location = "cadastro-empresa.html"
+    }
+</script>
 
 </html>
