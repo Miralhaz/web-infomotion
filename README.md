@@ -31,6 +31,9 @@
 - Página de Cadastro
 ![Página de Cadastro](prototipo/cadastro.png)
 
+- Página de Cadastro do Gestor
+![Página de Cadastro](prototipo/cadastro_gestor.png)
+
 ## Tecnologias Utilizadas
 1. [Figma](https://www.figma.com/)
 2. [Canva](https://www.canva.com/pt_br/)
