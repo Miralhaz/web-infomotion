@@ -64,13 +64,13 @@ h2 {
 .container button {
     height: 60px;
     background-color: var(--amarelo);
-    border: 0;
+    border: none;
+    border-radius: 10px;
     font-size: 2rem;
-    border: 4px solid var(--amarelo);
     cursor: pointer;
-    transition: 0.1s ease-in-out;
     width: fit-content;
-    padding: 0.5rem;
+    padding: 0.5rem 0.9rem;
+    transition: all 0.3s ease;
 }
 
 .left-side {
@@ -150,17 +150,10 @@ h2 {
 }
 
 .container button:hover {
-    background-color: transparent;
-    border: 4px solid var(--amarelo);
-    color: black;
+    background: #fdb00a;
+    box-shadow: 0 4px 8px rgb(0, 0, 0);
+    transform: translateY(8px);
 }
-
-.container .left-side button:hover {
-    background-color: transparent;
-    border: 4px solid var(--amarelo);
-    color: white;
-}
-
 
 @media screen and (max-width: 1294px) {
     h1 {
