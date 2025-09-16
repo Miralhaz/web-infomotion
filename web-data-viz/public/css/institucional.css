@@ -68,7 +68,7 @@ body {
   text-decoration: none;
   color: var(--preto);
   padding: 10px 20px;
-  
+  transition: all 0.3s ease;
 }
 
 .nav li a:hover {
@@ -78,8 +78,6 @@ body {
   padding: 10px 20px;
   border-radius: 5px;
   text-decoration: none;
-  font-weight: bold;
-
 }
 
 .nav li a.btn {
@@ -90,13 +88,12 @@ body {
   border-radius: 8px;
   text-decoration: none;
   font-weight: bold;
-
-
 }
 
 .nav li a.btn:hover {
   background: #fdb00a;
   transition: 0.3s;
+  transform: scale(1.05);
 }
 
 .logo {
@@ -307,7 +304,14 @@ body {
   padding: 12px 24px;
   border-radius: 8px;
   font-weight: bold;
+  text-decoration: none;
   transition: 0.3s;
+}
+
+.sobre-esquerda .btn:hover {
+  background: #fdb00a;
+  box-shadow: 0 4px 8px rgb(0, 0, 0);
+  transform: translateY(-8px);
 }
 
 .sobre-direita {
