@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/cadastro.css">
     <script src="js/cadastro-empresa.js"></script>
     <script src="js/sessao.js"></script>
+    
 </head>
 
 
@@ -27,7 +28,7 @@
             </div>
             <div class="input-container">
                 <label for="">CNPJ:</label>
-                <input type="text" placeholder="**.***.***/****-**" id="cnpj">
+                <input type="text" placeholder="**.***.***/****-**" id="cnpj" maxlength="18">
             </div>
             <button onclick="validar_cadastrar()">Cadastrar</button>
         </div>
@@ -41,3 +42,4 @@
 </body>
 
 </html>
+<script src="regexCNPJ.js"></script>
