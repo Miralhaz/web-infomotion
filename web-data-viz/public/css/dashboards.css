@@ -12,26 +12,64 @@ body {
 }
 
 section.header .header-left {
+  display: flex;
+  flex-direction: column;
   position: fixed;
   height: 100%;
-  width: 230px;
+  width: 270px;
   background-color: black;
-  padding: 20px;
+  padding: 20px 0;
   text-align: center;
+}
+
+section.header .header-left .parte-cima {
+  padding: 40% 0;
+}
+
+section.header .header-left .parte-baixo {
+  padding: 10% 0
 }
 
 section.header .header-left .icone {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
+  padding: 7% 0;
 }
 
 section.header .header-left .descricao-icone {
   color: white;
   align-content: center;
+  padding: 0 10px;
 }
 
 section.header .header-left .icone img {
   height: 35px;
   width: 35px;
+  display: flex;
+  padding: 0 15px;
+  transition: all 0.3s ease;
+}
+
+section.header .header-left .icone a {
+  width: 100%;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 24px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 30px;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+section.header .header-left .icone a:hover{
+  background-color: #FFC74B;
+  color: black;
+  padding: 10px;
+}
+
+section.header .header-left .icone a:hover img {
+  filter: brightness(0);
 }
