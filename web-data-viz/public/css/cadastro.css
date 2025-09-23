@@ -138,6 +138,10 @@ h2 {
     margin-top: 5%;
 }
 
+.input-container input {
+    padding: 0 2%;
+}
+
 .logo-img {
     width: 85%;
     margin-top: -5%;
