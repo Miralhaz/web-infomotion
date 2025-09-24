@@ -1,10 +1,21 @@
+@import url("https://use.typekit.net/iom7tmt.css");
+
+:root {
+  --amarelo: #ffc64b;
+  --amareloOpacityLow: #ffc64bb7;
+  --cinza: #E2E1DE;
+  --branco: #ffff;
+  --preto: #000;
+  --cinzaEscuro: #1c1c1c;
+}
+
 * {
   padding: 0;
   margin: 0;
 }
 
 body {
-  background: linear-gradient(45deg,rgba(255, 199, 75, 1) 0%, rgba(255, 255, 255, 1) 90%);
+  background-color: var(--cinza);
   font-family: "poppins", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -17,7 +28,7 @@ section.header .header-left {
   position: fixed;
   height: 100%;
   width: 270px;
-  background-color: black;
+  background-color: var(--preto);
   padding: 20px 0;
   text-align: center;
 }
@@ -38,7 +49,7 @@ section.header .header-left .icone {
 }
 
 section.header .header-left .descricao-icone {
-  color: white;
+  color: var(--branco);
   align-content: center;
   padding: 0 10px;
 }
@@ -65,11 +76,57 @@ section.header .header-left .icone a {
 }
 
 section.header .header-left .icone a:hover{
-  background-color: #FFC74B;
-  color: black;
+  background-color: var(--amarelo);
+  color: var(--preto);
   padding: 10px;
 }
 
 section.header .header-left .icone a:hover img {
   filter: brightness(0);
+}
+
+.container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container .container-content{
+  background-color: var(--branco);
+  height: 80vh;
+  width: 100vh;
+  border-radius: 1vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container .container-content .content-top{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70vh;
+  gap: 1vh;
+}
+
+.container .container-content .content-top .div-nome, input{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 3vh;
+  background-color: var(--cinza);
+  border-radius: 0.5vh;
+  border: none;
+  padding: 2vh;
+}
+
+.container .container-content .content-top label{
+  align-self: flex-start;
+}
+
+.container .container-content .content-top .div-nome img{
+  width: 4vh;
 }
