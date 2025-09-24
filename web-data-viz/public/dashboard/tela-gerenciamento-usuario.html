@@ -51,8 +51,12 @@
                 <div class="div-nome">
                     <a>Nome</a>
                     <div class="div-img">
-                        <img src="../assets/icon/check-icon.png" alt="Check icon">
-                        <img src="../assets/icon/delete-icon.png" alt="Delete icon">
+                        <a onclick="alertaSalvar()">
+                            <img src="../assets/icon/check-icon.png" alt="Check icon">
+                        </a>
+                        <a onclick="alertaDeletar()">
+                            <img src="../assets/icon/delete-icon.png" alt="Delete icon">
+                        </a>
                     </div>
                 </div>
                 <label for="ipt_pesquisa">Pesquisar por servidor:</label>
@@ -70,6 +74,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
-
+    <script src="../js/gerenciamento_usuarios.js"></script>
 </html>
