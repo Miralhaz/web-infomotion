@@ -7,7 +7,6 @@ function cadastrar() {
     var emailVar = email.value;
     var cnpjVar = sessionStorage.CNPJ_EMPRESA;    
 
-
     // Verificando se há algum campo em branco
     if (
       nomeVar == "" ||
