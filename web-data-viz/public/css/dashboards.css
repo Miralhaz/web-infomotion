@@ -87,6 +87,7 @@ section.header .header-left .icone a:hover img {
 
 .container{
   width: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -95,11 +96,13 @@ section.header .header-left .icone a:hover img {
 .container .container-content{
   background-color: var(--branco);
   height: 80vh;
-  width: 100vh;
+  width: 110vh;
   border-radius: 1vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 3vh;
 }
 
 .container .container-content .content-top{
@@ -108,7 +111,7 @@ section.header .header-left .icone a:hover img {
   justify-content: center;
   align-items: center;
   width: 70vh;
-  gap: 1vh;
+  gap: 2vh;
 }
 
 .container .container-content .content-top .div-nome, input{
@@ -121,12 +124,94 @@ section.header .header-left .icone a:hover img {
   border-radius: 0.5vh;
   border: none;
   padding: 2vh;
+  font-size: 2.5vh;
 }
 
 .container .container-content .content-top label{
   align-self: flex-start;
+  font-size: 2.5vh;
 }
 
 .container .container-content .content-top .div-nome img{
   width: 4vh;
+}
+
+.container .container-content .content-server{
+  width: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container .container-content .content-server .server{
+  width: 100%;
+  height: 3vh;
+  border-radius: 0.5vh;
+  padding: 2vh;
+  border: var(--cinzaEscuro) 1px solid;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 2.5vh;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 5vh;
+  height: 2.75vh;
+}
+
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--cinza);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 2vh;
+  width: 2vh;
+  left: 2px;
+  bottom: 4px;
+  background-color: var(--branco);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--amarelo);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--amarelo);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
