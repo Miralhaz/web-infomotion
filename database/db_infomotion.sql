@@ -1,5 +1,4 @@
 create database infomotion;
-
 use infomotion;
 
 create table empresa(
@@ -82,7 +81,10 @@ insert into parametro_alerta (fk_servidor, limite_processador, limite_ram, limit
 (3, '80%', '75%', '20%'),
 (4, '88%', '82%', '12%');
 
-
+select u.id, u.nome, c.nome as cargo from usuario u
+        inner join empresa e on u.fk_empresa = e.id
+        inner join cargo c on u.fk_cargo = c.id
+        where e.id = 1;
 
 select * from empresa;
 select * from cargo;

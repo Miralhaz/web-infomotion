@@ -44,9 +44,22 @@ function listarFuncionarios(idEmpresa) {
     return database.executar(instrucaoSql);
 }
 
+function excluirFuncionario(idEmpresa, id){
+    console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function excluirFuncionario()");
+
+    var instrucaoSql = `
+    delete from usuario where id = '${id}' && fk_empresa = '${idEmpresa}';
+    `;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+
+}
+
 module.exports = {
     autenticar,
     cadastrarGestor,
     cadastrarFuncionarioNaEmpresa,
-    listarFuncionarios
+    listarFuncionarios,
+    excluirFuncionario
 };

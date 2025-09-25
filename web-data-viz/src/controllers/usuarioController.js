@@ -140,9 +140,30 @@ function listarFuncionarios(req, res) {
 }
 
 
+function excluirFuncionario(req, res) {
+    var idEmpresa = req.body.idEmpresaServer;
+    var id = req.body.idUsuarioServer;
+
+    usuarioModel.excluirFuncionario(idEmpresa, id)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao excluir o funcionário! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+
 module.exports = {
     autenticar,
     cadastrar,
     cadastrarFuncionario,
-    listarFuncionarios
+    listarFuncionarios,
+    excluirFuncionario
 }
