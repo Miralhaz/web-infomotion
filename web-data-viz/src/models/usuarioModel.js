@@ -34,7 +34,7 @@ function listarFuncionarios(idEmpresa) {
     console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listarFuncionarios()");
 
     var instrucaoSql = `
-        select u.id, u.nome, c.nome as cargo from usuario u
+        select u.nome, c.nome as cargo from usuario u
         inner join empresa e on u.fk_empresa = e.id
         inner join cargo c on u.fk_cargo = c.id
         where e.id = '${idEmpresa}';
@@ -43,6 +43,7 @@ function listarFuncionarios(idEmpresa) {
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
+
 
 function excluirFuncionario(idEmpresa, id){
     console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function excluirFuncionario()");
