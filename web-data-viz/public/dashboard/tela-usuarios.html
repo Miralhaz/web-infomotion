@@ -47,19 +47,26 @@
         <div class="container">
             <div class="container-content">
                 <div class="content-top">
+                    <button>+</button>
                     <div class="div-nome">
                         <a>Nome</a>
+                        <a>Cargo</a>
                         <div class="div-img">
-                            <img src="../assets/icon/check-icon.png" alt="Check icon">
-                            <img src="../assets/icon/delete-icon.png" alt="Delete icon">
+                            <div class="div-img">
+                                <a onclick="location.href='tela-gerenciamento-usuario.html'">
+                                    <img src="../assets/icon/edit-icon.png" alt="Edit icon">
+                                </a>
+                                <a onclick="alertaDeletar()">
+                                    <img src="../assets/icon/delete-icon.png" alt="Delete icon">
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <label for="ipt_pesquisa">Pesquisar por servidor:</label>
-                    <input type="text" id="ipt_pesquisa">
                 </div>
             </div>
         </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
-
+    <script src="../js/cadastro-usuarios.js"></script>
 </html>
