@@ -290,11 +290,12 @@ section.header .header-left .icone a:hover img {
 
 /* TELA GERENCIAMENTO USUÁRIOS */
 .container {
-  width: 100%;
+  width: 80%;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: 17%;
 }
 
 .container .container-content {
