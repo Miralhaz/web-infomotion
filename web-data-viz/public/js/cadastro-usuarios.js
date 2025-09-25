@@ -63,6 +63,59 @@ function cadastrarFuncionario(){
     return false;
   }
 
+
+
+  function listarFuncionarios() {
+    let idEmpresa = sessionStorage.ID_EMPRESA;
+    console.log(idEmpresa);
+
+    fetch(`/usuarios/listar/${idEmpresa}`)
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    let tabela = document.querySelector('table');
+                    let frase = `<tr>
+                        <th> id </th>
+                        <th> Nome </th>
+                        <th> Cargo </th>
+                    </tr>`;
+
+                    for (let i = 0; i < resposta.length; i++) {
+                        frase += `<tr>`;
+                        frase += `<td> ${resposta[i].id} </td>`;
+                        frase += `<td> ${resposta[i].nome} </td>`;
+                        frase += `<td> ${resposta[i].cargo} </td>`;
+                        frase += `<td>
+                            <button onclick="editarFuncionario(${resposta[i].id})" class="btnTabela"> 
+                                <img src="../assets/icon/edit-icon.png" alt="Icone de edição" class="iconeTabela"> 
+                            </button> 
+                        </td>`;
+
+                        frase += `<td>
+                            <button onclick="alertaDeletar(${resposta[i].id})" class="btnTabela"> 
+                                <img src="../assets/icon/delete-icon.png" alt="Icone de excluir" class="iconeTabela"> 
+                            </button> 
+                        </td>`;
+                        frase += `</tr>`;
+                    }
+
+                    tabela.innerHTML = frase;
+                });
+            } else {
+                throw "Houve um erro ao tentar listar os funcionários!";
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+      }
+
+
+
   /* Sweet Alerts */
 
 function alertaSalvar() {

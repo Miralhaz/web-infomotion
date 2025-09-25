@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usuário - InfoMotion</title>
     <link rel="stylesheet" href="../css/dashboards.css">
+    <script src="../js/cadastro-usuarios.js"></script>
 </head>
 
-<body>
+<body onload="listarFuncionarios()">
     <section class="header">
         <div class="header-left">
             <div class="parte-cima">
@@ -48,8 +49,8 @@
             <div class="container-content">
                 <div class="content-top">
                     <button>+</button>
-                    <div class="div-nome">
-                        <a>Nome</a>
+                    <table class="div-nome">
+                        <!-- <a>Nome</a>
                         <a>Cargo</a>
                         <div class="div-img">
                             <div class="div-img">
@@ -60,13 +61,13 @@
                                     <img src="../assets/icon/delete-icon.png" alt="Delete icon">
                                 </a>
                             </div>
-                        </div>
-                    </div>
+                        </div> -->
+                    </table>
                 </div>
             </div>
         </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
-    <script src="../js/cadastro-usuarios.js"></script>
+
 </html>
