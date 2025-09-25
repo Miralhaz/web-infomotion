@@ -67,7 +67,6 @@ function cadastrarFuncionario(){
 
   function listarFuncionarios() {
     let idEmpresa = sessionStorage.ID_EMPRESA;
-    console.log(idEmpresa);
 
     fetch(`/usuarios/listar/${idEmpresa}`)
         .then(function (resposta) {
@@ -90,7 +89,7 @@ function cadastrarFuncionario(){
                           <th> ${resposta[i].nome} </th>
                           <th> ${resposta[i].cargo} </th> 
                           <th>
-                              <a onclick="location.href='tela-gerenciamento-usuario.html'"> 
+                              <a onclick="listarUmFuncionario(${resposta[i].id})"> 
                                   <img src="../assets/icon/edit-icon.png" alt="Icone de edição" class="iconeTabela"> 
                               </a>
                               <a onclick="excluirFuncionario(${resposta[i].id})"> 
@@ -109,8 +108,7 @@ function cadastrarFuncionario(){
         .catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
         });
-      }
-
+}
 
 
   /* Sweet Alerts */
