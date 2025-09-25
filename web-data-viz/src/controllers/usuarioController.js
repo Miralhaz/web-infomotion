@@ -23,7 +23,8 @@ function autenticar(req, res) {
                                     id: resultadoAutenticar[0].id,
                                     email: resultadoAutenticar[0].email,
                                     nome: resultadoAutenticar[0].nome,
-                                    senha: resultadoAutenticar[0].senha                                    
+                                    senha: resultadoAutenticar[0].senha,
+                                    idEmpresa: resultadoAutenticar[0].idEmpresa                                    
                                 });
                     } else if (resultadoAutenticar.length == 0) {
                         res.status(403).send("Email e/ou senha inválido(s)");
@@ -115,8 +116,33 @@ function cadastrarFuncionario(req, res) {
             );
     }
 }
+
+function listarFuncionarios(req, res) {
+    var idEmpresa = req.params.idEmpresa;
+
+    usuarioModel.listarFuncionarios(idEmpresa)
+        .then(
+            function (resultado) {
+                if (resultado.length > 0) {
+                    res.status(200).json(resultado);
+                } else {
+                    res.status(204).send("Nenhum funcionário encontrado!");
+                }
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao listar os funcionários! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+
 module.exports = {
     autenticar,
     cadastrar,
-    cadastrarFuncionario
+    cadastrarFuncionario,
+    listarFuncionarios
 }
