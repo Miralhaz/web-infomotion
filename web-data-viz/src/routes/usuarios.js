@@ -12,11 +12,15 @@ router.post("/autenticar", function (req, res) {
 });
 
 router.post("/cadastrarFuncionario", function (req, res) {
-    usuarioController.cadastrarFuncionario(req, res)
+    usuarioController.cadastrarFuncionario(req, res);
 });
 
 router.get("/listar/:idEmpresa", function(req, res){
-    usuarioController.listarFuncionarios(req, res)
+    usuarioController.listarFuncionarios(req, res);
+});
+
+router.delete("/excluir", function(req, res){
+    usuarioController.excluirFuncionario(req, res);
 });
 
 module.exports = router;

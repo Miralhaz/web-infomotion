@@ -78,29 +78,26 @@ function cadastrarFuncionario(){
                     console.log("Dados recebidos: ", JSON.stringify(resposta));
 
                     let tabela = document.querySelector('table');
-                    let frase = `<tr>
-                        <th> id </th>
-                        <th> Nome </th>
-                        <th> Cargo </th>
+                    let frase = `
+                    <tr>
+                        <th style="font-weight:600"> Nome </th>
+                        <th style="font-weight:600"> Cargo </th>
                     </tr>`;
 
                     for (let i = 0; i < resposta.length; i++) {
-                        frase += `<tr>`;
-                        frase += `<td> ${resposta[i].id} </td>`;
-                        frase += `<td> ${resposta[i].nome} </td>`;
-                        frase += `<td> ${resposta[i].cargo} </td>`;
-                        frase += `<td>
-                            <button onclick="editarFuncionario(${resposta[i].id})" class="btnTabela"> 
-                                <img src="../assets/icon/edit-icon.png" alt="Icone de edição" class="iconeTabela"> 
-                            </button> 
-                        </td>`;
-
-                        frase += `<td>
-                            <button onclick="alertaDeletar(${resposta[i].id})" class="btnTabela"> 
-                                <img src="../assets/icon/delete-icon.png" alt="Icone de excluir" class="iconeTabela"> 
-                            </button> 
-                        </td>`;
-                        frase += `</tr>`;
+                        frase += `
+                        <tr>
+                          <th> ${resposta[i].nome} </th>
+                          <th> ${resposta[i].cargo} </th> 
+                          <th>
+                              <a onclick="location.href='tela-gerenciamento-usuario.html'"> 
+                                  <img src="../assets/icon/edit-icon.png" alt="Icone de edição" class="iconeTabela"> 
+                              </a>
+                              <a onclick="excluirFuncionario(${resposta[i].id})"> 
+                                  <img src="../assets/icon/delete-icon.png" alt="Icone de excluir" class="iconeTabela"> 
+                              </a>
+                          </th>
+                        </tr>`;
                     }
 
                     tabela.innerHTML = frase;
@@ -135,7 +132,7 @@ function alertaSalvar() {
     });
 }
 
-function alertaDeletar() {
+function excluirFuncionario(id) {
     Swal.fire({
         title: "Tem certeza que deseja deletar?",
         text: "Você não poderá reverter as alterações!",
@@ -147,11 +144,45 @@ function alertaDeletar() {
         cancelButtonText: "Cancelar"
     }).then((result) => {
         if (result.isConfirmed) {
-            Swal.fire({
-                title: "Deletado!",
-                text: "O usuário foi deletado com sucesso!",
-                icon: "success"
+
+        var idEmpresa = sessionStorage.ID_EMPRESA;
+
+        fetch("/usuarios/excluir", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idEmpresaServer: idEmpresa,
+                idUsuarioServer: id
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    var sectionErrosLogin = document.getElementById("section_erros_login");
+                    sectionErrosLogin.style.backgroundColor = '#069006';
+
+                    finalizarAguardar(
+                      Swal.fire({
+                      title: "Deletado!",
+                      text: "O usuário foi deletado com sucesso!",
+                      icon: "success"
+                      })
+                    );
+
+                    setTimeout(() => "2000");
+                } else {
+                    throw "Houve um erro ao tentar realizar a exclusão!";
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+                finalizarAguardar();
             });
-        }
+
+        return false;
+            }
     });
 }

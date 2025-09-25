@@ -319,7 +319,7 @@ section.header .header-left .icone a:hover img {
   gap: 2vh;
 }
 
-.container .container-content .content-top button{
+.btn-add{
   height: 60px;
   background-color: var(--cinza);
   border: none;
@@ -331,7 +331,7 @@ section.header .header-left .icone a:hover img {
   transition: all 0.3s ease-in-out;
 }
 
-.container .container-content .content-top button:hover{
+.btn-add:hover{
   background-color: var(--amarelo);
   transform: translateY(8px);
 }
@@ -438,4 +438,22 @@ input:checked+.slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+
+/* TELA USUÁRIOS */
+
+.container .container-content table{
+  width: 80%;
+  gap: 2vh;
+  padding: 3vh;
+}
+
+.container .container-content table tr th img{
+  width: 4vh;
+  cursor: pointer;
+}
+
+.container .container-content table tr th{
+  font-weight: 500;
 }
