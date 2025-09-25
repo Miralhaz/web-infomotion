@@ -61,7 +61,7 @@ section.header .header-left .icone img {
   width: 35px;
   display: flex;
   padding: 0 15px;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 section.header .header-left .icone a {
@@ -74,7 +74,7 @@ section.header .header-left .icone a {
   justify-content: flex-start;
   gap: 30px;
   align-items: center;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 section.header .header-left .icone a:hover {
@@ -99,7 +99,6 @@ section.header .header-left .icone a:hover img {
   box-shadow: 5px 5px 30px rgb(0, 0, 0, 0.4);
 }
 
-
 .container-cadastro button {
   height: 60px;
   background-color: var(--amarelo);
@@ -109,7 +108,7 @@ section.header .header-left .icone a:hover img {
   cursor: pointer;
   width: fit-content;
   padding: 0.5rem 0.9rem;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 .left-side {
@@ -319,6 +318,23 @@ section.header .header-left .icone a:hover img {
   gap: 2vh;
 }
 
+.container .container-content .content-top button{
+  height: 60px;
+  background-color: var(--cinza);
+  border: none;
+  border-radius: 10px;
+  font-size: 2rem;
+  cursor: pointer;
+  width: 10vh;
+  padding: 0.5rem 0.9rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.container .container-content .content-top button:hover{
+  background-color: var(--amarelo);
+  transform: translateY(8px);
+}
+
 .container .container-content .content-top .div-nome,
 input {
   display: flex;
@@ -340,6 +356,7 @@ input {
 
 .container .container-content .content-top .div-nome img {
   width: 4vh;
+  cursor: pointer;
 }
 
 .container .container-content .content-server {
