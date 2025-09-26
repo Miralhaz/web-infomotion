@@ -89,7 +89,7 @@ function cadastrarFuncionario(){
                           <th> ${resposta[i].nome} </th>
                           <th> ${resposta[i].cargo} </th> 
                           <th>
-                              <a onclick="listarUmFuncionario(${resposta[i].id})"> 
+                              <a onclick="alertaSalvar(${resposta[i].id})"> 
                                   <img src="../assets/icon/edit-icon.png" alt="Icone de edição" class="iconeTabela"> 
                               </a>
                               <a onclick="excluirFuncionario(${resposta[i].id})"> 
@@ -143,6 +143,7 @@ function excluirFuncionario(id) {
     }).then((result) => {
         if (result.isConfirmed) {
 
+        var id = sessionStorage.ID_USUARIO;
         var idEmpresa = sessionStorage.ID_EMPRESA;
 
         fetch("/usuarios/excluir", {
@@ -169,7 +170,7 @@ function excluirFuncionario(id) {
                       icon: "success"
                       })
                     );
-
+                    
                     setTimeout(() => "2000");
                 } else {
                     throw "Houve um erro ao tentar realizar a exclusão!";
