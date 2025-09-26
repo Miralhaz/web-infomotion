@@ -144,7 +144,7 @@ function excluirFuncionario(req, res) {
     var idEmpresa = req.body.idEmpresaServer;
     var id = req.body.idUsuarioServer;
 
-    usuarioModel.excluirFuncionario(idEmpresa, id)
+    usuarioModel.excluirFuncionario(id, idEmpresa)
         .then(
             function (resultado) {
                 res.json(resultado);
