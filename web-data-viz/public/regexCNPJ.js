@@ -1,4 +1,6 @@
 // Script das mascaras de texto 
+
+// Máscara CPNJ
   document.getElementById('cnpj').addEventListener('input', function (e) /* e é o objeto do evento, nesse caso o input*/
   {
     let valor = e.target.value.replace(/\D/g, '');
@@ -9,6 +11,7 @@
     e.target.value = valor;
   })
 
+// Máscara TELEFONE
   document.getElementById('telefoneResponsavel_input').addEventListener('input', function(e) 
     {
     let valor = e.target.value.replace(/\D/g, '');
