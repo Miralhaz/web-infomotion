@@ -26,9 +26,11 @@ CREATE TABLE IF NOT EXISTS infomotion.componentes (
   id INT NOT NULL AUTO_INCREMENT,
   fk_servidor INT,
   tipo VARCHAR(40),
-  valor DECIMAL(10,2),
-  unidade_medida VARCHAR(10),
+  numero_serie INT, /* Armazenará se é o componete 01, 02, 03, etc */
+  apelido varchar(20),
+  dt_cadastro datetime default current_timestamp,
   PRIMARY KEY (id),
+  UNIQUE (fk_servidor, numero_serie, tipo),
   CONSTRAINT componentes_ibfk_1
     FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
 );
@@ -79,3 +81,45 @@ CREATE TABLE IF NOT EXISTS infomotion.usuario_has_servidor (
   CONSTRAINT fk_usuario_has_servidor_servidor1
     FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
 );
+
+insert into empresa (nome, cnpj, ativa) 
+	values('Empresa teste', 12345678101214, 1),
+			('Empresa teste2', 22345678101214, 1);
+
+insert into servidor (fk_empresa, nome, ip)
+	values(1,'Servidor Teste', '12.232.221-12'),
+		(2,'Servidor Teste2', '22.232.221-12');
+
+insert into servidor (fk_empresa, nome, ip)
+	values(1,'Servidor Teste2', '13.232.221-12');
+
+insert into componentes(fk_servidor, tipo, numero_serie, apelido)
+	values(1, 'CPU', 01, 'CPU TESTE1'),
+		(1, 'CPU', 02, 'CPU TESTE2'),
+        (1, 'CPU', 03, 'CPU TESTE3'),
+		(1, 'RAM', 01, 'RAM TESTE1'),
+        (2, 'CPU', 01, 'CPU TESTE1sv2'),
+		(2, 'CPU', 02, 'CPU TESTE2sv2'),
+        (2, 'CPU', 03, 'CPU TESTE3sv2'),
+		(2, 'RAM', 01, 'RAM TESTEsv2');
+        
+
+insert into usuario(fk_empresa, cargo, nome, senha, email, ativo)
+	values (1, "admin", "Gabriel", '123456', 'email@.', 1);
+ 
+ 
+insert into usuario_has_servidor (fk_servidor, fk_usuario)
+	values(1, 1),
+		(2, 1); 
+
+
+select * from servidor;
+select fk_servidor, tipo, numero_serie, apelido, date_format(dt_cadastro, '%d/%m/%Y %H:%i:%s') from componentes;
+select * from empresa;
+select * from usuario;
+
+
+    
+
+
+
