@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS `infomotion`;
 CREATE SCHEMA IF NOT EXISTS `infomotion`;
 USE `infomotion` ;
 

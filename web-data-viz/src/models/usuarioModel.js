@@ -20,11 +20,11 @@ function cadastrarGestor(nome, email, senha, cnpj) {
     return database.executar(instrucaoSql);
 }
 
-function cadastrarFuncionarioNaEmpresa(nome, email, senha, cargo) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email, senha, cnpj);
+function cadastrarFuncionarioNaEmpresa(nome, email, senha, cargo, idEmpresa) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email, senha, cargo, idEmpresa);
 
     var instrucaoSql = `
-        insert into usuario (nome, email, senha, fk_empresa, cargo) select '${nome}', '${email}', '${senha}', '${id}', '${cargo}' from empresa where cnpj = '${cnpj}';
+        insert into usuario (nome, email, senha, fk_empresa, cargo) select '${nome}', '${email}', '${senha}', id, '${cargo}' from empresa where id = '${idEmpresa}';
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

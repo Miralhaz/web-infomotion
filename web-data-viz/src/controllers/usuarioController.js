@@ -86,6 +86,7 @@ function cadastrarFuncionario(req, res) {
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
     var cargo = req.body.cargoServer;
+    var idEmpresa = req.params.idEmpresa
 
     // Faça as validações dos valores
     if (nome == undefined) {
@@ -99,7 +100,7 @@ function cadastrarFuncionario(req, res) {
     } else {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrarFuncionarioNaEmpresa(nome, email, senha, cargo)
+        usuarioModel.cadastrarFuncionarioNaEmpresa(nome, email, senha, cargo, idEmpresa)
             .then(
                 function (resultado) {
                     res.json(resultado);
