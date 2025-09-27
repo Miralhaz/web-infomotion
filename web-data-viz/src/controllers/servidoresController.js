@@ -17,6 +17,25 @@ function buscarServidoresPorEmpresa(req, res) {
 }
 
 
+function buscarServidoresPorUsuario(req, res) {
+  console.log("req.params: ", req.params.idUsuario); 
+  
+  var idUsuario = req.params.idUsuario;
+
+  servidorModel.buscarServidoresPorUsuario(idUsuario).then((resultado) => {
+    if (resultado.length > 0) {
+      res.status(200).json(resultado);
+    } else {
+      res.status(204).json([]);
+    }
+  }).catch(function (erro) {
+    console.log(erro);
+    console.log("Houve um erro ao buscar os servidores: ", erro.sqlMessage);
+    res.status(500).json(erro.sqlMessage);
+  });
+}
+
+
 function cadastrar(req, res) {
   var nome = req.body.nome;
   var ip = req.body.ip;
@@ -48,5 +67,6 @@ function cadastrar(req, res) {
 
 module.exports = {
   buscarServidoresPorEmpresa,
+  buscarServidoresPorUsuario,
   cadastrar
 }
