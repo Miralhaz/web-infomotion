@@ -531,9 +531,9 @@ input:checked+.slider:before {
 
 .GSV .componente{
   direction: ltr;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
-  justify-content: space-between;
   width: 45vw;
   padding: 1vh 0.6vw;
   font-size: 1.25rem;
@@ -549,9 +549,15 @@ input:checked+.slider:before {
   box-shadow: 0px 0px 3px 0.2px rgba(243, 171, 15, 0.5);
 }
 
-.GSV .componente .tipoNumComponente .apelido{
-  border: none;
+.GSV .componente .apelido{
+  justify-self: start;
 }
+
+.GSV .componente .tipoNumComponente{
+  justify-self: center;
+}
+
+
 
 .GSV .componente .icons{
   display: flex;
