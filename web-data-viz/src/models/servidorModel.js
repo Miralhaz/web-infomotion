@@ -10,7 +10,7 @@ function buscarServidoresPorEmpresa(empresaId) {
 
 function buscarServidoresPorUsuario(usuarioId) {
 
-  var instrucaoSql = `SELECT fk_servidor FROM usuario_has_servidor WHERE fk_usuario = ${usuarioId}`;
+  var instrucaoSql = `SELECT fk_servidor FROM usuario WHERE fk_usuario = ${usuarioId}`;
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);

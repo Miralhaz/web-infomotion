@@ -305,7 +305,7 @@ section.header .header-left .icone a:hover img {
   border-radius: 1vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: top;
   align-items: center;
   gap: 3vh;
 }
@@ -460,6 +460,47 @@ input:checked+.slider:before {
 
 
 /* -------------------------------------- Tela de gerenciamento de servidores --------------------------------------*/
+
+.container-pesquisa{
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+width: 80%;
+margin: 5%;
+}
+
+.container-pesquisa button{
+  margin-left: 5%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* IDENTIFICADOR */
 

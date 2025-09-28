@@ -1,6 +1,3 @@
-function telaCadastroFuncionario() {
-  window.location.href = "tela-cadastro-usuario.html"
-}
 
 function cadastrarFuncionario() {
   aguardar();
