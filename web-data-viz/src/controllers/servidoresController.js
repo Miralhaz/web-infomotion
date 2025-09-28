@@ -37,20 +37,27 @@ function buscarServidoresPorUsuario(req, res) {
 
 
 function cadastrar(req, res) {
-  var nome = req.body.nome;
-  var ip = req.body.ip;
-  var idUsuario = req.body.idUsuario;
+  var nome = req.body.nomeServer;
+  var ip = req.body.ipServer;
+  var idEmpresa = req.body.idServer;
+  console.log(nome)
+  console.log(ip)
+ console.log(idEmpresa)
+  
 
+
+
+  console.log("a")
   if (nome == undefined) {
     res.status(400).send("nome está undefined!");
-  } else if (idUsuario == undefined) {
-    res.status(400).send("idUsuario está undefined!");
-  }  else if (ip == undefined) {
+  } else if (ip == undefined) {
+    res.status(400).send("idEmpresa está undefined!");
+  }  else if (idEmpresa == undefined) {
     res.status(400).send("ip está undefined!");
   } else {
+ console.log("b")
 
-
-    servidorModel.cadastrar(descricao, idUsuario)
+    servidorModel.cadastrar(idEmpresa,ip ,nome)
       .then((resultado) => {
         res.status(201).json(resultado);
       }
@@ -62,6 +69,7 @@ function cadastrar(req, res) {
         );
         res.status(500).json(erro.sqlMessage);
       });
+       console.log("c")
   }
 }
 

@@ -47,3 +47,56 @@ function listarServidoresPorEmpresa() {
       console.log(`#ERRO: ${resposta}`);
     });
 }
+
+
+function cadastrar() {
+    aguardar();
+  var nomeVar = nome.value
+  var ipVar = ip.value
+  var idEmpresaVar = sessionStorage.ID_EMPRESA
+  
+  if (
+      nomeVar == "" ||
+      ipVar == "" ||
+      idEmpresaVar == "" 
+    ) {      
+      finalizarAguardar("(Mensagem de erro para todos os campos em branco)");
+      return false;
+    }
+  
+    fetch("/servidores/cadastrar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nomeServer: nomeVar,
+        ipServer: ipVar,
+        idServer: idEmpresaVar,
+      
+      }),
+    })
+      .then(function (resposta) {
+        console.log("resposta: ", resposta);
+
+        if (resposta.ok) {
+          finalizarAguardar("Cadastro realizado com sucesso! Redirecionando para tela de login...");
+
+          setTimeout(() => {
+            window.location = "tela-servidores.html";
+          }, "2000");
+
+          limparFormulario();
+          finalizarAguardar();
+        } else {
+          throw "Houve um erro ao tentar realizar o cadastro!";
+        }
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+        finalizarAguardar();
+      });
+
+    return false;
+  }
+

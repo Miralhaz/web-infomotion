@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de funcionarios - InfoMotion</title>
+  <link rel="stylesheet" href="../css/dashboards.css">
+  <script src="../js/sessao.js"></script>
+</head>
+<style>
+  :root {
+    --amarelo: #FFC74BF6;
+    --cinza: #E2E1DE;
+    --branco: #ffff;
+    --preto: #000;
+
+  }
+
+  * {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-decoration: none;
+    font-family: "poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #FFC74B;
+    background: linear-gradient(45deg, rgba(255, 199, 75, 1) 0%, rgba(255, 255, 255, 1) 90%);
+  }
+</style>
+
+<body>
+  <div class="container-cadastro">
+    <div class="left-side">
+      <h1>Faça o cadastro de um servidor</h1>
+      <span><a href="https://infomotionmonitoramentos.atlassian.net/servicedesk/customer/portal/1">Entre em
+          contato</a></span>
+    </div>
+    <div class="rigth-side">
+      <a href="dashboard.html"><img class="logo-img" src="../img/logo.png" alt=""></a>
+      <div class="input-container">
+        <label for="">Nome e tags:</label>
+        <input type="text" placeholder="Meu servidor" id="nome">
+      </div>
+      <div class="input-container">
+        <label for="">IP:</label>
+        <input type="text" placeholder="Exemplo: 108.108.108.108" id="ip">
+      </div>     
+      <button onclick="cadastrar()">Cadastrar</button>
+        <a href="tela-servidores.html">voltar</a>
+    </div>
+    <section id="section_aguardar" class="loading-section">
+      <section class="quadrado">
+        <section class="borda_aguardar"></section>
+      </section>
+    </section>
+    <section id="section_erros_login"></section>
+  </div>
+</body>
+<script src="../js/cadastro-servidor.js"></script>
+
+</html>
