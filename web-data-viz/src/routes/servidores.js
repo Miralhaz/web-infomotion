@@ -15,7 +15,7 @@ router.post("/cadastrar", function (req, res) {
   servidoresController.cadastrar(req, res);
 })
 
-router.get("listarServidoresPorEmpresa/:empresaId", function (req, res) {
+router.get("/listarServidoresPorEmpresa/:idEmpresa", function (req, res) {
   servidoresController.listarServidoresPorEmpresa(req, res);
 });
 

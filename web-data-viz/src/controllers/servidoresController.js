@@ -66,20 +66,28 @@ function cadastrar(req, res) {
 }
 
 function listarServidoresPorEmpresa(req, res) {
-  
-  var idEmpresa = req.params.idEmpresa;
+    var idEmpresaVar = req.params.idEmpresa;
+    console.log(idEmpresaVar)
 
-  servidorModel.listarServidoresPorEmpresa(idEmpresa).then((resultado) => {
-    if (resultado.length > 0) {
-      res.status(200).json(resultado);
-    } else {
-      res.status(204).json([]);
-    }
-  }).catch(function (erro) {
-    console.log(erro);
-    console.log("Houve um erro ao buscar os servidores: ", erro.sqlMessage);
-    res.status(500).json(erro.sqlMessage);
-  });
+    servidorModel.listarServidoresPorEmpresa(idEmpresaVar)
+        .then(
+            function (resultado) {
+                if (resultado.length > 0) {
+                    res.status(200).json(resultado);
+                } else {
+                    res.status(204).send("Nenhum funcionário encontrado!");
+                }
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao listar os servidores! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+
+
 }
 
 
