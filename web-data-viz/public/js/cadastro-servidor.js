@@ -2,8 +2,8 @@ function telaCadastroServidor() {
   window.location.href = "tela-cadastro-servidor.html"
 }
 
-function listarServidor() {
-  let idEmpresa = sessionStorage.idEmpresa;
+function listarServidoresPorEmpresa() {
+  var idEmpresa = sessionStorage.ID_EMPRESA
 
   fetch(`/servidores/listarServidoresPorEmpresa/${idEmpresa}`)
     .then(function (resposta) {
@@ -17,14 +17,14 @@ function listarServidor() {
           let frase = `
                     <tr>
                         <th style="font-weight:600"> Nome </th>
-                        <th style="font-weight:600"> Cargo </th>
+                        <th style="font-weight:600"> IP </th>
                     </tr>`;
 
           for (let i = 0; i < resposta.length; i++) {
             frase += `
                         <tr>
                           <th> ${resposta[i].nome} </th>
-                          <th> ${resposta[i].cargo} </th> 
+                          <th> ${resposta[i].ip} </th> 
                           <th>
                               <a onclick="alertaSalvar(${resposta[i].id})"> 
                                   <img src="../assets/icon/edit-icon.png" alt="Icone de edição" class="iconeTabela"> 
@@ -39,7 +39,7 @@ function listarServidor() {
           tabela.innerHTML = frase;
         });
       } else {
-        throw "Houve um erro ao tentar listar os funcionários!";
+        throw "Houve um erro ao tentar listar os servidores!";
       }
     })
     .catch(function (resposta) {
