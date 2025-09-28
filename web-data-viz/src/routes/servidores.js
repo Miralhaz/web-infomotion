@@ -16,7 +16,7 @@ router.post("/cadastrar", function (req, res) {
 })
 
 router.get("listarServidoresPorEmpresa/:empresaId", function (req, res) {
-  servidoresController.buscarServidoresPorEmpresa(req, res);
+  servidoresController.listarServidoresPorEmpresa(req, res);
 });
 
 module.exports = router;
