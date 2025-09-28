@@ -26,9 +26,7 @@ function cadastrar(empresaId, ip, nome) {
 
 
 function listarServidoresPorEmpresa(idEmpresa){
-
   var instrucaoSql = `SELECT nome,ip FROM servidor where fk_empresa = ${idEmpresa}`;
-
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }

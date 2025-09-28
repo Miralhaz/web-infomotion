@@ -4,10 +4,11 @@ function telaCadastroServidor() {
 
 function listarServidoresPorEmpresa() {
   var idEmpresa = sessionStorage.ID_EMPRESA
+   console.log(idEmpresa)
 
   fetch(`/servidores/listarServidoresPorEmpresa/${idEmpresa}`)
     .then(function (resposta) {
-      console.log("resposta: ", resposta);
+      console.log("resposta:", resposta);
 
       if (resposta.ok) {
         resposta.json().then(function (resposta) {
