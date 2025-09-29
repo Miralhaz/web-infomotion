@@ -34,9 +34,8 @@ function listarFuncionarios(idEmpresa) {
     console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listarFuncionarios()");
 
     var instrucaoSql = `
-        select u.nome, c.nome as cargo from usuario u
+        select u.nome, u.cargo from usuario u
         inner join empresa e on u.fk_empresa = e.id
-        inner join cargo c on u.fk_cargo = c.id
         where e.id = '${idEmpresa}';
     `;
 
@@ -44,12 +43,22 @@ function listarFuncionarios(idEmpresa) {
     return database.executar(instrucaoSql);
 }
 
+function excluirFuncionarioServidor(id){
+    console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function excluirFuncionario()");
+
+    var instrucaoSql = `
+     delete from usuario_has_servidor where fk_usuario = '${id}';
+    `;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
 
 function excluirFuncionario(id, idEmpresa){
     console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function excluirFuncionario()");
 
     var instrucaoSql = `
-    delete from usuario where id = '${id}' && fk_empresa = '${idEmpresa}';
+     delete from usuario where id = '${id}' and fk_empresa = '${idEmpresa}';
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -62,5 +71,6 @@ module.exports = {
     cadastrarGestor,
     cadastrarFuncionarioNaEmpresa,
     listarFuncionarios,
-    excluirFuncionario
+    excluirFuncionario,
+    excluirFuncionarioServidor
 };

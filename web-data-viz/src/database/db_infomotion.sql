@@ -105,21 +105,15 @@ insert into componentes(fk_servidor, tipo, numero_serie, apelido)
         
 
 insert into usuario(fk_empresa, cargo, nome, senha, email, ativo)
-	values (1, "admin", "Gabriel", '123456', 'email@.', 1);
- 
- 
+	values (1, "admin", "Gabriel", '123456', 'email@.', 1),
+		   (1, "gestor", "Tadeu", '123456', 'gmail@.', 1);
+     
 insert into usuario_has_servidor (fk_servidor, fk_usuario)
 	values(1, 1),
-		(2, 1); 
-
+		  (2, 2); 
 
 select * from servidor;
 select fk_servidor, tipo, numero_serie, apelido, date_format(dt_cadastro, '%d/%m/%Y %H:%i:%s') from componentes;
 select * from empresa;
 select * from usuario;
-
-
-    
-
-
-
+select * from usuario_has_servidor;
