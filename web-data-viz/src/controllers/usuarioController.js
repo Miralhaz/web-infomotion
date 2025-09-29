@@ -145,6 +145,20 @@ function excluirFuncionario(req, res) {
     var idEmpresa = req.body.idEmpresaServer;
     var id = req.body.idUsuarioServer;
 
+    usuarioModel.excluirFuncionarioServidor(id)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao excluir o funcionário-servidor! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+
     usuarioModel.excluirFuncionario(id, idEmpresa)
         .then(
             function (resultado) {

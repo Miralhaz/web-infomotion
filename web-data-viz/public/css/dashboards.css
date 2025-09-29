@@ -310,6 +310,19 @@ section.header .header-left .icone a:hover img {
   gap: 3vh;
 }
 
+.container .container-content .content{
+  width: 70vh;
+  padding: 5vh;
+  display: flex;
+  flex-direction: row;
+  gap: 15%;
+}
+
+.container .container-content .content img{
+  width: 30%;
+  align-self: flex-start;
+}
+
 .container .container-content .content-top {
   display: flex;
   flex-direction: column;

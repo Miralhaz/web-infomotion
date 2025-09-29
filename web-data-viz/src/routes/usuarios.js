@@ -19,7 +19,7 @@ router.get("/listar/:idEmpresa", function(req, res){
     usuarioController.listarFuncionarios(req, res);
 });
 
-router.delete("/excluir", function(req, res){
+router.delete("/excluir/:id", function(req, res){
     usuarioController.excluirFuncionario(req, res);
 });
 

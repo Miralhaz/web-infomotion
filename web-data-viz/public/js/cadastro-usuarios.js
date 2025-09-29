@@ -166,7 +166,7 @@ function excluirFuncionario(id) {
       var id = sessionStorage.ID_USUARIO;
       var idEmpresa = sessionStorage.ID_EMPRESA;
 
-      fetch("/usuarios/excluir", {
+      fetch(`/usuarios/excluir/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
