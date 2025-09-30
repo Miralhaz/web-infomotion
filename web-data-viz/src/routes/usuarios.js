@@ -23,7 +23,7 @@ router.get("/listarUm/:id/:idEmpresa", function(req, res){
     usuarioController.listarUmFuncionario(req, res);
 });
 
-router.get("listarServidores/:id/:idEmpresa", function(req, res){
+router.get("/listarServidores/:id/:idEmpresa", function(req, res){
     usuarioController.listarServidoresFuncionario(req, res);
 });
 

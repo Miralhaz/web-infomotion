@@ -456,21 +456,28 @@ input:checked+.slider:before {
 
 /* TELA USUÁRIOS */
 
-.container .container-content table{
-  width: 80%;
+.container .container-content .div-table{
+  width: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
   gap: 2vh;
-  padding: 3vh;
 }
 
-.container .container-content table tr th img{
+.container .container-content .div-table #tabela1, 
+.container .container-content .div-table #tabela2{
+  width: 100%;
+}
+
+.container .container-content .div-table table tr th img{
   width: 4vh;
   cursor: pointer;
 }
 
-.container .container-content table tr th{
+.container .container-content .div-table table tr th{
   font-weight: 500;
 }
-
 
 /* -------------------------------------- Tela de gerenciamento de servidores --------------------------------------*/
 

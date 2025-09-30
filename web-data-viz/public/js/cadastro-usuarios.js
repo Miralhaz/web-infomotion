@@ -135,16 +135,16 @@ function listarUmFuncionario(id) {
   let idEmpresa = sessionStorage.ID_EMPRESA;
   console.log("Chamando listarUmFuncionario com id:", id, "e idEmpresa:", idEmpresa);
 
-    fetch(`/usuarios/listarUm/${id}/${idEmpresa}`)
-        .then(function (resposta) {
-            console.log("resposta: ", resposta);
+  return fetch(`/usuarios/listarUm/${id}/${idEmpresa}`)
+    .then(function (resposta) {
+      console.log("resposta: ", resposta);
 
-            if (resposta.ok) {
-                resposta.json().then(function (resposta) {
-                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+      if (resposta.ok) {
+        resposta.json().then(function (resposta) {
+          console.log("Dados recebidos: ", JSON.stringify(resposta));
 
-                    let tabela = document.querySelector('table');
-                    let frase = `
+          let tabela = document.querySelector('#tabela1');
+          let frase = `
                     <tr>
                         <th style="font-weight:600"> Nome </th>
                         <th style="font-weight:600"> Cargo </th>
@@ -161,39 +161,42 @@ function listarUmFuncionario(id) {
                                   <img src="../assets/icon/delete-icon.png" alt="Icone de excluir" class="iconeTabela"> 
                               </a>
                           </th>
-                        </tr>
-                        
-                        <table class="table" onload="listarServidoresFuncionario(${resposta[0].id})"></table>`;
-          
-                      tabela.innerHTML = frase;
+                        </tr>`;
 
-                });
-            } else {
-                throw "Houve um erro ao tentar listar o funcionário!";
-            }
-        })
-        .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
+          tabela.innerHTML = frase;
+          listarServidoresFuncionario(resposta[0].id).then(() => {
+          editarServidorFuncionario();
         });
+
+
+        });
+      } else {
+        throw "Houve um erro ao tentar listar o funcionário!";
+      }
+    })
+    .catch(function (resposta) {
+      console.log(`#ERRO: ${resposta}`);
+    });
 
 }
 
-listarServidoresFuncionario(id){
+function listarServidoresFuncionario(id) {
   let idEmpresa = sessionStorage.ID_EMPRESA;
 
-    fetch(`/usuarios/listarServidores/${id}/${idEmpresa}`)
-        .then(function (resposta) {
-            console.log("resposta: ", resposta);
+  fetch(`/usuarios/listarServidores/${id}/${idEmpresa}`)
+    .then(function (resposta) {
+      console.log("resposta: ", resposta);
 
-            if (resposta.ok) {
-                resposta.json().then(function (resposta) {
-                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+      if (resposta.ok) {
+        resposta.json().then(function (resposta) {
+          console.log("Dados recebidos: ", JSON.stringify(resposta));
 
-                    let tabela = document.querySelector('.table');
+          let tabela = document.getElementById('tabela2');
+          let frase = ``;
 
-                  for (let i = 0; i < resposta.length; i++) {
-                    let frase = `
-                      <tr id="row_${resposta[i].id}">
+          for (let i = 0; i < resposta.length; i++) {
+            frase += `
+                      <tr>
                           <th> ${resposta[i].nome} </th>
                           <th>
                               <label class="switch">
@@ -202,18 +205,34 @@ listarServidoresFuncionario(id){
                             </label>
                           </th>
                         </tr>`;
-                  }
-                      tabela.innerHTML = frase;
+          }
+          tabela.innerHTML = frase;
 
-                });
-            } else {
-                throw "Houve um erro ao tentar listar os servidores do funcionario!";
-            }
-        })
-        .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
         });
-    }
+      } else {
+        throw "Houve um erro ao tentar listar os servidores do funcionario!";
+      }
+    })
+    .catch(function (resposta) {
+      console.log(`#ERRO: ${resposta}`);
+    });
+}
+
+function editarServidorFuncionario() {
+  const toggleSwitch = document.querySelectorAll('.switch input[type="checkbox"]');
+
+  toggleSwitch.forEach(toggle => {
+    toggle.addEventListener('change', function () {
+
+      if (this.checked) {
+        console.log("ATIVADO");
+      } else {
+        console.log("DESATIVADO");
+      }
+    });
+  });
+  
+}
 
 
 /* Sweet Alerts */
