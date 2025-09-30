@@ -34,7 +34,7 @@ function listarFuncionarios(idEmpresa) {
     console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listarFuncionarios()");
 
     var instrucaoSql = `
-        select u.nome, u.cargo from usuario u
+        select u.id, u.nome, u.cargo from usuario u
         inner join empresa e on u.fk_empresa = e.id
         where e.id = '${idEmpresa}';
     `;
@@ -43,39 +43,50 @@ function listarFuncionarios(idEmpresa) {
     return database.executar(instrucaoSql);
 }
 
-// function editarFuncionario(id, idEmpresa){
-//         console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function editarFuncionario()");
-
-//     var instrucaoSql = `
-//         select u.nome, u.cargo from usuario u
-//         inner join empresa e on u.fk_empresa = e.id
-//         where e.id = '${idEmpresa}' and u.id = '${id}';
-//     `;
-
-//     console.log("Executando a instrução SQL: \n" + instrucaoSql);
-//     return database.executar(instrucaoSql);
-// }
-
-function excluirFuncionarioServidor(id){
-    console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function excluirFuncionario()");
+function listarUmFuncionario(id, idEmpresa) {
+    console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listarUmFuncionario()");
 
     var instrucaoSql = `
-     delete from usuario_has_servidor where fk_usuario = '${id}';
+        SELECT id, nome, cargo FROM usuario WHERE id = ${id} and fk_empresa = '${idEmpresa}';
+    `;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+
+}
+
+function listarServidoresFuncionario(id, idEmpresa){
+console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listarServidoresFuncionario()");
+
+    var instrucaoSql = `
+        select s.nome, uhs.fk_servidor, uhs.fk_usuario from servidor s
+        inner join usuario_has_servidor uhs
+        on s.id = uhs.fk_servidor
+        inner join usuario u 
+        on u.id = uhs.fk_usuario
+        where u.id = '${id}' and u.fk_empresa = '${idEmpresa}';
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function excluirFuncionario(id, idEmpresa){
+function excluirFuncionario(id, idEmpresa) {
     console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function excluirFuncionario()");
 
-    var instrucaoSql = `
+    var instrucaoSql1 = `
+     delete from usuario_has_servidor where fk_usuario = '${id}';
+    `;
+
+    var instrucaoSql2 = `
      delete from usuario where id = '${id}' and fk_empresa = '${idEmpresa}';
     `;
 
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+    console.log("Executando a instrução SQL: \n" + instrucaoSql1);
+    database.executar(instrucaoSql1);
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql2);
+    return database.executar(instrucaoSql2);
 
 }
 
@@ -84,7 +95,7 @@ module.exports = {
     cadastrarGestor,
     cadastrarFuncionarioNaEmpresa,
     listarFuncionarios,
-    //editarFuncionario,
-    excluirFuncionario,
-    excluirFuncionarioServidor
+    listarUmFuncionario,
+    listarServidoresFuncionario,
+    excluirFuncionario
 };
