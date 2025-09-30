@@ -5,8 +5,9 @@ USE `infomotion` ;
 CREATE TABLE IF NOT EXISTS `infomotion`.`empresa` (
   id INT NOT NULL AUTO_INCREMENT,
   nome VARCHAR(40),
-  cnpj CHAR(14),
+  cnpj CHAR(18),
   ativa TINYINT,
+  dt_cadastro datetime default current_timestamp,
   PRIMARY KEY (id)
 );
 
@@ -14,11 +15,13 @@ CREATE TABLE IF NOT EXISTS `infomotion`.`empresa` (
 CREATE TABLE IF NOT EXISTS infomotion.servidor (
   id INT NOT NULL AUTO_INCREMENT,
   fk_empresa INT,
-  nome VARCHAR(40),
+  apelido VARCHAR(20),
   ip VARCHAR(15),
+  dt_cadastro datetime default current_timestamp,
+  atiivo tinyint,
   PRIMARY KEY (id),
   CONSTRAINT servidor_ibfk_1
-    FOREIGN KEY (fk_empresa) REFERENCES infomotion.empresa (id)
+  FOREIGN KEY (fk_empresa) REFERENCES infomotion.empresa (id)
 );
 
 
@@ -29,10 +32,11 @@ CREATE TABLE IF NOT EXISTS infomotion.componentes (
   numero_serie INT, /* Armazenará se é o componete 01, 02, 03, etc */
   apelido varchar(20),
   dt_cadastro datetime default current_timestamp,
+  ativo tinyint,
   PRIMARY KEY (id),
   UNIQUE (fk_servidor, numero_serie, tipo),
   CONSTRAINT componentes_ibfk_1
-    FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
+  FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
 );
 
 
@@ -40,13 +44,12 @@ CREATE TABLE IF NOT EXISTS infomotion.parametro_alerta (
   id INT NOT NULL AUTO_INCREMENT,
   fk_servidor INT,
   componente VARCHAR(15),
-  min VARCHAR(5),
   max VARCHAR(5),
   duracao_min VARCHAR(10),
   unidade_medida VARCHAR(10),
   PRIMARY KEY (id),
   CONSTRAINT parametro_alerta_ibfk_1
-    FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
+  FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
 );
 
 CREATE TABLE IF NOT EXISTS infomotion.usuario (
@@ -57,40 +60,45 @@ CREATE TABLE IF NOT EXISTS infomotion.usuario (
   senha VARCHAR(25),
   email VARCHAR(30),
   ativo TINYINT NULL,
+  dt_cadastro datetime default current_timestamp,
   PRIMARY KEY (id),
   CONSTRAINT usuario_ibfk_1
-    FOREIGN KEY (fk_empresa) REFERENCES infomotion.empresa (id)
+  FOREIGN KEY (fk_empresa) REFERENCES infomotion.empresa (id)
 );
 
 
 CREATE TABLE IF NOT EXISTS infomotion.alertas (
   id INT NOT NULL,
   fk_parametro INT,
-  dado_registrado VARCHAR(45),
+  dt_registro datetime default current_timestamp,
+  duracao varchar(45),
+  max decimal(10,2),
+  min decimal(10,2),
   PRIMARY KEY (id),
   CONSTRAINT fk_alertas_parametro_alerta1
-    FOREIGN KEY (fk_parametro) REFERENCES infomotion.parametro_alerta (id)
+  FOREIGN KEY (fk_parametro) REFERENCES infomotion.parametro_alerta (id)
 );
 
 CREATE TABLE IF NOT EXISTS infomotion.usuario_has_servidor (
   fk_usuario INT NOT NULL,
   fk_servidor INT NOT NULL,
+  dt_cadastro datetime default current_timestamp,
   PRIMARY KEY (fk_usuario, fk_servidor),
   CONSTRAINT fk_usuario_has_servidor_usuario1
-    FOREIGN KEY (fk_usuario) REFERENCES infomotion.usuario (id),
+  FOREIGN KEY (fk_usuario) REFERENCES infomotion.usuario (id),
   CONSTRAINT fk_usuario_has_servidor_servidor1
-    FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
+  FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
 );
 
 insert into empresa (nome, cnpj, ativa) 
 	values('Empresa teste', 12345678101214, 1),
 			('Empresa teste2', 22345678101214, 1);
 
-insert into servidor (fk_empresa, nome, ip)
+insert into servidor (fk_empresa, apelido, ip)
 	values(1,'Servidor Teste', '12.232.221-12'),
 		(2,'Servidor Teste2', '22.232.221-12');
 
-insert into servidor (fk_empresa, nome, ip)
+insert into servidor (fk_empresa, apelido, ip)
 	values(1,'Servidor Teste2', '13.232.221-12');
 
 insert into componentes(fk_servidor, tipo, numero_serie, apelido)
@@ -105,15 +113,21 @@ insert into componentes(fk_servidor, tipo, numero_serie, apelido)
         
 
 insert into usuario(fk_empresa, cargo, nome, senha, email, ativo)
-	values (1, "admin", "Gabriel", '123456', 'email@.', 1),
-		   (1, "gestor", "Tadeu", '123456', 'gmail@.', 1);
-     
+	values (1, "admin", "Gabriel", '123456', 'email@.', 1);
+ 
+ 
 insert into usuario_has_servidor (fk_servidor, fk_usuario)
 	values(1, 1),
-		  (2, 2); 
+		(2, 1); 
+
 
 select * from servidor;
 select fk_servidor, tipo, numero_serie, apelido, date_format(dt_cadastro, '%d/%m/%Y %H:%i:%s') from componentes;
 select * from empresa;
 select * from usuario;
-select * from usuario_has_servidor;
+
+
+    
+
+
+
