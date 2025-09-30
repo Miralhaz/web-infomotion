@@ -19,6 +19,10 @@ router.get("/listar/:idEmpresa", function(req, res){
     usuarioController.listarFuncionarios(req, res);
 });
 
+// router.get("/listarUm/:idEmpresa, :id", function(req, res){
+//     usuarioController.editarFuncionario(req, res);
+// });
+
 router.delete("/excluir/:id", function(req, res){
     usuarioController.excluirFuncionario(req, res);
 });

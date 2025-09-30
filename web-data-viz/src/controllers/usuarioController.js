@@ -140,6 +140,29 @@ function listarFuncionarios(req, res) {
         );
 }
 
+// function editarFuncionario(req, res){
+//     var idEmpresa = req.params.idEmpresa;
+//     var id = req.body.idUsuarioServer;
+
+//     usuarioModel.editarFuncionario(id, idEmpresa)
+//         .then(
+//             function (resultado) {
+//                 if (resultado.length > 0) {
+//                     res.status(200).json(resultado);
+//                 } else {
+//                     res.status(204).send("Funcionário não encontrado!");
+//                 }
+//             }
+//         )
+//         .catch(
+//             function (erro) {
+//                 console.log(erro);
+//                 console.log("\nHouve um erro ao listar o funcionário! Erro: ", erro.sqlMessage);
+//                 res.status(500).json(erro.sqlMessage);
+//             }
+//         );
+// }
+
 
 function excluirFuncionario(req, res) {
     var idEmpresa = req.body.idEmpresaServer;
@@ -180,5 +203,6 @@ module.exports = {
     cadastrar,
     cadastrarFuncionario,
     listarFuncionarios,
+    //editarFuncionario,
     excluirFuncionario
 }
