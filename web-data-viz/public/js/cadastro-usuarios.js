@@ -109,7 +109,7 @@ function listarFuncionarios() {
                           <th> ${resposta[i].nome} </th>
                           <th> ${resposta[i].cargo} </th> 
                           <th>
-                              <a onclick="editarFuncionario(${resposta[i].id})"> 
+                              <a onclick="listarUmFuncionario(${resposta[i].id})"> 
                                   <img src="../assets/icon/edit-icon.png" alt="Icone de edição" class="iconeTabela"> 
                               </a>
                               <a onclick="excluirFuncionario(${resposta[i].id})"> 
@@ -131,53 +131,89 @@ function listarFuncionarios() {
 }
 
 
-function editarFuncionario(id) {
+function listarUmFuncionario(id) {
   let idEmpresa = sessionStorage.ID_EMPRESA;
+  console.log("Chamando listarUmFuncionario com id:", id, "e idEmpresa:", idEmpresa);
 
-  fetch(`/usuarios/listar/${idEmpresa}`)
-    .then(function (resposta) {
-      console.log("resposta: ", resposta);
+    fetch(`/usuarios/listarUm/${id}/${idEmpresa}`)
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
 
-      if (resposta.ok) {
-        resposta.json().then(function (resposta) {
-          console.log("Dados recebidos: ", JSON.stringify(resposta));
+            if (resposta.ok) {
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
 
-          let tabela = document.querySelector('table');
-          let frase = `
+                    let tabela = document.querySelector('table');
+                    let frase = `
                     <tr>
                         <th style="font-weight:600"> Nome </th>
                         <th style="font-weight:600"> Cargo </th>
-                    </tr>`;
+                    </tr>
 
-          for (let i = 0; i < resposta.length; i++) {
-            if(resposta[i].id != id){
-              frase += `
-                        <tr style="display:none">
-                          <th> ${resposta[i].nome} </th>
-                          <th> ${resposta[i].cargo} </th> 
+                      <tr id="row_${resposta[0].id}">
+                          <th> ${resposta[0].nome} </th>
+                          <th> ${resposta[0].cargo} </th> 
                           <th>
-                              <a onclick="editarFuncionario(${resposta[i].id})"> 
-                                  <img src="../assets/icon/edit-icon.png" alt="Icone de edição" class="iconeTabela"> 
+                              <a onclick="editarFuncionario(${resposta[0].id})"> 
+                                  <img src="../assets/icon/check-icon.png" alt="Icone de edição" class="iconeTabela"> 
                               </a>
-                              <a onclick="excluirFuncionario(${resposta[i].id})"> 
+                              <a onclick="excluirFuncionario(${resposta[0].id})"> 
                                   <img src="../assets/icon/delete-icon.png" alt="Icone de excluir" class="iconeTabela"> 
                               </a>
                           </th>
-                        </tr>`;
-            } 
-          }
+                        </tr>
+                        
+                        <table class="table" onload="listarServidoresFuncionario(${resposta[0].id})"></table>`;
+          
+                      tabela.innerHTML = frase;
 
-          tabela.innerHTML = frase;
+                });
+            } else {
+                throw "Houve um erro ao tentar listar o funcionário!";
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
         });
-      } else {
-        throw "Houve um erro ao tentar listar os funcionários!";
-      }
-    })
-    .catch(function (resposta) {
-      console.log(`#ERRO: ${resposta}`);
-    });
 
 }
+
+listarServidoresFuncionario(id){
+  let idEmpresa = sessionStorage.ID_EMPRESA;
+
+    fetch(`/usuarios/listarServidores/${id}/${idEmpresa}`)
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    let tabela = document.querySelector('.table');
+
+                  for (let i = 0; i < resposta.length; i++) {
+                    let frase = `
+                      <tr id="row_${resposta[i].id}">
+                          <th> ${resposta[i].nome} </th>
+                          <th>
+                              <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                          </th>
+                        </tr>`;
+                  }
+                      tabela.innerHTML = frase;
+
+                });
+            } else {
+                throw "Houve um erro ao tentar listar os servidores do funcionario!";
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+    }
 
 
 /* Sweet Alerts */
@@ -214,15 +250,11 @@ function excluirFuncionario(id) {
 
       var idEmpresa = sessionStorage.ID_EMPRESA;
 
-      fetch(`/usuarios/excluir/${id}`, {
+      fetch(`/usuarios/excluir/${id}/${idEmpresa}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          idEmpresaServer: idEmpresa,
-          idUsuarioServer: id
-        }),
       })
         .then(function (resposta) {
           console.log("resposta: ", resposta);

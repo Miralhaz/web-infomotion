@@ -140,47 +140,58 @@ function listarFuncionarios(req, res) {
         );
 }
 
-// function editarFuncionario(req, res){
-//     var idEmpresa = req.params.idEmpresa;
-//     var id = req.body.idUsuarioServer;
+function listarUmFuncionario(req, res) {
+    var id = req.params.id;
+    var idEmpresa = req.params.idEmpresa;
 
-//     usuarioModel.editarFuncionario(id, idEmpresa)
-//         .then(
-//             function (resultado) {
-//                 if (resultado.length > 0) {
-//                     res.status(200).json(resultado);
-//                 } else {
-//                     res.status(204).send("Funcionário não encontrado!");
-//                 }
-//             }
-//         )
-//         .catch(
-//             function (erro) {
-//                 console.log(erro);
-//                 console.log("\nHouve um erro ao listar o funcionário! Erro: ", erro.sqlMessage);
-//                 res.status(500).json(erro.sqlMessage);
-//             }
-//         );
-// }
+    console.log("ID recebido:", id);
+    console.log("ID Empresa recebido:", idEmpresa);
 
-
-function excluirFuncionario(req, res) {
-    var idEmpresa = req.body.idEmpresaServer;
-    var id = req.body.idUsuarioServer;
-
-    usuarioModel.excluirFuncionarioServidor(id)
+    usuarioModel.listarUmFuncionario(id, idEmpresa)
         .then(
             function (resultado) {
-                res.json(resultado);
+                if (resultado.length > 0) {
+                    res.status(200).json(resultado);
+                } else {
+                    res.status(204).send("Funcionário não encontrado!");
+                }
             }
         )
         .catch(
             function (erro) {
                 console.log(erro);
-                console.log("\nHouve um erro ao excluir o funcionário-servidor! Erro: ", erro.sqlMessage);
+                console.log("\nHouve um erro ao listar o funcionário! Erro: ", erro.sqlMessage);
                 res.status(500).json(erro.sqlMessage);
             }
         );
+}
+
+listarServidoresFuncionario(req, res){
+    var idEmpresa = req.params.idEmpresa;
+
+    usuarioModel.listarFuncionarios(idEmpresa)
+        .then(
+            function (resultado) {
+                if (resultado.length > 0) {
+                    res.status(200).json(resultado);
+                } else {
+                    res.status(204).send("Nenhum funcionário encontrado!");
+                }
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao listar os funcionários! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+
+function excluirFuncionario(req, res) {
+    var id = req.params.id;
+    var idEmpresa = req.params.idEmpresa;
 
     usuarioModel.excluirFuncionario(id, idEmpresa)
         .then(
@@ -203,6 +214,7 @@ module.exports = {
     cadastrar,
     cadastrarFuncionario,
     listarFuncionarios,
-    //editarFuncionario,
+    listarUmFuncionario,
+    listarServidoresFuncionario,
     excluirFuncionario
 }
