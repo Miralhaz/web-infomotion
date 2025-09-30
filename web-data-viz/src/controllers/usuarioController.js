@@ -166,10 +166,11 @@ function listarUmFuncionario(req, res) {
         );
 }
 
-listarServidoresFuncionario(req, res){
+function listarServidoresFuncionario(req, res){
+    var id = req.params.id;
     var idEmpresa = req.params.idEmpresa;
 
-    usuarioModel.listarFuncionarios(idEmpresa)
+    usuarioModel.listarServidoresFuncionario(id, idEmpresa)
         .then(
             function (resultado) {
                 if (resultado.length > 0) {
