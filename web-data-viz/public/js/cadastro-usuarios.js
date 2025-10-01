@@ -154,7 +154,7 @@ function listarUmFuncionario(id) {
                           <th> ${resposta[0].nome} </th>
                           <th> ${resposta[0].cargo} </th> 
                           <th>
-                              <a onclick="editarFuncionario(${resposta[0].id})"> 
+                              <a onclick="alertaSalvar()"> 
                                   <img src="../assets/icon/check-icon.png" alt="Icone de edição" class="iconeTabela"> 
                               </a>
                               <a onclick="excluirFuncionario(${resposta[0].id})"> 
@@ -297,11 +297,20 @@ function alertaSalvar() {
     confirmButtonText: "Salvar",
     denyButtonText: "Não salvar",
     cancelButtonText: "Cancelar"
+
   }).then((result) => {
+
     if (result.isConfirmed) {
       swal.fire("Salvo!", "", "success");
+      listarFuncionarios();
+      let tabela = document.querySelector('#tabela2');
+      tabela.style.display = 'none';
+
     } else if (result.isDenied) {
       swal.fire("As alterações não foram salvas", "", "info");
+      listarFuncionarios();
+      let tabela = document.querySelector('#tabela2');
+      tabela.style.display = 'none';
     }
   });
 }
