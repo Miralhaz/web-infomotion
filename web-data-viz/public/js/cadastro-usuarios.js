@@ -189,11 +189,17 @@ function listarServidoresFuncionario() {
           console.log("Dados recebidos: ", JSON.stringify(resposta));
 
           let tabela = document.getElementById('tabela2');
-          let frase = ``;
+          let frase = `
+          <tr>
+            <th style="font-weight:600">ID</th>
+            <th style="font-weight:600">Apelido</th>
+          </tr>
+          `;
 
           for (let i = 0; i < resposta.length; i++) {
             frase += `
                       <tr>
+                          <th> ${resposta[i].idServidor} </th>
                           <th> ${resposta[i].apelido} </th>
                           <th>
                             <label class="switch">
@@ -253,7 +259,6 @@ function editarServidorFuncionario(idServidor) {
         
 
       } else {
-
         console.log('Toggle desligado');
 
         fetch(`/usuarios/desassociarServidor/${id}/${idServidor}`, {
