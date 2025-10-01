@@ -23,8 +23,16 @@ router.get("/listarUm/:id/:idEmpresa", function(req, res){
     usuarioController.listarUmFuncionario(req, res);
 });
 
-router.get("/listarServidores/:id/:idEmpresa", function(req, res){
+router.get("/listarServidores/:idEmpresa", function(req, res){
     usuarioController.listarServidoresFuncionario(req, res);
+});
+
+router.post("/adicionarServidor/:id/:idServidor", function(req, res){
+    usuarioController.adicionarServidor(req, res);
+});
+
+router.delete("/desassociarServidor/:id/:idServidor", function(req, res){
+    usuarioController.desassociarServidor(req, res);
 });
 
 router.delete("/excluir/:id/:idEmpresa", function(req, res){
