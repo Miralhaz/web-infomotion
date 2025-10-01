@@ -164,10 +164,7 @@ function listarUmFuncionario(id) {
                         </tr>`;
 
           tabela.innerHTML = frase;
-          listarServidoresFuncionario(resposta[0].id).then(() => {
-          editarServidorFuncionario();
-        });
-
+          listarServidoresFuncionario(resposta[0].id);
 
         });
       } else {
@@ -180,10 +177,10 @@ function listarUmFuncionario(id) {
 
 }
 
-function listarServidoresFuncionario(id) {
+function listarServidoresFuncionario() {
   let idEmpresa = sessionStorage.ID_EMPRESA;
 
-  fetch(`/usuarios/listarServidores/${id}/${idEmpresa}`)
+  fetch(`/usuarios/listarServidores/${idEmpresa}`)
     .then(function (resposta) {
       console.log("resposta: ", resposta);
 
@@ -197,10 +194,10 @@ function listarServidoresFuncionario(id) {
           for (let i = 0; i < resposta.length; i++) {
             frase += `
                       <tr>
-                          <th> ${resposta[i].nome} </th>
+                          <th> ${resposta[i].apelido} </th>
                           <th>
-                              <label class="switch">
-                                <input type="checkbox">
+                            <label class="switch">
+                                <input type="checkbox" onchange="editarServidorFuncionario(${resposta[i].idServidor})">
                                 <span class="slider round"></span>
                             </label>
                           </th>
@@ -218,20 +215,75 @@ function listarServidoresFuncionario(id) {
     });
 }
 
-function editarServidorFuncionario() {
-  const toggleSwitch = document.querySelectorAll('.switch input[type="checkbox"]');
+function editarServidorFuncionario(idServidor) {
+  var id = sessionStorage.ID_USUARIO;
 
-  toggleSwitch.forEach(toggle => {
-    toggle.addEventListener('change', function () {
+  const toggles = document.querySelectorAll('.switch input[type="checkbox"]');
+
+  toggles.forEach(toggle => {
+    toggle.addEventListener('change', function() {
 
       if (this.checked) {
-        console.log("ATIVADO");
+        console.log('Toggle ligado');
+
+        const toggleChecked = document.querySelectorAll('.switch input[type="checkbox"]:checked');
+
+        fetch(`/usuarios/adicionarServidor/${id}/${idServidor}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+              finalizarAguardar("Cadastro de servidor por funcionário realizado com sucesso!!...");
+              finalizarAguardar();
+            } else {
+              throw "Houve um erro ao tentar realizar o cadastro!";
+            }
+          })
+          .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+            finalizarAguardar();
+          });
+
+        return false;
+        
+
       } else {
-        console.log("DESATIVADO");
+
+        console.log('Toggle desligado');
+
+        fetch(`/usuarios/desassociarServidor/${id}/${idServidor}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+              var sectionErrosLogin = document.getElementById("section_erros_login");
+              sectionErrosLogin.style.backgroundColor = '#069006';
+
+            } else {
+              throw "Houve um erro ao tentar realizar a exclusão!";
+            }
+          })
+          .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+            finalizarAguardar();
+          });
+
+        return false;
       }
     });
-  });
   
+  });
+
 }
 
 

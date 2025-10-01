@@ -167,10 +167,9 @@ function listarUmFuncionario(req, res) {
 }
 
 function listarServidoresFuncionario(req, res){
-    var id = req.params.id;
     var idEmpresa = req.params.idEmpresa;
 
-    usuarioModel.listarServidoresFuncionario(id, idEmpresa)
+    usuarioModel.listarServidoresFuncionario(idEmpresa)
         .then(
             function (resultado) {
                 if (resultado.length > 0) {
@@ -184,6 +183,47 @@ function listarServidoresFuncionario(req, res){
             function (erro) {
                 console.log(erro);
                 console.log("\nHouve um erro ao listar os funcionários! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+
+function adicionarServidor(req, res){
+    var id = req.params.id;
+    var idServidor = req.params.idServidor;
+
+    usuarioModel.adicionarServidor(id, idServidor)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar o cadastro! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+}
+
+function desassociarServidor(req, res) {
+    var id = req.params.id;
+    var idServidor = req.params.idServidor;
+
+    usuarioModel.desassociarServidor(id, idServidor)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao desassociar o servidor do funcionário! Erro: ", erro.sqlMessage);
                 res.status(500).json(erro.sqlMessage);
             }
         );
@@ -217,5 +257,7 @@ module.exports = {
     listarFuncionarios,
     listarUmFuncionario,
     listarServidoresFuncionario,
+    adicionarServidor,
+    desassociarServidor,
     excluirFuncionario
 }
