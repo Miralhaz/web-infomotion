@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Servidores - InfoMotion</title>
     <link rel="stylesheet" href="../css/dashboards.css">
-    
+    <script src="../js/edicao-componente.js"></script>
 </head>
 
 <body>
@@ -56,35 +56,32 @@
             <div class="titulo">Edição de componente</div>
             <div class="box">
                 <label>Tipo de componente</label>
-                <input type="text">
+                <input type="text" id="ipt_tipo_componente">
                 <label>Apelido</label>
-                <input type="text">
+                <input type="text" id="ipt_apelido_componente">
                 <label>Unidade de medida</label>
-                <input type="text">
+                <input type="text" id="ipt_unidade_medida_componente">
                 <label>Parametro</label>
                 <div class="parametro">
-                    <input type="text">
+                    <input type="text" id="ipt_parametro1_componente">
                     <span>até</span>
-                    <input type="text">
+                    <input type="text" id="ipt_parametro2_componente">
 
                     <label class="switch-label">
                         Status inicial
                         <label class="switch">
-                            <input type="checkbox"  class="checkbox-redondo">
+                            <input type="checkbox"  class="checkbox-redondo" id="ipt_status_componente">
                             <span class="slider"></span>
                         </label>
                     </label>
                     
                 </div>
             </div>
-            <button>Editar</button>
+            <button onclick="editarComponente()">Editar</button>
         </div>
 
 
-
-
-
+        
     </div>
 </body>
-
 </html>
