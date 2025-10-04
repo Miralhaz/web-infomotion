@@ -694,6 +694,9 @@ margin: 5%;
   background-color: #FFC74B;
 }
 
+.container-content.componente button:hover {
+  background-color: #cf9f37;
+}
 
 .parametro {
   display: flex;

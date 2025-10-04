@@ -18,7 +18,7 @@ function buscarServidoresPorUsuario(usuarioId) {
 
 function cadastrar(idEmpresa, ip, nome) {
   
-  var instrucaoSql = `INSERT INTO servidor (nome, ip, fk_empresa)  VALUES ('${nome}', '${ip}', ${idEmpresa})`;
+  var instrucaoSql = `INSERT INTO servidor (apelido, ip, fk_empresa)  VALUES ('${nome}', '${ip}', ${idEmpresa})`;
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
@@ -26,7 +26,7 @@ function cadastrar(idEmpresa, ip, nome) {
 
 
 function listarServidoresPorEmpresa(idEmpresa){
-  var instrucaoSql = `SELECT nome,ip FROM servidor where fk_empresa = ${idEmpresa}`;
+  var instrucaoSql = `SELECT apelido,ip FROM servidor where fk_empresa = ${idEmpresa}`;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }
