@@ -654,32 +654,10 @@ margin: 5%;
   display: flex;
   justify-items: center;
   justify-content: space-between;
-}
-
-.componente{
-  display: flex;
-  align-content: center;
-  justify-content: space-between;
-  width: 50vw;
-  height: 100vh;
-  padding: 1vh 0.6vw;
-  border-radius: 0.5rem;
-  box-shadow: 1px 2px 3px 0.2px rgba(0, 0, 0, 0.2);
-  font-size: 1.5rem;
-}
-
-
-.componente .titulo{
-  justify-self: center;
-  align-self: center;
-  display: flex;
-  margin-right: 2rem;
+  
 }
 
 .componente {
- display: flex;
-  align-items: center;
-  justify-content: space-between;
   width: 100%;
   height: 3vh;
   background-color: var(--cinza);
@@ -687,16 +665,92 @@ margin: 5%;
   border: none;
   padding: 2vh;
   font-size: 2.5vh;
+  
+}
+
+
+.componente .titulo{
+  font-size: 140%;
+  margin-top: 2rem;
+}
+
+.container-content .box input{
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  width: 30vw;
+  background-color: white;
 }
 
 .container-content.componente button{
-    height: 60px;
-  background-color: var(--cinza);
+  height: 5%;
   border: none;
-  border-radius: 10px;
-  font-size: 2rem;
+  border-radius: 30px;
+  font-size: 70%;
   cursor: pointer;
-  width: 10vh;
+  width: 15%;
   padding: 0.5rem 0.9rem;
   transition: all 0.3s ease-in-out;
+  background-color: #FFC74B;
 }
+
+
+.parametro {
+  display: flex;
+  align-items: center;
+  gap: 1vh; 
+  margin-top: 1vh;
+}
+
+.parametro label {
+  margin-right: 1vh;
+}
+
+.container-content .box .parametro input {
+  width: 8vh;
+  height: 1vw;
+  
+}
+
+.switch input:checked + .slider {
+  background-color: #fdb00a;
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(20px);
+  border-radius: 20px;
+  border-style: solid;
+  border-width: 2px;
+  height: 50%;
+  width: 30%;
+}
+
+.switch input + .slider::before{
+  border-radius: 20px;
+  border-style: solid;
+  border-width: 2px;
+  height: 50%;
+  width: 30%;
+}
+
+
+.switch-label {
+  margin-left: 15%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: sans-serif;
+  font-size: 18px;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-width: 2px;
+  border-style: solid;
+  border-color: black;
+  border-radius: 20px;       
+  }
+
+  /* final da tela edição componente */
