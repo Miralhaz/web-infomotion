@@ -17,7 +17,7 @@ function listarServidoresPorEmpresa() {
           let tabela = document.querySelector('table');
           let frase = `
                     <tr>
-                        <th style="font-weight:600"> Apelido </th>
+                        <th style="font-weight:600"> apelido </th>
                         <th style="font-weight:600"> IP </th>
                     </tr>`;
 
@@ -27,7 +27,7 @@ function listarServidoresPorEmpresa() {
                           <th> ${resposta[i].apelido} </th>
                           <th> ${resposta[i].ip} </th> 
                           <th>
-                              <a onclick="alertaSalvar(${resposta[i].id})"> 
+                              <a onclick="alertaSalvar(${resposta[i].id})"  href="./tela-gerenciamento-servidor.html?id=${resposta[i].id}"> 
                                   <img src="../assets/icon/edit-icon.png" alt="Icone de edição" class="iconeTabela"> 
                               </a>
                               <a onclick="excluirFuncionario(${resposta[i].id})"> 
@@ -47,6 +47,7 @@ function listarServidoresPorEmpresa() {
       console.log(`#ERRO: ${resposta}`);
     });
 }
+
 
 
 function cadastrar() {
