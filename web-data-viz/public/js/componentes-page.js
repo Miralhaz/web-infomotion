@@ -1,4 +1,7 @@
-function receberIdServidor() {
+const params = new URLSearchParams(window.location.search);
+const idServidor = params.get('id');
+
+/*function receberIdServidor() {
   const idUsuario = sessionStorage.getItem('ID_USUARIO')
         fetch(`/servidores/listarServidores/${idUsuario}`, {
             method: "GET"
@@ -38,11 +41,12 @@ function receberIdServidor() {
     
 }
 
+*/
 
 function listarComponentes() {
-  const listaIdServidor = sessionStorage.getItem('ID_SERVIDOR')
-  for (let index = 0; index < listaIdServidor.length; index++) {
-    const idServidor = listaIdServidor[index];
+  /* const listaIdServidor = sessionStorage.getItem('ID_SERVIDOR') */
+  /* for (let index = 0; index < listaIdServidor.length; index++) { */
+   /* const idServidor = listaIdServidor[index]; */
     
     fetch(`/componentes/listarComponentes/${idServidor}`)
       .then(function (resposta) {
@@ -84,11 +88,11 @@ function listarComponentes() {
       .catch(function (resposta) {
         console.log(`#ERRO: ${resposta}`);
       });
-  }
+ /* } */
 }
 
 
 window.onload = function() {
-  receberIdServidor();
+ /* receberIdServidor();*/
   listarComponentes();
 }
