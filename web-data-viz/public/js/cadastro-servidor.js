@@ -17,14 +17,14 @@ function listarServidoresPorEmpresa() {
           let tabela = document.querySelector('table');
           let frase = `
                     <tr>
-                        <th style="font-weight:600"> Nome </th>
+                        <th style="font-weight:600"> Apelido </th>
                         <th style="font-weight:600"> IP </th>
                     </tr>`;
 
           for (let i = 0; i < resposta.length; i++) {
             frase += `
                         <tr>
-                          <th> ${resposta[i].nome} </th>
+                          <th> ${resposta[i].apelido} </th>
                           <th> ${resposta[i].ip} </th> 
                           <th>
                               <a onclick="alertaSalvar(${resposta[i].id})"> 
