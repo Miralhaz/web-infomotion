@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Servidores - InfoMotion</title>
     <link rel="stylesheet" href="../css/dashboards.css">
+    
 </head>
 
 <body>
+    
     <section class="header">
         <div class="header-left">
             <div class="parte-cima">
@@ -44,14 +46,14 @@
         </div>
     </section>
 
-      <div class="container ">
+    <div class="container ">
 
 
 
 
 
         <div class="container-content componente">
-            <div class="titulo">Cadastro de componente</div>
+            <div class="titulo">Edição de componente</div>
             <div class="box">
                 <label>Tipo de componente</label>
                 <input type="text">
@@ -60,10 +62,22 @@
                 <label>Unidade de medida</label>
                 <input type="text">
                 <label>Parametro</label>
-                <input type="text">     
-                <input type="text">
+                <div class="parametro">
+                    <input type="text">
+                    <span>até</span>
+                    <input type="text">
+
+                    <label class="switch-label">
+                        Status inicial
+                        <label class="switch">
+                            <input type="checkbox"  class="checkbox-redondo">
+                            <span class="slider"></span>
+                        </label>
+                    </label>
+                    
+                </div>
             </div>
-            <button>Adicionar</button>
+            <button>Editar</button>
         </div>
 
 
