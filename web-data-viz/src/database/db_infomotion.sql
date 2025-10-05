@@ -90,44 +90,90 @@ CREATE TABLE IF NOT EXISTS infomotion.usuario_has_servidor (
   FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
 );
 
-insert into empresa (nome, cnpj, ativa) 
-	values('Empresa teste', 12345678101214, 1),
-			('Empresa teste2', 22345678101214, 1);
+INSERT INTO empresa (nome, cnpj, ativa)
+VALUES 
+('TechMotion', '12.345.678/0001-90', 1),
+('InfoData Ltda', '98.765.432/0001-10', 1),
+('ServerX Solutions', '45.987.123/0001-55', 0);
 
-insert into servidor (fk_empresa, apelido, ip)
-	values(1,'Servidor Teste', '12.232.221-12'),
-		(2,'Servidor Teste2', '22.232.221-12');
-
-insert into servidor (fk_empresa, apelido, ip)
-	values(1,'Servidor Teste2', '13.232.221-12');
-
-insert into componentes(fk_servidor, tipo, numero_serie, apelido)
-	values(1, 'CPU', 01, 'CPU TESTE1'),
-		(1, 'CPU', 02, 'CPU TESTE2'),
-        (1, 'CPU', 03, 'CPU TESTE3'),
-		(1, 'RAM', 01, 'RAM TESTE1'),
-        (2, 'CPU', 01, 'CPU TESTE1sv2'),
-		(2, 'CPU', 02, 'CPU TESTE2sv2'),
-        (2, 'CPU', 03, 'CPU TESTE3sv2'),
-		(2, 'RAM', 01, 'RAM TESTEsv2');
-        
-
-insert into usuario(fk_empresa, cargo, nome, senha, email, ativo)
-	values (1, "admin", "Gabriel", '123456', 'email@.', 1);
- 
- 
-insert into usuario_has_servidor (fk_servidor, fk_usuario)
-	values(1, 1),
-		(2, 1); 
+INSERT INTO servidor (fk_empresa, apelido, ip, ativo)
+VALUES
+(1, 'srv-tech-01', '192.168.0.10', 1),
+(1, 'srv-tech-02', '192.168.0.11', 1),
+(2, 'srv-infodata', '10.0.0.5', 1),
+(3, 'srv-x-backup', '172.16.0.9', 0);
 
 
-select * from servidor;
+INSERT INTO componentes (fk_servidor, tipo, numero_serie, apelido, ativo)
+VALUES
+(1, 'CPU', 1, 'Processador A', 1),
+(1, 'RAM', 2, 'Memória 16GB', 1),
+(1, 'DISCO', 3, 'SSD 512GB', 1),
+(1, 'CPU', 4, 'Processador B', 1),
+(1, 'RAM', 5, 'Memória 16GB', 1),
+(1, 'DISCO', 6, 'SSD 512GB', 1),
+(1, 'CPU', 7, 'Processador A', 1),
+(1, 'RAM', 8, 'Memória 16GB', 1),
+(1, 'DISCO', 9, 'SSD 512GB', 1),
+(1, 'CPU', 10, 'Processador B', 1),
+(1, 'RAM', 11, 'Memória 16GB', 1),
+(1, 'DISCO', 12, 'SSD 512GB', 1),
+(2, 'CPU', 1, 'Processador B', 1),
+(2, 'RAM', 2, 'Memória 32GB', 1),
+(3, 'DISCO', 1, 'HDD 1TB', 1),
+(4, 'CPU', 1, 'Processador Backup', 0);
+
+-- ===========================
+-- PARÂMETROS DE ALERTA
+-- ===========================
+INSERT INTO parametro_alerta (fk_servidor, componente, max, duracao_min, unidade_medida)
+VALUES
+(1, 'CPU', '90', '5', '%'),
+(1, 'RAM', '80', '10', '%'),
+(2, 'CPU', '95', '3', '%'),
+(3, 'DISCO', '85', '15', '%'),
+(4, 'CPU', '88', '7', '%');
+
+INSERT INTO usuario (fk_empresa, cargo, nome, senha, email, ativo)
+VALUES
+(1, "admin", "Gabriel", '123456', 'email@.', 1),
+(1, 'Técnico', 'Mariana Silva', 'senha123', 'mariana@techmotion.com', 1),
+(2, 'Gerente', 'Pedro Santos', 'infodata321', 'pedro@infodata.com', 1),
+(3, 'Suporte', 'Ana Costa', 'backup987', 'ana@serverx.com', 0);
+
+INSERT INTO alertas (id, fk_parametro, duracao, max, min)
+VALUES
+(1, 1, '8min', 95.2, 70.1),
+(2, 2, '12min', 83.5, 60.0),
+(3, 3, '5min', 97.8, 75.4),
+(4, 4, '18min', 88.9, 65.0);
+
+INSERT INTO usuario_has_servidor (fk_usuario, fk_servidor)
+VALUES
+(1, 1),
+(1, 2),
+(2, 1),
+(3, 3),
+(4, 4);
+
+
+/* select * from servidor;
 select fk_servidor, tipo, numero_serie, apelido, date_format(dt_cadastro, '%d/%m/%Y %H:%i:%s') from componentes;
 select * from empresa;
 select * from usuario;
+select * from componentes;
 
-
-    
-
-
+ select
+ c.tipo,
+ c.apelido,
+ s.id,
+ p.max,
+ p.unidade_medida as un
+ from componentes as c
+ inner join servidor as s on c.fk_servidor = s.id
+ inner join parametro_alerta as p on p.fk_servidor = s.id;
+ 
+ */
+ 
+ 
 
