@@ -1,3 +1,27 @@
+const params = new URLSearchParams(window.location.search);
+const idEspecifico_Componente = params.get('id');
+const idServidor = params.get('servidor');
+function puxandoCamposPreenchidos(){
+    
+    fetch(`/componentes/puxandoColunasPreenchidas/${idEspecifico_Componente}`)
+      .then(function (resposta) {
+        console.log("resposta: ", resposta);
+
+        if (resposta.ok) {
+          resposta.json().then(function (resposta) {
+            console.log("Dados recebidos: ", JSON.stringify(resposta));
+            
+              });
+        } else {
+          throw "Houve um erro ao tentar listar os componentes!";
+        }
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+      });
+}
+
+
 function editarComponente() {
     var tipoComp = ipt_tipo_componente.value
     var apelidoComp = ipt_apelido_componente.value
@@ -7,7 +31,7 @@ function editarComponente() {
     var statusComp = ipt_status_componente.value
 
     // Enviando o valor da nova input
-    fetch(`/componentes/editarComponente/${idEmpresa}`, {
+    fetch(`/componentes/editarComponente/${idEspecifico_Componente}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -40,6 +64,10 @@ function editarComponente() {
         })
         .catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
-            finalizarAguardar();
+            finalizarAguardar();listarComponentes
         });
+}
+
+window.onload = function() {
+  puxandoCamposPreenchidos();
 }
