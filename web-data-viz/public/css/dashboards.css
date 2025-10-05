@@ -481,16 +481,134 @@ input:checked+.slider:before {
 
 /* -------------------------------------- Tela de gerenciamento de servidores --------------------------------------*/
 
-.container-pesquisa{
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-width: 80%;
-margin: 5%;
+.container-servidor {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.container-pesquisa button{
-  margin-left: 5%;
+.container-content-servidor {
+  width: 50%;
+  margin-top: 30px;
+}
+
+.container-pesquisa-servidor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 10px;
+}
+
+.container-pesquisa-servidor input {
+  width: 70%;
+  padding: 20px 25px;
+  border: none;
+  border-radius: 8px;
+  border-bottom: 2px solid transparent;
+  background: #eee;
+  outline: none;
+  font-size: 14px;
+  transition: border-bottom 0.3s ease-in-out;
+}
+
+.container-pesquisa-servidor input:hover,
+.container-pesquisa-servidor input:focus {
+  border-bottom: 2px solid var(--preto);
+}
+
+.btn-add {
+  background: #ffb200;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  font-size: 20px;
+  width: 75px;
+  height: 45px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-add:hover {
+  background: #e5a000;
+}
+
+.listagem-servidores {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.card-servidor {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s;
+}
+
+.card-servidor:hover {
+  transform: translateY(-5px);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  padding-top: 15px;
+}
+
+.card-top h3 {
+  font-size: 20px;
+  margin: 0;
+  color: #333;
+}
+
+.acoes {
+  display: flex;
+  gap: 8px;
+}
+
+.acoes img {
+  width: 32px;
+  cursor: pointer;
+}
+
+.ip {
+  font-size: 16px;
+  color: #666;
+  margin: 10px 0 15px;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.metricas {
+  background: #090101;
+  color: white;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  font-size: 13px;
+}
+
+.metricas div {
+  text-align: center;
+}
+
+.metricas span {
+  display: block;
+  color: var(--amarelo);
+}
+
+.metricas strong {
+  display: block;
+  font-size: 18px;
+  margin-top: 3px;
 }
 
 /* IDENTIFICADOR */
