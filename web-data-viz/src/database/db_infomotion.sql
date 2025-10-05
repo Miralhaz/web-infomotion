@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS infomotion.servidor (
   apelido VARCHAR(20),
   ip VARCHAR(15),
   dt_cadastro datetime default current_timestamp,
-  atiivo tinyint,
+  ativo tinyint,
   PRIMARY KEY (id),
   CONSTRAINT servidor_ibfk_1
   FOREIGN KEY (fk_empresa) REFERENCES infomotion.empresa (id)

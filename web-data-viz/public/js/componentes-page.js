@@ -71,7 +71,9 @@ function listarComponentes() {
                                                 <input type="checkbox">
                                                 <span class="slider round"></span>
                                             </label>
+                              <a href="./tela-edicao-componentes.html?id=${resposta[i].id}&servidor=${idServidor}"> 
                                             <img src="../assets/icon/editar.svg" alt="Editar" class="imgGSV" id="editar">
+                                            </a>
                                             
                                         </div>  
                                     </div>  
