@@ -115,6 +115,7 @@ function excluirServidor(req, res) {
     console.log("Houve um erro ao buscar os servidores: ", erro.sqlMessage);
     res.status(500).json(erro.sqlMessage);
   });
+  
 }
 
 
