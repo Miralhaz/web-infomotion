@@ -123,19 +123,18 @@ modal.classList.remove('active-modal')
 
 function excluirServidor(idServidor){
 let iptExcluir = ipt_excluir.value; 
-iptExcluir.ToLowerCase();
+iptExcluir.toLowerCase();
 if(iptExcluir == "excluir"){
  fetch(`/servidores/excluirServidor/${idServidor}`,{
   method:"GET"
 })
     .then(function (resposta) {
       console.log("resposta:", resposta);
-
+      location.reload()
+      fecharModal()
       if (resposta.ok) {
         resposta.json().then(function (resposta) {
           console.log("Dados recebidos: ", JSON.stringify(resposta));
-
-      
         });
       } else {
         throw "Houve um erro ao tentar listar os servidores!";
@@ -146,6 +145,6 @@ if(iptExcluir == "excluir"){
     });
 
 }else{
-  modal.classList.remove('active-modal')
+  fecharModal()
 }  
 }
