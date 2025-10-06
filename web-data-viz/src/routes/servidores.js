@@ -19,4 +19,8 @@ router.get("/listarServidoresPorEmpresa/:idEmpresa", function (req, res) {
   servidoresController.listarServidoresPorEmpresa(req, res);
 });
 
+router.get("/excluirServidor/:idServidor", function (req, res) {
+  servidoresController.excluirServidor(req, res);
+});
+
 module.exports = router;

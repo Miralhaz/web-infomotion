@@ -9,7 +9,7 @@
     <script src="../js/cadastro-servidor.js"></script>
 </head>
 
-<body onload="listarServidoresPorEmpresa()">
+<body onload="listarServidoresPorEmpresa()" >
     <section class="header">
         <div class="header-left">
             <div class="parte-cima">
@@ -59,7 +59,19 @@
                 </div>
             </div>
         </div>
-
+        <div class="container-modal">
+            <div class="card-modal">
+                <h1>EXCLUIR SERVIDOR</h1>
+                <p>Deseja excluir um servidor? tenha em mente que será excluido para sempre, e não poderar ser restaurado!
+                </p>
+                 <p>Digite "excluir" para excluir o servidor</p>
+                   <input type="text" id="ipt_excluir" placeholder="excluir">
+                   <div id="btn_excluir">
+                              
+                    </div>
+                </div>
+        </div>
+       
 </body>
 
 </html>
