@@ -31,9 +31,18 @@ function listarServidoresPorEmpresa(idEmpresa){
   return database.executar(instrucaoSql);
 }
 
+
+function excluirServidor(idServidor){
+  var instrucaoSql = `SELECT apelido,ip,id FROM servidor where fk_empresa = ${idServidor}`;
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
+
 module.exports = {
   buscarServidoresPorEmpresa,
   buscarServidoresPorUsuario,
   listarServidoresPorEmpresa,
+  excluirServidor,
   cadastrar
 }

@@ -611,6 +611,41 @@ input:checked+.slider:before {
   margin-top: 3px;
 }
 
+.container-modal{
+width: 100vw;
+position: fixed;
+top: 15%;
+z-index: 999;
+justify-content: center;
+display: none;
+}
+
+.active-modal{
+  display: flex;
+}
+
+.card-modal{
+display: flex;
+flex-direction: column;
+padding: 30px;
+background-color: white;
+width: 30%;
+border-radius: 5px;
+box-shadow: 0px 0px 10px #000000;
+}
+
+.card-modal input{
+  width: 95%;
+  height: 10px;
+  margin-top: 10px;
+  font-size: medium;
+}
+
+.card-modal button{
+  width: 90px;
+  margin-top: 10px;
+}
+
 /* IDENTIFICADOR */
 
 .container-content.GSV {

@@ -1,3 +1,4 @@
+
 function telaCadastroServidor() {
   window.location.href = "tela-cadastro-servidor.html"
 }
@@ -26,7 +27,7 @@ function listarServidoresPorEmpresa() {
                     <a href="./tela-gerenciamento-servidor.html?id=${resposta[i].id}">
                       <img src="../assets/icon/edit-icon.png" alt="Editar" class="iconeTabela">
                     </a>
-                    <a onclick="excluirFuncionario(${resposta[i].id})">
+                    <a onclick="chamarModal(${resposta[i].id})">
                       <img src="../assets/icon/delete-icon.png" alt="Excluir" class="iconeTabela">
                     </a>
                   </div>
@@ -106,3 +107,45 @@ function cadastrar() {
   return false;
 }
 
+function chamarModal(id){
+const modal = document.querySelector('.container-modal')
+const btn_excluir = document.getElementById('btn_excluir');
+
+btn_excluir.innerHTML = `<button class="btn-add" onclick="excluirServidor(${id})">excluir</button>   <button class="btn-add" onclick="fecharModal()">voltar</button>`
+modal.classList.add('active-modal')
+}
+
+function fecharModal(){
+const modal = document.querySelector('.container-modal')
+modal.classList.remove('active-modal')
+}
+
+
+function excluirServidor(idServidor){
+let iptExcluir = ipt_excluir.value; 
+iptExcluir.ToLowerCase();
+if(iptExcluir == "excluir"){
+ fetch(`/servidores/excluirServidor/${idServidor}`,{
+  method:"GET"
+})
+    .then(function (resposta) {
+      console.log("resposta:", resposta);
+
+      if (resposta.ok) {
+        resposta.json().then(function (resposta) {
+          console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+      
+        });
+      } else {
+        throw "Houve um erro ao tentar listar os servidores!";
+      }
+    })
+    .catch(function (resposta) {
+      console.log(`#ERRO: ${resposta}`);
+    });
+
+}else{
+  modal.classList.remove('active-modal')
+}  
+}

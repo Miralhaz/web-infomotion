@@ -99,10 +99,31 @@ function listarServidoresPorEmpresa(req, res) {
 }
 
 
+function excluirServidor(req, res) {
+  console.log("req.params: ", req.params.idServidor); 
+  
+  var idServidor = req.params.idServidor;
+
+  servidorModel.excluirServidor(idServidor).then((resultado) => {
+    if (resultado.length > 0) {
+      res.status(200).json(resultado);
+    } else {
+      res.status(204).json([]);
+    }
+  }).catch(function (erro) {
+    console.log(erro);
+    console.log("Houve um erro ao buscar os servidores: ", erro.sqlMessage);
+    res.status(500).json(erro.sqlMessage);
+  });
+}
+
+
+
 
 module.exports = {
   buscarServidoresPorEmpresa,
   listarServidoresPorEmpresa,
   buscarServidoresPorUsuario,
+  excluirServidor,
   cadastrar
 }
