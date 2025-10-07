@@ -53,13 +53,14 @@
                 </div>
 
                 <label for="ipt_pesquisar_user" id="label_pesquisar_user">Pesquisar por usuário</label>
-                <input type="text" id="ipt_pesquisar_user" oninput="pesquisarFuncionario()">
-
-                <label for="ipt_pesquisar_server" id="label_pesquisar_server">Pesquisar por servidor</label>
-                <input type="text" id="ipt_pesquisar_server" oninput="pesquisarServidor()">
+                <input type="text" placeholder="Pesquisar" id="ipt_pesquisar_user" oninput="pesquisarFuncionario()">
 
                 <div class="div-table">
-                    <table id="tabela1"></table>
+                    <div id="tabela1"></div>
+
+                    <label for="ipt_pesquisar_server" id="label_pesquisar_server">Pesquisar por servidor</label>
+                    <input type="text" placeholder="Pesquisar" id="ipt_pesquisar_server" oninput="pesquisarServidor()">
+                    
                     <table id="tabela2"></table>
                 </div>
             </div>
