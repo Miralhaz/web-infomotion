@@ -1,4 +1,5 @@
 let vetorUsuarios = [];
+let vetorServidores = [];
 
 function telaCadastroFuncionario() {
   window.location.href = "tela-cadastro-usuario.html"
@@ -98,7 +99,13 @@ function listarFuncionarios() {
         resposta.json().then(function (resposta) {
           console.log("Dados recebidos: ", JSON.stringify(resposta));
 
-          let tabela = document.querySelector('table');
+          let iptPesquisarServer = document.getElementById('ipt_pesquisar_server');
+          iptPesquisarServer.style.display = 'none';
+
+          let labelPesquisarServer = document.getElementById('label_pesquisar_server');
+          labelPesquisarServer.style.display = 'none';
+
+          let tabela = document.querySelector('#tabela1');
           let frase = `
                     <tr>
                         <th style="font-weight:600"> Nome </th>
@@ -151,11 +158,17 @@ function listarUmFuncionario(id) {
         resposta.json().then(function (resposta) {
           console.log("Dados recebidos: ", JSON.stringify(resposta));
 
-          let iptPesquisar = document.getElementById('ipt_pesquisar');
-          iptPesquisar.style.display = 'none';
+          let iptPesquisarServer = document.getElementById('ipt_pesquisar_server');
+          iptPesquisarServer.style.display = 'flex';
 
-          let labelPesquisar = document.getElementById('label_pesquisar');
-          labelPesquisar.style.display = 'none';
+          let labelPesquisarServer = document.getElementById('label_pesquisar_server');
+          labelPesquisarServer.style.display = 'flex';
+
+          let iptPesquisarUser = document.getElementById('ipt_pesquisar_user');
+          iptPesquisarUser.style.display = 'none';
+
+          let labelPesquisarUser = document.getElementById('label_pesquisar_user');
+          labelPesquisarUser.style.display = 'none';
 
           let tabela = document.querySelector('#tabela1');
           let frase = `
@@ -222,6 +235,11 @@ function listarServidoresFuncionario() {
                             </label>
                           </th>
                         </tr>`;
+
+                        vetorServidores.push({
+                          id: resposta[i].idServidor,
+                          apelido: resposta[i].apelido
+                        });
           }
           tabela.innerHTML = frase;
 
@@ -387,7 +405,7 @@ function excluirFuncionario(id) {
 
 
 function pesquisarFuncionario() {
-  let iptPesquisar = document.getElementById('ipt_pesquisar');
+  let iptPesquisar = document.getElementById('ipt_pesquisar_user');
   let pesquisaDigitada = iptPesquisar.value.toLowerCase();
 
   let tabela = document.querySelector('table');
@@ -417,5 +435,37 @@ function pesquisarFuncionario() {
   }
 
   tabela.innerHTML = frase;
+}
 
+
+function pesquisarServidor(){
+  let iptPesquisar = document.getElementById('ipt_pesquisar_server');
+  let pesquisaDigitada = iptPesquisar.value.toLowerCase();
+
+
+  let tabela = document.querySelector('#tabela2');
+  let frase = `
+                    <tr>
+                        <th style="font-weight:600"> ID </th>
+                        <th style="font-weight:600"> Apelido </th>
+                    </tr>`;
+
+  for (let i = 0; i < vetorServidores.length; i++) {
+    if (vetorServidores[i].apelido.toLowerCase().includes(pesquisaDigitada)) {
+      frase += `
+        <tr id="row_${vetorServidores[i].id}">
+          <th>${vetorServidores[i].id}</th>
+          <th>${vetorServidores[i].apelido}</th>
+
+          <th>
+            <label class="switch">
+              <input type="checkbox" onchange="editarServidorFuncionario(${vetorServidores[i].id})">
+              <span class="slider round"></span>
+            </label>
+          </th>
+        </tr>`;
+    }
+  }
+
+  tabela.innerHTML = frase;
 }
