@@ -44,16 +44,16 @@ function puxandoCamposPreenchidos() {
 
 
 function editarComponente() {
+
   var tipoComp = ipt_tipo_componente.value
   var apelidoComp = ipt_apelido_componente.value
   var unidadeMedidaComp = ipt_unidade_medida_componente.value
   var parametro1Comp = ipt_parametro1_componente.value
-  var parametro2Comp = ipt_parametro2_componente.value
   var statusComp = ipt_status_componente.value
 
   // Enviando o valor da nova input
-  fetch(`/componentes/editarComponente/${idEspecifico_Componente}`, {
-    method: "POST",
+  fetch(`/componentes/editarComponente/${idEspecifico_Componente}/${idServidor}`, {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
@@ -62,7 +62,6 @@ function editarComponente() {
       apelidoComponente: apelidoComp,
       unidadeMedidaComponente: unidadeMedidaComp,
       parametro1Componente: parametro1Comp,
-      parametro2Componente: parametro2Comp,
       statusComponente: statusComp
 
     }),
@@ -72,20 +71,17 @@ function editarComponente() {
 
       if (resposta.ok) {
         finalizarAguardar("Edição de Componente realizada com sucesso!!...");
-
+        window.onload()
         setTimeout(() => {
           window.location = "tela-edicao-componente.html";
         }, "2000");
 
-        limparFormulario();
-        finalizarAguardar();
       } else {
         throw "Houve um erro ao tentar realizar a edição de componente!";
       }
     })
     .catch(function (resposta) {
       console.log(`#ERRO: ${resposta}`);
-      finalizarAguardar(); listarComponentes
     });
 }
 
