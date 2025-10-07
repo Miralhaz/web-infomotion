@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS `infomotion`;
-CREATE SCHEMA IF NOT EXISTS `infomotion`;
+CREATE database `infomotion`;
 USE `infomotion` ;
 
 CREATE TABLE IF NOT EXISTS `infomotion`.`empresa` (
@@ -156,11 +156,11 @@ VALUES
 (3, 3),
 (4, 4);
 
-
-/* select * from servidor;
+ select * from servidor;
 select fk_servidor, tipo, numero_serie, apelido, date_format(dt_cadastro, '%d/%m/%Y %H:%i:%s') from componentes;
 select * from empresa;
 select * from usuario;
+select * from usuario_has_servidor;
 select * from componentes;
 
  select
@@ -173,7 +173,6 @@ select * from componentes;
  inner join servidor as s on c.fk_servidor = s.id
  inner join parametro_alerta as p on p.fk_servidor = s.id;
  
- */
- 
+
  
 
