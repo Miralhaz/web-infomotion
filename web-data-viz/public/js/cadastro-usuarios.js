@@ -1,3 +1,5 @@
+let vetorUsuarios = [];
+
 function telaCadastroFuncionario() {
   window.location.href = "tela-cadastro-usuario.html"
 }
@@ -117,6 +119,12 @@ function listarFuncionarios() {
                               </a>
                           </th>
                         </tr>`;
+
+            vetorUsuarios.push({
+              id: resposta[i].id,
+              nome: resposta[i].nome,
+              cargo: resposta[i].cargo
+            });
           }
 
           tabela.innerHTML = frase;
@@ -142,6 +150,12 @@ function listarUmFuncionario(id) {
       if (resposta.ok) {
         resposta.json().then(function (resposta) {
           console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+          let iptPesquisar = document.getElementById('ipt_pesquisar');
+          iptPesquisar.style.display = 'none';
+
+          let labelPesquisar = document.getElementById('label_pesquisar');
+          labelPesquisar.style.display = 'none';
 
           let tabela = document.querySelector('#tabela1');
           let frase = `
@@ -227,7 +241,7 @@ function editarServidorFuncionario(idServidor) {
   const toggles = document.querySelectorAll('.switch input[type="checkbox"]');
 
   toggles.forEach(toggle => {
-    toggle.addEventListener('change', function() {
+    toggle.addEventListener('change', function () {
 
       if (this.checked) {
         console.log('Toggle ligado');
@@ -256,7 +270,7 @@ function editarServidorFuncionario(idServidor) {
           });
 
         return false;
-        
+
 
       } else {
         console.log('Toggle desligado');
@@ -286,7 +300,7 @@ function editarServidorFuncionario(idServidor) {
         return false;
       }
     });
-  
+
   });
 
 }
@@ -369,4 +383,39 @@ function excluirFuncionario(id) {
       return false;
     }
   });
+}
+
+
+function pesquisarFuncionario() {
+  let iptPesquisar = document.getElementById('ipt_pesquisar');
+  let pesquisaDigitada = iptPesquisar.value.toLowerCase();
+
+  let tabela = document.querySelector('table');
+  let frase = `
+                    <tr>
+                        <th style="font-weight:600"> Nome </th>
+                        <th style="font-weight:600"> Cargo </th>
+                    </tr>`;
+
+  for (let i = 0; i < vetorUsuarios.length; i++) {
+    if (vetorUsuarios[i].nome.toLowerCase().includes(pesquisaDigitada)) {
+      frase += `
+        <tr id="row_${vetorUsuarios[i].id}">
+          <th>${vetorUsuarios[i].nome}</th>
+          <th>${vetorUsuarios[i].cargo}</th>
+
+          <th>
+            <a onclick="listarUmFuncionario(${vetorUsuarios[i].id})"> 
+              <img src="../assets/icon/edit-icon.png" alt="Icone de edição" class="iconeTabela"> 
+            </a>
+            <a onclick="excluirFuncionario(${vetorUsuarios[i].id})"> 
+              <img src="../assets/icon/delete-icon.png" alt="Icone de excluir" class="iconeTabela"> 
+            </a>
+          </th>
+        </tr>`;
+    }
+  }
+
+  tabela.innerHTML = frase;
+
 }
