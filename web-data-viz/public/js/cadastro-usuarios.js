@@ -106,26 +106,24 @@ function listarFuncionarios() {
           labelPesquisarServer.style.display = 'none';
 
           let tabela = document.querySelector('#tabela1');
-          let frase = `
-                    <tr>
-                        <th style="font-weight:600"> Nome </th>
-                        <th style="font-weight:600"> Cargo </th>
-                    </tr>`;
+          let frase = ``;
 
           for (let i = 0; i < resposta.length; i++) {
             frase += `
-                        <tr id="row_${resposta[i].id}">
-                          <th> ${resposta[i].nome} </th>
-                          <th> ${resposta[i].cargo} </th> 
-                          <th>
-                              <a onclick="listarUmFuncionario(${resposta[i].id})"> 
+                        <div class="div-colunas">
+                          <div class="editar-coluna">
+                            <p>Editar</p>
+                            <a onclick="listarUmFuncionario(${resposta[i].id})"> 
                                   <img src="../assets/icon/edit-icon.png" alt="Icone de edição" class="iconeTabela"> 
-                              </a>
-                              <a onclick="excluirFuncionario(${resposta[i].id})"> 
-                                  <img src="../assets/icon/delete-icon.png" alt="Icone de excluir" class="iconeTabela"> 
-                              </a>
-                          </th>
-                        </tr>`;
+                            </a>
+                            <img src="../assets/imgs/av1.png" alt="Foto de perfil" class="foto-perfil">
+                          </div>
+                          <p>ID: ${resposta[i].id} </p>
+                          <p>Nome: ${resposta[i].nome} </p>
+                          <p>Cargo: ${resposta[i].cargo} </p> 
+                        </div>
+
+                      `;
 
             vetorUsuarios.push({
               id: resposta[i].id,
@@ -172,23 +170,20 @@ function listarUmFuncionario(id) {
 
           let tabela = document.querySelector('#tabela1');
           let frase = `
-                    <tr>
-                        <th style="font-weight:600"> Nome </th>
-                        <th style="font-weight:600"> Cargo </th>
-                    </tr>
-
-                      <tr id="row_${resposta[0].id}">
-                          <th> ${resposta[0].nome} </th>
-                          <th> ${resposta[0].cargo} </th> 
-                          <th>
-                              <a onclick="alertaSalvar()"> 
+                    <div class="div-colunas">
+                          <div class="editar-coluna">
+                            <a onclick="alertaSalvar()"> 
                                   <img src="../assets/icon/check-icon.png" alt="Icone de edição" class="iconeTabela"> 
-                              </a>
-                              <a onclick="excluirFuncionario(${resposta[0].id})"> 
-                                  <img src="../assets/icon/delete-icon.png" alt="Icone de excluir" class="iconeTabela"> 
-                              </a>
-                          </th>
-                        </tr>`;
+                            </a>
+                            <a onclick="excluirFuncionario(${resposta[0].id})"> 
+                                  <img src="../assets/icon/delete-icon.png" alt="Icone de edição" class="iconeTabela"> 
+                            </a>
+                            <img src="../assets/imgs/av1.png" alt="Foto de perfil" class="foto-perfil">
+                          </div>
+                          <p>ID: ${resposta[0].id} </p>
+                          <p>Nome: ${resposta[0].nome} </p>
+                          <p>Cargo: ${resposta[0].cargo} </p> 
+                        </div>`;
 
           tabela.innerHTML = frase;
           listarServidoresFuncionario(resposta[0].id);
@@ -216,24 +211,19 @@ function listarServidoresFuncionario() {
           console.log("Dados recebidos: ", JSON.stringify(resposta));
 
           let tabela = document.getElementById('tabela2');
-          let frase = `
-          <tr>
-            <th style="font-weight:600">ID</th>
-            <th style="font-weight:600">Apelido</th>
-          </tr>
-          `;
+          let frase = ``;
 
           for (let i = 0; i < resposta.length; i++) {
             frase += `
                       <tr>
-                          <th> ${resposta[i].idServidor} </th>
-                          <th> ${resposta[i].apelido} </th>
-                          <th>
+                          <td>ID: ${resposta[i].idServidor} </td>
+                          <td>Apelido: ${resposta[i].apelido} </td>
+                          <td>
                             <label class="switch">
                                 <input type="checkbox" onchange="editarServidorFuncionario(${resposta[i].idServidor})">
                                 <span class="slider round"></span>
                             </label>
-                          </th>
+                          </td>
                         </tr>`;
 
                         vetorServidores.push({
@@ -408,29 +398,24 @@ function pesquisarFuncionario() {
   let iptPesquisar = document.getElementById('ipt_pesquisar_user');
   let pesquisaDigitada = iptPesquisar.value.toLowerCase();
 
-  let tabela = document.querySelector('table');
-  let frase = `
-                    <tr>
-                        <th style="font-weight:600"> Nome </th>
-                        <th style="font-weight:600"> Cargo </th>
-                    </tr>`;
+  let tabela = document.querySelector('#tabela1');
+  let frase = ``;
 
   for (let i = 0; i < vetorUsuarios.length; i++) {
     if (vetorUsuarios[i].nome.toLowerCase().includes(pesquisaDigitada)) {
       frase += `
-        <tr id="row_${vetorUsuarios[i].id}">
-          <th>${vetorUsuarios[i].nome}</th>
-          <th>${vetorUsuarios[i].cargo}</th>
-
-          <th>
+        <div class="div-colunas">
+          <div class="editar-coluna">
+            <p>Editar</p>
             <a onclick="listarUmFuncionario(${vetorUsuarios[i].id})"> 
               <img src="../assets/icon/edit-icon.png" alt="Icone de edição" class="iconeTabela"> 
             </a>
-            <a onclick="excluirFuncionario(${vetorUsuarios[i].id})"> 
-              <img src="../assets/icon/delete-icon.png" alt="Icone de excluir" class="iconeTabela"> 
-            </a>
-          </th>
-        </tr>`;
+            <img src="../assets/imgs/av1.png" alt="Foto de perfil" class="foto-perfil">
+          </div>
+          <p>ID: ${vetorUsuarios[i].id} </p>
+          <p>Nome: ${vetorUsuarios[i].nome} </p>
+          <p>Cargo: ${vetorUsuarios[i].cargo} </p> 
+        </div>`;
     }
   }
 
@@ -444,25 +429,20 @@ function pesquisarServidor(){
 
 
   let tabela = document.querySelector('#tabela2');
-  let frase = `
-                    <tr>
-                        <th style="font-weight:600"> ID </th>
-                        <th style="font-weight:600"> Apelido </th>
-                    </tr>`;
+  let frase = ``;
 
   for (let i = 0; i < vetorServidores.length; i++) {
     if (vetorServidores[i].apelido.toLowerCase().includes(pesquisaDigitada)) {
       frase += `
-        <tr id="row_${vetorServidores[i].id}">
-          <th>${vetorServidores[i].id}</th>
-          <th>${vetorServidores[i].apelido}</th>
-
-          <th>
-            <label class="switch">
-              <input type="checkbox" onchange="editarServidorFuncionario(${vetorServidores[i].id})">
+        <tr>
+          <td>ID: ${vetorServidores[i].id} </td>
+          <td>Apelido: ${vetorServidores[i].apelido} </td>
+          <td>
+              <label class="switch">
+                <input type="checkbox" onchange="editarServidorFuncionario(${vetorServidores[i].id})">
               <span class="slider round"></span>
-            </label>
-          </th>
+              </label>
+          </td>
         </tr>`;
     }
   }
