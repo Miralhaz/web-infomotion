@@ -560,6 +560,16 @@ input:checked+.slider:before {
   align-items: center;
   padding: 0 40px;
   padding-top: 15px;
+  transition: 0.3s ease;
+}
+
+.card-top img{
+  transition: 0.3s ease;
+}
+
+.card-top img:hover{
+  filter: brightness(0) invert(0);
+  transform: scale(1.1);
 }
 
 .card-top h3 {
@@ -646,11 +656,13 @@ box-shadow: 0px 0px 10px #000000;
   margin-top: 10px;
 }
 
+/* ---------------------------------------------------------- TELA DE COMPONENTES ---------------------------------------------------------- */
+
 /* IDENTIFICADOR */
 
 .container-content.GSV {
   display: grid;
-  grid-template-rows: 1fr 3fr 1fr;
+  grid-template-rows: 1fr 0.5fr 3fr 1fr;
   justify-items: center;
 }
 
@@ -793,6 +805,43 @@ box-shadow: 0px 0px 10px #000000;
   transform: scale(1.1);
   box-shadow: 0px 0px 3px 0.2px rgba(243, 171, 15, 0.5);
 }
+
+/* Barra de pesquisa de componentes */
+
+.container-content.GSV .secao-pesquisa{
+  display: flex;
+  margin-top: -4vh;
+}
+
+.container-content.GSV .pesquisa-componente{
+  background-color: #f9f9f9;
+  width: 30vw;
+  text-align: start;
+  align-self: start;
+  font-size: 1.25rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+  }
+
+.container-content.GSV .pesquisa-componente:hover{
+  border-bottom: 2px solid var(--preto);
+  box-shadow: 0 0 4px 0.5px #ffc64b7c
+}
+
+.container-content.GSV .secao-pesquisa img{
+  transition: 0.3s ease;
+}
+
+.container-content.GSV .secao-pesquisa img:hover {
+  filter: brightness(0) sepia(1) saturate(10000%) hue-rotate(0deg) brightness(1.1);
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+
+
 
 
 /* Tela edição componente */
