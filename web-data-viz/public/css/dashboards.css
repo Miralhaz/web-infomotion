@@ -310,6 +310,14 @@ section.header .header-left .icone a:hover img {
   gap: 3vh;
 }
 
+.container .container-content input{
+  width: 70%;
+}
+
+.container .container-content label{
+  width: 70%;
+}
+
 .container .container-content .content{
   width: 70vh;
   padding: 5vh;
@@ -457,11 +465,41 @@ input:checked+.slider:before {
 /* TELA USUÁRIOS */
 
 .container .container-content .div-table{
-  width: 120vh;
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+  width: 90vh;
+  gap: 2vh;
+}
+
+.container .container-content .div-table input{
+  width: 90%;
+  align-self: center;
+}
+
+.container .container-content .div-table label{
+  width: 90%;
+  align-self: flex-start;
+} 
+
+.container .container-content .div-table #tabela1{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 2vh;
+}
+
+.container .container-content .div-table #tabela1 .div-colunas{
+  width: 100%;
+  height: 7vh;
+  display: flex;
+  flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  gap: 1vh;
+  padding: 1vh;
+  border: var(--preto) 1px solid;
+  border-radius: 2vh;
+  background: linear-gradient(to right, #000 0% 25%, #fff 15% 100%);
 }
 
 .container .container-content .div-table #tabela1,
@@ -469,15 +507,39 @@ input:checked+.slider:before {
   width: 100%;
 }
 
-.container .container-content .div-table table tr th img{
+  #tabela2 tr{
+    display: flex;
+    justify-content: space-around;
+    border: var(--preto) 1px solid;
+    border-radius: 0.5vh;
+    gap: 1vh;
+    padding: 1.5vh;
+  }
+
+  .container .container-content .div-table #tabela2 tr td{
+    font-weight: 500;
+  }
+
+.container .container-content .div-table #tabela1 .editar-coluna{
+  color: var(--amarelo);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2vh;
+}
+
+.container .container-content .div-table #tabela1 .editar-coluna img{
   width: 4vh;
   cursor: pointer;
 }
 
-.container .container-content .div-table table tr th{
-  font-weight: 500;
-  gap: 20vh;
+.container .container-content .div-table #tabela1 .editar-coluna .foto-perfil{
+  width: 9vh;
+  border-radius: 100%;
+  cursor: auto;
 }
+
 
 /* -------------------------------------- Tela de gerenciamento de servidores --------------------------------------*/
 
@@ -560,6 +622,16 @@ input:checked+.slider:before {
   align-items: center;
   padding: 0 40px;
   padding-top: 15px;
+  transition: 0.3s ease;
+}
+
+.card-top img{
+  transition: 0.3s ease;
+}
+
+.card-top img:hover{
+  filter: brightness(0) invert(0);
+  transform: scale(1.1);
 }
 
 .card-top h3 {
@@ -646,11 +718,13 @@ box-shadow: 0px 0px 10px #000000;
   margin-top: 10px;
 }
 
+/* ---------------------------------------------------------- TELA DE COMPONENTES ---------------------------------------------------------- */
+
 /* IDENTIFICADOR */
 
 .container-content.GSV {
   display: grid;
-  grid-template-rows: 1fr 3fr 1fr;
+  grid-template-rows: 1fr 0.5fr 3fr 1fr;
   justify-items: center;
 }
 
@@ -793,6 +867,43 @@ box-shadow: 0px 0px 10px #000000;
   transform: scale(1.1);
   box-shadow: 0px 0px 3px 0.2px rgba(243, 171, 15, 0.5);
 }
+
+/* Barra de pesquisa de componentes */
+
+.container-content.GSV .secao-pesquisa{
+  display: flex;
+  margin-top: -4vh;
+}
+
+.container-content.GSV .pesquisa-componente{
+  background-color: #f9f9f9;
+  width: 30vw;
+  text-align: start;
+  align-self: start;
+  font-size: 1.25rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+  }
+
+.container-content.GSV .pesquisa-componente:hover{
+  border-bottom: 2px solid var(--preto);
+  box-shadow: 0 0 4px 0.5px #ffc64b7c
+}
+
+.container-content.GSV .secao-pesquisa img{
+  transition: 0.3s ease;
+}
+
+.container-content.GSV .secao-pesquisa img:hover {
+  filter: brightness(0) sepia(1) saturate(10000%) hue-rotate(0deg) brightness(1.1);
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+
+
 
 
 /* Tela edição componente */
