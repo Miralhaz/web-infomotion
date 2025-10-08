@@ -3,7 +3,7 @@ var router = express.Router();
 
 var componenteController = require("../controllers/componenteController");
 
-router.put("/editarComponente/:idEspecifico_Componente/:idServidor", function(req, res){
+router.put("/editarComponente/:idEspecifico_Componente/:idServidor/:nomeTipo", function(req, res){
     componenteController.editarComponente(req, res);
 });
 
