@@ -22,7 +22,7 @@ function puxandoCamposPreenchidos() {
 
 
 
-            inputTipo.value = resposta[i].tipo 
+            inputTipo.value = resposta[i].tipo
 
             inputApelido.value = resposta[i].apelido
 
@@ -45,20 +45,21 @@ function puxandoCamposPreenchidos() {
 
 function editarComponente() {
 
-  var tipoComp = ipt_tipo_componente.value
+  var tipo_componente = ipt_tipo_componente.value
   var apelidoComp = ipt_apelido_componente.value
   var unidadeMedidaComp = ipt_unidade_medida_componente.value
   var parametro1Comp = ipt_parametro1_componente.value
-  var statusComp = ipt_status_componente.value
+  var statusComp = ipt_status_componente.checked
+
 
   // Enviando o valor da nova input
-  fetch(`/componentes/editarComponente/${idEspecifico_Componente}/${idServidor}`, {
+  fetch(`/componentes/editarComponente/${idEspecifico_Componente}/${idServidor}/${nomeTipo}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      tipoComponente: tipoComp,
+      tipoComponente: tipo_componente,
       apelidoComponente: apelidoComp,
       unidadeMedidaComponente: unidadeMedidaComp,
       parametro1Componente: parametro1Comp,
@@ -70,11 +71,9 @@ function editarComponente() {
       console.log("resposta: ", resposta);
 
       if (resposta.ok) {
-        finalizarAguardar("Edição de Componente realizada com sucesso!!...");
-        window.onload()
         setTimeout(() => {
-          window.location = "tela-edicao-componente.html";
-        }, "2000");
+          window.location.href = `./tela-gerenciamento-servidor.html?id=${idServidor}`
+        }, 500);
 
       } else {
         throw "Houve um erro ao tentar realizar a edição de componente!";
