@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS `infomotion`;
-CREATE database `infomotion`;
+CREATE SCHEMA IF NOT EXISTS `infomotion`;
 USE `infomotion` ;
 
 CREATE TABLE IF NOT EXISTS `infomotion`.`empresa` (
@@ -43,13 +43,14 @@ CREATE TABLE IF NOT EXISTS infomotion.componentes (
 CREATE TABLE IF NOT EXISTS infomotion.parametro_alerta (
   id INT NOT NULL AUTO_INCREMENT,
   fk_servidor INT,
-  componente VARCHAR(15),
+  fk_componente INT,
   max VARCHAR(5),
   duracao_min VARCHAR(10),
   unidade_medida VARCHAR(10),
   PRIMARY KEY (id),
   CONSTRAINT parametro_alerta_ibfk_1
-  FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
+  FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id),
+  constraint parametro_alerta_ibfk_2 foreign key (fk_componente) references infomotion.componentes(id)
 );
 
 CREATE TABLE IF NOT EXISTS infomotion.usuario (
@@ -103,64 +104,56 @@ VALUES
 (2, 'srv-infodata', '10.0.0.5', 1),
 (3, 'srv-x-backup', '172.16.0.9', 0);
 
-
-INSERT INTO componentes (fk_servidor, tipo, numero_serie, apelido, ativo)
+INSERT INTO infomotion.componentes (fk_servidor, tipo, numero_serie, apelido, ativo)
 VALUES
-(1, 'CPU', 1, 'Processador A', 1),
-(1, 'RAM', 2, 'Memória 16GB', 1),
-(1, 'DISCO', 3, 'SSD 512GB', 1),
-(1, 'CPU', 4, 'Processador B', 1),
-(1, 'RAM', 5, 'Memória 16GB', 1),
-(1, 'DISCO', 6, 'SSD 512GB', 1),
-(1, 'CPU', 7, 'Processador A', 1),
-(1, 'RAM', 8, 'Memória 16GB', 1),
-(1, 'DISCO', 9, 'SSD 512GB', 1),
-(1, 'CPU', 10, 'Processador B', 1),
-(1, 'RAM', 11, 'Memória 16GB', 1),
-(1, 'DISCO', 12, 'SSD 512GB', 1),
-(2, 'CPU', 1, 'Processador B', 1),
-(2, 'RAM', 2, 'Memória 32GB', 1),
-(3, 'DISCO', 1, 'HDD 1TB', 1),
-(4, 'CPU', 1, 'Processador Backup', 0);
+(1, 'CPU', 19, 'Xeon Silver 4110', 1),
+(1, 'RAM', 20, 'Memória DDR4 32GB', 1),
+(1, 'DISCO', 21, 'SSD Samsung 1TB', 1),
+(1, 'CPU', 22, 'Ryzen Threadripper', 1),
+(1, 'RAM', 23, 'Memória DDR5 64GB', 1),
+(1, 'DISCO', 24, 'NVMe WD 2TB', 1),
+(1, 'CPU', 25, 'Intel i9 11900K', 1),
+(1, 'RAM', 26, 'Memória ECC 128GB', 1),
+(1, 'DISCO', 27, 'HDD Seagate 4TB', 1),
+(1, 'DISCO', 28, 'SSD Kingston 512GB', 1);
 
--- ===========================
+
+
 -- PARÂMETROS DE ALERTA
--- ===========================
-INSERT INTO parametro_alerta (fk_servidor, componente, max, duracao_min, unidade_medida)
+INSERT INTO infomotion.parametro_alerta (fk_servidor, fk_componente, max, duracao_min, unidade_medida)
 VALUES
-(1, 'CPU', '90', '5', '%'),
-(1, 'RAM', '80', '10', '%'),
-(2, 'CPU', '95', '3', '%'),
-(3, 'DISCO', '85', '15', '%'),
-(4, 'CPU', '88', '7', '%');
+(1, 1, '90', '5', '%'),  
+(1, 2, '85', '10', '%'),  
+(1, 3, '80', '15', '%'),
+(1, 4, '92', '6', '%'),  
+(1, 5, '87', '8', '%'),  
+(1, 6, '88', '12', '%'),  
+(1, 7, '93', '7', '%'),  
+(1, 8, '89', '9', '%'),   
+(1, 9, '75', '20', '%'), 
+(1, 10, '83', '14', '%');  
+
 
 INSERT INTO usuario (fk_empresa, cargo, nome, senha, email, ativo)
 VALUES
 (1, "admin", "Gabriel", '123456', 'email@.', 1),
-(1, 'Técnico', 'Mariana Silva', 'senha123', 'mariana@techmotion.com', 1),
 (2, 'Gerente', 'Pedro Santos', 'infodata321', 'pedro@infodata.com', 1),
 (3, 'Suporte', 'Ana Costa', 'backup987', 'ana@serverx.com', 0);
 
 INSERT INTO alertas (id, fk_parametro, duracao, max, min)
 VALUES
-(1, 1, '8min', 95.2, 70.1),
-(2, 2, '12min', 83.5, 60.0),
-(3, 3, '5min', 97.8, 75.4),
-(4, 4, '18min', 88.9, 65.0);
+(1, 1, '8min', 95.2, 70.1);
+
 
 INSERT INTO usuario_has_servidor (fk_usuario, fk_servidor)
 VALUES
-(1, 1),
-(1, 2),
-(2, 1),
-(3, 3),
-(4, 4);
+(1, 1);
 
- select * from servidor;
+
+/* select * from servidor;
 select fk_servidor, tipo, numero_serie, apelido, date_format(dt_cadastro, '%d/%m/%Y %H:%i:%s') from componentes;
 select * from empresa;
 select * from usuario;
-select * from usuario_has_servidor;
 select * from componentes;
 
  select
@@ -173,6 +166,6 @@ select * from componentes;
  inner join servidor as s on c.fk_servidor = s.id
  inner join parametro_alerta as p on p.fk_servidor = s.id;
  
-
+ */
  
-
+ 

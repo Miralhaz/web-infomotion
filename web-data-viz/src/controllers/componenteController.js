@@ -49,6 +49,7 @@ function puxandoColunasPreenchidas(req, res) {
 function editarComponente(req, res) {
     var idComponente = req.params.idEspecifico_Componente;
     var id_Servidor = req.params.idServidor;
+    var tipoParametro = req.params.nomeTipo;
 
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
     var apelido = req.body.apelidoComponente;
@@ -61,19 +62,22 @@ function editarComponente(req, res) {
         res.status(400).send("Seu apelido está undefined!");
     } else if (bodytipo == undefined) {
         res.status(400).send("Seu tipo está undefined!");
+    }
+    else if (tipoParametro == undefined) {
+        res.status(400).send("Seu tipo está undefined!");
     } else if (unidadeMedida == undefined) {
         res.status(400).send("Sua unidade de medida está undefined!");
     }
-      else if (parametro == undefined) {
+    else if (parametro == undefined) {
         res.status(400).send("Seu parâmetro está undefined!");
     }
-      else if (statusPadrao == undefined) {
+    else if (statusPadrao == undefined) {
         res.status(400).send("Seu status padrão está undefined!");
     }
     else {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        componenteModel.editarComponente(idComponente, id_Servidor, apelido, bodytipo, unidadeMedida, parametro, statusPadrao)
+        componenteModel.editarComponente(idComponente, id_Servidor, tipoParametro, apelido, bodytipo, unidadeMedida, parametro, statusPadrao)
             .then(
                 function (resultado) {
                     res.json(resultado);
