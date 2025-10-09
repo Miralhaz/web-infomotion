@@ -400,7 +400,7 @@ input {
   font-size: 2.5vh;
 }
 
-.switch {
+#tabela2 .switch {
   position: relative;
   display: inline-block;
   width: 5vh;
@@ -408,14 +408,14 @@ input {
 }
 
 
-.switch input {
+#tabela2 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
 
-.slider {
+#tabela2 .slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -427,37 +427,37 @@ input {
   transition: .4s;
 }
 
-.slider:before {
+#tabela2 .slider:before {
   position: absolute;
   content: "";
-  height: 2vh;
-  width: 2vh;
-  left: 2px;
-  bottom: 4px;
+  height: 1.5vh;
+  width: 1.5vh;
+  left: 1px;
+  bottom: 0.8px;
   background-color: var(--branco);
   -webkit-transition: .4s;
   transition: .4s;
 }
 
-input:checked+.slider {
+#tabela2 input:checked+.slider {
   background-color: var(--amarelo);
 }
 
-input:focus+.slider {
+#tabela2 input:focus+.slider {
   box-shadow: 0 0 1px var(--amarelo);
 }
 
-input:checked+.slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+#tabela2 input:checked+.slider:before {
+  -webkit-transform: translateX(14px);
+  -ms-transform: translateX(14px);
+  transform: translateX(14px);
 }
 
-.slider.round {
-  border-radius: 34px;
+#tabela2 .slider.round {
+  border-radius: 5vh;
 }
 
-.slider.round:before {
+#tabela2 .slider.round:before {
   border-radius: 50%;
 }
 
