@@ -1,39 +1,21 @@
+var listaServidores = {}
 
-function telaCadastroServidor() {
-  window.location.href = "tela-cadastro-servidor.html"
-}
-
-function listarServidoresPorEmpresa() {
-  var idEmpresa = sessionStorage.ID_EMPRESA
-  console.log(idEmpresa)
-
-  fetch(`/servidores/listarServidoresPorEmpresa/${idEmpresa}`)
-    .then(function (resposta) {
-      console.log("resposta:", resposta);
-
-      if (resposta.ok) {
-        resposta.json().then(function (resposta) {
-          console.log("Dados recebidos: ", JSON.stringify(resposta));
-
-          let container = document.querySelector('.listagem-servidores');
-          let html = '';
-
-          for (let i = 0; i < resposta.length; i++) {
-            html += `
+function exibirServidor(apelido, id, ip) {
+  let html = `
               <div class="card-servidor">
                 <div class="card-top">
-                  <h3>${resposta[i].apelido}</h3>
+                  <h3>${apelido}</h3>
                   <div class="acoes">
-                    <a href="./tela-gerenciamento-servidor.html?id=${resposta[i].id}">
+                    <a href="./tela-gerenciamento-servidor.html?id=${id}">
                       <img src="../assets/icon/edit-icon.png" alt="Editar" class="iconeTabela">
                     </a>
-                    <a onclick="chamarModal(${resposta[i].id})">
+                    <a onclick="chamarModal(${id})">
                       <img src="../assets/icon/delete-icon.png" alt="Excluir" class="iconeTabela">
                     </a>
                   </div>
                 </div>
 
-                <p class="ip">IP: ${resposta[i].ip}</p>
+                <p class="ip">IP: ${ip}</p>
 
                 <div class="metricas">
                   <div><span>CPU</span><strong>13%</strong></div>
@@ -41,9 +23,44 @@ function listarServidoresPorEmpresa() {
                   <div><span>DISCO</span><strong>52%</strong></div>
                 </div>
               </div>`;
-          }
+  return html;
+}
 
-          container.innerHTML = html;
+
+function telaCadastroServidor() {
+  window.location.href = "tela-cadastro-servidor.html"
+}
+
+function listarServidoresPorUsuario() {
+  var idUsuario = sessionStorage.ID_USUARIO
+
+  fetch(`/servidores/listarServidoresPorUsuario/${idUsuario}`)
+    .then(function (resposta) {
+      console.log("resposta:", resposta);
+
+      if (resposta.ok) {
+        resposta.json().then(function (resposta) {
+          console.log("Dados recebidos: ", JSON.stringify(resposta));
+          listaServidores = resposta;
+          sessionStorage.ID_SERVIDORES = resposta.map(resposta => resposta.id)
+
+
+
+          let container = document.querySelector('.listagem-servidores');
+
+
+          let html = ""
+          for (let i = 0; i < listaServidores.length; i++) {
+            let apelido = listaServidores[i].apelido
+            let id = listaServidores[i].id
+            let ip = listaServidores[i].ip
+
+            html += exibirServidor(apelido, id, ip);
+
+          }
+          container.innerHTML = html
+
+
         });
       } else {
         throw "Houve um erro ao tentar listar os servidores!";
@@ -55,6 +72,27 @@ function listarServidoresPorEmpresa() {
 }
 
 
+function pesquisarServidores() {
+  let pesquisa = ipt_pesquisarServidor.value
+  let container = document.querySelector('.listagem-servidores');
+  let html = ""
+  for (let i = 0; i < listaServidores.length; i++) {
+    if (listaServidores[i].apelido.toLowerCase().includes(pesquisa)) {
+      let apelido = listaServidores[i].apelido
+      let id = listaServidores[i].id
+      let ip = listaServidores[i].ip
+
+      html += exibirServidor(apelido, id, ip);
+
+
+    }
+
+
+  }
+  container.innerHTML = html
+
+
+}
 
 function cadastrar() {
   aguardar();
@@ -107,44 +145,47 @@ function cadastrar() {
   return false;
 }
 
-function chamarModal(id){
-const modal = document.querySelector('.container-modal')
-const btn_excluir = document.getElementById('btn_excluir');
+function chamarModal(id) {
+  const modal = document.querySelector('.container-modal')
+  const btn_excluir = document.getElementById('btn_excluir');
 
-btn_excluir.innerHTML = `<button class="btn-add" onclick="excluirServidor(${id})">excluir</button>   <button class="btn-add" onclick="fecharModal()">voltar</button>`
-modal.classList.add('active-modal')
+  btn_excluir.innerHTML = `<button class="btn-add" onclick="excluirServidor(${id})">excluir</button>   <button class="btn-add" onclick="fecharModal()">voltar</button>`
+  modal.classList.add('active-modal')
 }
 
-function fecharModal(){
-const modal = document.querySelector('.container-modal')
-modal.classList.remove('active-modal')
+function fecharModal() {
+  const modal = document.querySelector('.container-modal')
+  modal.classList.remove('active-modal')
 }
 
 
-function excluirServidor(idServidor){
-let iptExcluir = ipt_excluir.value; 
-iptExcluir.toLowerCase();
-if(iptExcluir == "excluir"){
- fetch(`/servidores/excluirServidor/${idServidor}`,{
-  method:"GET"
-})
-    .then(function (resposta) {
-      console.log("resposta:", resposta);
-      location.reload()
-      fecharModal()
-      if (resposta.ok) {
-        resposta.json().then(function (resposta) {
-          console.log("Dados recebidos: ", JSON.stringify(resposta));
-        });
-      } else {
-        throw "Houve um erro ao tentar listar os servidores!";
-      }
+function excluirServidor(idServidor) {
+  let iptExcluir = ipt_excluir.value;
+  iptExcluir.toLowerCase();
+  if (iptExcluir == "excluir") {
+    fetch(`/servidores/excluirServidor/${idServidor}`, {
+      method: "GET"
     })
-    .catch(function (resposta) {
-      console.log(`#ERRO: ${resposta}`);
-    });
+      .then(function (resposta) {
+        console.log("resposta:", resposta);
+        location.reload()
+        fecharModal()
+        if (resposta.ok) {
+          resposta.json().then(function (resposta) {
+            console.log("Dados recebidos: ", JSON.stringify(resposta));
+          });
+        } else {
+          throw "Houve um erro ao tentar listar os servidores!";
+        }
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+      });
 
-}else{
-  fecharModal()
-}  
+  } else {
+    fecharModal()
+  }
+
+
 }
+

@@ -9,7 +9,7 @@
     <script src="../js/cadastro-servidor.js"></script>
 </head>
 
-<body onload="listarServidoresPorEmpresa()" >
+<body onload="listarServidoresPorUsuario()" >
     <section class="header">
         <div class="header-left">
             <div class="parte-cima">
@@ -49,8 +49,8 @@
             <div class="container-content-servidor">
                 <div class="container-pesquisa-servidor">
                     <img src="../assets/imgs-dashboard/Monitoramento-removebg-preview 1.png" alt="">
-                    <input type="search" placeholder="Pesquisa">
-                    <img src="../assets/imgs-dashboard/mdi_search.png" alt="" onclick="pesquisarServidores()"
+                    <input type="search" placeholder="Pesquisa" id="ipt_pesquisarServidor" oninput="pesquisarServidores()">
+                    <img src="../assets/imgs-dashboard/mdi_search.png" alt=""
                         style="cursor: pointer;">
                     <button class="btn-add" onclick="telaCadastroServidor()">+</button>
                 </div>
