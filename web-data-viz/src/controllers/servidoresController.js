@@ -73,11 +73,10 @@ function cadastrar(req, res) {
   }
 }
 
-function listarServidoresPorEmpresa(req, res) {
-    var idEmpresaVar = req.params.idEmpresa;
-    console.log(idEmpresaVar)
-
-    servidorModel.listarServidoresPorEmpresa(idEmpresaVar)
+function listarServidoresPorUsuario(req, res) {
+    var idUsuarioVar = req.params.idUsuario;
+    
+    servidorModel.listarServidoresPorUsuario(idUsuarioVar)
         .then(
             function (resultado) {
                 if (resultado.length > 0) {
@@ -123,7 +122,7 @@ function excluirServidor(req, res) {
 
 module.exports = {
   buscarServidoresPorEmpresa,
-  listarServidoresPorEmpresa,
+  listarServidoresPorUsuario,
   buscarServidoresPorUsuario,
   excluirServidor,
   cadastrar
