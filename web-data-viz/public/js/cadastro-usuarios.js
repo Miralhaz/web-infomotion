@@ -339,6 +339,13 @@ function alertaSalvar() {
       let tabela = document.querySelector('#tabela2');
       tabela.style.display = 'none';
     }
+
+    let iptPesquisarUser = document.getElementById('ipt_pesquisar_user');
+      iptPesquisarUser.style.display = 'flex';
+
+    let labelPesquisarUser = document.getElementById('label_pesquisar_user');
+    labelPesquisarUser.style.display = 'flex';
+
   });
 }
 
