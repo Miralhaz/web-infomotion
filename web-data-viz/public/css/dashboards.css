@@ -1015,3 +1015,105 @@ box-shadow: 0px 0px 10px #000000;
   }
 
   /* final da tela edição componente */
+
+   /* Inicio tela de perfil */
+.conteudo-usuario {
+  margin-left: 250px;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: var(--cinza);
+}
+
+/* cartão branco principal */
+.card-usuario {
+  background: var(--branco);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  padding: 28px;
+  width: 980px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.info-principal {
+  display: grid;
+  grid-template-columns: 220px 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+/* área de foto */
+.foto-perfil {
+  width: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* a imagem real */
+.foto-perfil img {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.icone-editar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--amarelo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+.icone-editar img {
+  width: 18px;
+  height: 18px;
+}
+
+.dados-usuario, .dados-secundarios {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 15px;
+  color: #222;
+}
+.dados-usuario p strong{
+  color: #111;
+  margin-right: 8px;
+}
+
+.dados-secundarios p strong {
+  color: #111;
+  margin-right: 8px;
+}
+
+/* bloco de servidores */
+.card-servidores {
+  background: #f0f0ee; 
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+}
+
+.card-servidores h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+}
+
+/* lista */
+.lista-servidores {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
