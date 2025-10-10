@@ -719,6 +719,22 @@ box-shadow: 0px 0px 10px #000000;
   margin-top: 10px;
 }
 
+.filtro-menu {
+  display: none;
+  position: absolute;
+}
+
+.opcoes-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.opcoes-menu button {
+  display: flex;
+  width: 60px;
+  justify-content: flex-start;
+}
+
 /* ---------------------------------------------------------- TELA DE COMPONENTES ---------------------------------------------------------- */
 
 /* IDENTIFICADOR */

@@ -9,7 +9,7 @@
     <script src="../js/cadastro-servidor.js"></script>
 </head>
 
-<body onload="listarServidoresPorUsuario()" >
+<body onload="listarServidoresPorUsuario()">
     <section class="header">
         <div class="header-left">
             <div class="parte-cima">
@@ -49,9 +49,20 @@
             <div class="container-content-servidor">
                 <div class="container-pesquisa-servidor">
                     <img src="../assets/imgs-dashboard/Monitoramento-removebg-preview 1.png" alt="">
-                    <input type="search" placeholder="Pesquisa" id="ipt_pesquisarServidor" oninput="pesquisarServidores()">
-                    <img src="../assets/imgs-dashboard/mdi_search.png" alt=""
-                        style="cursor: pointer;">
+                    <input type="search" placeholder="Pesquisa" id="ipt_pesquisarServidor"
+                        oninput="pesquisarServidores()">
+                    <img src="../assets/imgs-dashboard/mdi_search.png" alt="" style="cursor: pointer;">
+                    <div class="filtro_servidores">
+                        <img src="../assets/imgs-dashboard/mynaui_filter.png" alt="" onclick="acionarFiltro()"
+                            style="cursor: pointer;" class="img-filtro">
+                        <div class="filtro-menu" id="menu">
+                            <div class="opcoes-menu">
+                                <button onclick="selecionar('CPU')">CPU ↓</button>
+                                <button onclick="selecionar('RAM')">RAM ↓</button>
+                                <button onclick="selecionar('DISCO')">DISCO ↓</button>
+                            </div>
+                        </div>
+                    </div>
                     <button class="btn-add" onclick="telaCadastroServidor()">+</button>
                 </div>
                 <div class="listagem-servidores">
@@ -62,16 +73,17 @@
         <div class="container-modal">
             <div class="card-modal">
                 <h1>EXCLUIR SERVIDOR</h1>
-                <p>Deseja excluir um servidor? tenha em mente que será excluido para sempre, e não poderar ser restaurado!
+                <p>Deseja excluir um servidor? Tenha em mente que será excluido para sempre, e não poderá ser
+                    restaurado!
                 </p>
-                 <p>Digite "excluir" para excluir o servidor</p>
-                   <input type="text" id="ipt_excluir" placeholder="excluir">
-                   <div id="btn_excluir">
-                              
-                    </div>
+                <p>Digite "excluir" para excluir o servidor</p>
+                <input type="text" id="ipt_excluir" placeholder="excluir">
+                <div id="btn_excluir">
+
                 </div>
+            </div>
         </div>
-       
+
 </body>
 
 </html>
