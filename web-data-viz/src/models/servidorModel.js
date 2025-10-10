@@ -26,13 +26,14 @@ function cadastrar(idEmpresa, ip, nome) {
 
 
 function listarServidoresPorUsuario(idUsuario){
-  var instrucaoSql = `Select s.* from servidor as s 
-inner join usuario_has_servidor  as uhs on s.id = uhs.fk_servidor
-inner join usuario as u on uhs.fk_usuario = u.id where u.id = ${idUsuario};`;
+  var instrucaoSql = `Select s.*, rs.* from servidor as s 
+    inner join usuario_has_servidor as uhs on s.id = uhs.fk_servidor
+    inner join usuario as u on uhs.fk_usuario = u.id 
+    inner join registro_servidor as rs on s.id = rs.fk_servidor
+    where u.id = ${idUsuario};`;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }
-
 
 async function excluirServidor(id){
   var instrucaoSql = `

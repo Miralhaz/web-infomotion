@@ -24,6 +24,18 @@ CREATE TABLE IF NOT EXISTS infomotion.servidor (
   FOREIGN KEY (fk_empresa) REFERENCES infomotion.empresa (id)
 );
 
+CREATE TABLE IF NOT EXISTS infomotion.registro_servidor (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	fk_servidor INT,
+    uso_cpu DECIMAL(10, 2),
+    uso_ram DECIMAL(10, 2),
+    uso_disco DECIMAL(10, 2),
+    qtd_processos INT,
+    temp_cpu DECIMAL(10, 2),
+    temp_disco DECIMAL(10, 2),
+    CONSTRAINT registro_servidor_ibfk_1
+    FOREIGN KEY (fk_empresa) REFERENCES infomotion.servidor (id)
+);
 
 CREATE TABLE IF NOT EXISTS infomotion.componentes (
   id INT NOT NULL AUTO_INCREMENT,

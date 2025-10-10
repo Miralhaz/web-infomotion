@@ -1,6 +1,6 @@
 var listaServidores = {}
 
-function exibirServidor(apelido, id, ip) {
+function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
   let html = `
               <div class="card-servidor">
                 <div class="card-top">
@@ -18,9 +18,9 @@ function exibirServidor(apelido, id, ip) {
                 <p class="ip">IP: ${ip}</p>
 
                 <div class="metricas">
-                  <div><span>CPU</span><strong>13%</strong></div>
-                  <div><span>RAM</span><strong>63%</strong></div>
-                  <div><span>DISCO</span><strong>52%</strong></div>
+                  <div><span>CPU</span><strong>${uso_cpu}%</strong></div>
+                  <div><span>RAM</span><strong>${uso_ram}%</strong></div>
+                  <div><span>DISCO</span><strong>${uso_disco}%</strong></div>
                 </div>
               </div>`;
   return html;
@@ -54,8 +54,11 @@ function listarServidoresPorUsuario() {
             let apelido = listaServidores[i].apelido
             let id = listaServidores[i].id
             let ip = listaServidores[i].ip
+            let uso_cpu = listaServidores[i].uso_cpu
+            let uso_ram = listaServidores[i].uso_ram
+            let uso_disco = listaServidores[i].uso_disco
 
-            html += exibirServidor(apelido, id, ip);
+            html += exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco);
 
           }
           container.innerHTML = html
@@ -70,7 +73,6 @@ function listarServidoresPorUsuario() {
       console.log(`#ERRO: ${resposta}`);
     });
 }
-
 
 function pesquisarServidores() {
   let pesquisa = ipt_pesquisarServidor.value
@@ -185,7 +187,23 @@ function excluirServidor(idServidor) {
   } else {
     fecharModal()
   }
-
-
 }
 
+function acionarFiltro(){
+  const menu = document.getElementById('menu')
+  if (menu.style.display === 'block'){
+    menu.style.display = 'none'
+  } else {
+    menu.style.display = 'block'
+  }
+}
+
+function selecionar(opcao_filtro) {
+  if (opcao_filtro === 'CPU'){
+   
+  } else if (opcao_filtro === 'RAM'){
+
+  } else {
+
+  }
+}
