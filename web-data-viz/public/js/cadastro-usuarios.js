@@ -212,24 +212,27 @@ function listarServidoresFuncionario() {
 
           let tabela = document.getElementById('tabela2');
           let frase = ``;
+          let estados = JSON.parse(sessionStorage.getItem("estadosServidores")) || {};
 
           for (let i = 0; i < resposta.length; i++) {
+            const checkedAttr = estados[idServ] ? "checked" : "";
+
             frase += `
                       <tr>
                           <td>ID: ${resposta[i].idServidor} </td>
                           <td>Apelido: ${resposta[i].apelido} </td>
                           <td>
                             <label class="switch">
-                                <input type="checkbox" onchange="editarServidorFuncionario(${resposta[i].idServidor})">
+                                <input type="checkbox" ${checkedAttr} onchange="editarServidorFuncionario(${resposta[i].idServidor})">
                                 <span class="slider round"></span>
                             </label>
                           </td>
                         </tr>`;
 
-                        vetorServidores.push({
-                          id: resposta[i].idServidor,
-                          apelido: resposta[i].apelido
-                        });
+            vetorServidores.push({
+              id: resposta[i].idServidor,
+              apelido: resposta[i].apelido
+            });
           }
           tabela.innerHTML = frase;
 
@@ -244,6 +247,7 @@ function listarServidoresFuncionario() {
 }
 
 function editarServidorFuncionario(idServidor) {
+  const checkbox = Event.target;
   var id = sessionStorage.ID_USUARIO;
 
   const toggles = document.querySelectorAll('.switch input[type="checkbox"]');
@@ -251,10 +255,12 @@ function editarServidorFuncionario(idServidor) {
   toggles.forEach(toggle => {
     toggle.addEventListener('change', function () {
 
-      if (this.checked) {
-        console.log('Toggle ligado');
+      let estados = JSON.parse(sessionStorage.getItem("estadosServidores")) || {};
+      estados[idServidor] = checkbox.checked;
+      sessionStorage.setItem("estadosServidores", JSON.stringify(estados));
 
-        const toggleChecked = document.querySelectorAll('.switch input[type="checkbox"]:checked');
+      if (checkbox.checked) {
+        console.log('Toggle ligado');
 
         fetch(`/usuarios/adicionarServidor/${id}/${idServidor}`, {
           method: "POST",
@@ -341,7 +347,7 @@ function alertaSalvar() {
     }
 
     let iptPesquisarUser = document.getElementById('ipt_pesquisar_user');
-      iptPesquisarUser.style.display = 'flex';
+    iptPesquisarUser.style.display = 'flex';
 
     let labelPesquisarUser = document.getElementById('label_pesquisar_user');
     labelPesquisarUser.style.display = 'flex';
@@ -430,7 +436,7 @@ function pesquisarFuncionario() {
 }
 
 
-function pesquisarServidor(){
+function pesquisarServidor() {
   let iptPesquisar = document.getElementById('ipt_pesquisar_server');
   let pesquisaDigitada = iptPesquisar.value.toLowerCase();
 

@@ -536,6 +536,7 @@ input {
 
 .container .container-content .div-table #tabela1 .editar-coluna .foto-perfil{
   width: 9vh;
+  height: 9vh;
   border-radius: 100%;
   cursor: auto;
 }
