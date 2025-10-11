@@ -249,6 +249,40 @@ function excluirFuncionario(req, res) {
         );
 }
 
+function buscarPorId(req, res) {
+  const idUsuario = req.params.idUsuario;
+
+  usuarioModel.buscarPorId(idUsuario)
+    .then(resultado => {
+      if (resultado.length > 0) {
+        res.status(200).json(resultado[0]);
+      } else {
+        res.status(404).send("Usuário não encontrado");
+      }
+    })
+    .catch(erro => {
+      console.log(erro);
+      res.status(500).json(erro);
+    });
+}
+
+function atualizarPerfil(req, res) {
+    const idUsuario = req.params.idUsuario;
+    const novoNome = req.body.nome;
+
+    if (!novoNome) {
+        return res.status(400).json({ erro: "Nome não fornecido" });
+    }
+
+    usuarioModel.atualizarNome(idUsuario, novoNome)
+        .then(resultado => {
+            res.status(200).json({ mensagem: "Nome atualizado com sucesso!" });
+        })
+        .catch(erro => {
+            console.log("Erro ao atualizar nome: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
 
 module.exports = {
     autenticar,
@@ -259,5 +293,7 @@ module.exports = {
     listarServidoresFuncionario,
     adicionarServidor,
     desassociarServidor,
-    excluirFuncionario
+    excluirFuncionario,
+    buscarPorId,
+    atualizarPerfil
 }

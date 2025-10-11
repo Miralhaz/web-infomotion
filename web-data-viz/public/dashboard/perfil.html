@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Usuário - InfoMotion</title>
   <link rel="stylesheet" href="../css/dashboards.css">
-  <link rel="stylesheet" href="../css/usuario.css">
 </head>
 
 <body>
@@ -14,7 +13,12 @@
     <div class="header-left">
       <div class="parte-cima">
         <div class="icone ativo">
-          <a href="tela-usuario.html" class="descricao-icone">
+          <a href="perfil.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/perfil.png" alt="">
+            Perfil </a>
+        </div>
+        <div class="icone">
+          <a href="tela-usuarios.html" class="descricao-icone">
             <img src="../assets/imgs-dashboard/mdi_users.png" alt="">
             Usuários
           </a>
@@ -64,44 +68,21 @@
         </div>
 
         <div class="dados-usuario">
-          <p><strong>Nome:</strong> Luis Fernando Lima Lipert</p>
-          <p><strong>Cargo:</strong> Gestor de infraestrutura</p>
+          <p><strong>Nome:</strong> <span id="usuarioNome"></span></p>
+          <p><strong>Cargo:</strong> <span id="usuarioCargo"></span></p>
         </div>
 
         <div class="dados-secundarios">
-          <p><strong>Data de cadastro:</strong> 12/10/2025</p>
-          <p><strong>Empresa:</strong> Uber Inc.</p>
+          <p><strong>Data de cadastro:</strong> <span id="usuarioData"></span></p>
+          <p><strong>Empresa:</strong> <span id="usuarioEmpresa"></span></p>
         </div>
       </div>
 
       <!-- lista de servidores -->
       <div class="card-servidores">
         <h3>Servidores a que tenho acesso:</h3>
-        <div class="lista-servidores">
-          <div class="servidor-card">
-            <div><strong>Nome:</strong> Servidor YHG</div>
-            <div><strong>Região:</strong> Sul – 2c</div>
-          </div>
+        <div class="lista-servidores" id="listaServidores">
 
-          <div class="servidor-card">
-            <div><strong>Nome:</strong> Servidor YHG</div>
-            <div><strong>Região:</strong> Sul – 2c</div>
-          </div>
-
-          <div class="servidor-card">
-            <div><strong>Nome:</strong> Servidor YHG</div>
-            <div><strong>Região:</strong> Sul – 2c</div>
-          </div>
-
-          <div class="servidor-card">
-            <div><strong>Nome:</strong> Servidor YHG</div>
-            <div><strong>Região:</strong> Sul – 2c</div>
-          </div>
-
-          <div class="servidor-card">
-            <div><strong>Nome:</strong> Servidor YHG</div>
-            <div><strong>Região:</strong> Sul – 2c</div>
-          </div>
         </div>
       </div>
     </div>

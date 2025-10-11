@@ -110,6 +110,25 @@ function excluirFuncionario(id, idEmpresa) {
 
 }
 
+function buscarPorId(idUsuario) {
+  const instrucao = `
+    SELECT u.id, u.nome, u.cargo, u.dt_cadastro, e.nome AS empresa FROM usuario u
+    JOIN empresa e ON u.fk_empresa = e.id WHERE u.id = ${idUsuario};
+  `;
+  console.log("Executando SQL buscarPorId:\n", instrucao);
+  return database.executar(instrucao);
+}
+
+function atualizarNome(idUsuario, novoNome) {
+    const instrucaoSql = `
+        UPDATE usuario
+        SET nome = '${novoNome}'
+        WHERE id = ${idUsuario};
+    `;
+    console.log("Executando SQL:\n", instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     autenticar,
     cadastrarGestor,
@@ -119,5 +138,7 @@ module.exports = {
     listarServidoresFuncionario,
     adicionarServidor,
     desassociarServidor,
-    excluirFuncionario
+    excluirFuncionario,
+    buscarPorId,
+    atualizarNome
 };
