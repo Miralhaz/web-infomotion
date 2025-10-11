@@ -1,4 +1,4 @@
-var listaServidores = {}
+var listaServidores = []
 
 function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
   let html = `
@@ -83,8 +83,11 @@ function pesquisarServidores() {
       let apelido = listaServidores[i].apelido
       let id = listaServidores[i].id
       let ip = listaServidores[i].ip
+      let uso_cpu = listaServidores[i].uso_cpu
+      let uso_ram = listaServidores[i].uso_ram
+      let uso_disco = listaServidores[i].uso_disco
 
-      html += exibirServidor(apelido, id, ip);
+      html += exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco);
 
 
     }
@@ -190,20 +193,61 @@ function excluirServidor(idServidor) {
 }
 
 function acionarFiltro(){
+
+  // Aqui apenas aciono o menu do filtro, se caso estiver exibindo, fecha se não ele aparece ao usuário
   const menu = document.getElementById('menu')
-  if (menu.style.display === 'block'){
-    menu.style.display = 'none'
+  if (menu.classList.contains("show")) {
+    menu.classList.remove("show");
   } else {
-    menu.style.display = 'block'
+    menu.classList.add("show");
   }
 }
 
 function selecionar(opcao_filtro) {
+
+  // Esses 3 pontos serve para copiar o vetor que esta o servidores, porque se eu usar o normal, nao vai dar para
+  // reverter a ordenação depois, vai ter mudança permanente
+  let servidoresFiltrados = [... listaServidores]
+
+
+  // Aqui é pra galera que quer saber sobre o filtro, ele faz de ordem decrescente usando sort
+  // ele ve a diferença que da entre os dois valores, e se for positivo b na frente do a se não a na frente do b
   if (opcao_filtro === 'CPU'){
-   
+    
+    servidoresFiltrados.sort((a, b) => b.uso_cpu - a.uso_cpu)
+
   } else if (opcao_filtro === 'RAM'){
 
-  } else {
+    servidoresFiltrados.sort((a, b) => b.uso_ram - a.uso_ram)
 
+  } else if (opcao_filtro === 'DISCO') {
+
+    servidoresFiltrados.sort((a, b) => b.uso_disco - a.uso_disco)
+
+  } 
+
+  // Aqui apenas pega a classe .listagem-servidores que vou usar para mostrar os servidores na nova ordem
+  let container = document.querySelector('.listagem-servidores');
+  let html = "";
+
+  // Mesmo processo do exibirServidores()
+  for (let i = 0; i < servidoresFiltrados.length; i++) {
+    let apelido = servidoresFiltrados[i].apelido;
+    let id = servidoresFiltrados[i].id;
+    let ip = servidoresFiltrados[i].ip;
+    let uso_cpu = servidoresFiltrados[i].uso_cpu;
+    let uso_ram = servidoresFiltrados[i].uso_ram;
+    let uso_disco = servidoresFiltrados[i].uso_disco;
+
+    html += exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco);
+  }
+
+  container.innerHTML = html;
+
+  // Aqui apenas verifica se o menu ja está exibindo, se tiver, quando o cara
+  // clicar na opção, o menu vai sumir
+  const menu = document.getElementById("menu")
+  if (menu.classList.contains("show")){
+    menu.classList.remove("show")
   }
 }

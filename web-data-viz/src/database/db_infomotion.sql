@@ -129,7 +129,10 @@ VALUES
 (1, 'DISCO', 27, 'HDD Seagate 4TB', 1),
 (1, 'DISCO', 28, 'SSD Kingston 512GB', 1);
 
-
+INSERT INTO registro_servidor (fk_servidor, uso_cpu, uso_ram, uso_disco)
+VALUES
+(1, 28.71, 62.34, 91.23),
+(2, 33.42, 81.23, 71.6);
 
 -- PARÂMETROS DE ALERTA
 INSERT INTO infomotion.parametro_alerta (fk_servidor, fk_componente, max, duracao_min, unidade_medida)
@@ -159,7 +162,8 @@ VALUES
 
 INSERT INTO usuario_has_servidor (fk_usuario, fk_servidor)
 VALUES
-(1, 1);
+(1, 1),
+(2, 1);
 
 
 /* select * from servidor;
