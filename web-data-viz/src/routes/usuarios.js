@@ -39,4 +39,11 @@ router.delete("/excluir/:id/:idEmpresa", function(req, res){
     usuarioController.excluirFuncionario(req, res);
 });
 
+router.get("/:idUsuario", usuarioController.buscarPorId);
+
+router.put("/atualizarPerfil/:idUsuario", function (req, res) {
+    usuarioController.atualizarPerfil(req, res);
+});
+
+
 module.exports = router;

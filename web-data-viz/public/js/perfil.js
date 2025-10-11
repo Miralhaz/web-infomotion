@@ -1,78 +1,125 @@
-function abrirPopupEditar() {
-  Swal.fire({
-    title: 'Editar perfil',
-    html: `
-      <div style="display:flex;flex-direction:column;gap:12px;align-items:center;padding-top:6px;">
-        <input id="inputNome" class="swal2-input" placeholder="Novo nome" style="width:80%;margin:0 auto;">
-        <input id="inputFoto" type="file" accept="image/*" style="width:80%; margin:0 auto;">
-        <img id="previewFoto" src="" alt="Prévia" style="display:none;width:100px;height:100px;border-radius:50%;object-fit:cover;">
-      </div>
-    `,
-    showCancelButton: true,
-    confirmButtonText: 'Salvar',
-    cancelButtonText: 'Cancelar',
-    confirmButtonColor: '#f1c40f',
-    cancelButtonColor: '#999',
-    didOpen: () => {
-      const popup = Swal.getPopup();
-      const inputFoto = popup.querySelector('#inputFoto');
-      const preview = popup.querySelector('#previewFoto');
+function carregarPerfil() {
+  const idUsuario = sessionStorage.ID_USUARIO;
 
-      // Mostra a prévia da foto ao selecionar
-      inputFoto.addEventListener('change', () => {
-        const file = inputFoto.files[0];
-        if (!file) {
-          preview.style.display = 'none';
-          preview.src = '';
-          return;
-        }
-        const reader = new FileReader();
-        reader.onload = e => {
-          preview.src = e.target.result;
-          preview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
+  if (!idUsuario) {
+    alert("Usuário não identificado. Faça login novamente.");
+    window.location = "../login.html";
+    return;
+  }
+
+  fetch(`http://localhost:3333/usuarios/${idUsuario}`)
+    .then(resposta => {
+      if (!resposta.ok) {
+        throw new Error("Erro ao buscar os dados do usuário");
+      }
+      return resposta.json();
+    })
+    .then(usuario => {
+      // Preenche os spans com as informações do usuário
+      document.getElementById("usuarioNome").textContent = usuario.nome;
+      document.getElementById("usuarioCargo").textContent = usuario.cargo;
+      document.getElementById("usuarioEmpresa").textContent = usuario.empresa;
+
+      // Formata a data de cadastro
+      const dataFormatada = new Date(usuario.dt_cadastro).toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
       });
-    },
-    preConfirm: () => {
-      const popup = Swal.getPopup();
-      const nome = popup.querySelector('#inputNome').value.trim();
-      const fotoFile = popup.querySelector('#inputFoto').files[0];
+      document.getElementById("usuarioData").textContent = dataFormatada;
+    })
+    .catch(erro => {
+      console.error("Erro ao carregar perfil:", erro);
+    });
+}
 
-      if (!nome && !fotoFile) {
-        Swal.showValidationMessage('Informe ao menos um campo para editar');
-        return false;
+function carregarServidores() {
+  const idUsuario = sessionStorage.ID_USUARIO;
+
+  fetch(`http://localhost:3333/servidores/listarServidoresPorUsuario/${idUsuario}`)
+    .then(res => {
+      if (!res.ok) throw new Error("Erro ao buscar servidores");
+      return res.json();
+    })
+    .then(servidores => {
+      const lista = document.getElementById("listaServidores");
+      lista.innerHTML = ""; // limpa qualquer coisa anterior
+
+      if (servidores.length === 0) {
+        lista.innerHTML = "<p>Nenhum servidor encontrado.</p>";
+        return;
       }
 
-      return { nome, fotoFile };
-    }
-  }).then(result => {
-    if (!result.isConfirmed) return;
+      servidores.forEach(servidor => {
+        const card = document.createElement("div");
+        card.classList.add("servidor-card");
 
-    const { nome, fotoFile } = result.value;
+        card.innerHTML = `
+          <div><strong>Nome:</strong> ${servidor.apelido}</div>
+          <div><strong>IP:</strong> ${servidor.ip}</div>
+        `;
 
-    // Atualiza nome na tela, se existir
-    if (nome) {
-      const nomeParagrafo = document.querySelector('.dados-usuario p');
-      if (nomeParagrafo) nomeParagrafo.innerHTML = `<strong>Nome:</strong> ${nome}`;
-    }
-
-    // Atualiza foto de perfil localmente, se existir
-    if (fotoFile) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        const img = document.querySelector('.foto-perfil img');
-        if (img) img.src = e.target.result;
-      };
-      reader.readAsDataURL(fotoFile);
-    }
-
-    // Mensagem final de sucesso
-    Swal.fire({
-      icon: 'success',
-      title: 'Perfil atualizado!',
-      text: 'As alterações foram aplicadas com sucesso.',
-      confirmButtonColor: '#f1c40f'
+        lista.appendChild(card);
+      });
+    })
+    .catch(erro => {
+      console.error("Erro ao carregar servidores:", erro);
+      document.getElementById("listaServidores").innerHTML =
+        "<p>Erro ao carregar servidores.</p>";
     });
+}
+
+function abrirPopupEditar() {
+  Swal.fire({
+    title: 'Editar Perfil',
+    html: `
+      <input id="inputNome" class="swal2-input" placeholder="Novo nome">
+    `,
+    confirmButtonText: 'Salvar alterações',
+    focusConfirm: false,
+    preConfirm: () => {
+      const nome = document.getElementById('inputNome').value;
+      return nome;
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const novoNome = result.value;
+      const idUsuario = sessionStorage.ID_USUARIO;
+
+      fetch(`http://localhost:3333/usuarios/atualizarPerfil/${idUsuario}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ nome: novoNome })
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Erro ao atualizar perfil');
+        return res.json();
+      })
+      .then(data => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Perfil atualizado!',
+          text: 'Seu nome foi atualizado com sucesso.'
+        });
+
+        // Atualiza o nome na tela sem recarregar
+        document.getElementById("usuarioNome").textContent = novoNome;
+      })
+      .catch(err => {
+        console.error(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro',
+          text: 'Não foi possível atualizar o perfil.'
+        });
+      });
+    }
   });
 }
+
+window.onload = () => {
+  carregarPerfil();
+  carregarServidores();
+};
