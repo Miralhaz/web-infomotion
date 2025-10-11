@@ -1097,6 +1097,7 @@ input {
 
 /* cartão branco principal */
 .card-usuario {
+  position: relative;
   background: var(--branco);
   border-radius: 16px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
@@ -1134,6 +1135,9 @@ input {
 }
 
 .icone-editar {
+  position: absolute;
+  top: 20px;
+  right: 20px;
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -1172,20 +1176,55 @@ input {
 
 /* bloco de servidores */
 .card-servidores {
-  background: #f0f0ee;
-  border-radius: 12px;
-  padding: 18px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+  background-color: var(--branco);
+  border-radius: 15px;
+  padding: 20px 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 650px;
+  margin-top: 20px;
 }
 
 .card-servidores h3 {
-  margin: 0 0 12px 0;
-  font-size: 16px;
+  font-size: 18px;
+  color: var(--preto);
+  margin-bottom: 15px;
 }
 
-/* lista */
 .lista-servidores {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 10px;
 }
+
+/* Scrollbar customizada */
+.lista-servidores::-webkit-scrollbar {
+  width: 10px;
+}
+
+.lista-servidores::-webkit-scrollbar-track {
+  background: var(--cinzaEscuro);
+  border-radius: 10px;
+}
+
+.lista-servidores::-webkit-scrollbar-thumb {
+  background-color: var(--amarelo);
+  border-radius: 10px;
+}
+
+.servidor-card {
+  background-color: var(--preto);
+  color: var(--branco);
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.servidor-card strong {
+  color: var(--amarelo);
+  font-weight: 600;
+}
+

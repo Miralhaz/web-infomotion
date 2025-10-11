@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Usuário - InfoMotion</title>
   <link rel="stylesheet" href="../css/dashboards.css">
   <link rel="stylesheet" href="../css/usuario.css">
 </head>
+
 <body>
   <section class="header">
     <div class="header-left">
@@ -33,7 +35,8 @@
 
       <div class="parte-baixo">
         <div class="icone">
-          <a href="https://infomotionmonitoramentos.atlassian.net/servicedesk/customer/portal/1" class="descricao-icone">
+          <a href="https://infomotionmonitoramentos.atlassian.net/servicedesk/customer/portal/1"
+            class="descricao-icone">
             <img src="../assets/imgs-dashboard/fluent_person-suport-32-light.png" alt="">
             Suporte
           </a>
@@ -50,13 +53,14 @@
 
   <main class="conteudo-usuario">
     <div class="card-usuario">
+      <button class="icone-editar" onclick="abrirPopupEditar()" title="Editar perfil">
+        <img src="../assets/icon/lapis.png" alt="Editar">
+      </button>
       <div class="info-principal">
         <div class="foto-perfil">
-          <img src=""alt="Foto de perfil">
+          <img src="../assets/imgs/av1.png" alt="Foto de perfil">
 
-          <button class="icone-editar" title="Editar perfil" type="button">
-            <img src="../assets/icon/lapis.png" alt="Editar">
-          </button>
+
         </div>
 
         <div class="dados-usuario">
@@ -72,10 +76,41 @@
 
       <!-- lista de servidores -->
       <div class="card-servidores">
-        <p>Servidores</p>
+        <h3>Servidores a que tenho acesso:</h3>
+        <div class="lista-servidores">
+          <div class="servidor-card">
+            <div><strong>Nome:</strong> Servidor YHG</div>
+            <div><strong>Região:</strong> Sul – 2c</div>
+          </div>
+
+          <div class="servidor-card">
+            <div><strong>Nome:</strong> Servidor YHG</div>
+            <div><strong>Região:</strong> Sul – 2c</div>
+          </div>
+
+          <div class="servidor-card">
+            <div><strong>Nome:</strong> Servidor YHG</div>
+            <div><strong>Região:</strong> Sul – 2c</div>
+          </div>
+
+          <div class="servidor-card">
+            <div><strong>Nome:</strong> Servidor YHG</div>
+            <div><strong>Região:</strong> Sul – 2c</div>
+          </div>
+
+          <div class="servidor-card">
+            <div><strong>Nome:</strong> Servidor YHG</div>
+            <div><strong>Região:</strong> Sul – 2c</div>
+          </div>
         </div>
       </div>
     </div>
+    </div>
   </main>
+
+  <script src="../js/perfil.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
+
 </html>
