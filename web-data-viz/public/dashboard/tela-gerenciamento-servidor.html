@@ -59,11 +59,20 @@
                     </div>
                 </div>
 
-                <div class="secao-pesquisa" >
+                <div class="secao-pesquisa">
                     <input type="text" class="pesquisa-componente" id="pesquisa-componente" placeholder="PESQUISAR" maxlength="45">
-                    <div class="icons">
-                        <img src="../assets/icon/Lupa.svg" alt="pesquisar">
-                        <img src="../assets/icon/filtro.svg" alt="filtrar">
+                    <div class="icons-filtro-wrapper">
+                        <div class="icons">
+                            <img src="../assets/icon/Lupa.svg" alt="pesquisar">
+                            <img src="../assets/icon/filtro.svg" alt="filtrar" class="filtrar" onclick="acionarFiltro()">
+                        </div>
+                        <div class="wrapperMenu" id="wrapperMenu">
+                            <div class="opcoesMenu" id="opcoesMenu">
+                                <button onclick="selecionar('CPU')">CPU ↓</button>
+                                <button onclick="selecionar('RAM')">RAM ↓</button>
+                                <button onclick="selecionar('DISCO')">DISCO ↓</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -355,12 +364,7 @@
                             </div>  
                         </div>
                         -->
-                </div>
-                
-
-                <div class="addComponente">
-                    <img src="../assets/icon/add-rounded-amarelo.svg" alt="Adicionar" class="imgGSV">
-                </div>   
+                </div>  
                 
                 
             </div>

@@ -962,6 +962,7 @@ input {
   transition: 0.3s ease;
 }
 
+
 .container-content.GSV .secao-pesquisa img:hover {
   filter: brightness(0) sepia(1) saturate(10000%) hue-rotate(0deg) brightness(1.1);
   cursor: pointer;
@@ -969,7 +970,60 @@ input {
   transition: 0.2s;
 }
 
+.container-content.GSV .secao-pesquisa .wrapperMenu{
+  position: absolute;
+  visibility: hidden;
+  z-index: 1000;
+  background-color: #FFC74B;
+  display: flex;
+  padding: 0.5rem 0 0.5rem 0;
+  border-radius: 0.5rem;
+  box-shadow: 1px 2px 3px 0.2px rgba(0, 0, 0, 0.2);
+}
 
+.container-content.GSV .secao-pesquisa .wrapperMenu.show {
+  visibility: visible;
+}
+
+.container-content.GSV .secao-pesquisa .wrapperMenu.show .opcoesMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  color: #222;
+  font-family: "Lato";
+  font-size: large;
+  transition: 0.3s ease;
+}
+
+.container-content.GSV .secao-pesquisa .wrapperMenu.show .opcoesMenu button {
+  position: relative;
+  overflow: hidden;
+  background-color: transparent;
+  color: var(--preto);
+  border: none;
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 0;
+}
+
+.container-content.GSV .secao-pesquisa .wrapperMenu.show .opcoesMenu button::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background-color: var(--branco);
+  z-index: -1;
+  transition: width 0.3s ease;
+}
+
+
+.container-content.GSV .secao-pesquisa .wrapperMenu.show .opcoesMenu button:hover::before {
+  width: 100%;
+}
 
 
 /* Tela edição componente */

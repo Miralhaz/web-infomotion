@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS infomotion.registro_servidor (
     temp_cpu DECIMAL(10, 2),
     temp_disco DECIMAL(10, 2),
     CONSTRAINT registro_servidor_ibfk_1
-    FOREIGN KEY (fk_empresa) REFERENCES infomotion.servidor (id)
+    FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
 );
 
 CREATE TABLE IF NOT EXISTS infomotion.componentes (
