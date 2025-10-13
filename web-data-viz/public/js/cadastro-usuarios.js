@@ -199,7 +199,7 @@ function listarUmFuncionario(id) {
 
 }
 
-function listarServidoresFuncionario() {
+function listarServidoresFuncionario(id) {
   let idEmpresa = sessionStorage.ID_EMPRESA;
 
   fetch(`/usuarios/listarServidores/${idEmpresa}`)
@@ -209,13 +209,15 @@ function listarServidoresFuncionario() {
       if (resposta.ok) {
         resposta.json().then(function (resposta) {
           console.log("Dados recebidos: ", JSON.stringify(resposta));
+          console.log("idFuncionario recebido:", id);
+
 
           let tabela = document.getElementById('tabela2');
+
           let frase = ``;
-          let estados = JSON.parse(sessionStorage.getItem("estadosServidores")) || {};
 
           for (let i = 0; i < resposta.length; i++) {
-            const checkedAttr = estados[idServ] ? "checked" : "";
+           const checkedAttr = (resposta[i].idFuncionario === id) ? "checked" : "";
 
             frase += `
                       <tr>
@@ -223,7 +225,7 @@ function listarServidoresFuncionario() {
                           <td>Apelido: ${resposta[i].apelido} </td>
                           <td>
                             <label class="switch">
-                                <input type="checkbox" ${checkedAttr} onchange="editarServidorFuncionario(${resposta[i].idServidor})">
+                                <input type="checkbox" ${checkedAttr} onchange="editarServidorFuncionario(${id}, ${resposta[i].idServidor}, this)">
                                 <span class="slider round"></span>
                             </label>
                           </td>
@@ -246,18 +248,8 @@ function listarServidoresFuncionario() {
     });
 }
 
-function editarServidorFuncionario(idServidor) {
-  const checkbox = Event.target;
+function editarServidorFuncionario(id, idServidor, checkbox) {
   var id = sessionStorage.ID_USUARIO;
-
-  const toggles = document.querySelectorAll('.switch input[type="checkbox"]');
-
-  toggles.forEach(toggle => {
-    toggle.addEventListener('change', function () {
-
-      let estados = JSON.parse(sessionStorage.getItem("estadosServidores")) || {};
-      estados[idServidor] = checkbox.checked;
-      sessionStorage.setItem("estadosServidores", JSON.stringify(estados));
 
       if (checkbox.checked) {
         console.log('Toggle ligado');
@@ -313,11 +305,7 @@ function editarServidorFuncionario(idServidor) {
 
         return false;
       }
-    });
-
-  });
-
-}
+    }
 
 
 /* Sweet Alerts */
