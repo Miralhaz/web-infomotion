@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS `infomotion`;
 CREATE DATABASE IF NOT EXISTS `infomotion`;
 USE `infomotion` ;
 
-CREATE TABLE IF NOT EXISTS `infomotion`.`empresa` (
+CREATE TABLE IF NOT EXISTS infomotion.empresa (
   id INT NOT NULL AUTO_INCREMENT,
   nome VARCHAR(40),
   cnpj CHAR(18),
@@ -11,17 +11,26 @@ CREATE TABLE IF NOT EXISTS `infomotion`.`empresa` (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS infomotion.regiao (
+  id INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(50),
+  pais VARCHAR(50),
+  zona VARCHAR(50)
+)
 
 CREATE TABLE IF NOT EXISTS infomotion.servidor (
   id INT NOT NULL AUTO_INCREMENT,
   fk_empresa INT,
+  fk_regiao INT,
   apelido VARCHAR(20),
   ip VARCHAR(15),
   dt_cadastro datetime default current_timestamp,
   ativo tinyint,
   PRIMARY KEY (id),
   CONSTRAINT servidor_ibfk_1
-  FOREIGN KEY (fk_empresa) REFERENCES infomotion.empresa (id)
+  FOREIGN KEY (fk_empresa) REFERENCES infomotion.empresa (id),
+  CONSTRAINT servidor_ibfk_2
+  FOREIGN KEY (fk_regiao) REFERENCES infomotion.regiao (id)
 );
 
 CREATE TABLE IF NOT EXISTS infomotion.registro_servidor (
@@ -51,7 +60,6 @@ CREATE TABLE IF NOT EXISTS infomotion.componentes (
   FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
 );
 
-
 CREATE TABLE IF NOT EXISTS infomotion.parametro_alerta (
   id INT NOT NULL AUTO_INCREMENT,
   fk_servidor INT,
@@ -73,12 +81,12 @@ CREATE TABLE IF NOT EXISTS infomotion.usuario (
   senha VARCHAR(25),
   email VARCHAR(30),
   ativo TINYINT NULL,
+  imagem_url VARCHAR(255),
   dt_cadastro datetime default current_timestamp,
   PRIMARY KEY (id),
   CONSTRAINT usuario_ibfk_1
   FOREIGN KEY (fk_empresa) REFERENCES infomotion.empresa (id)
 );
-
 
 CREATE TABLE IF NOT EXISTS infomotion.alertas (
   id INT NOT NULL,
@@ -108,6 +116,12 @@ VALUES
 ('TechMotion', '12.345.678/0001-90', 1),
 ('InfoData Ltda', '98.765.432/0001-10', 1),
 ('ServerX Solutions', '45.987.123/0001-55', 0);
+
+INSERT INTO regiao (nome, pais, zona)
+VALUES 
+('us-east-1', 'Estados Unidos', 'UTC-5'),
+('eu-west-1', 'Irlanda', 'UTC+0'),
+('ap-southeast-1', 'Singapura', 'UTC+8');
 
 INSERT INTO servidor (fk_empresa, apelido, ip, ativo)
 VALUES
