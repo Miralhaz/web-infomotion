@@ -26,7 +26,8 @@ function cadastrar(idEmpresa, ip, nome) {
 
 
 function listarServidoresPorUsuario(idUsuario){
-  var instrucaoSql = `Select s.id, s.ip, s.apelido, rs.uso_cpu, rs.uso_ram, rs.uso_disco from servidor as s 
+  var instrucaoSql = `
+    Select s.id, s.ip, s.apelido, rs.uso_cpu, rs.uso_ram, rs.uso_disco from servidor as s 
     inner join usuario_has_servidor as uhs on s.id = uhs.fk_servidor
     inner join usuario as u on uhs.fk_usuario = u.id 
     inner join (
@@ -75,10 +76,30 @@ await database.executar(instrucaoSq4);
 return await database.executar(instrucaoSq5);
 }
 
+function listarServidores(idEmpresa) {
+
+  var instrucaoSql = `SELECT id as idServidor, apelido FROM servidor WHERE fk_empresa = ${idEmpresa}`;
+
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
+function obterDadosKpi(idServidor){
+  
+  var instrucaoSql = `
+    select * from registro_servidor where fk_servidor = '${idServidor}';
+  `;
+
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
 module.exports = {
   buscarServidoresPorEmpresa,
   buscarServidoresPorUsuario,
   listarServidoresPorUsuario,
   excluirServidor,
+  listarServidores,
+  obterDadosKpi,
   cadastrar
 }

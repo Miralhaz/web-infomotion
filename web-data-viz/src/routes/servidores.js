@@ -20,5 +20,12 @@ router.get("/excluirServidor/:idServidor", function (req, res) {
   servidoresController.excluirServidor(req, res);
 });
 
+router.get("/listarServidores/:idEmpresa", function (req, res){
+  servidoresController.listarServidores(req, res);
+});
+
+router.get("/obterDadosKpi/:idServidor", function (req, res){
+  servidoresController.obterDadosKpi(req, res);
+});
 
 module.exports = router;

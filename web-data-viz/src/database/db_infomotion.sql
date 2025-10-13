@@ -183,5 +183,3 @@ select * from componentes;
  inner join parametro_alerta as p on p.fk_servidor = s.id;
  
  */
- 
- 

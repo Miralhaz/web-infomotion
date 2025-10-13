@@ -115,6 +115,49 @@ function excluirServidor(req, res) {
 }
 
 
+function listarServidores(req, res) {
+  var idEmpresa = req.params.idEmpresa;
+
+  servidorModel.listarServidores(idEmpresa)
+    .then(
+      function (resultado) {
+        if (resultado.length > 0) {
+          res.status(200).json(resultado);
+        } else {
+          res.status(204).send("Nenhum servidor encontrado!");
+        }
+      }
+    )
+    .catch(
+      function (erro) {
+        console.log(erro);
+        console.log("\nHouve um erro ao listar os servidores! Erro: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+      }
+    );
+}
+
+function obterDadosKpi(req, res){
+  var idServidor = req.params.idServidor;
+
+  servidorModel.obterDadosKpi(idServidor)
+    .then(
+      function (resultado){
+        if (resultado.length > 0) {
+          res.status(200).json(resultado);
+        } else {
+          res.status(204).send("Nenhum servidor encontrado!");
+        }
+      }
+    )
+    .catch(
+      function (erro) {
+        console.log(erro);
+        console.log("\nHouve um erro ao buscar dados dos servidores! Erro: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+      }
+    );
+}
 
 
 module.exports = {
@@ -122,5 +165,7 @@ module.exports = {
   listarServidoresPorUsuario,
   buscarServidoresPorUsuario,
   excluirServidor,
+  listarServidores,
+  obterDadosKpi,
   cadastrar
 }

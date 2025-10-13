@@ -209,11 +209,8 @@ function listarServidoresFuncionario(id) {
       if (resposta.ok) {
         resposta.json().then(function (resposta) {
           console.log("Dados recebidos: ", JSON.stringify(resposta));
-          console.log("idFuncionario recebido:", id);
-
 
           let tabela = document.getElementById('tabela2');
-
           let frase = ``;
 
           for (let i = 0; i < resposta.length; i++) {
