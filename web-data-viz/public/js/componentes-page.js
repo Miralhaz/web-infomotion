@@ -140,16 +140,52 @@ function pesquisar() {
       }
       
     }
-
-
-
-    // for (let i = 0; i < componenteLista.length; i++) {
-    //   if (componenteLista[i].textContent.includes(stringPesquisa)) {
-    //     componentesFiltrados.push(componenteLista[i])
-    //   }
-    // }
-    // document.getElementById("listaComponentes").innerHTML = componentesFiltrados
   })
+}
+
+function acionarFiltro() {
+  const menu = document.getElementById("wrapperMenu")
+  console.log("menu", menu);
+  if (menu.classList.contains("show")) {
+    menu.classList.remove("show");
+  } else {
+    menu.classList.add("show");
+  }
+}
+
+function selecionar(opcao_filtro) {
+  
+   // pega o apelido e o numero de serie dos componentes
+  const componenteLista = document.getElementById("listaComponentes")
+  componenteLista.innerHTML = ''
+    for (let i = 0; i < componentesEstatico.length; i++) {
+      
+      if (componentesEstatico[i].tipo.toLowerCase().includes(opcao_filtro.toLowerCase())){
+        let componente = `
+                                    <div class="componente" id="componente">
+                                        <div class="apelido">
+                                            ${componentesEstatico[i].apelido}
+                                        </div>  
+                                        <div class="tipoNumComponente" id="tipoNumComponente">
+                                            ${componentesEstatico[i].tipo}#${componentesEstatico[i].numero_serie}
+                                        </div>
+                                        <div class="icons">
+                                            <label class="switch">
+                                                <input type="checkbox">
+                                                <span class="slider round"></span>
+                                            </label>
+                              <a href="./tela-edicao-componentes.html?id=${componentesEstatico[i].idComponente}&servidor=${componentesEstatico[i].idServidor}&tipocomp=${componentesEstatico[i].tipo}"> 
+                                            <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
+                                            </a>
+                                            
+                                        </div>  
+                                    </div>  
+                              `;
+              componenteLista.innerHTML += componente;
+      }
+      
+    }
+   
 }
 
 window.onload = function() {
