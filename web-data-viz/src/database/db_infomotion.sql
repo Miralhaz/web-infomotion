@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS `infomotion`;
-CREATE SCHEMA IF NOT EXISTS `infomotion`;
+CREATE DATABASE IF NOT EXISTS `infomotion`;
 USE `infomotion` ;
 
 CREATE TABLE IF NOT EXISTS `infomotion`.`empresa` (
@@ -152,7 +152,7 @@ VALUES
 INSERT INTO usuario (fk_empresa, cargo, nome, senha, email, ativo)
 VALUES
 (1, "admin", "Gabriel", '123456', 'email@.', 1),
-(2, 'Gerente', 'Pedro Santos', 'infodata321', 'pedro@infodata.com', 1),
+(1, 'Gerente', 'Pedro Santos', 'infodata321', 'pedro@infodata.com', 1),
 (3, 'Suporte', 'Ana Costa', 'backup987', 'ana@serverx.com', 0);
 
 INSERT INTO alertas (id, fk_parametro, duracao, max, min)
