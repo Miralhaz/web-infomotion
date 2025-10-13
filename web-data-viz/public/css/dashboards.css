@@ -1282,3 +1282,124 @@ input {
   font-weight: 600;
 }
 
+
+/* Dashboard ao vivo */
+
+.container{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+.container .div-selects{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.div-selects select{
+  text-align: center;
+  width: 15%;
+  height: 5vh;
+  padding: 1vh;
+  background-color: #000;
+  color: white;
+  border-radius: 5vh;
+}
+
+.div-kpis{
+  display: flex;
+  flex-direction: row;
+  gap: 2vh;
+}
+
+.div-dados{
+  width: 45vh;
+  height: 30vh;
+  background-color: var(--branco);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2vh;
+}
+
+.div-dados .div-content{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 8vh;
+  background: linear-gradient(to right, black 49%, white 50%, black 51%);
+  color: var(--branco);
+  border-radius: 0 0 2vh 2vh;
+}
+
+.div-dados .div-content .titulo{
+  font-size: 2vh;
+}
+
+.dados-uso{
+  color: var(--amarelo);
+}
+
+.div-temp{
+  width: 10vh;
+  border-radius: 1vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.temp-atual{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2vh;
+}
+
+.div-graph{
+  width: 5vh;
+  height: 15vh;
+  background: #C89C00;
+  background: linear-gradient(360deg,rgba(200, 156, 0, 1) 0%, rgba(148, 0, 0, 1) 100%);
+  border-radius: 1vh;
+}
+
+.div-proc{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8vh;
+  color: var(--branco);
+  background-color: #000;
+  border-radius: 0 0 2vh 2vh;
+}
+
+.div-proc .div-graph{
+  position: relative;
+  width: 10vh;
+  height: 10vh;
+  border-radius: 100px 100px 0 0;
+  background: conic-gradient(
+    from 180deg,
+    rgba(200, 156, 0, 1),
+    rgba(148, 0, 0, 1)
+  );
+  overflow: hidden;
+}
+
+.div-proc .div-graph::after{
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #000;
+}
