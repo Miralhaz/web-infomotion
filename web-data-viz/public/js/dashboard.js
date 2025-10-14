@@ -49,6 +49,8 @@ function obterDadosKpi(idServidor) {
                     //div_temp.style.backgroundColor = dados[0].temp_cpu > 60 ? '#940000' : '#C89C00';
                     //div_temp.style.backgroundColor = dados[0].temp_disco > 60 ? '#940000' : '#C89C00';
 
+                    
+
                     let frase = `
                 <div class="div-dados">
                     <p>USO em % ATUAL</p>
