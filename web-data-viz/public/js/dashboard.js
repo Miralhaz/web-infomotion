@@ -45,11 +45,25 @@ function obterDadosKpi(idServidor) {
 
                     let divs = document.querySelector('.div-kpis');
                     let div_temp = document.querySelector('.div-temp');
+                    let max_cpu, max_ram, max_disco;
 
-                    //div_temp.style.backgroundColor = dados[0].temp_cpu > 60 ? '#940000' : '#C89C00';
-                    //div_temp.style.backgroundColor = dados[0].temp_disco > 60 ? '#940000' : '#C89C00';
+                    for (let i = 0; i < dados.length; i++) {
 
-                    
+                        //div_temp.style.backgroundColor = dados[0].temp_cpu > 60 ? '#940000' : '#C89C00';
+                        //div_temp.style.backgroundColor = dados[0].temp_disco > 60 ? '#940000' : '#C89C00';
+
+                        if (dados[i].tipo.toLowerCase() == 'CPU'.toLowerCase()) {
+                            max_cpu = dados[i].max;
+                        }
+
+                        else if (dados[i].tipo.toLowerCase() == 'RAM'.toLowerCase()) {
+                            max_ram = dados[i].max;
+                        }
+
+                        else if (dados[i].tipo.toLowerCase() == 'DISCO'.toLowerCase()) {
+                            max_disco = dados[i].max;
+                        }
+                    }
 
                     let frase = `
                 <div class="div-dados">
@@ -64,9 +78,9 @@ function obterDadosKpi(idServidor) {
 
                         <div class="div-parametro">
                             <a class="titulo">Parâmetro Máx:</a>
-                            <p>RAM: <a class="dados-uso">%</a></p>
-                            <p>CPU: <a class="dados-uso">%</a></p>
-                            <p>DISCO: <a class="dados-uso">%</a></p>
+                            <p>RAM: <a class="dados-uso">${max_ram}%</a></p>
+                            <p>CPU: <a class="dados-uso">${max_cpu}%</a></p>
+                            <p>DISCO: <a class="dados-uso">${max_disco}%</a></p>
                         </div>
                     </div>
                 </div>
@@ -111,6 +125,7 @@ function obterDadosKpi(idServidor) {
                 `;
 
                     divs.innerHTML = frase;
+
                 });
 
             } else {
@@ -124,15 +139,74 @@ function obterDadosKpi(idServidor) {
 }
 
 
-window.onload = () => {
-    const select = document.getElementById('servidores');
-    select.addEventListener('change', (e) => {
-        const opcao = e.target.selectedOptions[0];
-        const idServidor = opcao.dataset.id;
-        if (!idServidor) return;
-        obterDadosKpi(idServidor);
-    });
+function plotarGraficoLinhas(idServidor) {
+    fetch(`/servidores/plotarGraficoLinhas/${idServidor}`)
+        .then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(function (dados) {
+                    console.log("Dados recebidos: ", JSON.stringify(dados));
 
-    listarServidores();
-};
+                    for (let i = 0; i < dados.length; i++) {
+                        const labels = ['14:50', '15:00', '15:10', '15:20', '15:30', '15:40', '15:50', '16:00'];
+                        const data = {
+                            labels: labels,
+                            datasets: [{
+                                label: 'RAM',
+                                data: dados[i].uso_ram,
+                                fill: false,
+                                borderColor: '#FFB000',
+                                tension: 0.1
+                            },
+                            {
+                                label: 'CPU',
+                                data: dados[i].uso_cpu,
+                                fill: false,
+                                borderColor: '#E2E2E2',
+                                tension: 0.1
+                            },
+                            {
+                                label: 'DISCO',
+                                data: dados[i].uso_disco,
+                                fill: false,
+                                borderColor: '#FAFF00',
+                                tension: 0.1
+                            }]
+                        };
+
+                        const config = {
+                            type: 'line',
+                            data: data,
+                        };
+
+                        const myChart = new Chart(
+                            document.getElementById('myChart'),
+                            config
+                        );
+                    }
+
+            });
+
+            } else {
+                throw "Houve um erro ao tentar listar os servidores!";
+            }
+        })
+
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
+
+
+
+window.onload = () => {
+                        const select = document.getElementById('servidores');
+                        select.addEventListener('change', (e) => {
+                            const opcao = e.target.selectedOptions[0];
+                            const idServidor = opcao.dataset.id;
+                            if (!idServidor) return;
+                            obterDadosKpi(idServidor);
+                        });
+
+                        listarServidores();
+                    };
 

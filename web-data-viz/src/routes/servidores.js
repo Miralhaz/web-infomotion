@@ -28,4 +28,8 @@ router.get("/obterDadosKpi/:idServidor", function (req, res){
   servidoresController.obterDadosKpi(req, res);
 });
 
+router.get("/plotarGraficoLinhas/:idServidor", function (req, res){
+  servidoresController.plotarGraficoLinhas(req, res);
+});
+
 module.exports = router;
