@@ -69,7 +69,7 @@ function cadastrarFuncionario() {
         finalizarAguardar("Cadastro de funcionário realizado com sucesso!!...");
 
         setTimeout(() => {
-          window.location = "tela-usuario.html";
+          window.location = "tela-usuarios.html";
         }, "2000");
 
         limparFormulario();
@@ -118,9 +118,11 @@ function listarFuncionarios() {
                             </a>
                             <img src="../assets/imgs/av1.png" alt="Foto de perfil" class="foto-perfil">
                           </div>
-                          <p>ID: ${resposta[i].id} </p>
-                          <p>Nome: ${resposta[i].nome} </p>
-                          <p>Cargo: ${resposta[i].cargo} </p> 
+                          <div class="info-user">
+                            <p>ID: ${resposta[i].id} </p>
+                            <p>Nome: ${resposta[i].nome} </p>
+                            <p>Cargo: ${resposta[i].cargo} </p>
+                          </div>
                         </div>
 
                       `;
@@ -156,38 +158,31 @@ function listarUmFuncionario(id) {
         resposta.json().then(function (resposta) {
           console.log("Dados recebidos: ", JSON.stringify(resposta));
 
-          let iptPesquisarServer = document.getElementById('ipt_pesquisar_server');
-          iptPesquisarServer.style.display = 'flex';
+          let editarContainer = document.getElementById('editar-funcionario-container');
+          editarContainer.style.display = 'flex';
 
-          let labelPesquisarServer = document.getElementById('label_pesquisar_server');
-          labelPesquisarServer.style.display = 'flex';
+          let editarCard = document.getElementById('editar-funcionario-card');
+          editarCard.innerHTML = `
+            <div class="editar-coluna">
+              <a onclick="alertaSalvar()"> 
+                <img src="../assets/icon/check-icon.png" alt="Salvar" class="iconeTabela"> 
+              </a>
+              <a onclick="excluirFuncionario(${resposta[0].id})"> 
+                <img src="../assets/icon/delete-icon.png" alt="Deletar" class="iconeTabela"> 
+              </a>
+              <img src="../assets/imgs/av1.png" alt="Foto de perfil" class="foto-perfil">
+            </div>
+            <div class="info-user">
+              <p>ID: ${resposta[0].id}</p>
+              <p>Nome: ${resposta[0].nome}</p>
+              <p>Cargo: ${resposta[0].cargo}</p>
+            </div>
+          `;
 
-          let iptPesquisarUser = document.getElementById('ipt_pesquisar_user');
-          iptPesquisarUser.style.display = 'none';
-
-          let labelPesquisarUser = document.getElementById('label_pesquisar_user');
-          labelPesquisarUser.style.display = 'none';
-
-          let tabela = document.querySelector('#tabela1');
-          let frase = `
-                    <div class="div-colunas">
-                          <div class="editar-coluna">
-                            <a onclick="alertaSalvar()"> 
-                                  <img src="../assets/icon/check-icon.png" alt="Icone de edição" class="iconeTabela"> 
-                            </a>
-                            <a onclick="excluirFuncionario(${resposta[0].id})"> 
-                                  <img src="../assets/icon/delete-icon.png" alt="Icone de edição" class="iconeTabela"> 
-                            </a>
-                            <img src="../assets/imgs/av1.png" alt="Foto de perfil" class="foto-perfil">
-                          </div>
-                          <p>ID: ${resposta[0].id} </p>
-                          <p>Nome: ${resposta[0].nome} </p>
-                          <p>Cargo: ${resposta[0].cargo} </p> 
-                        </div>`;
-
-          tabela.innerHTML = frase;
+          document.getElementById('ipt_pesquisar_server').style.display = 'block';
+          document.getElementById('label_pesquisar_server').style.display = 'block';
+   
           listarServidoresFuncionario(resposta[0].id);
-
         });
       } else {
         throw "Houve um erro ao tentar listar o funcionário!";
@@ -209,7 +204,8 @@ function listarServidoresFuncionario(id) {
       if (resposta.ok) {
         resposta.json().then(function (resposta) {
           console.log("Dados recebidos: ", JSON.stringify(resposta));
-
+         
+          
           let tabela = document.getElementById('tabela2');
           let frase = ``;
 

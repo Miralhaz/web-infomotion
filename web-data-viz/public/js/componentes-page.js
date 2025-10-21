@@ -1,5 +1,4 @@
-const params = new URLSearchParams(window.location.search);
-const idServidor = params.get('id');
+const idServidor = sessionStorage.getItem('servidorID');
 
 /*function receberIdServidor() {
   const idUsuario = sessionStorage.getItem('ID_USUARIO')
@@ -67,10 +66,6 @@ function listarComponentes() {
                                             ${resposta[i].tipo}#${resposta[i].numero_serie}
                                         </div>
                                         <div class="icons">
-                                            <label class="switch">
-                                                <input type="checkbox">
-                                                <span class="slider round"></span>
-                                            </label>
                               <a href="./tela-edicao-componentes.html?id=${resposta[i].id}&servidor=${idServidor}&tipocomp=${resposta[i].tipo}"> 
                                             <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
                                             </a>

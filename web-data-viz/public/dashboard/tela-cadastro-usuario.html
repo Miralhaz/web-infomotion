@@ -7,6 +7,7 @@
   <title>Cadastro de funcionarios - InfoMotion</title>
   <link rel="stylesheet" href="../css/dashboards.css">
   <script src="../js/sessao.js"></script>
+  <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
 </head>
 <style>
   :root {
@@ -66,14 +67,16 @@
       </div>
       <div class="input-container-cargo">
         <label for="">Cargo:</label>
-        <label for="">
-          <input type="radio" id="opcao1" name="cargo_func" value="Gestor">
-          <span style="font-size: 20px; display: flex; align-items: center;">Gestor</span>
-        </label>
-        <label for="">
-          <input type="radio" id="opcao2" name="cargo_func" value="Suporte">
-          <span style="font-size: 20px; display: flex; align-items: center;">Suporte</span>
-        </label>
+        <div style="display: flex; flex-direction: row; gap: 50px;">
+          <label for="opcao1" class="radio-wrapper">
+            <input type="radio" id="opcao1" name="cargo_func" value="Gestor" tabindex="1" class="radio-input">
+            <span style="font-size: 20px; display: flex; align-items: center;">Gestor</span>
+          </label>
+          <label for="opcao2" class="radio-wrapper">
+            <input type="radio" id="opcao2" name="cargo_func" value="Suporte" tabindex="2" class="radio-input">
+            <span style="font-size: 20px; display: flex; align-items: center;">Suporte</span>
+          </label>
+        </div>
       </div>
       <button onclick="cadastrarFuncionario()">Cadastrar</button>
     </div>

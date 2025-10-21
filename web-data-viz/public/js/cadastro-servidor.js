@@ -6,7 +6,7 @@ function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
                 <div class="card-top">
                   <h3>${apelido}</h3>
                   <div class="acoes">
-                    <a href="./tela-gerenciamento-servidor.html?id=${id}">
+                    <a onclick="telaEdicaoServidor('${apelido}', '${ip}', ${id})">
                       <img src="../assets/icon/edit-icon.png" alt="Editar" class="iconeTabela">
                     </a>
                     <a onclick="chamarModal(${id})">
@@ -26,9 +26,16 @@ function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
   return html;
 }
 
-
 function telaCadastroServidor() {
   window.location.href = "tela-cadastro-servidor.html"
+}
+
+function telaEdicaoServidor(apelido, ip, idServidor) {
+  sessionStorage.setItem('servidorApelido', apelido);
+  sessionStorage.setItem('servidorIP', ip);
+  sessionStorage.setItem('servidorID', idServidor);
+
+  window.location.href = "./tela-gerenciamento-servidor.html";
 }
 
 function listarServidoresPorUsuario() {
@@ -192,7 +199,7 @@ function excluirServidor(idServidor) {
   }
 }
 
-function acionarFiltro(){
+function acionarFiltro() {
 
   // Aqui apenas aciono o menu do filtro, se caso estiver exibindo, fecha se não ele aparece ao usuário
   const menu = document.getElementById('menu')
@@ -207,16 +214,16 @@ function selecionar(opcao_filtro) {
 
   // Esses 3 pontos serve para copiar o vetor que esta o servidores, porque se eu usar o normal, nao vai dar para
   // reverter a ordenação depois, vai ter mudança permanente
-  let servidoresFiltrados = [... listaServidores]
+  let servidoresFiltrados = [...listaServidores]
 
 
   // Aqui é pra galera que quer saber sobre o filtro, ele faz de ordem decrescente usando sort
   // ele ve a diferença que da entre os dois valores, e se for positivo b na frente do a se não a na frente do b
-  if (opcao_filtro === 'CPU'){
-    
+  if (opcao_filtro === 'CPU') {
+
     servidoresFiltrados.sort((a, b) => b.uso_cpu - a.uso_cpu)
 
-  } else if (opcao_filtro === 'RAM'){
+  } else if (opcao_filtro === 'RAM') {
 
     servidoresFiltrados.sort((a, b) => b.uso_ram - a.uso_ram)
 
@@ -224,7 +231,7 @@ function selecionar(opcao_filtro) {
 
     servidoresFiltrados.sort((a, b) => b.uso_disco - a.uso_disco)
 
-  } 
+  }
 
   // Aqui apenas pega a classe .listagem-servidores que vou usar para mostrar os servidores na nova ordem
   let container = document.querySelector('.listagem-servidores');
@@ -247,7 +254,7 @@ function selecionar(opcao_filtro) {
   // Aqui apenas verifica se o menu ja está exibindo, se tiver, quando o cara
   // clicar na opção, o menu vai sumir
   const menu = document.getElementById("menu")
-  if (menu.classList.contains("show")){
+  if (menu.classList.contains("show")) {
     menu.classList.remove("show")
   }
 }
