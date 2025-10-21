@@ -17,7 +17,7 @@ function buscarServidoresPorUsuario(usuarioId) {
 }
 
 function cadastrar(idEmpresa, ip, nome) {
-  
+
   var instrucaoSql = `INSERT INTO servidor (apelido, ip, fk_empresa)  VALUES ('${nome}', '${ip}', ${idEmpresa})`;
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -25,7 +25,7 @@ function cadastrar(idEmpresa, ip, nome) {
 }
 
 
-function listarServidoresPorUsuario(idUsuario){
+function listarServidoresPorUsuario(idUsuario) {
   var instrucaoSql = `
     Select s.id, s.ip, s.apelido, rs.uso_cpu, rs.uso_ram, rs.uso_disco from servidor as s 
     inner join usuario_has_servidor as uhs on s.id = uhs.fk_servidor
@@ -43,7 +43,7 @@ function listarServidoresPorUsuario(idUsuario){
   return database.executar(instrucaoSql);
 }
 
-async function excluirServidor(id){
+async function excluirServidor(id) {
   var instrucaoSql = `
     delete a from alertas as a
     inner join parametro_alerta as p on a.fk_parametro = p.id
@@ -51,29 +51,29 @@ async function excluirServidor(id){
     `;
   var instrucaoSq2 = `  
     delete from parametro_alerta where fk_servidor = ${id};`;
- 
+
   var instrucaoSq3 = `
     delete from usuario_has_servidor where fk_servidor = ${id};`;
-   
+
   var instrucaoSq4 = `
    delete from componentes where fk_servidor = ${id};`;
-   
+
   var instrucaoSq5 = `
    delete from servidor where id = ${id};`;
 
 
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
-   console.log("Executando a instrução SQL: \n" + instrucaoSq2);
-    console.log("Executando a instrução SQL: \n" + instrucaoSq3);
-     console.log("Executando a instrução SQL: \n" + instrucaoSq4);
-      console.log("Executando a instrução SQL: \n" + instrucaoSq5);
+  console.log("Executando a instrução SQL: \n" + instrucaoSq2);
+  console.log("Executando a instrução SQL: \n" + instrucaoSq3);
+  console.log("Executando a instrução SQL: \n" + instrucaoSq4);
+  console.log("Executando a instrução SQL: \n" + instrucaoSq5);
 
-await database.executar(instrucaoSql);
-await database.executar(instrucaoSq2);
-await database.executar(instrucaoSq3);
-await database.executar(instrucaoSq4);
-return await database.executar(instrucaoSq5);
+  await database.executar(instrucaoSql);
+  await database.executar(instrucaoSq2);
+  await database.executar(instrucaoSq3);
+  await database.executar(instrucaoSq4);
+  return await database.executar(instrucaoSq5);
 }
 
 function listarServidores(idEmpresa) {
@@ -84,8 +84,8 @@ function listarServidores(idEmpresa) {
   return database.executar(instrucaoSql);
 }
 
-function obterDadosKpi(idServidor){
-  
+function obterDadosKpi(idServidor) {
+
   var instrucaoSql = `
     select rs.*, c.tipo, pa.max from registro_servidor rs
     inner join servidor s on rs.fk_servidor = s.id
@@ -98,14 +98,22 @@ function obterDadosKpi(idServidor){
   return database.executar(instrucaoSql);
 }
 
-function plotarGraficoLinhas(idServidor){
-  
+function listarDadosLinhas(idServidor) {
+
   var instrucaoSql = `
-    select rs.*, c.tipo, pa.max from registro_servidor rs
-    inner join servidor s on rs.fk_servidor = s.id
-    inner join parametro_alerta pa on pa.fk_servidor = s.id
-    inner join componentes c on c.id = pa.fk_componente
-    where rs.fk_servidor = '${idServidor}';
+    select fk_servidor, uso_cpu, uso_ram, uso_disco, dt_registro 
+    from registro_servidor where fk_servidor = '${idServidor}';
+  `;
+
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
+function listarDadosDoughnut(idServidor) {
+
+  var instrucaoSql = `
+    select qtd_processos from registro_servidor
+    where fk_servidor = '${idServidor}';
   `;
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -119,6 +127,7 @@ module.exports = {
   excluirServidor,
   listarServidores,
   obterDadosKpi,
-  plotarGraficoLinhas,
+  listarDadosLinhas,
+  listarDadosDoughnut,
   cadastrar
 }

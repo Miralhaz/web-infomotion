@@ -28,8 +28,12 @@ router.get("/obterDadosKpi/:idServidor", function (req, res){
   servidoresController.obterDadosKpi(req, res);
 });
 
-router.get("/plotarGraficoLinhas/:idServidor", function (req, res){
-  servidoresController.plotarGraficoLinhas(req, res);
+router.get("/listarDadosLinhas/:idServidor", function (req, res){
+  servidoresController.listarDadosLinhas(req, res);
+});
+
+router.get("/listarDadosDoughnut/:idServidor", function (req, res){
+  servidoresController.listarDadosDoughnut(req, res);
 });
 
 module.exports = router;
