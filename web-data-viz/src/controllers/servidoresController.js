@@ -159,6 +159,28 @@ function obterDadosKpi(req, res){
     );
 }
 
+function plotarGraficoLinhas(req, res){
+  var idServidor = req.params.idServidor;
+
+  servidorModel.plotarGraficoLinhas(idServidor)
+    .then(
+      function (resultado){
+        if (resultado.length > 0) {
+          res.status(200).json(resultado);
+        } else {
+          res.status(204).send("Nenhum servidor encontrado!");
+        }
+      }
+    )
+    .catch(
+      function (erro) {
+        console.log(erro);
+        console.log("\nHouve um erro ao buscar dados dos servidores! Erro: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+      }
+    );
+}
+
 
 module.exports = {
   buscarServidoresPorEmpresa,
@@ -167,5 +189,6 @@ module.exports = {
   excluirServidor,
   listarServidores,
   obterDadosKpi,
+  plotarGraficoLinhas,
   cadastrar
 }
