@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS infomotion.registro_servidor (
     qtd_processos INT,
     temp_cpu DECIMAL(10, 2),
     temp_disco DECIMAL(10, 2),
+    dt_registro DATETIME,
     CONSTRAINT registro_servidor_ibfk_1
     FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
 );
@@ -144,10 +145,10 @@ VALUES
 (1, 'DISCO', 27, 'HDD Seagate 4TB', 1),
 (1, 'DISCO', 28, 'SSD Kingston 512GB', 1);
 
-INSERT INTO registro_servidor (fk_servidor, uso_cpu, uso_ram, uso_disco)
+INSERT INTO registro_servidor (fk_servidor, uso_cpu, uso_ram, uso_disco, qtd_processos, temp_cpu, temp_disco, dt_registro)
 VALUES
-(1, 28.71, 62.34, 91.23),
-(2, 33.42, 81.23, 71.6);
+(1, 28.71, 62.34, 91.23, 174, 80.0, 30.0, '2025-10-21 14:00'),
+(1, 33.42, 81.23, 71.6, 237, 85.0, 41.0, '2025-10-21 14:30');
 
 -- PARÂMETROS DE ALERTA
 INSERT INTO infomotion.parametro_alerta (fk_servidor, fk_componente, max, duracao_min, unidade_medida)

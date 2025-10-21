@@ -47,10 +47,8 @@ function obterDadosKpi(idServidor) {
                     let div_temp = document.querySelector('.div-temp');
                     let max_cpu, max_ram, max_disco;
 
-                    for (let i = 0; i < dados.length; i++) {
 
-                        //div_temp.style.backgroundColor = dados[0].temp_cpu > 60 ? '#940000' : '#C89C00';
-                        //div_temp.style.backgroundColor = dados[0].temp_disco > 60 ? '#940000' : '#C89C00';
+                    for (let i = 0; i < dados.length; i++) {
 
                         if (dados[i].tipo.toLowerCase() == 'CPU'.toLowerCase()) {
                             max_cpu = dados[i].max;
@@ -64,6 +62,7 @@ function obterDadosKpi(idServidor) {
                             max_disco = dados[i].max;
                         }
                     }
+
 
                     let frase = `
                 <div class="div-dados">
@@ -92,10 +91,10 @@ function obterDadosKpi(idServidor) {
                             <div class="div-graph"></div>
                             <div>
                                 <p>CPU</p>
-                                <p class="titulo">Máx: °C</p>
-                                <p class="titulo">Min: °C</p>
+                                <p class="titulo">Máx: <a class="dados-uso">85°C</a></p>
+                                <p class="titulo">Min: <a class="dados-uso">50°C</a></p>
                                 <div class="div-temp">
-                                    <p>${dados[0].temp_cpu}°C</p>
+                                    <p>${Math.round(dados[0].temp_cpu)}°C</p>
                                 </div>
                             </div>
                         </div>
@@ -103,10 +102,10 @@ function obterDadosKpi(idServidor) {
                         <div class="temp-atual">
                             <div>
                                 <p>DISCO</p>
-                                <p class="titulo">Máx: °C</p>
-                                <p class="titulo">Min: °C</p>
+                                <p class="titulo">Máx: <a class="dados-uso">85°C</a></p>
+                                <p class="titulo">Min: <a class="dados-uso">30°C</a></p>
                                 <div class="div-temp">
-                                    <p>${dados[0].temp_disco}°C</p>
+                                    <p>${Math.round(dados[0].temp_disco)}°C</p>
                                 </div>
                             </div>
                             <div class="div-graph"></div>
@@ -117,13 +116,19 @@ function obterDadosKpi(idServidor) {
                 <div class="div-dados">
                     <p>Quantidade total de processos</p>
                     <div class="div-proc">
-                        <div class="div-graph"></div>
-                        <p>${dados[0].qtd_processos}/1000</p>
+                        <div style="width:23vh; padding:1vh;">
+                            <canvas id="doughnutChart"></canvas>
+                        </div>
+                        <p style="color:#ffc64b;">${dados[0].qtd_processos}/1000</p>
                     </div>
                 </div>
 
                 `;
-
+                    //div_temp.style.backgroundColor = dados[0].temp_cpu > 80 ? '#940000' : '#C89C00';
+                    //div_temp.style.backgroundColor = dados[0].temp_disco > 80 ? '#940000' : '#C89C00';
+                    
+                    listarDadosDoughnut(idServidor);
+                    plotarGraficoLinhas(idServidor);
                     divs.innerHTML = frase;
 
                 });
@@ -139,52 +144,80 @@ function obterDadosKpi(idServidor) {
 }
 
 
-function plotarGraficoLinhas(idServidor) {
-    fetch(`/servidores/plotarGraficoLinhas/${idServidor}`)
+function listarDadosDoughnut(idServidor) {
+
+    fetch(`/servidores/listarDadosDoughnut/${idServidor}`)
         .then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(function (dados) {
                     console.log("Dados recebidos: ", JSON.stringify(dados));
+                    plotarGraficoDoughnut(dados, idServidor);
 
-                    for (let i = 0; i < dados.length; i++) {
-                        const labels = ['14:50', '15:00', '15:10', '15:20', '15:30', '15:40', '15:50', '16:00'];
-                        const data = {
-                            labels: labels,
-                            datasets: [{
-                                label: 'RAM',
-                                data: dados[i].uso_ram,
-                                fill: false,
-                                borderColor: '#FFB000',
-                                tension: 0.1
-                            },
-                            {
-                                label: 'CPU',
-                                data: dados[i].uso_cpu,
-                                fill: false,
-                                borderColor: '#E2E2E2',
-                                tension: 0.1
-                            },
-                            {
-                                label: 'DISCO',
-                                data: dados[i].uso_disco,
-                                fill: false,
-                                borderColor: '#FAFF00',
-                                tension: 0.1
-                            }]
-                        };
+                })
+            } else {
+                throw "Houve um erro ao tentar listar os servidores!";
+            }
+        })
 
-                        const config = {
-                            type: 'line',
-                            data: data,
-                        };
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
 
-                        const myChart = new Chart(
-                            document.getElementById('myChart'),
-                            config
-                        );
+
+function plotarGraficoDoughnut(dados, idServidor) {
+    let labels = ['Processos atuais', 'Total de processos'];
+    let resposta = [dados[0].qtd_processos, 1000 - (dados[0].qtd_processos)];
+
+    const config = {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '',
+                data: resposta,
+                backgroundColor: [
+                    '#940000',
+                    '#C89C00'
+                ],
+                borderColor: [
+                    '#940000',
+                    '#C89C00'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        boxWidth: 8,
+                        boxHeight: 8,
+                        color: 'white'
                     }
+                }
+            }
+        }
+    };
 
-            });
+    new Chart(
+        document.getElementById('doughnutChart'),
+        config
+    );
+}
+
+
+function listarDadosLinhas(idServidor) {
+    fetch(`/servidores/listarDadosLinhas/${idServidor}`)
+        .then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(function (dados) {
+                    console.log("Dados recebidos: ", JSON.stringify(dados));
+                    console.log("Dados recebidos: ", JSON.stringify(dados));
+                    plotarGraficoLinhas(dados, idServidor);
+
+                });
 
             } else {
                 throw "Houve um erro ao tentar listar os servidores!";
@@ -197,16 +230,67 @@ function plotarGraficoLinhas(idServidor) {
 }
 
 
+function plotarGraficoLinhas(dados, idServidor) {
+    let labels = [];
+    let ram = [];
+    let cpu = [];
+    let disco = [];
+
+    for (let i = 0; i < dados.length; i++) {
+        labels.push(dados[i].dt_registro);
+        ram.push(dados[i].uso_ram);
+        cpu.push(dados[i].uso_cpu);
+        disco.push(dados[i].uso_disco);
+    }
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'RAM',
+                data: ram,
+                fill: false,
+                borderColor: '#FFB000',
+                tension: 0.1
+            },
+            {
+                label: 'CPU',
+                data: cpu,
+                fill: false,
+                borderColor: '#E2E2E2',
+                tension: 0.1
+            },
+            {
+                label: 'DISCO',
+                data: disco,
+                fill: false,
+                borderColor: '#FAFF00',
+                tension: 0.1
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+        };
+
+        new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+
+}
+
+
 
 window.onload = () => {
-                        const select = document.getElementById('servidores');
-                        select.addEventListener('change', (e) => {
-                            const opcao = e.target.selectedOptions[0];
-                            const idServidor = opcao.dataset.id;
-                            if (!idServidor) return;
-                            obterDadosKpi(idServidor);
-                        });
+    const select = document.getElementById('servidores');
+    select.addEventListener('change', (e) => {
+        const opcao = e.target.selectedOptions[0];
+        const idServidor = opcao.dataset.id;
+        if (!idServidor) return;
+        obterDadosKpi(idServidor);
+    });
 
-                        listarServidores();
-                    };
+    listarServidores();
+};
 
