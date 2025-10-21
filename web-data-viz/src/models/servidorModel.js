@@ -98,6 +98,20 @@ function obterDadosKpi(idServidor){
   return database.executar(instrucaoSql);
 }
 
+function plotarGraficoLinhas(idServidor){
+  
+  var instrucaoSql = `
+    select rs.*, c.tipo, pa.max from registro_servidor rs
+    inner join servidor s on rs.fk_servidor = s.id
+    inner join parametro_alerta pa on pa.fk_servidor = s.id
+    inner join componentes c on c.id = pa.fk_componente
+    where rs.fk_servidor = '${idServidor}';
+  `;
+
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
 module.exports = {
   buscarServidoresPorEmpresa,
   buscarServidoresPorUsuario,
@@ -105,5 +119,6 @@ module.exports = {
   excluirServidor,
   listarServidores,
   obterDadosKpi,
+  plotarGraficoLinhas,
   cadastrar
 }
