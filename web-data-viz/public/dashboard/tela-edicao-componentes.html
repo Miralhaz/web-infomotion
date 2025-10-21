@@ -4,16 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servidores - InfoMotion</title>
+    <title>Editar Componente - InfoMotion</title>
     <link rel="stylesheet" href="../css/dashboards.css">
     <script src="../js/edicao-componente.js"></script>
+    <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
 </head>
+<style>
+    body {
+        display: flex;
+        min-height: 100vh;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .header {
+        width: 250px;
+    }
+
+    .container {
+        flex-grow: 1;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container-content.componente {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+    }
+
+</style>
 
 <body>
-    
+
     <section class="header">
         <div class="header-left">
             <div class="parte-cima">
+                <div class="icone">
+                    <a href="perfil.html" class="descricao-icone">
+                        <img src="../assets/imgs-dashboard/perfil.png" alt="">
+                        Perfil </a>
+                </div>
                 <div class="icone">
                     <a href="tela-usuarios.html" class="descricao-icone">
                         <img src="../assets/imgs-dashboard/mdi_users.png" alt="">
@@ -25,7 +60,7 @@
                         Servidores </a>
                 </div>
                 <div class="icone">
-                    <a href="#" class="descricao-icone">
+                    <a href="dashboard.html" class="descricao-icone">
                         <img src="../assets/imgs-dashboard/fluent-mdl2_b-i-dashboard.png" alt="">
                         Dashboard </a>
                 </div>
@@ -47,41 +82,33 @@
     </section>
 
     <div class="container ">
-
-
-
-
-
         <div class="container-content componente" id="editlistaComponentes">
             <div class="titulo">Edição de componente</div>
             <div class="box">
-                <label>Tipo de componente</label>
+                <label>Tipo de componente:</label>
                 <input type="text" id="ipt_tipo_componente">
-                <label>Apelido</label>
+                <label>Apelido:</label>
                 <input type="text" id="ipt_apelido_componente">
-                <label>Unidade de medida</label>
+                <label>Unidade de medida:</label>
                 <input type="text" id="ipt_unidade_medida_componente">
-                <label>Parametro</label>
+                <label>Parametro:</label>
                 <div class="parametro">
                     <input type="text" id="ipt_parametro1_componente">
-                    <span>até</span>
-                    <input type="text" id="ipt_parametro2_componente">
-
-                    <label class="switch-label">
-                        Status inicial
-                        <label class="switch">
-                            <input type="checkbox"  class="checkbox-redondo" id="ipt_status_componente">
-                            <span class="slider"></span>
-                        </label>
+                    <label class="switch" style="padding-top: 0;">
+                        <span class="texto-switch"> Aplicar parametro para todos os componentes do tipo? </span>
+                        <div class="switch-wrapper">
+                            <input type="checkbox" class="checkbox-redondo" id="ipt_status_componente">
+                            <span class="botao-switch"></span>
+                        </div>
                     </label>
-                    
                 </div>
             </div>
             <button onclick="editarComponente()">Editar</button>
         </div>
 
 
-        
+
     </div>
 </body>
+
 </html>
