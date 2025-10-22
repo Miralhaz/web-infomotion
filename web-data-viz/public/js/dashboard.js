@@ -44,7 +44,6 @@ function obterDadosKpi(idServidor) {
                     console.log("Dados recebidos: ", JSON.stringify(dados));
 
                     let divs = document.querySelector('.div-kpis');
-                    let div_temp = document.querySelector('.div-temp');
                     let max_cpu, max_ram, max_disco;
 
 
@@ -116,7 +115,7 @@ function obterDadosKpi(idServidor) {
                 <div class="div-dados">
                     <p>Quantidade total de processos</p>
                     <div class="div-proc">
-                        <div style="width:23vh; padding:1vh;">
+                        <div class="div-donut">
                             <canvas id="doughnutChart"></canvas>
                         </div>
                         <p style="color:#ffc64b;">${dados[0].qtd_processos}/1000</p>
@@ -124,12 +123,17 @@ function obterDadosKpi(idServidor) {
                 </div>
 
                 `;
-                    //div_temp.style.backgroundColor = dados[0].temp_cpu > 80 ? '#940000' : '#C89C00';
-                    //div_temp.style.backgroundColor = dados[0].temp_disco > 80 ? '#940000' : '#C89C00';
-                    
+
                     listarDadosDoughnut(idServidor);
-                    plotarGraficoLinhas(idServidor);
+                    listarDadosLinhas(idServidor);
+                    listarDadosBarras(idServidor);
+
                     divs.innerHTML = frase;
+
+
+                    let div_temp = document.querySelectorAll('.div-temp');
+                    div_temp[0].style.backgroundColor = dados[0].temp_cpu > 80 ? '#940000' : '#C89C00';
+                    div_temp[1].style.backgroundColor = dados[0].temp_disco > 80 ? '#940000' : '#C89C00';
 
                 });
 
@@ -243,12 +247,15 @@ function plotarGraficoLinhas(dados, idServidor) {
         disco.push(dados[i].uso_disco);
     }
 
-        const data = {
+    const config = {
+        type: 'line',
+        data: {
             labels: labels,
             datasets: [{
                 label: 'RAM',
                 data: ram,
                 fill: false,
+                backgroundColor: '#FFB000',
                 borderColor: '#FFB000',
                 tension: 0.1
             },
@@ -256,6 +263,7 @@ function plotarGraficoLinhas(dados, idServidor) {
                 label: 'CPU',
                 data: cpu,
                 fill: false,
+                backgroundColor: '#E2E2E2',
                 borderColor: '#E2E2E2',
                 tension: 0.1
             },
@@ -263,23 +271,117 @@ function plotarGraficoLinhas(dados, idServidor) {
                 label: 'DISCO',
                 data: disco,
                 fill: false,
+                backgroundColor: '#FAFF00',
                 borderColor: '#FAFF00',
                 tension: 0.1
             }]
-        };
+        },
 
-        const config = {
-            type: 'line',
-            data: data,
-        };
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Porcentagem de uso de componentes",
+                    color: 'white'
+                },
+                legend: {
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        color: 'white'
+                    }
+                }
+            }
+        }
+    };
 
-        new Chart(
-            document.getElementById('myChart'),
-            config
-        );
+    new Chart(
+        document.getElementById('lineChart'),
+        config
+    );
+
+    let chart = document.getElementsByClassName('div-chart');
+
+    for (let i = 0; i < chart.length; i++) {
+        chart[i].style.display = 'flex';
+    }
 
 }
 
+
+function listarDadosBarras(idServidor) {
+    fetch(`/servidores/listarDadosBarras/${idServidor}`)
+        .then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(function (dados) {
+                    console.log("Dados recebidos: ", JSON.stringify(dados));
+                    console.log("Dados recebidos: ", JSON.stringify(dados));
+                    plotarGraficoBarras(dados, idServidor);
+
+                });
+
+            } else {
+                throw "Houve um erro ao tentar listar os servidores!";
+            }
+        })
+
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
+
+
+function plotarGraficoBarras(dados, idServidor) {
+    let labels = [];
+    let proc = [];
+
+    for (let i = 0; i < dados.length; i++) {
+        labels.push(dados[i].dt_registro);
+        proc.push(dados[i].qtd_processos);
+    }
+
+    const config = {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Processos',
+                data: proc,
+                fill: false,
+                backgroundColor: '#FAFF00',
+                borderColor: '#FAFF00',
+                tension: 0.1
+            }]
+        },
+
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Quantidade de processos",
+                    color: 'white'
+                },
+                legend: {
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        color: 'white'
+                    }
+                }
+            }
+        }
+    };
+
+    new Chart(
+        document.getElementById('barChart'),
+        config
+    );
+}
 
 
 window.onload = () => {
@@ -290,6 +392,12 @@ window.onload = () => {
         if (!idServidor) return;
         obterDadosKpi(idServidor);
     });
+
+    let chart = document.getElementsByClassName('div-chart');
+
+    for (let i = 0; i < chart.length; i++) {
+        chart[i].style.display = 'none';
+    }
 
     listarServidores();
 };

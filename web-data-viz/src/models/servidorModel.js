@@ -120,6 +120,17 @@ function listarDadosDoughnut(idServidor) {
   return database.executar(instrucaoSql);
 }
 
+function listarDadosBarras(idServidor){
+  
+  var instrucaoSql = `
+    select qtd_processos, dt_registro from registro_servidor 
+    where fk_servidor = '${idServidor}';
+  `;
+
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
 module.exports = {
   buscarServidoresPorEmpresa,
   buscarServidoresPorUsuario,
@@ -129,5 +140,6 @@ module.exports = {
   obterDadosKpi,
   listarDadosLinhas,
   listarDadosDoughnut,
+  listarDadosBarras,
   cadastrar
 }
