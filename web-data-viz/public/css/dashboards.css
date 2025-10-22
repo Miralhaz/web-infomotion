@@ -1632,3 +1632,11 @@ input {
   border-radius: 2vh;
   margin-top: 2vh;
 }
+
+.div-graph {
+  width: 5vh;
+  height: 15vh;
+  background: #C89C00;
+  background: linear-gradient(360deg, rgba(200, 156, 0, 1) 0%, rgba(148, 0, 0, 1) 100%);
+  border-radius: 1vh;
+}
