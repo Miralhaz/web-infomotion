@@ -36,4 +36,8 @@ router.get("/listarDadosDoughnut/:idServidor", function (req, res){
   servidoresController.listarDadosDoughnut(req, res);
 });
 
+router.get("/listarDadosBarras/:idServidor", function (req, res){
+  servidoresController.listarDadosBarras(req, res);
+});
+
 module.exports = router;
