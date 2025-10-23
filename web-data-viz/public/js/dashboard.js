@@ -11,7 +11,7 @@ function listarServidores() {
 
                     const select = document.getElementById('servidores');
 
-                    let frase = "";
+                    let frase = `<option value="escolha_op">Escolha um servidor</option>`;
 
                     for (let i = 0; i < resposta.length; i++) {
                         frase += `
@@ -123,16 +123,16 @@ function obterDadosKpi(idServidor) {
 
                 `;
 
-                    listarDadosDoughnut(idServidor);
+                    divs.innerHTML = frase;
+
+                    plotarGraficoDoughnut(dados[0]);
                     listarDadosLinhas(idServidor);
                     listarDadosBarras(idServidor);
 
-                    divs.innerHTML = frase;
-
 
                     let div_temp = document.querySelectorAll('.div-temp');
-                    div_temp[0].style.backgroundColor = dados[0].temp_cpu > 80 ? '#940000' : '#C89C00';
-                    div_temp[1].style.backgroundColor = dados[0].temp_disco > 80 ? '#940000' : '#C89C00';
+                    div_temp[0].style.backgroundColor = dados[0].temp_cpu >= 85 ? '#940000' : '#C89C00';
+                    div_temp[1].style.backgroundColor = dados[0].temp_disco >= 85 ? '#940000' : '#C89C00';
 
                 });
 
@@ -148,38 +148,18 @@ function obterDadosKpi(idServidor) {
 }
 
 
-function listarDadosDoughnut(idServidor) {
-
-    fetch(`/servidores/listarDadosDoughnut/${idServidor}`)
-        .then(function (resposta) {
-            if (resposta.ok) {
-                resposta.json().then(function (dados) {
-                    console.log("Dados recebidos: ", JSON.stringify(dados));
-                    plotarGraficoDoughnut(dados, idServidor);
-
-                })
-            } else {
-                throw "Houve um erro ao tentar listar os servidores!";
-            }
-        })
-
-        .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-        });
-}
-
-
-function plotarGraficoDoughnut(dados, idServidor) {
+function plotarGraficoDoughnut(dadoKpi) {
     let labels = ['Processos atuais', 'Total de processos'];
-    let resposta = [dados[0].qtd_processos, 1000 - (dados[0].qtd_processos)];
-    
+    const qtdProc = dadoKpi.qtd_processos;
+    const restante = (1000 - qtdProc);
+
     const config = {
         type: 'doughnut',
         data: {
             labels: labels,
             datasets: [{
                 label: '',
-                data: resposta,
+                data: [qtdProc, restante],
                 backgroundColor: [
                     '#940000',
                     '#C89C00'
@@ -293,6 +273,14 @@ function plotarGraficoLinhas(dados, idServidor) {
             scales: {
                 y: {
                     beginAtZero: true,
+                    ticks: {
+                        color: 'white',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Porcentagem (%)',
+                        color: 'white'
+                    },
                     grid: {
                         color: 'rgba(153, 153, 153, 0.2)',
                         display: true,
@@ -300,6 +288,14 @@ function plotarGraficoLinhas(dados, idServidor) {
                     }
                 },
                 x: {
+                    ticks: {
+                        color: 'white',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Horário',
+                        color: 'white'
+                    },
                     grid: {
                         drawOnChartArea: true
                     }
@@ -357,7 +353,7 @@ function plotarGraficoBarras(dados, idServidor) {
     let proc = [];
 
     for (let i = 0; i < dados.length; i++) {
-        
+
         const dtHora = new Date(dados[i].dt_registro);
         const hora = dtHora.getHours();
         const min = dtHora.getMinutes();
@@ -386,6 +382,14 @@ function plotarGraficoBarras(dados, idServidor) {
             scales: {
                 y: {
                     beginAtZero: true,
+                    ticks: {
+                        color: 'white',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Quantidade de processos',
+                        color: 'white'
+                    },
                     grid: {
                         color: 'rgba(153, 153, 153, 0.2)',
                         display: true,
@@ -393,6 +397,14 @@ function plotarGraficoBarras(dados, idServidor) {
                     }
                 },
                 x: {
+                    ticks: {
+                        color: 'white'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Horário',
+                        color: 'white'
+                    },
                     grid: {
                         drawOnChartArea: true
                     }
@@ -401,7 +413,7 @@ function plotarGraficoBarras(dados, idServidor) {
             plugins: {
                 title: {
                     display: true,
-                    text: "Quantidade de processos",
+                    text: "Processos a cada 30 minutos",
                     color: 'white'
                 },
                 legend: {
@@ -439,4 +451,3 @@ window.onload = () => {
 
     listarServidores();
 };
-
