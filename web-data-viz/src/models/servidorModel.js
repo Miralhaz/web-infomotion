@@ -87,7 +87,8 @@ function listarServidores(idEmpresa) {
 function obterDadosKpi(idServidor) {
 
   var instrucaoSql = `
-    select rs.*, c.tipo, pa.max from registro_servidor rs
+    select rs.uso_cpu, rs.uso_ram, rs.uso_disco, rs.qtd_processos, rs.temp_cpu, rs.temp_disco, c.tipo, pa.max 
+    from registro_servidor rs
     inner join servidor s on rs.fk_servidor = s.id
     inner join parametro_alerta pa on pa.fk_servidor = s.id
     inner join componentes c on c.id = pa.fk_componente
@@ -101,7 +102,7 @@ function obterDadosKpi(idServidor) {
 function listarDadosLinhas(idServidor) {
 
   var instrucaoSql = `
-    select fk_servidor, uso_cpu, uso_ram, uso_disco, dt_registro 
+    select uso_cpu, uso_ram, uso_disco, dt_registro 
     from registro_servidor where fk_servidor = '${idServidor}';
   `;
 

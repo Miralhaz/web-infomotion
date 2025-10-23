@@ -62,7 +62,6 @@ function obterDadosKpi(idServidor) {
                         }
                     }
 
-
                     let frase = `
                 <div class="div-dados">
                     <p>USO em % ATUAL</p>
@@ -145,6 +144,7 @@ function obterDadosKpi(idServidor) {
         .catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
         });
+
 }
 
 
@@ -172,7 +172,7 @@ function listarDadosDoughnut(idServidor) {
 function plotarGraficoDoughnut(dados, idServidor) {
     let labels = ['Processos atuais', 'Total de processos'];
     let resposta = [dados[0].qtd_processos, 1000 - (dados[0].qtd_processos)];
-
+    
     const config = {
         type: 'doughnut',
         data: {
@@ -209,6 +209,12 @@ function plotarGraficoDoughnut(dados, idServidor) {
         document.getElementById('doughnutChart'),
         config
     );
+
+    let chart = document.getElementsByClassName('div-chart');
+
+    for (let i = 0; i < chart.length; i++) {
+        chart[i].style.display = 'flex';
+    }
 }
 
 
@@ -278,6 +284,21 @@ function plotarGraficoLinhas(dados, idServidor) {
         },
 
         options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(153, 153, 153, 0.2)',
+                        display: true,
+                        drawTicks: false
+                    }
+                },
+                x: {
+                    grid: {
+                        drawOnChartArea: true
+                    }
+                }
+            },
             plugins: {
                 title: {
                     display: true,
@@ -299,12 +320,6 @@ function plotarGraficoLinhas(dados, idServidor) {
         document.getElementById('lineChart'),
         config
     );
-
-    let chart = document.getElementsByClassName('div-chart');
-
-    for (let i = 0; i < chart.length; i++) {
-        chart[i].style.display = 'flex';
-    }
 
 }
 
@@ -350,6 +365,7 @@ function plotarGraficoBarras(dados, idServidor) {
                 fill: false,
                 backgroundColor: '#FAFF00',
                 borderColor: '#FAFF00',
+                borderRadius: 5,
                 tension: 0.1
             }]
         },
@@ -357,7 +373,17 @@ function plotarGraficoBarras(dados, idServidor) {
         options: {
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(153, 153, 153, 0.2)',
+                        display: true,
+                        drawTicks: false
+                    }
+                },
+                x: {
+                    grid: {
+                        drawOnChartArea: true
+                    }
                 }
             },
             plugins: {
