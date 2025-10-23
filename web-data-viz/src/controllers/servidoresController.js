@@ -182,28 +182,6 @@ function listarDadosLinhas(req, res){
 }
 
 
-function listarDadosDoughnut(req, res){
-  var idServidor = req.params.idServidor;
-
-  servidorModel.listarDadosDoughnut(idServidor)
-    .then(
-      function (resultado){
-        if (resultado.length > 0) {
-          res.status(200).json(resultado);
-        } else {
-          res.status(204).send("Nenhum servidor encontrado!");
-        }
-      }
-    )
-    .catch(
-      function (erro) {
-        console.log(erro);
-        console.log("\nHouve um erro ao buscar dados dos servidores! Erro: ", erro.sqlMessage);
-        res.status(500).json(erro.sqlMessage);
-      }
-    );
-}
-
 function listarDadosBarras(req, res){
   var idServidor = req.params.idServidor;
 
@@ -235,7 +213,6 @@ module.exports = {
   listarServidores,
   obterDadosKpi,
   listarDadosLinhas,
-  listarDadosDoughnut,
   listarDadosBarras,
   cadastrar
 }
