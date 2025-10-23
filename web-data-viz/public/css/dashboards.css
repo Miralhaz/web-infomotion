@@ -8,6 +8,7 @@
   --preto: #000;
   --cinzaEscuro: #1c1c1c;
   --cinzaHeader: #222;
+  --cinzaDash: #181818;
 }
 
 * {
@@ -1543,7 +1544,7 @@ input {
   width: 15%;
   height: 5vh;
   padding: 1vh;
-  background-color: #000;
+  background-color: var(--cinzaDash);
   color: white;
   border-radius: 5vh;
 }
@@ -1575,7 +1576,7 @@ input {
   justify-content: center;
   align-items: center;
   gap: 8vh;
-  background: linear-gradient(to right, black 49%, white 50%, black 51%);
+  background: linear-gradient(to right, var(--cinzaDash) 49%, white 50%, var(--cinzaDash) 51%);
   color: var(--branco);
   border-radius: 0 0 2vh 2vh;
 }
@@ -1612,7 +1613,7 @@ input {
   justify-content: center;
   align-items: center;
   color: var(--branco);
-  background-color: #000;
+  background-color: var(--cinzaDash);
   border-radius: 0 0 2vh 2vh;
 }
 
@@ -1628,7 +1629,7 @@ input {
   align-items: center;
   justify-content: center;
   padding: 2vh;
-  background-color: #000;
+  background-color: var(--cinzaDash);
   border-radius: 2vh;
   margin-top: 2vh;
 }
