@@ -247,7 +247,13 @@ function plotarGraficoLinhas(dados, idServidor) {
     let disco = [];
 
     for (let i = 0; i < dados.length; i++) {
-        labels.push(dados[i].dt_registro);
+
+        const dtHora = new Date(dados[i].dt_registro);
+        const hora = dtHora.getHours();
+        const min = dtHora.getMinutes();
+        const minFormatado = ('0' + min).slice(-2);
+
+        labels.push((hora + ':' + minFormatado));
         ram.push(dados[i].uso_ram);
         cpu.push(dados[i].uso_cpu);
         disco.push(dados[i].uso_disco);
@@ -351,7 +357,13 @@ function plotarGraficoBarras(dados, idServidor) {
     let proc = [];
 
     for (let i = 0; i < dados.length; i++) {
-        labels.push(dados[i].dt_registro);
+        
+        const dtHora = new Date(dados[i].dt_registro);
+        const hora = dtHora.getHours();
+        const min = dtHora.getMinutes();
+        const minFormatado = ('0' + min).slice(-2);
+
+        labels.push((hora + ':' + minFormatado));
         proc.push(dados[i].qtd_processos);
     }
 
