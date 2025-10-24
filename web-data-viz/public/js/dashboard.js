@@ -86,7 +86,9 @@ function obterDadosKpi(idServidor) {
                     <p>Temperatura atual:</p>
                     <div class="div-content">
                         <div class="temp-atual">
-                            <div class="div-graph"></div>
+                            <div class="div-graph">
+                                <a id="circ_cpu">◎</a>
+                            </div>
                             <div>
                                 <p>CPU</p>
                                 <p class="titulo">Máx: <a class="dados-uso">85°C</a></p>
@@ -106,7 +108,9 @@ function obterDadosKpi(idServidor) {
                                     <p>${Math.round(dados[0].temp_disco)}°C</p>
                                 </div>
                             </div>
-                            <div class="div-graph"></div>
+                            <div class="div-graph">
+                                <a id="circ_disco">◎</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -133,6 +137,94 @@ function obterDadosKpi(idServidor) {
                     let div_temp = document.querySelectorAll('.div-temp');
                     div_temp[0].style.backgroundColor = dados[0].temp_cpu >= 85 ? '#940000' : '#C89C00';
                     div_temp[1].style.backgroundColor = dados[0].temp_disco >= 85 ? '#940000' : '#C89C00';
+
+                    let circ_cpu = document.getElementById('circ_cpu');
+                    let dado_cpu = dados[0].temp_cpu;
+
+                    if(dado_cpu >= 95){
+                        circ_cpu.style.top = '0%';
+                    }
+
+                    else if(dado_cpu >= 90){
+                        circ_cpu.style.top = '5%';
+                    }
+
+                    else if(dado_cpu >= 80){
+                        circ_cpu.style.top = '10%';
+                    }
+
+                    else if(dado_cpu >= 70){
+                        circ_cpu.style.top = '20%';
+                    }
+
+                    else if(dado_cpu >= 60){
+                        circ_cpu.style.top = '30%';
+                    }
+
+                    else if(dado_cpu >= 50){
+                        circ_cpu.style.top = '40%';
+                    }
+
+                    else if(dado_cpu >= 40){
+                        circ_cpu.style.top = '50%';
+                    }
+
+                    else if(dado_cpu >= 30){
+                        circ_cpu.style.top = '60%';
+                    }
+
+                    else if(dado_cpu >= 20){
+                        circ_cpu.style.top = '70%';
+                    }
+
+                    else if(dado_cpu >= 10){
+                        circ_cpu.style.top = '80%';
+                    }
+                    
+
+                    let circ_disco = document.getElementById('circ_disco');
+                    let dado_disco = dados[0].temp_disco;
+
+
+                    if(dado_disco >= 95){
+                        circ_disco.style.top = '0%';
+                    }
+
+                    else if(dado_disco >= 90){
+                        circ_disco.style.top = '5%';
+                    }
+
+                    else if(dado_disco >= 80){
+                        circ_disco.style.top = '10%';
+                    }
+
+                    else if(dado_disco >= 70){
+                        circ_disco.style.top = '20%';
+                    }
+
+                    else if(dado_disco >= 60){
+                        circ_disco.style.top = '30%';
+                    }
+
+                    else if(dado_disco >= 50){
+                        circ_disco.style.top = '40%';
+                    }
+
+                    else if(dado_disco >= 40){
+                        circ_disco.style.top = '50%';
+                    }
+
+                    else if(dado_disco >= 30){
+                        circ_disco.style.top = '60%';
+                    }
+
+                    else if(dado_disco >= 20){
+                        circ_disco.style.top = '70%';
+                    }
+
+                    else if(dado_disco >= 10){
+                        circ_disco.style.top = '80%';
+                    }
 
                 });
 
