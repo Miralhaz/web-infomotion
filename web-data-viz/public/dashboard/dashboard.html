@@ -9,6 +9,24 @@
     <link rel="stylesheet" href="../css/dashboards.css">
     <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
 </head>
+<style>
+    body {
+        display: flex;
+        min-height: 10vh;
+        margin: 0;
+    }
+
+    .header {
+        width: 250px;
+    }
+
+    .div-graficos {
+        display: flex;
+        flex-direction: row;
+        gap: 5vh;
+        margin-top: 2vh;
+    }
+</style>
 
 <body onload="listarServidores()">
     <section class="header">
@@ -61,12 +79,14 @@
         </div>
 
         <div class="div-kpis"></div>
-        <div class="div-chart">
-            <canvas id="lineChart"></canvas>
-        </div>
+        <div class="div-graficos">
+            <div class="div-chart">
+                <canvas id="lineChart" style="width: 550px; height: 250px;"></canvas>
+            </div>
 
-        <div class="div-chart">
-            <canvas id="barChart"></canvas>
+            <div class="div-chart">
+                <canvas id="barChart" style="width: 550px; height: 250px;"></canvas>
+            </div>
         </div>
     </div>
 

@@ -1537,6 +1537,8 @@ input {
   width: 100%;
   display: flex;
   justify-content: space-around;
+  margin-top: 4vh;
+  gap: 50%;
 }
 
 .div-selects select {
@@ -1558,7 +1560,7 @@ input {
 }
 
 .div-dados {
-  width: 45vh;
+  width: 53vh;
   height: 35vh;
   background-color: var(--branco);
   display: flex;
@@ -1623,7 +1625,7 @@ input {
 }
 
 .div-chart{
-  width: 60%;
+  width: 75%;
   height: 40vh;
   display: flex;
   align-items: center;

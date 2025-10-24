@@ -40,10 +40,11 @@ function cadastrar(req, res) {
   var nome = req.body.nomeServer;
   var ip = req.body.ipServer;
   var idEmpresa = req.body.idServer;
+  var idUsuario = req.body.idUsuarioServer;
   console.log(nome)
   console.log(ip)
   console.log(idEmpresa)
-
+  console.log(idUsuario);
 
 
 
@@ -54,10 +55,12 @@ function cadastrar(req, res) {
     res.status(400).send("idEmpresa está undefined!");
   } else if (idEmpresa == undefined) {
     res.status(400).send("ip está undefined!");
+  } else if (idUsuario == undefined) {
+    res.status(400).send("Id Usuario está undefined!")
   } else {
     console.log("b")
 
-    servidorModel.cadastrar(idEmpresa, ip, nome)
+    servidorModel.cadastrar(idEmpresa, ip, nome, idUsuario)
       .then((resultado) => {
         res.status(201).json(resultado);
       }

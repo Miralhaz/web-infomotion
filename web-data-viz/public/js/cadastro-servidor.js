@@ -111,11 +111,13 @@ function cadastrar() {
   var nomeVar = nome.value
   var ipVar = ip.value
   var idEmpresaVar = sessionStorage.ID_EMPRESA
+  var idUsuarioVar = sessionStorage.ID_USUARIO
 
   if (
     nomeVar == "" ||
     ipVar == "" ||
-    idEmpresaVar == ""
+    idEmpresaVar == "" ||
+    idUsuarioVar == ""
   ) {
     finalizarAguardar("(Mensagem de erro para todos os campos em branco)");
     return false;
@@ -130,6 +132,7 @@ function cadastrar() {
       nomeServer: nomeVar,
       ipServer: ipVar,
       idServer: idEmpresaVar,
+      idUsuarioServer: idUsuarioVar
 
     }),
   })
