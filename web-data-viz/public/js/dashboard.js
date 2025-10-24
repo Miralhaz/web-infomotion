@@ -141,88 +141,88 @@ function obterDadosKpi(idServidor) {
                     let circ_cpu = document.getElementById('circ_cpu');
                     let dado_cpu = dados[0].temp_cpu;
 
-                    if(dado_cpu >= 95){
+                    if (dado_cpu >= 95) {
                         circ_cpu.style.top = '0%';
                     }
 
-                    else if(dado_cpu >= 90){
+                    else if (dado_cpu >= 90) {
                         circ_cpu.style.top = '5%';
                     }
 
-                    else if(dado_cpu >= 80){
+                    else if (dado_cpu >= 80) {
                         circ_cpu.style.top = '10%';
                     }
 
-                    else if(dado_cpu >= 70){
+                    else if (dado_cpu >= 70) {
                         circ_cpu.style.top = '20%';
                     }
 
-                    else if(dado_cpu >= 60){
+                    else if (dado_cpu >= 60) {
                         circ_cpu.style.top = '30%';
                     }
 
-                    else if(dado_cpu >= 50){
+                    else if (dado_cpu >= 50) {
                         circ_cpu.style.top = '40%';
                     }
 
-                    else if(dado_cpu >= 40){
+                    else if (dado_cpu >= 40) {
                         circ_cpu.style.top = '50%';
                     }
 
-                    else if(dado_cpu >= 30){
+                    else if (dado_cpu >= 30) {
                         circ_cpu.style.top = '60%';
                     }
 
-                    else if(dado_cpu >= 20){
+                    else if (dado_cpu >= 20) {
                         circ_cpu.style.top = '70%';
                     }
 
-                    else if(dado_cpu >= 10){
+                    else if (dado_cpu >= 10) {
                         circ_cpu.style.top = '80%';
                     }
-                    
+
 
                     let circ_disco = document.getElementById('circ_disco');
                     let dado_disco = dados[0].temp_disco;
 
 
-                    if(dado_disco >= 95){
+                    if (dado_disco >= 95) {
                         circ_disco.style.top = '0%';
                     }
 
-                    else if(dado_disco >= 90){
+                    else if (dado_disco >= 90) {
                         circ_disco.style.top = '5%';
                     }
 
-                    else if(dado_disco >= 80){
+                    else if (dado_disco >= 80) {
                         circ_disco.style.top = '10%';
                     }
 
-                    else if(dado_disco >= 70){
+                    else if (dado_disco >= 70) {
                         circ_disco.style.top = '20%';
                     }
 
-                    else if(dado_disco >= 60){
+                    else if (dado_disco >= 60) {
                         circ_disco.style.top = '30%';
                     }
 
-                    else if(dado_disco >= 50){
+                    else if (dado_disco >= 50) {
                         circ_disco.style.top = '40%';
                     }
 
-                    else if(dado_disco >= 40){
+                    else if (dado_disco >= 40) {
                         circ_disco.style.top = '50%';
                     }
 
-                    else if(dado_disco >= 30){
+                    else if (dado_disco >= 30) {
                         circ_disco.style.top = '60%';
                     }
 
-                    else if(dado_disco >= 20){
+                    else if (dado_disco >= 20) {
                         circ_disco.style.top = '70%';
                     }
 
-                    else if(dado_disco >= 10){
+                    else if (dado_disco >= 10) {
                         circ_disco.style.top = '80%';
                     }
 
@@ -362,6 +362,8 @@ function plotarGraficoLinhas(dados, idServidor) {
         },
 
         options: {
+            responsive: false,
+            maintainAspectRatio: false,         
             scales: {
                 y: {
                     beginAtZero: true,
@@ -471,6 +473,8 @@ function plotarGraficoBarras(dados, idServidor) {
         },
 
         options: {
+            responsive: false,
+            maintainAspectRatio: false,    
             scales: {
                 y: {
                     beginAtZero: true,

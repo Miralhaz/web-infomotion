@@ -16,12 +16,17 @@ function buscarServidoresPorUsuario(usuarioId) {
   return database.executar(instrucaoSql);
 }
 
-function cadastrar(idEmpresa, ip, nome) {
+async function cadastrar(idEmpresa, ip, nome, idUsuario) {
 
-  var instrucaoSql = `INSERT INTO servidor (apelido, ip, fk_empresa)  VALUES ('${nome}', '${ip}', ${idEmpresa})`;
+  var instrucaoSql1 = `INSERT INTO servidor (apelido, ip, fk_empresa, ativo)  VALUES ('${nome}', '${ip}', ${idEmpresa}, 1)`;
+  var instrucaoSql2 = `INSERT INTO usuario_has_servidor (fk_usuario, fk_servidor) SELECT ${idUsuario}, id FROM servidor WHERE apelido = '${nome}'`
+  var instrucaoSql3 = `INSERT INTO registro_servidor (fk_servidor, uso_cpu, uso_ram, uso_disco, qtd_processos, temp_cpu, temp_disco, dt_registro)
+  SELECT id, 0.00, 0.00, 0.00, 190, 36.0, 47.0, '2025-10-24 13:21' FROM servidor WHERE apelido = '${nome}'`
 
-  console.log("Executando a instrução SQL: \n" + instrucaoSql);
-  return database.executar(instrucaoSql);
+  await database.executar(instrucaoSql1);
+  await database.executar(instrucaoSql2);
+  return await database.executar(instrucaoSql3)
+
 }
 
 
@@ -110,8 +115,8 @@ function listarDadosLinhas(idServidor) {
   return database.executar(instrucaoSql);
 }
 
-function listarDadosBarras(idServidor){
-  
+function listarDadosBarras(idServidor) {
+
   var instrucaoSql = `
     select qtd_processos, dt_registro from registro_servidor 
     where fk_servidor = '${idServidor}';
