@@ -2,14 +2,15 @@ var listaServidores = []
 
 function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
   let html = `
+            <div onclick="irParaDash(${id})">
               <div class="card-servidor">
                 <div class="card-top">
                   <h3>${apelido}</h3>
                   <div class="acoes">
-                    <a onclick="telaEdicaoServidor('${apelido}', '${ip}', ${id})">
+                    <a onclick="event.stopPropagation(); telaEdicaoServidor('${apelido}', '${ip}', ${id})">
                       <img src="../assets/icon/edit-icon.png" alt="Editar" class="iconeTabela">
                     </a>
-                    <a onclick="chamarModal(${id})">
+                    <a onclick="event.stopPropagation(); chamarModal(${id})">
                       <img src="../assets/icon/delete-icon.png" alt="Excluir" class="iconeTabela">
                     </a>
                   </div>
@@ -22,8 +23,14 @@ function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
                   <div><span>RAM</span><strong>${uso_ram}%</strong></div>
                   <div><span>DISCO</span><strong>${uso_disco}%</strong></div>
                 </div>
-              </div>`;
+              </div>
+            </div>`;
   return html;
+}
+
+function irParaDash(idServidor) {
+    sessionStorage.ID_SERVIDOR_SELECIONADO = idServidor;
+    window.location.href = 'dashboard.html'; 
 }
 
 function telaCadastroServidor() {

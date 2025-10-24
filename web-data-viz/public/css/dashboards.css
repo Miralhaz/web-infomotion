@@ -800,6 +800,7 @@ input {
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.2s;
+  cursor: pointer;
 }
 
 .card-servidor:hover {
@@ -1400,6 +1401,7 @@ input {
   display: flex;
   flex-direction: column;
   gap: 22px;
+  align-items: center;
 }
 
 .info-principal {
@@ -1442,11 +1444,21 @@ input {
   border: none;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease-in-out;
 }
 
 .icone-editar img {
   width: 18px;
   height: 18px;
+}
+
+.icone-editar:hover{
+transform: scale(1.1);
+background-color: #222;
+}
+
+.icone-editar:hover img{
+  filter: invert(100%);
 }
 
 .dados-usuario,
@@ -1517,12 +1529,15 @@ input {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+/*hover no botão de mudar a cor*/
 .servidor-card strong {
   color: var(--amarelo);
   font-weight: 600;
 }
 
-
+.swal2-confirm:hover {
+    background-color: var(--amareloOpacityLow); 
+}
 /* Dashboard ao vivo */
 
 .container {

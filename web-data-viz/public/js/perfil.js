@@ -76,6 +76,7 @@ function abrirPopupEditar() {
       <input id="inputNome" class="swal2-input" placeholder="Novo nome">
     `,
     confirmButtonText: 'Salvar alterações',
+    confirmButtonColor: '#ffc64b',
     focusConfirm: false,
     preConfirm: () => {
       const nome = document.getElementById('inputNome').value;
@@ -101,7 +102,8 @@ function abrirPopupEditar() {
         Swal.fire({
           icon: 'success',
           title: 'Perfil atualizado!',
-          text: 'Seu nome foi atualizado com sucesso.'
+          text: 'Seu nome foi atualizado com sucesso.',
+          confirmButtonColor: '#ffc64b',
         });
 
         // Atualiza o nome na tela sem recarregar
@@ -112,7 +114,8 @@ function abrirPopupEditar() {
         Swal.fire({
           icon: 'error',
           title: 'Erro',
-          text: 'Não foi possível atualizar o perfil.'
+          text: 'Não foi possível atualizar o perfil.',
+          confirmButtonColor: '#dc3545'
         });
       });
     }

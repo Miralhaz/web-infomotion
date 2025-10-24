@@ -1,3 +1,14 @@
+function carregarDashboardInicial() {
+  const idServidorClicado = sessionStorage.ID_SERVIDOR_SELECIONADO;
+
+  listarServidores(idServidorClicado);
+
+  if (idServidorClicado) {
+    console.log("Iniciando carregamento do Servidor ID:", idServidorClicado);
+    obterDadosKpi(idServidorClicado);
+  }
+}
+
 function listarServidores() {
     let idEmpresa = sessionStorage.ID_EMPRESA;
 
@@ -531,6 +542,7 @@ function plotarGraficoBarras(dados, idServidor) {
 
 
 window.onload = () => {
+    carregarDashboardInicial();
     const select = document.getElementById('servidores');
     select.addEventListener('change', (e) => {
         const opcao = e.target.selectedOptions[0];
