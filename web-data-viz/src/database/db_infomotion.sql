@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS infomotion.servidor (
   id INT NOT NULL AUTO_INCREMENT,
   fk_empresa INT,
   fk_regiao INT,
-  apelido VARCHAR(20),
+  apelido VARCHAR(40),
   ip VARCHAR(15),
   dt_cadastro datetime default current_timestamp,
   ativo tinyint,
