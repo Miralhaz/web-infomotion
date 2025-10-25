@@ -6,7 +6,7 @@ function entrar() {
         var senhaVar = senha.value;
 
         if (emailVar == "" || senhaVar == "") {
-            finalizarAguardar("(Mensagem de erro para todos os campos em branco)");
+            finalizarAguardar("Todos os campos devem estar preenchidos");
             return false;
         }
         else {
@@ -40,7 +40,7 @@ function entrar() {
                     sessionStorage.ID_EMPRESA = json.idEmpresa;
 
                     setTimeout(function () {
-                        window.location = "../dashboard/dashboard.html";
+                        window.location = "../dashboard/tela-servidores.html";
                     }, 1000); // apenas para exibir o loading
 
                 });
