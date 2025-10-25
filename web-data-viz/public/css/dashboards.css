@@ -800,6 +800,7 @@ input {
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.2s;
+  cursor: pointer;
 }
 
 .card-servidor:hover {
@@ -1400,6 +1401,7 @@ input {
   display: flex;
   flex-direction: column;
   gap: 22px;
+  align-items: center;
 }
 
 .info-principal {
@@ -1442,11 +1444,21 @@ input {
   border: none;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease-in-out;
 }
 
 .icone-editar img {
   width: 18px;
   height: 18px;
+}
+
+.icone-editar:hover{
+transform: scale(1.1);
+background-color: #222;
+}
+
+.icone-editar:hover img{
+  filter: invert(100%);
 }
 
 .dados-usuario,
@@ -1517,12 +1529,15 @@ input {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+/*hover no botão de mudar a cor*/
 .servidor-card strong {
   color: var(--amarelo);
   font-weight: 600;
 }
 
-
+.swal2-confirm:hover {
+    background-color: var(--amareloOpacityLow); 
+}
 /* Dashboard ao vivo */
 
 .container {
@@ -1537,6 +1552,8 @@ input {
   width: 100%;
   display: flex;
   justify-content: space-around;
+  margin-top: 4vh;
+  gap: 50%;
 }
 
 .div-selects select {
@@ -1558,7 +1575,7 @@ input {
 }
 
 .div-dados {
-  width: 45vh;
+  width: 53vh;
   height: 35vh;
   background-color: var(--branco);
   display: flex;
@@ -1623,7 +1640,7 @@ input {
 }
 
 .div-chart{
-  width: 60%;
+  width: 75%;
   height: 40vh;
   display: flex;
   align-items: center;
@@ -1648,3 +1665,231 @@ input {
   position: relative;
   text-align: center;
 }
+
+/* -------------------------------------------- DASHBOARD HISTORICO -------------------------------------------- */
+
+.container.dashboard_historico{
+  max-width: fit-content;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  grid-template-rows: 0.2fr 1fr 1fr;
+  grid-template-columns: 1fr;
+  margin-left: 10vw;
+  overflow: hidden;
+}
+
+.container.dashboard_historico select{
+  margin: 0;
+  font-family: "poppins", sans-serif;
+  font-size: 1rem;
+}
+
+.container.dashboard_historico .div-selects{
+  grid-row: 1;
+  width: 80vw;
+  justify-self: center;
+}
+
+.container.dashboard_historico .nome_dash{
+  text-align: center;
+  width: 13vw;
+  padding: 1vh;
+  background-color: var(--cinzaDash);
+  color: white;
+  border-radius: 5vh;
+  margin: 1px;
+}
+
+.dashboard_historico .tabela_alerta_servidores{
+  width: 80vw;
+  height: 35vh;
+  background-color: var(--branco);
+  color: #fff;
+  text-align: center;
+  border-radius: 2vh;
+  margin-bottom: 3vh;
+  font-size: larger;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  overflow-y: hidden;
+  position: relative;
+  --title-h: 48px;
+  direction: rtl;
+  justify-self: center;
+}
+
+
+.dashboard_historico .table_alerta_servidores{
+  background-color: var(--cinzaDash);
+}
+
+.dashboard_historico .tabela_alerta_servidores .nome_tabela{
+  position: sticky;
+  top: 0;                 /* cola primeiro */
+  z-index: 1;             /* acima do header */
+  background: #fff;       /* tampa o que passa por trás */
+  height: var(--title-h);
+  line-height: var(--title-h);
+  color: #000;
+}
+
+.dashboard_historico .tabela_alerta_servidores table{
+  table-layout: fixed;
+  width: 100%;
+  height: auto;
+  font-size: 1rem;
+  font-weight: 200;
+  border-spacing: 0;
+  direction: ltr;
+}
+
+.dashboard_historico .tabela_alerta_servidores thead th:nth-child(1) { 
+  width: 25%; 
+  text-align: left; 
+  padding: 0.5vh 0.1vw 0.5vh 1vw; 
+}  
+.dashboard_historico .tabela_alerta_servidores thead th:nth-child(2),
+.dashboard_historico .tabela_alerta_servidores thead th:nth-child(3),
+.dashboard_historico .tabela_alerta_servidores thead th:nth-child(4),
+.dashboard_historico .tabela_alerta_servidores thead th:nth-child(5) { width: 18.75%; }  
+
+.dashboard_historico .tabela_alerta_servidores tbody td:nth-child(1) {
+   text-align: left; 
+  }
+
+.dashboard_historico .tabela_alerta_servidores thead th{
+  position: sticky;
+  top: var(--title-h);
+  z-index: 1;
+  background-color: #fff;
+  color: var(--cinzaDash);
+  margin: 0;
+  text-align: center; 
+  padding: 0.5vh 0.1vw; 
+}
+
+.dashboard_historico .tabela_alerta_servidores tbody td{
+  padding: 1vh 0vw 1vh 1vw;
+}
+
+.dashboard_historico .tabela_alerta_servidores tbody tr {
+  position: relative;
+  
+}
+
+.dashboard_historico .tabela_alerta_servidores tbody tr::after {
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:1%; 
+  width:95%;    
+  height:1px;
+  background: #fff
+}
+
+.dashboard_historico .tabela_alerta_servidores tbody {
+  display: block;
+  max-height: 26vh;
+  overflow-y: auto;    
+  direction: rtl;
+  transition: all 0.3s ease;
+}
+
+.dashboard_historico .tabela_alerta_servidores thead,
+.dashboard_historico .tabela_alerta_servidores tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  direction: ltr;
+}
+
+.tabela_alerta_servidores th,
+.tabela_alerta_servidores td {
+  box-sizing: border-box;
+}
+
+.tabela_alerta_servidores tbody td:nth-child(1){ width:25%; }
+.tabela_alerta_servidores tbody td:nth-child(n+2){ width:18.75%; text-align:center; }
+
+/* aplica no contêiner que rola */
+.dashboard_historico .tabela_alerta_servidores tbody::-webkit-scrollbar {
+  width: 8px;               
+  background-color: #fff;
+}
+
+.dashboard_historico .tabela_alerta_servidores tbody::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.25);
+  border-radius: 8px;
+}
+
+.dashboard_historico .tabela_alerta_servidores tbody::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,1);
+  border-radius: 8px;
+}
+
+.dashboard_historico .tabela_alerta_servidores tbody::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;              /* esconde as setas */
+}
+
+.dashboard_historico .alerta_tempo_e_especificações_hardware{
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1.5fr 0.5fr;
+  column-gap: 2vw;
+  justify-self: end;
+  margin-left: 5vw;
+}
+
+.dashboard_historico .gráfico_alertas_tempo_wrapper{
+  background-color: var(--cinzaDash);
+  width: 60vw;
+  height: 35vh;
+  justify-self: end;
+  align-self: flex-start;
+  color: var(--branco);
+  padding: 2.88vh 1.5vw;
+  border-radius: 2vh;
+}
+
+.dashboard_historico .especificacoes_hardware{
+  background-color: var(--cinzaDash);
+  color: var(--branco);
+  padding: 2.88vh 1.5vw;
+  border-radius: 2vh;
+  align-self: center;
+  width: 15vw;
+  height: 41vh;
+  padding: 0;
+}
+
+.dashboard_historico .especificacoes_hardware .nome_div{
+  background-color: #fff;
+  color: var(--cinzaDash);
+  font-size: 1.5rem;
+  text-align: center;
+  width: 100%;
+  justify-self: center;
+  border-top-left-radius: 2vh;
+  border-top-right-radius: 2vh;
+  padding-top: 1vh;
+  font-weight: 100;
+}
+
+.dashboard_historico .especificacoes_hardware .especificacoes{
+  padding: 1rem;
+  font-size: 1.5rem;
+  align-self: center;
+  font-weight: 100;
+}
+
+.dashboard_historico .especificacoes_hardware .ram_total{
+  border-bottom: solid 1px #fff;
+}
+
+.dashboard_historico .especificacoes_hardware .nucleos_cpu{
+  border-bottom: solid 1px #fff;
+}
+
+

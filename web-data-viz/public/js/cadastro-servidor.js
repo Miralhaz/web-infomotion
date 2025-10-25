@@ -9,24 +9,29 @@ if(cargoUsuario != "Gestor"){
 })
 
 function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
+
   let acoesHtml = ""
   if (cargoUsuario == "Gestor") {
     acoesHtml = `
-                  <div class="acoes">
-                    <a onclick="telaEdicaoServidor('${apelido}', '${ip}', ${id})">
+
+              
+                    <a onclick="event.stopPropagation(); telaEdicaoServidor('${apelido}', '${ip}', ${id})">
                       <img src="../assets/icon/edit-icon.png" alt="Editar" class="iconeTabela">
                     </a>
-                    <a onclick="chamarModal(${id})">
+                    <a onclick="event.stopPropagation(); chamarModal(${id})">
                       <img src="../assets/icon/delete-icon.png" alt="Excluir" class="iconeTabela">
                     </a>
-                  </div>`
+                  `
   }
 
   let html = `
+                   <div onclick="irParaDash(${id})">
               <div class="card-servidor">
                 <div class="card-top">
                   <h3>${apelido}</h3>
-                  ${acoesHtml}
+                  <div class="acoes">
+                   ${acoesHtml}
+                  </div>
                 </div>
 
                 <p class="ip">IP: ${ip}</p>
@@ -36,8 +41,14 @@ function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
                   <div><span>RAM</span><strong>${uso_ram}%</strong></div>
                   <div><span>DISCO</span><strong>${uso_disco}%</strong></div>
                 </div>
-              </div>`;
+              </div>
+            </div>`;
   return html;
+}
+
+function irParaDash(idServidor) {
+    sessionStorage.ID_SERVIDOR_SELECIONADO = idServidor;
+    window.location.href = 'dashboard.html'; 
 }
 
 function telaCadastroServidor() {
@@ -127,11 +138,13 @@ function cadastrar() {
   var nomeVar = nome.value
   var ipVar = ip.value
   var idEmpresaVar = sessionStorage.ID_EMPRESA
+  var idUsuarioVar = sessionStorage.ID_USUARIO
 
   if (
     nomeVar == "" ||
     ipVar == "" ||
-    idEmpresaVar == ""
+    idEmpresaVar == "" ||
+    idUsuarioVar == ""
   ) {
     finalizarAguardar("(Mensagem de erro para todos os campos em branco)");
     return false;
@@ -146,6 +159,7 @@ function cadastrar() {
       nomeServer: nomeVar,
       ipServer: ipVar,
       idServer: idEmpresaVar,
+      idUsuarioServer: idUsuarioVar
 
     }),
   })

@@ -40,10 +40,11 @@ function cadastrar(req, res) {
   var nome = req.body.nomeServer;
   var ip = req.body.ipServer;
   var idEmpresa = req.body.idServer;
+  var idUsuario = req.body.idUsuarioServer;
   console.log(nome)
   console.log(ip)
   console.log(idEmpresa)
-
+  console.log(idUsuario);
 
 
 
@@ -54,10 +55,12 @@ function cadastrar(req, res) {
     res.status(400).send("idEmpresa está undefined!");
   } else if (idEmpresa == undefined) {
     res.status(400).send("ip está undefined!");
+  } else if (idUsuario == undefined) {
+    res.status(400).send("Id Usuario está undefined!")
   } else {
     console.log("b")
 
-    servidorModel.cadastrar(idEmpresa, ip, nome)
+    servidorModel.cadastrar(idEmpresa, ip, nome, idUsuario)
       .then((resultado) => {
         res.status(201).json(resultado);
       }
@@ -204,6 +207,50 @@ function listarDadosBarras(req, res){
     );
 }
 
+function receberAlertas(req, res){
+  var idUsuario = req.params.idUsuario;
+
+  servidorModel.receberAlertas(idUsuario)
+    .then(
+      function (resultado){
+        if (resultado.length > 0) {
+          res.status(200).json(resultado);
+        } else {
+          res.status(204).send("Nenhum alerta encontrado!");
+        }
+      }
+    )
+    .catch(
+      function (erro) {
+        console.log(erro);
+        console.log("\nHouve um erro ao buscar alertas dos servidores! Erro: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+      }
+    );
+}
+
+function receberEspecificações(req, res){
+  var idUsuario = req.params.idUsuario;
+
+  servidorModel.receberEspecificações(idUsuario)
+    .then(
+      function (resultado){
+        if (resultado.length > 0) {
+          res.status(200).json(resultado);
+        } else {
+          res.status(204).send("Nenhum alerta encontrado!");
+        }
+      }
+    )
+    .catch(
+      function (erro) {
+        console.log(erro);
+        console.log("\nHouve um erro ao buscar alertas dos servidores! Erro: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+      }
+    );
+}
+
 
 module.exports = {
   buscarServidoresPorEmpresa,
@@ -214,5 +261,7 @@ module.exports = {
   obterDadosKpi,
   listarDadosLinhas,
   listarDadosBarras,
-  cadastrar
+  cadastrar,
+  receberAlertas,
+  receberEspecificações
 }

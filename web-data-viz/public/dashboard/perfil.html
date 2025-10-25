@@ -90,9 +90,16 @@
     </div>
   </main>
 
-  <script src="../js/perfil.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
+<script>
+  var cargoUsuario = sessionStorage.getItem("USUARIO_CARGO")
 
+document.addEventListener("DOMContentLoaded", function () {
+if(cargoUsuario != "Gestor"){
+    var elemento = document.getElementById("usuario-header");
+    elemento.style.display = "none";
+}
+})
+</script>
 </html>

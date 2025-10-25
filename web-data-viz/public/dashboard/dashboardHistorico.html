@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Histórico - InfoMotion</title>
+  <link rel="stylesheet" href="../css/dashboards.css">
+  <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
+</head>
+
+<body>
+  <section class="header">
+    <div class="header-left">
+      <div class="parte-cima">
+        <div class="icone ativo">
+          <a href="#" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/perfil.png" alt="">
+            Perfil </a>
+        </div>
+        <div id="usuario-header" class="icone">
+          <a href="tela-usuarios.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/mdi_users.png" alt="">
+            Usuários
+          </a>
+        </div>
+        <div class="icone">
+          <a href="tela-servidores.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/teenyicons_servers-solid.png" alt="">
+            Servidores
+          </a>
+        </div>
+        <div class="icone">
+          <a href="dashboardHistorico.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/fluent-mdl2_b-i-dashboard.png" alt="">
+            Dashboard
+          </a>
+        </div>
+      </div>
+
+      <div class="parte-baixo">
+        <div class="icone">
+          <a href="https://infomotionmonitoramentos.atlassian.net/servicedesk/customer/portal/1"
+            class="descricao-icone">
+            <img src="../assets/imgs-dashboard/fluent_person-suport-32-light.png" alt="">
+            Suporte
+          </a>
+        </div>
+        <div class="icone">
+          <a href="../index.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/uil_exit.png" alt="">
+            Sair
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container dashboard_historico">
+    <div class="div-selects">
+      <select name="servidores" id="selectTempo" onchange="refresh(this.value)">
+        <option value=""  disabled>Selecione o tempo de medição</option>
+        <option value="1" >1 Dia</option>
+        <option value="7" >7 Dias</option>
+        <option value="30" >30 Dias</option>
+      </select>
+
+      <div class="nome_dash">
+        Dashboard Histórico
+      </div>
+    </div>
+
+      <div class="tabela_alerta_servidores">
+        <div class="nome_tabela" id="nome_tabela">
+          Relatório de alertas(X Tempo)
+        </div>
+          <table class="table_alerta_servidores">
+            <thead>
+              <tr>
+                <th scope="col">Nome do servidor <img src="../assets/icon/" alt=""></th>
+                <th scope="col">Alertas CPU</th>
+                <th scope="col">Alertas RAM</th>
+                <th scope="col">Alertas Disco</th>
+                <th scope="col">Risco (%)</th>
+              </tr>
+            </thead>
+            <tbody id="bodyTabelaAlerta">
+            </tbody>
+          </table>
+      </div>
+
+    <div class="alerta_tempo_e_especificações_hardware">
+
+      <div class="gráfico_alertas_tempo_wrapper" id="gráfico_alertas_tempo_wrapper">
+      
+        <div class="gráfico_chart">
+          <canvas id="lineChartHistorico" class="grafico_alertas_tempo" style="width: 60vw; height: 250px;"></canvas>
+        </div>
+      </div>
+
+      <div class="especificacoes_hardware">
+        <div class="nome_div">Especificação Hardware</div>
+        <div class="especificacoes">
+          <div class="ram_total">RAM Total:</div>
+          <div class="nucleos_cpu">Núcleos da CPU<br>Físicos: 4<br>Lógicos: 3</div>
+          <div class="disco">Capacidade Disco :790GB</div>
+        </div>
+      </div>
+    </div>
+    
+        
+  </div>
+
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../js/dashboard-historico.js"></script>
+<script>
+  const idUsuario = sessionStorage.getItem("ID_USUARIO")
+
+  function refresh(x){
+    console.log('funcao refresh');
+    
+    localStorage.setItem("tempoSelecionado", x); // salva antes do reload
+    location.reload()
+  }
+
+  function selecionarTempo(){
+    const tempo = localStorage.getItem("tempoSelecionado");
+    if (tempo) {
+      document.getElementById("selectTempo").value = tempo;
+    }
+  }
+
+  window.onload = function(){
+    receberAlertas(idUsuario)
+    selecionarTempo()
+  }
+</script>
+</html>

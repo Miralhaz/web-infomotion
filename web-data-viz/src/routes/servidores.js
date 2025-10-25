@@ -36,4 +36,13 @@ router.get("/listarDadosBarras/:idServidor", function (req, res){
   servidoresController.listarDadosBarras(req, res);
 });
 
+router.get("/receberAlertas/:idUsuario", function (req, res){
+  servidoresController.receberAlertas(req, res);
+});
+
+router.get("/receberEspecificações/:idServidor", function (req, res){
+  servidoresController.receberEspecificações(req, res);
+});
+
+
 module.exports = router;
