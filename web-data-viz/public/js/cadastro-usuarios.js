@@ -301,32 +301,17 @@ function editarServidorFuncionario(id, idServidor, checkbox) {
 
 function alertaSalvar() {
   swal.fire({
-    title: "Você deseja salvar as alterações?",
-    showDenyButton: true,
-    showCancelButton: true,
-    confirmButtonText: "Salvar",
+    icon: "success",
+    title: "As alterações foram salvas!",
+    confirmButtonText: "Ok",
     confirmButtonColor: 'rgba(200, 156, 0, 1)',
-    denyButtonText: "Não salvar",
-    denyButtonColor: 'rgba(148, 0, 0, 1)',
-    cancelButtonText: "Cancelar",
-    cancelButtonColor: '#222'
 
   }).then((result) => {
 
-    if (result.isConfirmed) {
-      swal.fire("Salvo!", "", "success");
       listarFuncionarios();
 
       document.querySelector('#tabela2').style.display = 'none';
       document.getElementById('editar-funcionario-container').style.display = 'none';
-
-    } else if (result.isDenied) {
-      swal.fire("As alterações não foram salvas", "", "info");
-      listarFuncionarios();
-
-      document.querySelector('#tabela2').style.display = 'none';
-      document.getElementById('editar-funcionario-container').style.display = 'none';
-    }
 
   });
 }
