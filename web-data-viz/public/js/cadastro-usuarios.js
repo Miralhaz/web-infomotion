@@ -118,11 +118,8 @@ function listarFuncionarios() {
         resposta.json().then(function (resposta) {
           console.log("Dados recebidos: ", JSON.stringify(resposta));
 
-          let iptPesquisarServer = document.getElementById('ipt_pesquisar_server');
-          iptPesquisarServer.style.display = 'none';
-
-          let labelPesquisarServer = document.getElementById('label_pesquisar_server');
-          labelPesquisarServer.style.display = 'none';
+          document.getElementById('ipt_pesquisar_server').style.display = 'none';
+          document.getElementById('label_pesquisar_server').style.display = 'none';
 
           let tabela = document.querySelector('#tabela1');
           let frase = ``;
@@ -177,10 +174,10 @@ function listarUmFuncionario(id) {
         resposta.json().then(function (resposta) {
           console.log("Dados recebidos: ", JSON.stringify(resposta));
 
-          let editarContainer = document.getElementById('editar-funcionario-container');
-          editarContainer.style.display = 'flex';
+          document.getElementById('editar-funcionario-container').style.display = 'flex';
 
           let editarCard = document.getElementById('editar-funcionario-card');
+
           editarCard.innerHTML = `
             <div class="editar-coluna">
               <a onclick="alertaSalvar()"> 
@@ -200,7 +197,7 @@ function listarUmFuncionario(id) {
 
           document.getElementById('ipt_pesquisar_server').style.display = 'block';
           document.getElementById('label_pesquisar_server').style.display = 'block';
-   
+
           listarServidoresFuncionario(resposta[0].id);
         });
       } else {
@@ -223,13 +220,13 @@ function listarServidoresFuncionario(id) {
       if (resposta.ok) {
         resposta.json().then(function (resposta) {
           console.log("Dados recebidos: ", JSON.stringify(resposta));
-         
-          
+
+
           let tabela = document.getElementById('tabela2');
           let frase = ``;
 
           for (let i = 0; i < resposta.length; i++) {
-           const checkedAttr = (resposta[i].idFuncionario === id) ? "checked" : "";
+            const checkedAttr = (resposta[i].idFuncionario === id) ? "checked" : "";
 
             frase += `
                       <tr>
@@ -263,94 +260,77 @@ function listarServidoresFuncionario(id) {
 function editarServidorFuncionario(id, idServidor, checkbox) {
   var id = sessionStorage.ID_USUARIO;
 
-      if (checkbox.checked) {
-        console.log('Toggle ligado');
+  if (checkbox.checked) {
+    console.log('Toggle ligado');
 
-        fetch(`/usuarios/adicionarServidor/${id}/${idServidor}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then(function (resposta) {
-            console.log("resposta: ", resposta);
+    fetch(`/usuarios/adicionarServidor/${id}/${idServidor}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        console.log("resposta: ", resposta);
 
-            if (resposta.ok) {
-              finalizarAguardar("Cadastro de servidor por funcionário realizado com sucesso!!...");
-              finalizarAguardar();
-            } else {
-              throw "Houve um erro ao tentar realizar o cadastro!";
-            }
-          })
-          .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-            finalizarAguardar();
-          });
+        if (resposta.ok) {
+          finalizarAguardar("Cadastro de servidor por funcionário realizado com sucesso!!...");
+          finalizarAguardar();
+        } else {
+          throw "Houve um erro ao tentar realizar o cadastro!";
+        }
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+        finalizarAguardar();
+      });
 
-        return false;
+    return false;
 
 
-      } else {
-        console.log('Toggle desligado');
+  } else {
+    console.log('Toggle desligado');
 
-        fetch(`/usuarios/desassociarServidor/${id}/${idServidor}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then(function (resposta) {
-            console.log("resposta: ", resposta);
+    fetch(`/usuarios/desassociarServidor/${id}/${idServidor}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        console.log("resposta: ", resposta);
 
-            if (resposta.ok) {
-              var sectionErrosLogin = document.getElementById("section_erros_login");
-              sectionErrosLogin.style.backgroundColor = '#069006';
+        if (resposta.ok) {
+          document.getElementById("section_erros_login").style.backgroundColor = '#069006';
 
-            } else {
-              throw "Houve um erro ao tentar realizar a exclusão!";
-            }
-          })
-          .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-            finalizarAguardar();
-          });
+        } else {
+          throw "Houve um erro ao tentar realizar a exclusão!";
+        }
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+        finalizarAguardar();
+      });
 
-        return false;
-      }
-    }
+    return false;
+  }
+}
 
 
 /* Sweet Alerts */
 
 function alertaSalvar() {
   swal.fire({
-    title: "Você deseja salvar as alterações?",
-    showDenyButton: true,
-    showCancelButton: true,
-    confirmButtonText: "Salvar",
-    denyButtonText: "Não salvar",
-    cancelButtonText: "Cancelar"
+    icon: "success",
+    title: "As alterações foram salvas!",
+    confirmButtonText: "Ok",
+    confirmButtonColor: 'rgba(200, 156, 0, 1)',
 
   }).then((result) => {
 
-    if (result.isConfirmed) {
-      swal.fire("Salvo!", "", "success");
       listarFuncionarios();
-      let tabela = document.querySelector('#tabela2');
-      tabela.style.display = 'none';
 
-    } else if (result.isDenied) {
-      swal.fire("As alterações não foram salvas", "", "info");
-      listarFuncionarios();
-      let tabela = document.querySelector('#tabela2');
-      tabela.style.display = 'none';
-    }
-
-    let iptPesquisarUser = document.getElementById('ipt_pesquisar_user');
-    iptPesquisarUser.style.display = 'flex';
-
-    let labelPesquisarUser = document.getElementById('label_pesquisar_user');
-    labelPesquisarUser.style.display = 'flex';
+      document.querySelector('#tabela2').style.display = 'none';
+      document.getElementById('editar-funcionario-container').style.display = 'none';
 
   });
 }
@@ -361,12 +341,18 @@ function excluirFuncionario(id) {
     text: "Você não poderá reverter as alterações!",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
+    confirmButtonColor: "rgba(200, 156, 0, 1)",
+    cancelButtonColor: "rgba(148, 0, 0, 1)",
     confirmButtonText: "Sim, quero deletar!",
     cancelButtonText: "Cancelar"
   }).then((result) => {
     if (result.isConfirmed) {
+
+      document.querySelector('#tabela2').style.display = 'none';
+      document.getElementById('editar-funcionario-container').style.display = 'none';
+
+      document.getElementById('ipt_pesquisar_server').style.display = 'none';
+      document.getElementById('label_pesquisar_server').style.display = 'none';
 
       var idEmpresa = sessionStorage.ID_EMPRESA;
 
@@ -380,8 +366,10 @@ function excluirFuncionario(id) {
           console.log("resposta: ", resposta);
 
           if (resposta.ok) {
-            var sectionErrosLogin = document.getElementById("section_erros_login");
-            sectionErrosLogin.style.backgroundColor = '#069006';
+
+            listarFuncionarios();
+
+            document.getElementById("section_erros_login").style.backgroundColor = '#069006';
 
             finalizarAguardar(
               Swal.fire({
@@ -391,7 +379,6 @@ function excluirFuncionario(id) {
               })
             );
 
-            setTimeout(() => "2000");
           } else {
             throw "Houve um erro ao tentar realizar a exclusão!";
           }
