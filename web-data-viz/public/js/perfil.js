@@ -32,6 +32,13 @@ function carregarPerfil() {
       console.error("Erro ao carregar perfil:", erro);
     });
 }
+var cargoUsuario = sessionStorage.getItem("USUARIO_CARGO")
+document.addEventListener("DOMContentLoaded", function () {
+if(cargoUsuario != "Gestor"){
+    var elemento = document.getElementById("usuario-header");
+    elemento.style.display = "none";
+}
+})
 
 function carregarServidores() {
   const idUsuario = sessionStorage.ID_USUARIO;

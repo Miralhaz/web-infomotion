@@ -41,6 +41,14 @@ const idServidor = sessionStorage.getItem('servidorID');
 }
 
 */
+var cargoUsuario = sessionStorage.getItem("USUARIO_CARGO")
+document.addEventListener("DOMContentLoaded", function () {
+if(cargoUsuario != "Gestor"){
+    var elemento = document.getElementById("usuario-header");
+    elemento.style.display = "none";
+}
+})
+
 let componentesEstatico = []
 function listarComponentes() {
   /* const listaIdServidor = sessionStorage.getItem('ID_SERVIDOR') */
