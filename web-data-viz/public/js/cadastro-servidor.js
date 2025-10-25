@@ -1,10 +1,17 @@
 var listaServidores = []
+var cargoUsuario = sessionStorage.getItem("USUARIO_CARGO")
+
+document.addEventListener("DOMContentLoaded", function () {
+if(cargoUsuario != "Gestor"){
+    var elemento = document.getElementById("usuario-header");
+    elemento.style.display = "none";
+}
+})
 
 function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
-  let html = `
-              <div class="card-servidor">
-                <div class="card-top">
-                  <h3>${apelido}</h3>
+  let acoesHtml = ""
+  if (cargoUsuario == "Gestor") {
+    acoesHtml = `
                   <div class="acoes">
                     <a onclick="telaEdicaoServidor('${apelido}', '${ip}', ${id})">
                       <img src="../assets/icon/edit-icon.png" alt="Editar" class="iconeTabela">
@@ -12,7 +19,14 @@ function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
                     <a onclick="chamarModal(${id})">
                       <img src="../assets/icon/delete-icon.png" alt="Excluir" class="iconeTabela">
                     </a>
-                  </div>
+                  </div>`
+  }
+
+  let html = `
+              <div class="card-servidor">
+                <div class="card-top">
+                  <h3>${apelido}</h3>
+                  ${acoesHtml}
                 </div>
 
                 <p class="ip">IP: ${ip}</p>
@@ -31,11 +45,13 @@ function telaCadastroServidor() {
 }
 
 function telaEdicaoServidor(apelido, ip, idServidor) {
-  sessionStorage.setItem('servidorApelido', apelido);
-  sessionStorage.setItem('servidorIP', ip);
-  sessionStorage.setItem('servidorID', idServidor);
+  if (cargoUsuario === "Gestor") {
+    sessionStorage.setItem('servidorApelido', apelido);
+    sessionStorage.setItem('servidorIP', ip);
+    sessionStorage.setItem('servidorID', idServidor);
 
-  window.location.href = "./tela-gerenciamento-servidor.html";
+    window.location.href = "./tela-gerenciamento-servidor.html";
+  }
 }
 
 function listarServidoresPorUsuario() {
@@ -157,12 +173,28 @@ function cadastrar() {
   return false;
 }
 
-function chamarModal(id) {
-  const modal = document.querySelector('.container-modal')
-  const btn_excluir = document.getElementById('btn_excluir');
+document.addEventListener("DOMContentLoaded", function () {
 
-  btn_excluir.innerHTML = `<button class="btn-add" onclick="excluirServidor(${id})">excluir</button>   <button class="btn-add" onclick="fecharModal()">voltar</button>`
-  modal.classList.add('active-modal')
+  if (cargoUsuario === "Suporte") {
+    var elemento = document.querySelector(".btn-add")
+    var elemento2 = document.querySelector(".card-top")
+    if (elemento) {
+      elemento.style.display = "none";
+      if (elemento2) {
+        elemento2.style.display = "none";
+      }
+    }
+
+  }
+})
+
+function chamarModal(id) {
+  if (cargoUsuario === "Gestor") {
+    const modal = document.querySelector('.container-modal')
+    const btn_excluir = document.getElementById('btn_excluir');
+    btn_excluir.innerHTML = `<button class="btn-add" onclick="excluirServidor(${id})">excluir</button>   <button class="btn-add" onclick="fecharModal()">voltar</button>`
+    modal.classList.add('active-modal')
+  }
 }
 
 function fecharModal() {
@@ -257,4 +289,6 @@ function selecionar(opcao_filtro) {
   if (menu.classList.contains("show")) {
     menu.classList.remove("show")
   }
+
+
 }

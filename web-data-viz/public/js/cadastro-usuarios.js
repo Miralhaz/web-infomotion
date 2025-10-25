@@ -1,6 +1,25 @@
 let vetorUsuarios = [];
 let vetorServidores = [];
 
+document.addEventListener("DOMContentLoaded", function () {
+var cargoUsuario = sessionStorage.getItem("USUARIO_CARGO")
+
+  if(cargoUsuario === "Suporte"){
+    var elemento = document.querySelector(".container-usuario")
+    if (elemento) {
+      elemento.style.display = "none";
+    }
+  
+    }
+})
+
+document.addEventListener("DOMContentLoaded", function () {
+if(cargoUsuario != "Gestor"){
+    var elemento = document.getElementById("usuario-header");
+    elemento.style.display = "none";
+}
+})
+
 function telaCadastroFuncionario() {
   window.location.href = "tela-cadastro-usuario.html"
 }

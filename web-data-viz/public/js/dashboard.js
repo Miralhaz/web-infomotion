@@ -32,8 +32,13 @@ function listarServidores() {
             console.log(`#ERRO: ${resposta}`);
         });
 }
-
-
+var cargoUsuario = sessionStorage.getItem("USUARIO_CARGO")
+document.addEventListener("DOMContentLoaded", function () {
+if(cargoUsuario != "Gestor"){
+    var elemento = document.getElementById("usuario-header");
+    elemento.style.display = "none";
+}
+})
 
 function obterDadosKpi(idServidor) {
 
