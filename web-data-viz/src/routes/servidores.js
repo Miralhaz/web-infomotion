@@ -40,9 +40,11 @@ router.get("/receberAlertas/:idUsuario", function (req, res){
   servidoresController.receberAlertas(req, res);
 });
 
-router.get("/receberEspecificações/:idServidor", function (req, res){
-  servidoresController.receberEspecificações(req, res);
+router.get("/receberEspecificacoes/:idServidor", function (req, res){
+  servidoresController.receberEspecificacoes(req, res);
 });
+
+
 
 
 module.exports = router;
