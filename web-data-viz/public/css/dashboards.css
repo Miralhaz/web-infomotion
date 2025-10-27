@@ -1851,6 +1851,7 @@ background-color: #222;
   color: var(--branco);
   padding: 2.88vh 1.5vw;
   border-radius: 2vh;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .dashboard_historico .especificacoes_hardware{
@@ -1862,6 +1863,7 @@ background-color: #222;
   width: 15vw;
   height: 41vh;
   padding: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .dashboard_historico .especificacoes_hardware .nome_div{
@@ -1890,6 +1892,12 @@ background-color: #222;
 
 .dashboard_historico .especificacoes_hardware .nucleos_cpu{
   border-bottom: solid 1px #fff;
+}
+
+.dashboard_historico .nome_gráfico{
+  margin-bottom: 1vh;
+  font-size: 1.5rem;
+
 }
 
 
