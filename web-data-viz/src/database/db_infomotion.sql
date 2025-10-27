@@ -113,6 +113,15 @@ CREATE TABLE IF NOT EXISTS infomotion.usuario_has_servidor (
   FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
 );
 
+create table if not exists infomotion.especificacao_componente (
+id int auto_increment primary key,
+nome_especificacao varchar(100),
+valor varchar(100),
+fk_componente int not null,
+dt_cadastro datetime default current_timestamp,
+foreign key (fk_componente) references componentes(id)
+);
+
 INSERT INTO empresa (nome, cnpj, ativa)
 VALUES 
 ('TechMotion', '12.345.678/0001-90', 1),
@@ -199,3 +208,4 @@ select * from componentes;
  inner join parametro_alerta as p on p.fk_servidor = s.id;
  
  */
+ 
