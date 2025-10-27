@@ -152,25 +152,13 @@ function receberAlertas(idUsuario) {
   return database.executar(instrucaoSql);
 }
 
-function receberEspecificações(idUsuario) {
+function receberEspecificacoes(idServidor) {
 
   var instrucaoSql = `
-    SELECT 
-    s.apelido,
-    c.tipo,
-    DATE_FORMAT(a.dt_registro, '%d/%m/%Y') AS data_registro,
-    a.max,
-    a.min
-    FROM alertas AS a
-      INNER JOIN parametro_alerta AS p
-        ON p.id = a.fk_parametro          
-        INNER JOIN servidor AS s
-          ON s.id = p.fk_servidor           
-          INNER JOIN usuario_has_servidor AS us
-            ON us.fk_servidor = s.id    
-            INNER JOIN componentes as c
-              ON p.fk_componente = c.id      
-            WHERE us.fk_usuario = '${idUsuario}';
+    select nome_especificacao, valor, tipo from especificacao_componente e 
+    inner join componentes c on c.id = e.fk_componente
+    where fk_componente in (
+    select id from componentes where fk_servidor = '${idServidor}');
   `;
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -189,5 +177,5 @@ module.exports = {
   listarDadosBarras,
   cadastrar,
   receberAlertas,
-  receberEspecificações
+  receberEspecificacoes
 }

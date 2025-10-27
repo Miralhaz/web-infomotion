@@ -1,7 +1,9 @@
+
 let info = []
 let infoExibicao = []
 const tempo = localStorage.getItem("tempoSelecionado");
 let chartInstance = null;
+let especificacao = []
 
 function receberAlertas(idUsuario) {
     fetch(`/servidores/receberAlertas/${idUsuario}`)
@@ -92,7 +94,7 @@ function inserirDadosTabela(){
         }
     }
 
-    plotarGraficoLinhas(infoExibicao[0].id)
+    chamarFuncoesServidores(infoExibicao[0].id)
 
     // jogando os dados no HTML
     document.getElementById("nome_tabela").innerHTML = `Relatório de alertas X ${tempo} dias`
@@ -100,7 +102,7 @@ function inserirDadosTabela(){
     for (let index = 0; index < infoTabela.length; index++) {
         const element = infoTabela[index];
         bodyTabela.innerHTML += `
-        <tr  onclick="plotarGraficoLinhas(${element.id})">
+        <tr  onclick="chamarFuncoesServidores(${element.id})">
             <td>
                 ${element.apelido}
             </td>
@@ -280,10 +282,58 @@ function plotarGraficoLinhas(idServidor) {
 
 }
 
-var cargoUsuario = sessionStorage.getItem("USUARIO_CARGO")
+function listarEspecificacoes(idServidor) {
+    
+    fetch(`/servidores/receberEspecificacoes/${idServidor}`)
+        .then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(function (dados) {
+                    console.log("Dados recebidos: ", JSON.stringify(dados));
+                    especificacao.push(...dados)
+                    console.log("especificacao", especificacao);
+                    plotarEspecificacaoHardware()
+                    
+                });
 
-document.addEventListener("DOMContentLoaded", function () {
-if(cargoUsuario != "Gestor"){
-    var elemento = document.getElementById("usuario-header");
-    elemento.style.display = "none";
-}})
+            } else {
+                throw "Houve um erro ao tentar receber as especificações dos servidores!";
+            }
+        })
+
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+
+        console.log();
+        
+        //
+        
+
+}
+
+function plotarEspecificacaoHardware(){
+
+    const ramTotal = document.getElementById("ram_total")
+        const CPU = document.getElementById("nucleos_cpu")
+        const disco = document.getElementById("disco")
+        let logico = ''
+        let fisico = ''
+
+        for (let index = 0; index < especificacao.length; index++) {
+            const element = especificacao[index];
+            if (element.tipo.toUpperCase() == 'cpu'.toUpperCase()){
+                if (element.nome_especificacao.toUpperCase() == "Quantidade de núcleos lógicos".toUpperCase()) {
+                    logico = element.valor
+                } else fisico = element.valor
+            } else if (element.tipo.toUpperCase() == 'ram'.toUpperCase()){
+                ramTotal.innerHTML = `RAM Total: ${element.valor}`
+            } else disco.innerHTML = `Capacidade Disco: ${element.valor}`
+        }
+        CPU.innerHTML = `Núcleos da CPU<br>Físicos: ${fisico}<br>Lógicos: ${logico}`
+
+}
+
+function chamarFuncoesServidores(idServidor) {
+    plotarGraficoLinhas(idServidor)
+    listarEspecificacoes(idServidor)
+}

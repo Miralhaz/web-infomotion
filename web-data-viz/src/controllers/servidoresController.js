@@ -229,10 +229,10 @@ function receberAlertas(req, res){
     );
 }
 
-function receberEspecificações(req, res){
-  var idUsuario = req.params.idUsuario;
+function receberEspecificacoes(req, res){
+  var idServidor = req.params.idServidor;
 
-  servidorModel.receberEspecificações(idUsuario)
+  servidorModel.receberEspecificacoes(idServidor)
     .then(
       function (resultado){
         if (resultado.length > 0) {
@@ -263,5 +263,5 @@ module.exports = {
   listarDadosBarras,
   cadastrar,
   receberAlertas,
-  receberEspecificações
+  receberEspecificacoes
 }
