@@ -169,8 +169,9 @@ function listarUmFuncionario(req, res) {
 
 function listarServidoresFuncionario(req, res){
     var idEmpresa = req.params.idEmpresa;
+    var idFuncionario = req.params.idFuncionario
 
-    usuarioModel.listarServidoresFuncionario(idEmpresa)
+    usuarioModel.listarServidoresFuncionario(idEmpresa, idFuncionario)
         .then(
             function (resultado) {
                 if (resultado.length > 0) {

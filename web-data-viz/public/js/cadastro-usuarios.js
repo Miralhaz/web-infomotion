@@ -213,7 +213,7 @@ function listarUmFuncionario(id) {
 function listarServidoresFuncionario(id) {
   let idEmpresa = sessionStorage.ID_EMPRESA;
 
-  fetch(`/usuarios/listarServidores/${idEmpresa}`)
+  fetch(`/usuarios/listarServidores/${id}/${idEmpresa}`)
     .then(function (resposta) {
       console.log("resposta: ", resposta);
 
