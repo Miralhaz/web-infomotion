@@ -357,7 +357,7 @@ function plotarGraficoLinhas(dados, idServidor) {
                 fill: false,
                 backgroundColor: '#FFB000',
                 borderColor: '#FFB000',
-                tension: 0.1
+                tension: 0.4
             },
             {
                 label: 'CPU',
@@ -365,7 +365,7 @@ function plotarGraficoLinhas(dados, idServidor) {
                 fill: false,
                 backgroundColor: '#E2E2E2',
                 borderColor: '#E2E2E2',
-                tension: 0.1
+                tension: 0.4
             },
             {
                 label: 'DISCO',
@@ -373,7 +373,7 @@ function plotarGraficoLinhas(dados, idServidor) {
                 fill: false,
                 backgroundColor: '#FAFF00',
                 borderColor: '#FAFF00',
-                tension: 0.1
+                tension: 0.4
             }]
         },
 
@@ -389,7 +389,10 @@ function plotarGraficoLinhas(dados, idServidor) {
                     title: {
                         display: true,
                         text: 'Porcentagem (%)',
-                        color: 'white'
+                        color: 'white',
+                        font: {
+                            size: 14
+                        }
                     },
                     grid: {
                         color: 'rgba(153, 153, 153, 0.2)',
@@ -404,7 +407,10 @@ function plotarGraficoLinhas(dados, idServidor) {
                     title: {
                         display: true,
                         text: 'Horário',
-                        color: 'white'
+                        color: 'white',
+                        font: {
+                            size: 14
+                        }
                     },
                     grid: {
                         drawOnChartArea: true
@@ -414,8 +420,11 @@ function plotarGraficoLinhas(dados, idServidor) {
             plugins: {
                 title: {
                     display: true,
-                    text: "Porcentagem de uso de componentes",
-                    color: 'white'
+                    text: "Porcentagem de uso de componentes (%)",
+                    color: 'white',
+                    font: {
+                        size: 18
+                    }
                 },
                 legend: {
                     position: 'top',
@@ -500,7 +509,10 @@ function plotarGraficoBarras(dados, idServidor) {
                     title: {
                         display: true,
                         text: 'Quantidade de processos',
-                        color: 'white'
+                        color: 'white',
+                        font: {
+                            size: 14
+                        }
                     },
                     grid: {
                         color: 'rgba(153, 153, 153, 0.2)',
@@ -515,7 +527,10 @@ function plotarGraficoBarras(dados, idServidor) {
                     title: {
                         display: true,
                         text: 'Horário',
-                        color: 'white'
+                        color: 'white',
+                        font: {
+                            size: 14
+                        }
                     },
                     grid: {
                         drawOnChartArea: true
@@ -526,7 +541,10 @@ function plotarGraficoBarras(dados, idServidor) {
                 title: {
                     display: true,
                     text: "Processos a cada 30 minutos",
-                    color: 'white'
+                    color: 'white',
+                    font: {
+                        size: 18
+                    }
                 },
                 legend: {
                     position: 'top',

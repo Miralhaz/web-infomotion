@@ -55,14 +55,15 @@ function listarUmFuncionario(id, idEmpresa) {
 
 }
 
-function listarServidoresFuncionario(idEmpresa){
+function listarServidoresFuncionario(idEmpresa, idFuncionario){
 console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listarServidoresFuncionario()");
 
     var instrucaoSql = `
-         select s.apelido, s.id as idServidor, uhs.fk_usuario as idFuncionario from servidor s
-         left join usuario_has_servidor uhs
-         on s.id = uhs.fk_servidor
-         where s.fk_empresa = '${idEmpresa}';
+        SELECT s.apelido, s.id AS idServidor, uhs.fk_usuario AS idFuncionario
+        FROM servidor s
+        LEFT JOIN usuario_has_servidor uhs
+        ON s.id = uhs.fk_servidor AND uhs.fk_usuario = ${idFuncionario}
+        WHERE s.fk_empresa = '${idEmpresa}';
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);

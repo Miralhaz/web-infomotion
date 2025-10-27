@@ -1582,7 +1582,7 @@ background-color: #222;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: 2vh;
+  border-radius: 0.6vh;
 }
 
 .div-dados .div-content {
@@ -1592,10 +1592,10 @@ background-color: #222;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 8vh;
+  gap: 14vh;
   background: linear-gradient(to right, var(--cinzaDash) 49%, white 50%, var(--cinzaDash) 51%);
   color: var(--branco);
-  border-radius: 0 0 2vh 2vh;
+  border-radius: 0 0 0.6vh 0.6vh;
 }
 
 .div-dados .div-content .titulo {
@@ -1631,7 +1631,7 @@ background-color: #222;
   align-items: center;
   color: var(--branco);
   background-color: var(--cinzaDash);
-  border-radius: 0 0 2vh 2vh;
+  border-radius: 0 0 0.6vh 0.6vh;
 }
 
 .div-donut{
@@ -1647,7 +1647,7 @@ background-color: #222;
   justify-content: center;
   padding: 2vh;
   background-color: var(--cinzaDash);
-  border-radius: 2vh;
+  border-radius: 0.6vh;
   margin-top: 2vh;
 }
 
