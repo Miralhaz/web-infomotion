@@ -1,5 +1,7 @@
 let info = []
 let infoExibicao = []
+const tempo = localStorage.getItem("tempoSelecionado");
+let chartInstance = null;
 
 function receberAlertas(idUsuario) {
     fetch(`/servidores/receberAlertas/${idUsuario}`)
@@ -25,7 +27,7 @@ function receberAlertas(idUsuario) {
 }
 
 function inserirDadosTabela(){
-    const tempo = localStorage.getItem("tempoSelecionado");
+    
     
     let infoAjustada = JSON.parse(JSON.stringify(info)); 
     let infoTabela = []
@@ -90,6 +92,8 @@ function inserirDadosTabela(){
         }
     }
 
+    plotarGraficoLinhas(infoExibicao[0].id)
+
     // jogando os dados no HTML
     document.getElementById("nome_tabela").innerHTML = `Relatório de alertas X ${tempo} dias`
     const bodyTabela = document.getElementById("bodyTabelaAlerta")
@@ -127,40 +131,69 @@ function dataToString(d){
 
 function plotarGraficoLinhas(idServidor) {
 
+    const canvas = document.getElementById('lineChartHistorico');
+    const existingChart = Chart.getChart(canvas);
+    if (existingChart) existingChart.destroy();
+
+   
+    const widthPx = window.innerWidth * 0.6;  // 60vw
+    const heightPx = window.innerHeight * 0.30; // 35vh
+
+    canvas.width = widthPx;
+    canvas.height = heightPx;
+
     let labels = [];
     let ram = [];
     let cpu = [];
     let disco = [];
+    let nomeServidor;
 
+    for (let index = 0; index < infoExibicao.length; index++) {
+        const element = infoExibicao[index];
+        if (element.id == idServidor){
+            nomeServidor = element.apelido
+        }
+    }
     
-  for (let i = 0; i < infoExibicao.length; i++) {
-    if(infoExibicao[i].id == idServidor){
-        const el = infoExibicao[i];
-        const d = el.data_registro instanceof Date ? el.data_registro : new Date(el.data_registro); // verifica se é Date ou não
-        const key = dataToString(d);
+    for (let i = 0; i < infoExibicao.length; i++) {
+
+        if(infoExibicao[i].id == idServidor){
+            const el = infoExibicao[i];
+            const d = el.data_registro instanceof Date ? el.data_registro : new Date(el.data_registro); // verifica se é Date ou não
+            const key = dataToString(d);
+        
+
+            // procurar índice da label
+            let idx = -1;
+            for (let j = 0; j < labels.length; j++) {
+            if (labels[j] === key) { idx = j; break; }
+            }
+
+            // se não existe, cria linha
+            if (idx === -1) {
+            labels.push(key);
+            ram.push(0);
+            cpu.push(0);
+            disco.push(0);
+            idx = labels.length - 1; // <<< índice correto
+            }
+
+            // incrementa série correta
+            const tipo = String(el.tipo).toUpperCase();
+            if (tipo === 'CPU'){       cpu[idx]   += 1;}
+            else if (tipo === 'DISCO') {disco[idx] += 1;}
+            else                       ram[idx]   += 1;
+        }
     }
 
-    // procurar índice da label
-    let idx = -1;
-    for (let j = 0; j < labels.length; j++) {
-      if (labels[j] === key) { idx = j; break; }
+    // Pegando o nome do servidor
+    if (nomeServidor) {
+        if(tempo > 1){
+            document.getElementById("nome_gráfico").innerHTML = `Quantidade de alertas dos ultimos ${tempo} dias do servidor: ${nomeServidor}`
+        }
+        else document.getElementById("nome_gráfico").innerHTML = `Quantidade de alertas do ultimo dia do servidor: ${nomeServidor}`
     }
-
-    // se não existe, cria linha
-    if (idx === -1) {
-      labels.push(key);
-      ram.push(0);
-      cpu.push(0);
-      disco.push(0);
-      idx = labels.length - 1; // <<< índice correto
-    }
-
-    // incrementa série correta
-    const tipo = String(el.tipo).toUpperCase();
-    if (tipo === 'CPU'){       cpu[idx]   += 1;}
-    else if (tipo === 'DISCO') {disco[idx] += 1;}
-    else                       ram[idx]   += 1;
-  }
+    
 
     const config = {
         type: 'line',
@@ -203,7 +236,7 @@ function plotarGraficoLinhas(idServidor) {
                     },
                     title: {
                         display: true,
-                        text: 'Porcentagem (%)',
+                        text: 'Quantidade de alertas',
                         color: 'white'
                     },
                     grid: {
@@ -218,7 +251,7 @@ function plotarGraficoLinhas(idServidor) {
                     },
                     title: {
                         display: true,
-                        text: 'Horário',
+                        text: 'Tempo',
                         color: 'white'
                     },
                     grid: {
@@ -228,9 +261,9 @@ function plotarGraficoLinhas(idServidor) {
             },
             plugins: {
                 title: {
-                    display: true,
-                    text: "Porcentagem de uso de componentes",
-                    color: 'white'
+                    display: false,
+                    text: "",
+                    color: ''
                 },
                 legend: {
                     position: 'top',
@@ -243,10 +276,7 @@ function plotarGraficoLinhas(idServidor) {
         }
     };
 
-    new Chart(
-        document.getElementById('lineChartHistorico'),
-        config
-    );
+    new Chart(canvas, config);
 
 }
 
@@ -256,5 +286,4 @@ document.addEventListener("DOMContentLoaded", function () {
 if(cargoUsuario != "Gestor"){
     var elemento = document.getElementById("usuario-header");
     elemento.style.display = "none";
-}
-})
+}})
