@@ -1,5 +1,6 @@
 let vetorUsuarios = [];
 let vetorServidores = [];
+let funcionarioAtual = null;
 
 document.addEventListener("DOMContentLoaded", function () {
 var cargoUsuario = sessionStorage.getItem("USUARIO_CARGO")
@@ -199,6 +200,7 @@ function listarUmFuncionario(id) {
           document.getElementById('label_pesquisar_server').style.display = 'block';
 
           listarServidoresFuncionario(resposta[0].id);
+          funcionarioAtual = id;
         });
       } else {
         throw "Houve um erro ao tentar listar o funcionário!";
@@ -212,6 +214,7 @@ function listarUmFuncionario(id) {
 
 function listarServidoresFuncionario(id) {
   let idEmpresa = sessionStorage.ID_EMPRESA;
+  vetorServidores = [];
 
   fetch(`/usuarios/listarServidores/${id}/${idEmpresa}`)
     .then(function (resposta) {
@@ -241,10 +244,13 @@ function listarServidoresFuncionario(id) {
                         </tr>`;
 
             vetorServidores.push({
-              id: resposta[i].idServidor,
-              apelido: resposta[i].apelido
+              idServidor: resposta[i].idServidor,
+              apelido: resposta[i].apelido,
+              idFuncionario: resposta[i].idFuncionario
             });
+
           }
+
           tabela.innerHTML = frase;
 
         });
@@ -257,13 +263,12 @@ function listarServidoresFuncionario(id) {
     });
 }
 
-function editarServidorFuncionario(id, idServidor, checkbox) {
-  var id = sessionStorage.ID_USUARIO;
+function editarServidorFuncionario(idFuncionario, idServidor, checkbox) {
 
   if (checkbox.checked) {
     console.log('Toggle ligado');
 
-    fetch(`/usuarios/adicionarServidor/${id}/${idServidor}`, {
+    fetch(`/usuarios/adicionarServidor/${idFuncionario}/${idServidor}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -290,7 +295,7 @@ function editarServidorFuncionario(id, idServidor, checkbox) {
   } else {
     console.log('Toggle desligado');
 
-    fetch(`/usuarios/desassociarServidor/${id}/${idServidor}`, {
+    fetch(`/usuarios/desassociarServidor/${idFuncionario}/${idServidor}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -424,6 +429,7 @@ function pesquisarFuncionario() {
 
 
 function pesquisarServidor() {
+
   let iptPesquisar = document.getElementById('ipt_pesquisar_server');
   let pesquisaDigitada = iptPesquisar.value.toLowerCase();
 
@@ -432,14 +438,16 @@ function pesquisarServidor() {
   let frase = ``;
 
   for (let i = 0; i < vetorServidores.length; i++) {
+    const checkedAttr = (vetorServidores[i].idFuncionario === funcionarioAtual) ? "checked" : "";
+  
     if (vetorServidores[i].apelido.toLowerCase().includes(pesquisaDigitada)) {
       frase += `
         <tr>
-          <td>ID: ${vetorServidores[i].id} </td>
+          <td>ID: ${vetorServidores[i].idServidor} </td>
           <td>Apelido: ${vetorServidores[i].apelido} </td>
           <td>
               <label class="switch">
-                <input type="checkbox" onchange="editarServidorFuncionario(${vetorServidores[i].id})">
+                <input type="checkbox" ${checkedAttr} onchange="editarServidorFuncionario(${funcionarioAtual}, ${vetorServidores[i].idServidor}, this)">
               <span class="slider round"></span>
               </label>
           </td>

@@ -71,23 +71,23 @@ console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error
 }
 
 
-function adicionarServidor(id, idServidor){
+function adicionarServidor(idFuncionario, idServidor){
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function adicionarServidor():", id, idServidor);
 
     var instrucaoSql = `
         insert ignore into usuario_has_servidor (fk_usuario, fk_servidor)
-	        values('${id}', '${idServidor}'); 
+	        values('${idFuncionario}', '${idServidor}'); 
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
 
-function desassociarServidor(id, idServidor){
+function desassociarServidor(idFuncionario, idServidor){
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function adicionarServidor():");
 
     var instrucaoSql = `
-        delete from usuario_has_servidor where fk_usuario = '${id}' and fk_servidor = '${idServidor}'; 
+        delete from usuario_has_servidor where fk_usuario = '${idFuncionario}' and fk_servidor = '${idServidor}'; 
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
