@@ -122,6 +122,13 @@ VALUES
 (2030, 10, 1018, 51, 15, 'C') -- DISCO Temperatura
 ;
 
+-- PARÂMETROS DE ALERTA
+INSERT INTO infomotion.parametro_alerta (fk_servidor, fk_componente, max, duracao_min, unidade_medida)
+VALUES
+(1, 1, '90', '5', '%'),  
+(1, 2, '85', '10', '%'),  
+(1, 3, '80', '15', '%');
+
 -- USUARIO_HAS_SERVIDOR (associar usuários existentes 1 e 2 aos novos servidores)
 INSERT INTO infomotion.usuario_has_servidor (fk_usuario, fk_servidor)
 VALUES
