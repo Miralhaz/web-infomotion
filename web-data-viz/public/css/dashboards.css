@@ -836,7 +836,12 @@ input {
   gap: 8px;
 }
 
-.acoes img {
+.acoes .iconeTabela1 {
+  width: 26px;
+  cursor: pointer;
+}
+
+.acoes .iconeTabela {
   width: 32px;
   cursor: pointer;
 }
