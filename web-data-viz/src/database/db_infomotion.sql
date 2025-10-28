@@ -141,37 +141,15 @@ VALUES
 (2, 'srv-infodata', '10.0.0.5', 1),
 (3, 'srv-x-backup', '172.16.0.9', 0);
 
-INSERT INTO infomotion.componentes (fk_servidor, tipo, numero_serie, apelido, ativo)
-VALUES
-(1, 'CPU', 19, 'Xeon Silver 4110', 1),
-(1, 'RAM', 20, 'Memória DDR4 32GB', 1),
-(1, 'DISCO', 21, 'SSD Samsung 1TB', 1),
-(1, 'CPU', 22, 'Ryzen Threadripper', 1),
-(1, 'RAM', 23, 'Memória DDR5 64GB', 1),
-(1, 'DISCO', 24, 'NVMe WD 2TB', 1),
-(1, 'CPU', 25, 'Intel i9 11900K', 1),
-(1, 'RAM', 26, 'Memória ECC 128GB', 1),
-(1, 'DISCO', 27, 'HDD Seagate 4TB', 1),
-(1, 'DISCO', 28, 'SSD Kingston 512GB', 1);
 
-INSERT INTO registro_servidor (fk_servidor, uso_cpu, uso_ram, uso_disco, qtd_processos, temp_cpu, temp_disco, dt_registro)
-VALUES
-(1, 28.71, 62.34, 91.23, 174, 80.0, 30.0, '2025-10-21 14:00'),
-(1, 33.42, 81.23, 71.6, 237, 85.0, 41.0, '2025-10-21 14:30');
+
 
 -- PARÂMETROS DE ALERTA
 INSERT INTO infomotion.parametro_alerta (fk_servidor, fk_componente, max, duracao_min, unidade_medida)
 VALUES
 (1, 1, '90', '5', '%'),  
 (1, 2, '85', '10', '%'),  
-(1, 3, '80', '15', '%'),
-(1, 4, '92', '6', '%'),  
-(1, 5, '87', '8', '%'),  
-(1, 6, '88', '12', '%'),  
-(1, 7, '93', '7', '%'),  
-(1, 8, '89', '9', '%'),   
-(1, 9, '75', '20', '%'), 
-(1, 10, '83', '14', '%');  
+(1, 3, '80', '15', '%');
 
 
 INSERT INTO usuario (fk_empresa, cargo, nome, senha, email, ativo)
@@ -179,11 +157,6 @@ VALUES
 (1, 'Gestor', "Gabriel", '123456', 'email@.', 1),
 (1, 'Gestor', 'Pedro Santos', 'infodata321', 'pedro@infodata.com', 1),
 (3, 'Suporte', 'Ana Costa', 'backup987', 'ana@serverx.com', 0);
-
-INSERT INTO alertas (id, fk_parametro, duracao, max, min)
-VALUES
-(1, 1, '8min', 95.2, 70.1);
-
 
 INSERT INTO usuario_has_servidor (fk_usuario, fk_servidor)
 VALUES

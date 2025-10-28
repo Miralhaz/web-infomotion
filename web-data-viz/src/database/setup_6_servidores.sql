@@ -29,8 +29,13 @@ VALUES
 (1015, 9, 'DISCO', 3, 'NVMe WD 2TB', 1),
 (1016, 10, 'CPU', 1, 'AMD EPYC 7402P', 1),
 (1017, 10, 'RAM', 2, 'ECC 64GB', 1),
-(1018, 10, 'DISCO', 3, 'HDD Toshiba 4TB', 1)
-;
+(1018, 10, 'DISCO', 3, 'HDD Toshiba 4TB', 1),
+(1019, 1, 'CPU', 19, 'Xeon Silver 4110', 1),
+(1020, 1, 'RAM', 20, 'Memória DDR4 32GB', 1),
+(1021, 1, 'DISCO', 21, 'SSD Samsung 1TB', 1),
+(1022, 2, 'CPU', 19, '19- 11900X', 1),
+(1023, 2, 'RAM', 20, 'Memória DDR4 32GB', 1),
+(1024, 2, 'DISCO', 21, 'HDD 1TB', 1);
 
 -- ESPECIFICACOES (apenas nomes solicitados)
 INSERT INTO infomotion.especificacao_componente (nome_especificacao, valor, fk_componente)
