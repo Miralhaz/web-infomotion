@@ -131,7 +131,7 @@ function listarFuncionarios() {
                           <div class="editar-coluna">
                             <p>Editar</p>
                             <a onclick="listarUmFuncionario(${resposta[i].id})"> 
-                                  <img src="../assets/icon/edit-icon.png" alt="Icone de edição" class="iconeTabela"> 
+                                  <img src="../assets/icon/editar-amarelo.svg" alt="Icone de edição" class="iconeTabela"> 
                             </a>
                             <img src="../assets/imgs/av1.png" alt="Foto de perfil" class="foto-perfil">
                           </div>
