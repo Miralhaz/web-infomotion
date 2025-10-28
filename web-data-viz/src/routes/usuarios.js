@@ -27,11 +27,11 @@ router.get("/listarServidores/:idFuncionario/:idEmpresa", function(req, res){
     usuarioController.listarServidoresFuncionario(req, res);
 });
 
-router.post("/adicionarServidor/:id/:idServidor", function(req, res){
+router.post("/adicionarServidor/:idFuncionario/:idServidor", function(req, res){
     usuarioController.adicionarServidor(req, res);
 });
 
-router.delete("/desassociarServidor/:id/:idServidor", function(req, res){
+router.delete("/desassociarServidor/:idFuncionario/:idServidor", function(req, res){
     usuarioController.desassociarServidor(req, res);
 });
 

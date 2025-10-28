@@ -1,12 +1,12 @@
 function carregarDashboardInicial() {
-  const idServidorClicado = sessionStorage.ID_SERVIDOR_SELECIONADO;
+    const idServidorClicado = sessionStorage.ID_SERVIDOR_SELECIONADO;
 
-  listarServidores(idServidorClicado);
+    listarServidores(idServidorClicado);
 
-  if (idServidorClicado) {
-    console.log("Iniciando carregamento do Servidor ID:", idServidorClicado);
-    obterDadosKpi(idServidorClicado);
-  }
+    if (idServidorClicado) {
+        console.log("Iniciando carregamento do Servidor ID:", idServidorClicado);
+        obterDadosKpi(idServidorClicado);
+    }
 }
 
 function listarServidores() {
@@ -45,10 +45,10 @@ function listarServidores() {
 }
 var cargoUsuario = sessionStorage.getItem("USUARIO_CARGO")
 document.addEventListener("DOMContentLoaded", function () {
-if(cargoUsuario != "Gestor"){
-    var elemento = document.getElementById("usuario-header");
-    elemento.style.display = "none";
-}
+    if (cargoUsuario != "Gestor") {
+        var elemento = document.getElementById("usuario-header");
+        elemento.style.display = "none";
+    }
 })
 
 function obterDadosKpi(idServidor) {
@@ -80,26 +80,7 @@ function obterDadosKpi(idServidor) {
 
                     let frase = `
                 <div class="div-dados">
-                    <p>USO em % ATUAL</p>
-                    <div class="div-content">
-                        <div class="div-atual">
-                            <a class="titulo">Atual:</a>
-                            <p>RAM: <a class="dados-uso">${Math.round(dados[0].uso_ram)}%</a></p>
-                            <p>CPU: <a class="dados-uso">${Math.round(dados[0].uso_cpu)}%</a></p>
-                            <p>DISCO: <a class="dados-uso">${Math.round(dados[0].uso_disco)}%</a></p>
-                        </div>
-
-                        <div class="div-parametro">
-                            <a class="titulo">Parâmetro Máx:</a>
-                            <p>RAM: <a class="dados-uso">${max_ram}%</a></p>
-                            <p>CPU: <a class="dados-uso">${max_cpu}%</a></p>
-                            <p>DISCO: <a class="dados-uso">${max_disco}%</a></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="div-dados">
-                    <p>Temperatura atual:</p>
+                    <p> Temperatura atual (°C):</p>
                     <div class="div-content">
                         <div class="temp-atual">
                             <div class="div-graph">
@@ -132,12 +113,22 @@ function obterDadosKpi(idServidor) {
                 </div>
 
                 <div class="div-dados">
-                    <p>Quantidade total de processos</p>
-                    <div class="div-proc">
-                        <div class="div-donut">
-                            <canvas id="doughnutChart"></canvas>
+                    <p style="margin-top: 5px;"> Uso de CPU Atual (%) </p>
+                    <div class="div-container-kpi">
+                        <div class="div-velocimetro">
+                            <canvas id="velocimeterCpuChart"></canvas>
                         </div>
-                        <p style="color:#ffc64b;">${dados[0].qtd_processos}/1000</p>
+                        <p> Parâmetro Máximo da CPU: ${max_cpu}% </p>
+                    </div>
+                </div>
+
+                <div class="div-dados">
+                    <p style="margin-top: 5px;"> Uso de RAM Atual (%) </p>
+                    <div class="div-container-kpi">
+                        <div class="div-velocimetro">
+                            <canvas id="velocimeterRamChart"></canvas>
+                        </div>
+                        <p> Parâmetro Máximo da RAM: ${max_ram}% </p>
                     </div>
                 </div>
 
@@ -145,7 +136,18 @@ function obterDadosKpi(idServidor) {
 
                     divs.innerHTML = frase;
 
-                    plotarGraficoDoughnut(dados[0]);
+                    const dadosKpiCpu = {
+                        uso_cpu: dados[0].uso_cpu, 
+                        max_cpu: max_cpu           
+                    };
+                    
+                    const dadosKpiRam = {
+                        uso_ram: dados[0].uso_ram, 
+                        max_ram: max_ram           
+                    };
+
+                    plotarGraficoVelocimetroCpu(dadosKpiCpu);
+                    plotarGraficoVelocimetroRam(dadosKpiRam);
                     listarDadosLinhas(idServidor);
                     listarDadosBarras(idServidor);
 
@@ -256,45 +258,96 @@ function obterDadosKpi(idServidor) {
 }
 
 
-function plotarGraficoDoughnut(dadoKpi) {
-    let labels = ['Processos atuais', 'Total de processos'];
-    const qtdProc = dadoKpi.qtd_processos;
-    const restante = (1000 - qtdProc);
+function plotarGraficoVelocimetroCpu(dadoKpi) {
+    const usoCpu = dadoKpi.uso_cpu;
+    const restante = (100 - usoCpu);
+
+    let corUso;
+    if (usoCpu < dadoKpi.max_cpu / 1.5) {
+        corUso = '#4CAF50';
+    } else if (usoCpu < dadoKpi.max_cpu) {
+        corUso = '#FFC107';
+    } else {
+        corUso = '#F44336';
+    }
+    const corRestante = '#E0E0E0';
+
+    const textCenter = {
+        id: 'textCenter',
+        beforeDatasetsDraw(chart, args, pluginOptions) {
+            const { ctx, chartArea: { top, bottom, width, height } } = chart;
+            ctx.save();
+
+            const text = `${usoCpu}%`;
+            const fontSize = (height / 90).toFixed(2);
+            const textX = width / 2;
+            const textY = (bottom + top) / 1.5;
+
+            ctx.font = `bold ${fontSize}em sans-serif`;
+            ctx.fillStyle = corUso;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, textX, textY);
+
+            const labelText = '';
+            const labelFontSize = (height / 100).toFixed(2);
+            const labelY = (bottom + top) / 1.8;
+
+            ctx.font = `lighter ${labelFontSize}em sans-serif`;
+            ctx.fillStyle = 'gray';
+            ctx.fillText(labelText, textX, labelY);
+
+            ctx.restore();
+        }
+    };
 
     const config = {
         type: 'doughnut',
         data: {
-            labels: labels,
+            labels: ['Uso da CPU', 'Ocioso'],
             datasets: [{
-                label: '',
-                data: [qtdProc, restante],
+                label: 'Uso da CPU (%)',
+                data: [usoCpu, restante],
                 backgroundColor: [
-                    '#940000',
-                    '#C89C00'
+                    corUso,
+                    corRestante
                 ],
                 borderColor: [
-                    '#940000',
-                    '#C89C00'
+                    corUso,
+                    corRestante
                 ],
                 borderWidth: 1
             }]
         },
         options: {
+            rotation: -90,
+            circumference: 180,
+            cutout: '75%',
+            responsive: true,
+            maintainAspectRatio: true,
             plugins: {
                 legend: {
-                    position: 'bottom',
-                    labels: {
-                        boxWidth: 8,
-                        boxHeight: 8,
-                        color: 'white'
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            return context.label + ': ' + context.formattedValue + '%';
+                        }
                     }
                 }
+            },
+            elements: {
+                arc: {
+                    hoverOffset: 0
+                }
             }
-        }
+        },
+        plugins: [textCenter]
     };
 
     new Chart(
-        document.getElementById('doughnutChart'),
+        document.getElementById('velocimeterCpuChart'),
         config
     );
 
@@ -305,6 +358,105 @@ function plotarGraficoDoughnut(dadoKpi) {
     }
 }
 
+function plotarGraficoVelocimetroRam(dadoKpi) {
+    const usoRam = dadoKpi.uso_ram;
+    const restante = (100 - usoRam);
+
+    let corUso;
+    if (usoRam < dadoKpi.max_ram / 1.5) {
+        corUso = '#4CAF50';
+    } else if (usoRam < dadoKpi.max_ram) {
+        corUso = '#FFC107';
+    } else {
+        corUso = '#F44336';
+    }
+    const corRestante = '#E0E0E0';
+
+    const textCenter = {
+        id: 'textCenter',
+        beforeDatasetsDraw(chart, args, pluginOptions) {
+            const { ctx, chartArea: { top, bottom, width, height } } = chart;
+            ctx.save();
+
+            const text = `${usoRam}%`;
+            const fontSize = (height / 90).toFixed(2);
+            const textX = width / 2;
+            const textY = (bottom + top) / 1.5;
+
+            ctx.font = `bold ${fontSize}em sans-serif`;
+            ctx.fillStyle = corUso;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, textX, textY);
+
+            const labelText = '';
+            const labelFontSize = (height / 100).toFixed(2);
+            const labelY = (bottom + top) / 1.8;
+
+            ctx.font = `lighter ${labelFontSize}em sans-serif`;
+            ctx.fillStyle = 'gray';
+            ctx.fillText(labelText, textX, labelY);
+
+            ctx.restore();
+        }
+    };
+
+    const config = {
+        type: 'doughnut',
+        data: {
+            labels: ['Uso da CPU', 'Ocioso'],
+            datasets: [{
+                label: 'Uso da CPU (%)',
+                data: [usoRam, restante],
+                backgroundColor: [
+                    corUso,
+                    corRestante
+                ],
+                borderColor: [
+                    corUso,
+                    corRestante
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            rotation: -90,
+            circumference: 180,
+            cutout: '75%',
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            return context.label + ': ' + context.formattedValue + '%';
+                        }
+                    }
+                }
+            },
+            elements: {
+                arc: {
+                    hoverOffset: 0
+                }
+            }
+        },
+        plugins: [textCenter]
+    };
+
+    new Chart(
+        document.getElementById('velocimeterRamChart'),
+        config
+    );
+
+    let chart = document.getElementsByClassName('div-chart');
+
+    for (let i = 0; i < chart.length; i++) {
+        chart[i].style.display = 'flex';
+    }
+}
 
 function listarDadosLinhas(idServidor) {
     fetch(`/servidores/listarDadosLinhas/${idServidor}`)
@@ -379,7 +531,7 @@ function plotarGraficoLinhas(dados, idServidor) {
 
         options: {
             responsive: false,
-            maintainAspectRatio: false,         
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,
@@ -499,7 +651,7 @@ function plotarGraficoBarras(dados, idServidor) {
 
         options: {
             responsive: false,
-            maintainAspectRatio: false,    
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,

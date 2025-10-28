@@ -192,10 +192,10 @@ function listarServidoresFuncionario(req, res){
 
 
 function adicionarServidor(req, res){
-    var id = req.params.id;
+    var idFuncionario = req.params.idFuncionario;
     var idServidor = req.params.idServidor;
 
-    usuarioModel.adicionarServidor(id, idServidor)
+    usuarioModel.adicionarServidor(idFuncionario, idServidor)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -213,10 +213,10 @@ function adicionarServidor(req, res){
 }
 
 function desassociarServidor(req, res) {
-    var id = req.params.id;
+    var idFuncionario = req.params.idFuncionario;
     var idServidor = req.params.idServidor;
 
-    usuarioModel.desassociarServidor(id, idServidor)
+    usuarioModel.desassociarServidor(idFuncionario, idServidor)
         .then(
             function (resultado) {
                 res.json(resultado);
