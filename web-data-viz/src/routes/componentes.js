@@ -11,7 +11,7 @@ router.get("/listarComponentes/:idServidor", function(req, res){
     componenteController.listarComponentes(req, res);
 });
 
-router.get("/puxandoColunasPreenchidas/:idEspecifico_Componente/:idServidor/:nomeTipo", function(req,res){
+router.get("/puxandoColunasPreenchidas/:idEspecifico_Componente/:idServidor/:nomeTipo/:unidadeMedida", function(req,res){
     componenteController.puxandoColunasPreenchidas(req,res);
 });
 

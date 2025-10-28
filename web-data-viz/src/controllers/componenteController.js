@@ -26,7 +26,8 @@ function puxandoColunasPreenchidas(req, res) {
     var idComponente = req.params.idEspecifico_Componente;
     var id_Servidor = req.params.idServidor;
     var tipo = req.params.nomeTipo;
-    componenteModel.puxandoColunasPreenchidas(idComponente, id_Servidor, tipo)
+    var unidadeMedida = req.params.unidadeMedida;
+    componenteModel.puxandoColunasPreenchidas(idComponente, id_Servidor, tipo, unidadeMedida)
         .then(
             function (resultado) {
                 if (resultado.length > 0) {

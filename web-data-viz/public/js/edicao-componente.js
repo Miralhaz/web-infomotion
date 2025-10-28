@@ -3,9 +3,9 @@ const idEspecifico_Componente = params.get('id');
 const idServidor = params.get('servidor');
 const nomeTipo = params.get('tipocomp');
 
-function puxandoCamposPreenchidos() {
+function puxandoCamposPreenchidos(unidade_medida) {
 
-  fetch(`/componentes/puxandoColunasPreenchidas/${idEspecifico_Componente}/${idServidor}/${nomeTipo}`)
+  fetch(`/componentes/puxandoColunasPreenchidas/${idEspecifico_Componente}/${idServidor}/${nomeTipo}/${unidade_medida}`)
     .then(function (resposta) {
       console.log("resposta: ", resposta);
 
@@ -15,7 +15,6 @@ function puxandoCamposPreenchidos() {
 
           const inputTipo = document.getElementById('ipt_tipo_componente');
           const inputApelido = document.getElementById('ipt_apelido_componente');
-          const inputUnidade = document.getElementById('ipt_unidade_medida_componente');
           const inputMaximo = document.getElementById('ipt_parametro1_componente');
           for (let i = 0; i < resposta.length; i++) {
 
@@ -25,8 +24,6 @@ function puxandoCamposPreenchidos() {
             inputTipo.value = resposta[i].tipo
 
             inputApelido.value = resposta[i].apelido
-
-            inputUnidade.value = resposta[i].un
 
             inputMaximo.value = resposta[i].max
 
@@ -84,6 +81,20 @@ function editarComponente() {
     });
 }
 
+function atualizarParametro(unidadeMedida){
+ puxandoCamposPreenchidos(unidadeMedida)
+}
+
+function optionSelect(){
+  const unidade = "%"
+  const unidadeCodificada = encodeURIComponent(unidade)
+
+  document.getElementById("unidade_medida").innerHTML =`<option value="${unidadeCodificada}" selected >%</option>
+  <option value="C">°C</option>`
+  puxandoCamposPreenchidos(unidadeCodificada);
+}
+
 window.onload = function () {
-  puxandoCamposPreenchidos();
+  optionSelect();
+  
 }
