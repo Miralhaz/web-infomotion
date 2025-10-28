@@ -168,6 +168,18 @@ function receberEspecificacoes(idServidor) {
   return database.executar(instrucaoSql);
 }
 
+function editarApelido(idServidor, apelido) {
+  var instrucaoSql = `
+    UPDATE servidor
+    SET apelido = '${apelido}'
+    WHERE id = ${idServidor};
+  `;
+
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
+
 
 module.exports = {
   buscarServidoresPorEmpresa,
@@ -180,5 +192,6 @@ module.exports = {
   listarDadosBarras,
   cadastrar,
   receberAlertas,
-  receberEspecificacoes
+  receberEspecificacoes,
+  editarApelido
 }

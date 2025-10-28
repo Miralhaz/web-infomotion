@@ -251,6 +251,25 @@ function receberEspecificacoes(req, res){
     );
 }
 
+function editarApelido(req, res) {
+  var idServidor = req.params.idServidor;
+  var apelido = req.body.apelido;
+
+  if (!apelido || apelido.trim() === "") {
+    return res.status(400).send("Apelido inválido!");
+  }
+
+  servidorModel.editarApelido(idServidor, apelido)
+    .then(() => {
+      res.status(200).json({ mensagem: "Apelido atualizado com sucesso!" });
+    })
+    .catch((erro) => {
+      console.log(erro);
+      console.log("Houve um erro ao editar o apelido do servidor: ", erro.sqlMessage);
+      res.status(500).json(erro.sqlMessage);
+    });
+}
+
 
 module.exports = {
   buscarServidoresPorEmpresa,
@@ -263,5 +282,6 @@ module.exports = {
   listarDadosBarras,
   cadastrar,
   receberAlertas,
-  receberEspecificacoes
+  receberEspecificacoes,
+  editarApelido
 }
