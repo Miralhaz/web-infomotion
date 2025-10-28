@@ -465,6 +465,9 @@ function listarDadosLinhas(idServidor) {
                 resposta.json().then(function (dados) {
                     console.log("Dados recebidos: ", JSON.stringify(dados));
                     console.log("Dados recebidos: ", JSON.stringify(dados));
+
+                    dados.reverse();
+
                     plotarGraficoLinhas(dados, idServidor);
 
                 });

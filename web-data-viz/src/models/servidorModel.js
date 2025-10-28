@@ -32,18 +32,20 @@ async function cadastrar(idEmpresa, ip, nome, idUsuario) {
 
 function listarServidoresPorUsuario(idUsuario) {
   var instrucaoSql = `
-    Select s.id, s.ip, s.apelido, rs.uso_cpu, rs.uso_ram, rs.uso_disco from servidor as s 
-    inner join usuario_has_servidor as uhs on s.id = uhs.fk_servidor
-    inner join usuario as u on uhs.fk_usuario = u.id 
-    inner join (
-      select * from registro_servidor as rs1
-      where rs1.id = (
-        select max(rs2.id)
-        from registro_servidor as rs2
-        where rs2.fk_servidor = rs1.fk_servidor
-      )
-    ) as rs on s.id = rs.fk_servidor
-    where u.id = ${idUsuario};`
+    SELECT s.id, s.ip, s.apelido, rs.uso_cpu, rs.uso_ram, rs.uso_disco 
+FROM servidor as s
+INNER JOIN usuario_has_servidor as uhs on s.id = uhs.fk_servidor
+INNER JOIN usuario as u on uhs.fk_usuario = u.id
+INNER JOIN (
+    SELECT rs1.* FROM registro_servidor as rs1
+    WHERE rs1.dt_registro = (
+        SELECT MAX(rs2.dt_registro) 
+        FROM registro_servidor as rs2
+        WHERE rs2.fk_servidor = rs1.fk_servidor
+    )
+) as rs ON s.id = rs.fk_servidor
+WHERE u.id = ${idUsuario}
+ORDER BY rs.dt_registro desc;`
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }
@@ -92,12 +94,31 @@ function listarServidores(idEmpresa) {
 function obterDadosKpi(idServidor) {
 
   var instrucaoSql = `
-    select rs.uso_cpu, rs.uso_ram, rs.uso_disco, rs.qtd_processos, rs.temp_cpu, rs.temp_disco, c.tipo, pa.max 
-    from registro_servidor rs
-    inner join servidor s on rs.fk_servidor = s.id
-    inner join parametro_alerta pa on pa.fk_servidor = s.id
-    inner join componentes c on c.id = pa.fk_componente
-    where rs.fk_servidor = '${idServidor}';
+    SELECT 
+    rs.uso_cpu, 
+    rs.uso_ram, 
+    rs.uso_disco, 
+    rs.qtd_processos, 
+    rs.temp_cpu, 
+    rs.temp_disco, 
+    c.tipo, 
+    pa.max 
+FROM 
+    registro_servidor rs
+INNER JOIN 
+    servidor s ON rs.fk_servidor = s.id
+INNER JOIN 
+    parametro_alerta pa ON pa.fk_servidor = s.id
+INNER JOIN 
+    componentes c ON c.id = pa.fk_componente
+WHERE 
+    rs.fk_servidor = '${idServidor}'
+    AND rs.id = (
+        SELECT id FROM registro_servidor 
+        WHERE fk_servidor = '${idServidor}' 
+        ORDER BY dt_registro DESC 
+        LIMIT 1 -- Encontra o ID do registro mais recente
+    );
   `;
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -107,11 +128,19 @@ function obterDadosKpi(idServidor) {
 function listarDadosLinhas(idServidor) {
 
   var instrucaoSql = `
-    SELECT uso_cpu, uso_ram, uso_disco, dt_registro 
-    FROM registro_servidor 
-    WHERE fk_servidor = '${idServidor}'
+    SELECT 
+        uso_cpu, 
+        uso_ram, 
+        uso_disco, 
+        dt_registro 
+    FROM 
+        registro_servidor 
+    WHERE 
+        fk_servidor = '${idServidor}'
+    ORDER BY 
+        dt_registro DESC 
     LIMIT 10;
-  `;
+`;
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
