@@ -76,8 +76,15 @@
                 <div class="nome" id="nome">Nome Servidor</div>
                 <div class="IP" id="IP">Identificador</div>
                 <div class="icons">
-                    <img src="../assets/icon/lixo-amarelo.svg" alt="Deletar" class="imgGSV">
-                    <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV">
+                    <a onclick="chamarModal()">
+                        <img src="../assets/icon/lixo-amarelo.svg" alt="Deletar" class="imgGSV">
+                    </a>
+                    
+                    <a onclick="editarApelidoServidor()">
+                        <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV">
+                    </a>
+                    
+
                 </div>
             </div>
 
@@ -100,312 +107,42 @@
             </div>
 
             <div class="listaComponentes" id="listaComponentes">
-                <!-- <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido1
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                                
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                               junior
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                RAM#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                RAM#02
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                FELIPE
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                DISCO#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        <div class="componente" id="componente">
-                            <div class="apelido">
-                                Apelido
-                            </div>  
-                            <div class="tipoNumComponente" id="tipoNumComponente">
-                                CPU#01
-                            </div>
-                            <div class="icons">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch" onchange="mudarValor()">
-                                    <span class="slider round"></span>
-                                </label>
-                                <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
-                            </div>  
-                        </div>
-                        -->
             </div>
 
 
         </div>
     </div>
 
+    <div class="container-modal">
+            <div class="card-modal">
+                <h1>EXCLUIR SERVIDOR</h1>
+                <p>Deseja excluir um servidor? Tenha em mente que será excluido para sempre, e não poderá ser
+                    restaurado!
+                </p>
+                <p>Digite "excluir" para excluir o servidor</p>
+                <input type="text" id="ipt_excluir" placeholder="excluir">
+                <div id="btn_excluir">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container-modal" id="modal-editar">
+    <div class="card-modal">
+        <h1>EDITAR APELIDO</h1>
+        <p>Digite o novo apelido para o servidor:</p>
+        <input type="text" id="novo_apelido" placeholder="Novo apelido">
+        <div id="mensagem-modal"></div>
+        <div>
+            <button class="btn-add" onclick="salvarNovoApelido()">Salvar</button>
+            <button class="btn-add" onclick="fecharModalEditar()">Voltar</button>
+        </div>
+    </div>
+</div>
+
 </body>
 <script src="../js/componentes-page.js"></script>
 <script>
-    /*document.getElementById('editar').addEventListener('click', function (e) {
-        window.location.href = "./tela-edicao-componentes.html"
-    })
-    
-
-    function mudarValor() {
-        let ativo = document.getElementById("switch")
-        console.log(ativo.checked);
-        
-    } */
 
     function preencherIdentificadorServidor() {
         const apelidoServidor = sessionStorage.getItem('servidorApelido');

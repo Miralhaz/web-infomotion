@@ -16,7 +16,7 @@ function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
 
               
                     <a onclick="event.stopPropagation(); telaEdicaoServidor('${apelido}', '${ip}', ${id})">
-                      <img src="../assets/icon/edit-icon.png" alt="Editar" class="iconeTabela">
+                      <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="iconeTabela1">
                     </a>
                     <a onclick="event.stopPropagation(); chamarModal(${id})">
                       <img src="../assets/icon/delete-icon.png" alt="Excluir" class="iconeTabela">
