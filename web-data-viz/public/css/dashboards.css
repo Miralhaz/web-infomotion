@@ -1289,6 +1289,24 @@ input {
   border-bottom: 2px solid var(--preto);
 }
 
+.container-content .box select {
+  width: 105%;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  border-bottom: 2px solid transparent;
+  background: var(--branco);
+  outline: none;
+  font-size: 15px;
+  transition: border-bottom 0.3s ease-in-out;
+}
+
+.container-content .box select:hover,
+.container-content .box select:focus {
+  border-bottom: 2px solid var(--preto);
+}
+
+
 .parametro {
   display: flex;
   align-items: center;
@@ -1459,6 +1477,10 @@ background-color: #222;
 
 .icone-editar:hover img{
   filter: invert(100%);
+}
+
+.swal2-html-container{
+  justify-items: center;
 }
 
 .dados-usuario,

@@ -107,8 +107,10 @@ function obterDadosKpi(idServidor) {
 function listarDadosLinhas(idServidor) {
 
   var instrucaoSql = `
-    select uso_cpu, uso_ram, uso_disco, dt_registro 
-    from registro_servidor where fk_servidor = '${idServidor}';
+    SELECT uso_cpu, uso_ram, uso_disco, dt_registro 
+    FROM registro_servidor 
+    WHERE fk_servidor = '${idServidor}'
+    LIMIT 10;
   `;
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -119,7 +121,8 @@ function listarDadosBarras(idServidor) {
 
   var instrucaoSql = `
     select qtd_processos, dt_registro from registro_servidor 
-    where fk_servidor = '${idServidor}';
+    where fk_servidor = '${idServidor}'
+    LIMIT 10;
   `;
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);

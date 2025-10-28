@@ -86,11 +86,13 @@
             <div class="titulo">Edição de componente</div>
             <div class="box">
                 <label>Tipo de componente:</label>
-                <input type="text" id="ipt_tipo_componente">
+                <input type="text" id="ipt_tipo_componente" readonly>
                 <label>Apelido:</label>
                 <input type="text" id="ipt_apelido_componente">
                 <label>Unidade de medida:</label>
-                <input type="text" id="ipt_unidade_medida_componente">
+                <select name="unidade_medida" id="unidade_medida" onchange="atualizarParametro(this.value)">
+                    
+                </select>
                 <label>Parametro:</label>
                 <div class="parametro">
                     <input type="text" id="ipt_parametro1_componente">
