@@ -15,20 +15,19 @@ function listarComponentes(idServidor) {
 }
 
 
-function puxandoColunasPreenchidas(idComponente, id_Servidor, tipo) {
+function puxandoColunasPreenchidas(idComponente, id_Servidor, tipo, unidadeMedida) {
     console.log("ACESSEI O COMPONENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listarComponentes()");
     var instrucaoSql = `
- select
- c.tipo,
- c.apelido,
- s.id,
- p.max,
- p.unidade_medida as un
- from componentes as c
- inner join servidor as s on c.fk_servidor = s.id
- inner join parametro_alerta as p on p.fk_servidor = s.id
- where c.id = ${idComponente} && p.fk_componente = '${idComponente}' && c.tipo = '${tipo}' && s.id = ${id_Servidor};
-    `;
+        select
+        c.tipo,
+        c.apelido,
+        s.id,
+        p.max,
+        p.unidade_medida as un
+        from componentes as c
+        inner join servidor as s on c.fk_servidor = s.id
+        inner join parametro_alerta as p on p.fk_servidor = s.id
+        where c.id = ${idComponente} && p.fk_componente = '${idComponente}' && c.tipo = '${tipo}' && s.id = ${id_Servidor} && p.unidade_medida = '${unidadeMedida}';`;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

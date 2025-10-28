@@ -128,10 +128,7 @@ function pesquisar() {
                                             ${componentesEstatico[i].tipo}#${componentesEstatico[i].numero_serie}
                                         </div>
                                         <div class="icons">
-                                            <label class="switch">
-                                                <input type="checkbox">
-                                                <span class="slider round"></span>
-                                            </label>
+                                        
                               <a href="./tela-edicao-componentes.html?id=${componentesEstatico[i].idComponente}&servidor=${componentesEstatico[i].idServidor}&tipocomp=${componentesEstatico[i].tipo}"> 
                                             <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV" id="editar">
                                             </a>
