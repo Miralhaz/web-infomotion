@@ -90,6 +90,33 @@ VALUES
 (2018, 10, 1018, '75', 15, '%')
 ;
 
+INSERT INTO infomotion.parametro_alerta (id, fk_servidor, fk_componente, max, duracao_min, unidade_medida)
+VALUES
+-- Servidor 5
+(2019, 5, 1001, 90, 15, 'C'), -- CPU Temperatura (90°C é um limite comum)
+(2020, 5, 1003, 48, 15, 'C'), -- DISCO Temperatura (48°C é um limite para SSD/HDD)
+
+-- Servidor 6
+(2021, 6, 1004, 90, 15, 'C'), -- CPU Temperatura
+(2022, 6, 1006, 52, 15, 'C'), -- DISCO Temperatura
+
+-- Servidor 7
+(2023, 7, 1007, 92, 15, 'C'), -- CPU Temperatura
+(2024, 7, 1009, 49, 15, 'C'), -- DISCO Temperatura
+
+-- Servidor 8
+(2025, 8, 1010, 90, 15, 'C'), -- CPU Temperatura
+(2026, 8, 1012, 50, 15, 'C'), -- DISCO Temperatura
+
+-- Servidor 9
+(2027, 9, 1013, 92, 15, 'C'), -- CPU Temperatura
+(2028, 9, 1015, 47, 15, 'C'), -- DISCO Temperatura
+
+-- Servidor 10
+(2029, 10, 1016, 94, 15, 'C'), -- CPU Temperatura
+(2030, 10, 1018, 51, 15, 'C') -- DISCO Temperatura
+;
+
 -- USUARIO_HAS_SERVIDOR (associar usuários existentes 1 e 2 aos novos servidores)
 INSERT INTO infomotion.usuario_has_servidor (fk_usuario, fk_servidor)
 VALUES
