@@ -4,6 +4,8 @@ let infoExibicao = []
 const tempo = localStorage.getItem("tempoSelecionado");
 let chartInstance = null;
 let especificacao = []
+let infoTabela = []
+let jaOrdenado = false;
 
 function receberAlertas(idUsuario) {
     fetch(`/servidores/receberAlertas/${idUsuario}`)
@@ -12,8 +14,6 @@ function receberAlertas(idUsuario) {
                 resposta.json().then(function (dados) {
                     // console.log("Dados recebidos: ", JSON.stringify(dados));
                     info.push(...dados)
-                    
-                    
                     inserirDadosTabela()
                     
                 });
@@ -29,10 +29,7 @@ function receberAlertas(idUsuario) {
 }
 
 function inserirDadosTabela(){
-    
-    
     let infoAjustada = JSON.parse(JSON.stringify(info)); 
-    let infoTabela = []
 
     let hoje = new Date();           
     let dataLimite = new Date(); 
@@ -327,7 +324,7 @@ function plotarEspecificacaoHardware(){
                 } else fisico = element.valor
             } else if (element.tipo.toUpperCase() == 'ram'.toUpperCase()){
                 ramTotal.innerHTML = `RAM Total: ${element.valor}`
-            } else disco.innerHTML = `Capacidade Disco: ${element.valor}`
+            } else if (element.tipo.toUpperCase() == 'disco'.toUpperCase()) disco.innerHTML = `Capacidade Disco: ${element.valor}GB`
         }
         CPU.innerHTML = `Núcleos da CPU<br>Físicos: ${fisico}<br>Lógicos: ${logico}`
 
@@ -336,4 +333,114 @@ function plotarEspecificacaoHardware(){
 function chamarFuncoesServidores(idServidor) {
     plotarGraficoLinhas(idServidor)
     listarEspecificacoes(idServidor)
+}
+
+function ordenarPor(item){
+    if (!jaOrdenado){
+        document.getElementById(`table_alerta_${item}`).innerHTML += `<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down">`
+        jaOrdenado = true
+    } else {
+        document.getElementById(`table_alerta_nome`).innerHTML = 'Nome do servidor'
+        document.getElementById(`table_alerta_cpu`).innerHTML = 'Alertas CPU'
+        document.getElementById(`table_alerta_ram`).innerHTML = 'Alertas RAM'
+        document.getElementById(`table_alerta_disco`).innerHTML = 'Alertas Disco'
+        document.getElementById(`table_alerta_risco`).innerHTML = 'Risco (%)'
+
+        document.getElementById(`table_alerta_${item}`).innerHTML += `<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down">`
+        jaOrdenado = true
+    }
+
+    let infoOrdenada = []
+    for (let index = 0; index < infoTabela.length; index++) {
+        const element = infoTabela[index];
+        if(item == 'nome') {
+            infoOrdenada = infoTabela
+        } else if (item == 'cpu') {
+            
+            if (infoOrdenada.length > 0){
+                let inserido = false
+                for (let j = 0; j < infoOrdenada.length; j++) {
+                    const elemento = infoOrdenada[j];
+                    if (Number(element.AlertaCPU) > Number(elemento.AlertaCPU)) {
+                        infoOrdenada.splice(j, 0, element)
+                        inserido = true
+                        break;
+                    } 
+                }
+                if (!inserido) {
+                    infoOrdenada.push(element)
+                }
+            } else infoOrdenada.push(element)
+        } else if (item == 'ram') {
+            if (infoOrdenada.length > 0){
+                let inserido = false
+                for (let j = 0; j < infoOrdenada.length; j++) {
+                    const elemento = infoOrdenada[j];
+                    if (Number(element.AlertaRAM) > Number(elemento.AlertaRAM)) {
+                        infoOrdenada.splice(j, 0, element)
+                        inserido = true
+                        break;
+                    } 
+                }
+                if (!inserido) {
+                    infoOrdenada.push(element)
+                }
+            } else infoOrdenada.push(element)
+        }else if (item == 'disco') {
+            if (infoOrdenada.length > 0){
+                let inserido = false
+                for (let j = 0; j < infoOrdenada.length; j++) {
+                    const elemento = infoOrdenada[j];
+                    if (Number(element.AlertaDisco) > Number(elemento.AlertaDisco)) {
+                        infoOrdenada.splice(j, 0, element)
+                        inserido = true
+                        break;
+                    } 
+                }
+                if (!inserido) {
+                    infoOrdenada.push(element)
+                }
+            } else infoOrdenada.push(element)
+        }else { // RISCO
+            if (infoOrdenada.length > 0){
+                let inserido = false
+                for (let j = 0; j < infoOrdenada.length; j++) {
+                    const elemento = infoOrdenada[j];
+                    if (Number(element.Risco) > Number(elemento.Risco)) {
+                        infoOrdenada.splice(j, 0, element)
+                        inserido = true
+                        break;
+                    } 
+                }
+                if (!inserido) {
+                    infoOrdenada.push(element)
+                }
+            } else infoOrdenada.push(element)
+        }
+    }
+
+    const bodyTabela = document.getElementById("bodyTabelaAlerta")
+    bodyTabela.innerHTML = ''
+    for (let index = 0; index < infoOrdenada.length; index++) {
+        const element = infoOrdenada[index];
+        bodyTabela.innerHTML += `
+            <tr onclick="chamarFuncoesServidores(${element.id})">
+            <td>
+                ${element.apelido}
+            </td>
+            <td>
+                ${element.AlertaCPU}
+            </td>
+            <td>
+                ${element.AlertaRAM}
+            </td>
+            <td>
+                ${element.AlertaDisco}
+            </td>
+            <td>
+                ${element.Risco}
+            </td>
+        </tr>
+            `
+    }
 }
