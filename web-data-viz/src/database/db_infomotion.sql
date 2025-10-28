@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS infomotion.usuario (
 );
 
 CREATE TABLE IF NOT EXISTS infomotion.alertas (
-  id INT NOT NULL,
+  id INT NOT NULL auto_increment,
   fk_parametro INT,
   dt_registro datetime default current_timestamp,
   duracao varchar(45),
@@ -141,15 +141,6 @@ VALUES
 (2, 'srv-infodata', '10.0.0.5', 1),
 (3, 'srv-x-backup', '172.16.0.9', 0);
 
-
-
-
--- PARÂMETROS DE ALERTA
-INSERT INTO infomotion.parametro_alerta (fk_servidor, fk_componente, max, duracao_min, unidade_medida)
-VALUES
-(1, 1, '90', '5', '%'),  
-(1, 2, '85', '10', '%'),  
-(1, 3, '80', '15', '%');
 
 
 INSERT INTO usuario (fk_empresa, cargo, nome, senha, email, ativo)

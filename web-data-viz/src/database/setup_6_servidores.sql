@@ -1,12 +1,12 @@
 -- SERVIDORES (6 novos, ids 5..10)
-INSERT INTO infomotion.servidor (id, fk_empresa, fk_regiao, apelido, ip, ativo)
+INSERT INTO infomotion.servidor (fk_empresa, fk_regiao, apelido, ip, ativo)
 VALUES
-(5, 1, 1, 'srv-tech-03', '192.168.0.12', 1),
-(6, 1, 2, 'srv-tech-04', '192.168.0.13', 1),
-(7, 2, 3, 'srv-infodata-02', '10.0.0.6', 1),
-(8, 2, 1, 'srv-infodata-03', '10.0.0.7', 1),
-(9, 1, 2, 'srv-tech-05', '192.168.0.14', 1),
-(10, 1, 3, 'srv-tech-06', '192.168.0.15', 1)
+( 1, 1, 'srv-tech-03', '192.168.0.12', 1),
+( 1, 2, 'srv-tech-04', '192.168.0.13', 1),
+( 2, 3, 'srv-infodata-02', '10.0.0.6', 1),
+( 2, 1, 'srv-infodata-03', '10.0.0.7', 1),
+( 1, 2, 'srv-tech-05', '192.168.0.14', 1),
+( 1, 3, 'srv-tech-06', '192.168.0.15', 1)
 ;
 
 -- COMPONENTES (1 CPU, 1 RAM, 1 DISCO por novo servidor)
@@ -125,9 +125,9 @@ VALUES
 -- PARÂMETROS DE ALERTA
 INSERT INTO infomotion.parametro_alerta (fk_servidor, fk_componente, max, duracao_min, unidade_medida)
 VALUES
-(1, 1, '90', '5', '%'),  
-(1, 2, '85', '10', '%'),  
-(1, 3, '80', '15', '%');
+(1, 1019, '90', '5', '%'),  
+(1, 1020, '85', '10', '%'),  
+(1, 1021, '80', '15', '%');
 
 -- USUARIO_HAS_SERVIDOR (associar usuários existentes 1 e 2 aos novos servidores)
 INSERT INTO infomotion.usuario_has_servidor (fk_usuario, fk_servidor)
