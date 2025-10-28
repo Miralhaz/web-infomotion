@@ -5,7 +5,7 @@ const tempo = localStorage.getItem("tempoSelecionado");
 let chartInstance = null;
 let especificacao = []
 let infoTabela = []
-let jaOrdenado = false;
+let jaOrdenado = true;
 
 function receberAlertas(idUsuario) {
     fetch(`/servidores/receberAlertas/${idUsuario}`)
@@ -65,10 +65,13 @@ function inserirDadosTabela(){
         if(indice >= 0){
             if (element.tipo.toUpperCase() === 'CPU') {
                 infoTabela[indice].AlertaCPU ++;
+                infoTabela[indice].Risco ++;
             }else if (element.tipo.toUpperCase() === 'DISCO') {
                 infoTabela[indice].AlertaDisco ++;
+                infoTabela[indice].Risco ++;
             }else {
                 infoTabela[indice].AlertaRAM ++;
+                infoTabela[indice].Risco ++;
             }
         }  
         else {
