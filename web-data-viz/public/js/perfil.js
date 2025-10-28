@@ -131,6 +131,15 @@ function abrirPopupEditar() {
   });
 }
 
+function fotoPerfil(){
+ let urlFoto = sessionStorage.URL_FOTO;
+ if(urlFoto == "undefined"){
+    foto_perfil.innerHTML += '<img src="../assets/imgs/undefinned_foto.jpg" id="foto-perfil" alt="Foto de perfil">';
+ }else{
+    foto_perfil.innerHTML += '<img src="' + urlFoto + '" id="foto-perfil" alt="Foto de perfil">';
+ }
+} 
+
 window.onload = () => {
   carregarPerfil();
   carregarServidores();
