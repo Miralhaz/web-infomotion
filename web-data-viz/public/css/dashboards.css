@@ -1572,21 +1572,35 @@ background-color: #222;
 
 .container .div-selects {
   width: 100%;
-  display: flex;
-  justify-content: space-around;
-  margin-top: 4vh;
-  gap: 50%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.5fr 1fr;
+  justify-items: center;
 }
 
 .div-selects select {
   text-align: center;
-  width: 15%;
-  height: 5vh;
+  width: 13vw;
   padding: 1vh;
   background-color: var(--cinzaDash);
   color: white;
-  border-radius: 5vh;
+  border-radius: 2vh;
+  margin: 1px;
+  grid-row: 2;
+  font-family: "poppins", sans-serif;
+  font-size: 1rem;
 }
+
+.div-selects .nome_dash{
+  text-align: center;
+  width: 13vw;
+  padding: 1vh;
+  background-color: var(--cinzaDash);
+  color: white;
+  border-radius: 2vh;
+  margin: 1px;
+}
+
 
 .div-kpis {
   display: flex;
