@@ -38,6 +38,7 @@ function entrar() {
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.ID_USUARIO = json.id;
                     sessionStorage.ID_EMPRESA = json.idEmpresa;
+                    sessionStorage.URL_FOTO = json.imagem_url;  
 
                     setTimeout(function () {
                         window.location = "../dashboard/tela-servidores.html";

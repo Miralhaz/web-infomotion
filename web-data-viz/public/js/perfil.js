@@ -19,6 +19,7 @@ function carregarPerfil() {
       document.getElementById("usuarioNome").textContent = usuario.nome;
       document.getElementById("usuarioCargo").textContent = usuario.cargo;
       document.getElementById("usuarioEmpresa").textContent = usuario.empresa;
+      document.getElementById("usuarioEmail").textContent = sessionStorage.EMAIL_USUARIO;
 
       // Formata a data de cadastro
       const dataFormatada = new Date(usuario.dt_cadastro).toLocaleDateString("pt-BR", {
@@ -81,6 +82,7 @@ function abrirPopupEditar() {
     title: 'Editar Perfil',
     html: `
       <input id="inputNome" class="swal2-input" placeholder="Novo nome">
+      
     `,
     confirmButtonText: 'Salvar alterações',
     confirmButtonColor: '#ffc64b',
