@@ -77,11 +77,11 @@
           <table class="table_alerta_servidores">
             <thead>
               <tr>
-                <th scope="col">Nome do servidor <img src="../assets/icon/" alt=""></th>
-                <th scope="col">Alertas CPU</th>
-                <th scope="col">Alertas RAM</th>
-                <th scope="col">Alertas Disco</th>
-                <th scope="col">Risco (%)</th>
+                <th scope="col" onclick="ordenarPor('nome')" id="table_alerta_nome">Nome do servidor</th>
+                <th scope="col" onclick="ordenarPor('cpu')" id="table_alerta_cpu">Alertas CPU </th>
+                <th scope="col" onclick="ordenarPor('ram')" id="table_alerta_ram">Alertas RAM </th>
+                <th scope="col" onclick="ordenarPor('disco')" id="table_alerta_disco">Alertas Disco </th>
+                <th scope="col" onclick="ordenarPor('risco')" id="table_alerta_risco">Risco (%) </th>
               </tr>
             </thead>
             <tbody id="bodyTabelaAlerta">
