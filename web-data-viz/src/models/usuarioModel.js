@@ -34,7 +34,7 @@ function listarFuncionarios(idEmpresa) {
     console.log("ACESSEI O FUNCIONARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listarFuncionarios()");
 
     var instrucaoSql = `
-        select u.id, u.nome, u.cargo from usuario u
+        select u.id, u.nome, u.cargo, u.imagem_url from usuario u
         inner join empresa e on u.fk_empresa = e.id
         where e.id = '${idEmpresa}';
     `;

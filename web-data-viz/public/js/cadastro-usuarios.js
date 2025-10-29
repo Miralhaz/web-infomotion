@@ -133,7 +133,7 @@ function listarFuncionarios() {
                             <a onclick="listarUmFuncionario(${resposta[i].id})"> 
                                   <img src="../assets/icon/editar-amarelo.svg" alt="Icone de edição" class="iconeTabela"> 
                             </a>
-                            <img src="../assets/imgs/av1.png" alt="Foto de perfil" class="foto-perfil">
+                            <img src="..${resposta[i].imagem_url}" alt="Foto de perfil" class="foto-perfil">
                           </div>
                           <div class="info-user">
                             <p>ID: ${resposta[i].id} </p>
