@@ -84,14 +84,14 @@ function obterDadosKpi(idServidor) {
 
                     let frase = `
                 <div class="div-dados">
-                    <p> Temperatura atual (°C):</p>
+                    <p class="titulo"> Temperatura atual (°C)</p>
                     <div class="div-content">
                         <div class="temp-atual">
                             <div class="div-graph">
                                 <a id="circ_cpu">◎</a>
                             </div>
                             <div>
-                                <p>CPU</p>
+                                <p class="titulo">CPU</p>
                                 <p class="titulo">Máx: <a class="dados-uso">85°C</a></p>
                                 <p class="titulo">Min: <a class="dados-uso">50°C</a></p>
                                 <div class="div-temp">
@@ -102,7 +102,7 @@ function obterDadosKpi(idServidor) {
 
                         <div class="temp-atual">
                             <div>
-                                <p>DISCO</p>
+                                <p class="titulo">DISCO</p>
                                 <p class="titulo">Máx: <a class="dados-uso">85°C</a></p>
                                 <p class="titulo">Min: <a class="dados-uso">30°C</a></p>
                                 <div class="div-temp">
@@ -117,7 +117,7 @@ function obterDadosKpi(idServidor) {
                 </div>
 
                 <div class="div-dados">
-                    <p style="margin-top: 5px;"> Uso de CPU Atual (%) </p>
+                    <p style="margin-top: 20px;" class="titulo"> Uso de CPU Atual (%) </p>
                     <div class="div-container-kpi">
                         <div class="div-velocimetro">
                             <canvas id="velocimeterCpuChart"></canvas>
@@ -127,7 +127,7 @@ function obterDadosKpi(idServidor) {
                 </div>
 
                 <div class="div-dados">
-                    <p style="margin-top: 5px;"> Uso de RAM Atual (%) </p>
+                    <p style="margin-top: 20px;" class="titulo"> Uso de RAM Atual (%) </p>
                     <div class="div-container-kpi">
                         <div class="div-velocimetro">
                             <canvas id="velocimeterRamChart"></canvas>
@@ -589,13 +589,16 @@ function plotarGraficoLinhas(dados, idServidor) {
                     beginAtZero: true,
                     ticks: {
                         color: 'white',
+                        font: {
+                            size: 15
+                        }
                     },
                     title: {
                         display: true,
                         text: 'Porcentagem (%)',
                         color: 'white',
                         font: {
-                            size: 14
+                            size: 16
                         }
                     },
                     grid: {
@@ -607,13 +610,16 @@ function plotarGraficoLinhas(dados, idServidor) {
                 x: {
                     ticks: {
                         color: 'white',
+                        font: {
+                            size: 15
+                        }
                     },
                     title: {
                         display: true,
                         text: 'Horário',
                         color: 'white',
                         font: {
-                            size: 14
+                            size: 16
                         }
                     },
                     grid: {
@@ -714,7 +720,15 @@ function plotarGraficoStackBarDisco(dadosKpi) {
             aspectRatio: 4,
             plugins: {
                 legend: {
-                    display: true
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        color: 'white',
+                        font: {
+                            size: 15
+                        }
+                    }
                 },
                 title: {
                     display: true,
@@ -741,7 +755,11 @@ function plotarGraficoStackBarDisco(dadosKpi) {
                     beginAtZero: true,
                     display: true,
                     ticks: {
-                        padding: 10
+                        padding: 10,
+                        color: 'white',
+                        font: {
+                            size: 15
+                        }
                     }
                 },
                 y: {
@@ -805,7 +823,16 @@ function plotarGraficoParticaoDisco(dadosKpi) {
             responsive: true,
             aspectRatio: 4,
             plugins: {
-                legend: { display: true },
+                legend: { 
+                    display: true,
+                    labels: {
+                        usePointStyle: true,
+                        color: 'white',
+                        font: {
+                            size: 15
+                        }
+                    }
+                },
                 title: { 
                     display: true, 
                     font: {
@@ -816,8 +843,28 @@ function plotarGraficoParticaoDisco(dadosKpi) {
                 },
             },
             scales: {
-                x: { stacked: true, max: 100, beginAtZero: true },
-                y: { stacked: true }
+                x: { 
+                        stacked: true, 
+                        max: 100, 
+                        beginAtZero: true,
+                        ticks: {
+                            padding: 10,
+                            color: 'white',
+                            font: {
+                                size: 15
+                            }
+                        }
+                    },
+                y: { 
+                        stacked: true,
+                        ticks: {
+                            padding: 10,
+                            color: 'white',
+                            font: {
+                                size: 15
+                            }
+                        }
+                    }
             }
         }
     });
