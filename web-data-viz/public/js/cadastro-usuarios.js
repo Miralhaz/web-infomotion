@@ -187,7 +187,7 @@ function listarUmFuncionario(id) {
               <a onclick="excluirFuncionario(${resposta[0].id})"> 
                 <img src="../assets/icon/delete-icon.png" alt="Deletar" class="iconeTabela"> 
               </a>
-              <img src="../assets/imgs/av1.png" alt="Foto de perfil" class="foto-perfil">
+              <img src="..${resposta[0].imagem_url}" alt="Foto de perfil" class="foto-perfil">
             </div>
             <div class="info-user">
               <p>ID: ${resposta[0].id}</p>
@@ -246,7 +246,8 @@ function listarServidoresFuncionario(id) {
             vetorServidores.push({
               idServidor: resposta[i].idServidor,
               apelido: resposta[i].apelido,
-              idFuncionario: resposta[i].idFuncionario
+              idFuncionario: resposta[i].idFuncionario,
+              imagen_url: resposta[i].imagem_url
             });
 
           }
@@ -413,7 +414,7 @@ function pesquisarFuncionario() {
           <div class="editar-coluna">
             <p>Editar</p>
             <a onclick="listarUmFuncionario(${vetorUsuarios[i].id})"> 
-              <img src="../assets/icon/edit-icon.png" alt="Icone de edição" class="iconeTabela"> 
+               <img src="..${vetorUsuarios[i].imagem_url}" alt="Foto de perfil" class="foto-perfil">
             </a>
             <img src="../assets/imgs/av1.png" alt="Foto de perfil" class="foto-perfil">
           </div>
