@@ -1,3 +1,7 @@
+let graficoLinhas;
+let graficoStackBarDisco;
+let graficoParticaoDisco;
+
 function carregarDashboardInicial() {
     const idServidorClicado = sessionStorage.ID_SERVIDOR_SELECIONADO;
 
@@ -137,19 +141,25 @@ function obterDadosKpi(idServidor) {
                     divs.innerHTML = frase;
 
                     const dadosKpiCpu = {
-                        uso_cpu: dados[0].uso_cpu, 
-                        max_cpu: max_cpu           
+                        uso_cpu: dados[0].uso_cpu,
+                        max_cpu: max_cpu
                     };
-                    
+
                     const dadosKpiRam = {
-                        uso_ram: dados[0].uso_ram, 
-                        max_ram: max_ram           
+                        uso_ram: dados[0].uso_ram,
+                        max_ram: max_ram
                     };
+
+                    const dadosKpiDisco = {
+                        uso_disco: dados[0].uso_disco,
+                        max_disco: max_disco
+                    }
 
                     plotarGraficoVelocimetroCpu(dadosKpiCpu);
                     plotarGraficoVelocimetroRam(dadosKpiRam);
                     listarDadosLinhas(idServidor);
-                    listarDadosBarras(idServidor);
+                    plotarGraficoStackBarDisco(dadosKpiDisco);
+                    plotarGraficoParticaoDisco(dadosKpiDisco);
 
 
                     let div_temp = document.querySelectorAll('.div-temp');
@@ -261,16 +271,32 @@ function obterDadosKpi(idServidor) {
 function plotarGraficoVelocimetroCpu(dadoKpi) {
     const usoCpu = dadoKpi.uso_cpu;
     const restante = (100 - usoCpu);
+    const parametro = dadoKpi.max_cpu
 
-    let corUso;
-    if (usoCpu < dadoKpi.max_cpu / 1.5) {
-        corUso = '#4CAF50';
-    } else if (usoCpu < dadoKpi.max_cpu) {
-        corUso = '#FFC107';
+    let corUsada;
+
+    const corMinima = 120;
+    const corMaxima = 0;
+
+    if (usoCpu >= parametro) {
+        corUsada = `hsl(${corMaxima}, 80%, 50%)`;
     } else {
-        corUso = '#F44336';
+        const pontoInicialMudanca = 60;
+
+        if (usoCpu < pontoInicialMudanca) {
+            corUsada = `hsl(${corMinima}, 80%, 50%)`;
+        } else {
+            const rangeUso = parametro - pontoInicialMudanca;
+            const rangeCor = corMinima - corMaxima;
+
+            const fator = (usoCpu - pontoInicialMudanca) / rangeUso;
+            const hue = corMinima - (fator * rangeCor);
+
+            corUsada = `hsl(${hue}, 80%, 50%)`;
+        }
     }
-    const corRestante = '#E0E0E0';
+
+    const corRestante = '#c0c0c0ff'
 
     const textCenter = {
         id: 'textCenter',
@@ -284,7 +310,7 @@ function plotarGraficoVelocimetroCpu(dadoKpi) {
             const textY = (bottom + top) / 1.5;
 
             ctx.font = `bold ${fontSize}em sans-serif`;
-            ctx.fillStyle = corUso;
+            ctx.fillStyle = corUsada;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(text, textX, textY);
@@ -309,11 +335,11 @@ function plotarGraficoVelocimetroCpu(dadoKpi) {
                 label: 'Uso da CPU (%)',
                 data: [usoCpu, restante],
                 backgroundColor: [
-                    corUso,
+                    corUsada,
                     corRestante
                 ],
                 borderColor: [
-                    corUso,
+                    corUsada,
                     corRestante
                 ],
                 borderWidth: 1
@@ -361,16 +387,33 @@ function plotarGraficoVelocimetroCpu(dadoKpi) {
 function plotarGraficoVelocimetroRam(dadoKpi) {
     const usoRam = dadoKpi.uso_ram;
     const restante = (100 - usoRam);
+    const parametro = dadoKpi.max_ram
 
-    let corUso;
-    if (usoRam < dadoKpi.max_ram / 1.5) {
-        corUso = '#4CAF50';
-    } else if (usoRam < dadoKpi.max_ram) {
-        corUso = '#FFC107';
+    let corUsada;
+
+    const corMinima = 120;
+    const corMaxima = 0;
+
+    if (usoRam >= parametro) {
+        corUsada = `hsl(${corMaxima}, 80%, 50%)`;
     } else {
-        corUso = '#F44336';
+        const pontoInicialMudanca = 60;
+
+        if (usoRam < pontoInicialMudanca) {
+            corUsada = `hsl(${corMinima}, 80%, 50%)`;
+        } else {
+            const rangeUso = parametro - pontoInicialMudanca;
+            const rangeCor = corMinima - corMaxima;
+
+            const fator = (usoRam - pontoInicialMudanca) / rangeUso;
+            const hue = corMinima - (fator * rangeCor);
+
+            corUsada = `hsl(${hue}, 80%, 50%)`;
+        }
     }
-    const corRestante = '#E0E0E0';
+
+    const corRestante = '#c0c0c0ff'
+
 
     const textCenter = {
         id: 'textCenter',
@@ -384,7 +427,7 @@ function plotarGraficoVelocimetroRam(dadoKpi) {
             const textY = (bottom + top) / 1.5;
 
             ctx.font = `bold ${fontSize}em sans-serif`;
-            ctx.fillStyle = corUso;
+            ctx.fillStyle = corUsada;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(text, textX, textY);
@@ -409,11 +452,11 @@ function plotarGraficoVelocimetroRam(dadoKpi) {
                 label: 'Uso da CPU (%)',
                 data: [usoRam, restante],
                 backgroundColor: [
-                    corUso,
+                    corUsada,
                     corRestante
                 ],
                 borderColor: [
-                    corUso,
+                    corUsada,
                     corRestante
                 ],
                 borderWidth: 1
@@ -483,6 +526,8 @@ function listarDadosLinhas(idServidor) {
 }
 
 
+
+
 function plotarGraficoLinhas(dados, idServidor) {
     let labels = [];
     let ram = [];
@@ -500,6 +545,10 @@ function plotarGraficoLinhas(dados, idServidor) {
         ram.push(dados[i].uso_ram);
         cpu.push(dados[i].uso_cpu);
         disco.push(dados[i].uso_disco);
+    }
+
+    if (window.graficoLinhas instanceof Chart) {
+        window.graficoLinhas.destroy();
     }
 
     const config = {
@@ -533,7 +582,7 @@ function plotarGraficoLinhas(dados, idServidor) {
         },
 
         options: {
-            responsive: false,
+            responsive: true,
             maintainAspectRatio: false,
             scales: {
                 y: {
@@ -592,131 +641,189 @@ function plotarGraficoLinhas(dados, idServidor) {
         }
     };
 
-    new Chart(
+    window.graficoLinhas = new Chart(
         document.getElementById('lineChart'),
         config
     );
-
 }
 
 
-function listarDadosBarras(idServidor) {
-    fetch(`/servidores/listarDadosBarras/${idServidor}`)
-        .then(function (resposta) {
-            if (resposta.ok) {
-                resposta.json().then(function (dados) {
-                    console.log("Dados recebidos: ", JSON.stringify(dados));
-                    console.log("Dados recebidos: ", JSON.stringify(dados));
-                    plotarGraficoBarras(dados, idServidor);
-
-                });
-
-            } else {
-                throw "Houve um erro ao tentar listar os servidores!";
-            }
-        })
-
-        .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-        });
-}
 
 
-function plotarGraficoBarras(dados, idServidor) {
-    let labels = [];
-    let proc = [];
+function plotarGraficoStackBarDisco(dadosKpi) {
+    const usado = dadosKpi.uso_disco;
+    const parametro = dadosKpi.max_disco;
+    const total = 100;
+    const livre = total - usado;
 
-    for (let i = 0; i < dados.length; i++) {
+    let corUsada;
 
-        const dtHora = new Date(dados[i].dt_registro);
-        const hora = dtHora.getHours();
-        const min = dtHora.getMinutes();
-        const minFormatado = ('0' + min).slice(-2);
+    const corMinima = 60;
+    const corMaxima = 0;
 
-        labels.push((hora + ':' + minFormatado));
-        proc.push(dados[i].qtd_processos);
+    if (usado >= parametro) {
+        corUsada = `hsl(${corMaxima}, 80%, 50%)`;
+    } else {
+        const pontoInicialMudanca = 50;
+
+        if (usado < pontoInicialMudanca) {
+            corUsada = `hsl(${corMinima}, 80%, 50%)`;
+        } else {
+            const rangeUso = parametro - pontoInicialMudanca;
+            const rangeCor = corMinima - corMaxima;
+
+            const fator = (usado - pontoInicialMudanca) / rangeUso;
+            const hue = corMinima - (fator * rangeCor);
+
+            corUsada = `hsl(${hue}, 80%, 50%)`;
+        }
     }
 
-    const config = {
+    const ctx = document.getElementById('stackBarChart').getContext('2d');
+
+    if (window.graficoStackBarDisco instanceof Chart) {
+        window.graficoStackBarDisco.destroy();
+    }
+
+    window.graficoStackBarDisco = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: labels,
-            datasets: [{
-                label: 'Processos',
-                data: proc,
-                fill: false,
-                backgroundColor: '#FAFF00',
-                borderColor: '#FAFF00',
-                borderRadius: 5,
-                tension: 0.1
-            }]
-        },
-
-        options: {
-            responsive: false,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        color: 'white',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Quantidade de processos',
-                        color: 'white',
-                        font: {
-                            size: 14
-                        }
-                    },
-                    grid: {
-                        color: 'rgba(153, 153, 153, 0.2)',
-                        display: true,
-                        drawTicks: false
-                    }
+            labels: ['Uso do Disco'],
+            datasets: [
+                {
+                    label: 'Usado',
+                    data: [usado],
+                    color: 'white',
+                    backgroundColor: corUsada,
+                    order: 1,
+                    barThickness: 30
                 },
-                x: {
-                    ticks: {
-                        color: 'white'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Horário',
-                        color: 'white',
-                        font: {
-                            size: 14
-                        }
-                    },
-                    grid: {
-                        drawOnChartArea: true
-                    }
+                {
+                    label: 'Livre',
+                    data: [livre],
+                    color: 'white',
+                    backgroundColor: 'rgba(220, 220, 220, 1)',
+                    order: 2,
+                    barThickness: 30
                 }
-            },
+            ]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            aspectRatio: 4,
             plugins: {
+                legend: {
+                    display: true
+                },
                 title: {
                     display: true,
-                    text: "Processos a cada 30 minutos",
+                    text: `Espaço em Disco Utilizado (%) - Parâmetro Máximo: ${parametro}%`,
                     color: 'white',
                     font: {
                         size: 18
                     }
                 },
-                legend: {
-                    position: 'top',
-                    labels: {
-                        usePointStyle: true,
-                        color: 'white'
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            let label = context.dataset.label || '';
+                            let value = context.parsed.x;
+                            return label + ': ' + value.toFixed(1) + '%';
+                        }
                     }
+                }
+            },
+            scales: {
+                x: {
+                    stacked: true,
+                    max: total,
+                    beginAtZero: true,
+                    display: true,
+                    ticks: {
+                        padding: 10
+                    }
+                },
+                y: {
+                    stacked: true,
+                    display: false
+                }
+            },
+            elements: {
+                bar: {
+                    borderWidth: 1,
+                    borderColor: 'rgba(0, 0, 0, 0.1)'
                 }
             }
         }
-    };
-
-    new Chart(
-        document.getElementById('barChart'),
-        config
-    );
+    });
 }
+
+
+
+
+function plotarGraficoParticaoDisco(dadosKpi) {
+    const usoTotalDoDisco = dadosKpi.uso_disco;
+    
+    const fatorParticaoC = 0.4; 
+    
+    const usoParticaoC = usoTotalDoDisco * fatorParticaoC;
+    const usoParticaoD = usoTotalDoDisco * (1 - fatorParticaoC);
+
+    const labels = ['Partição C:/', 'Partição D:/'];
+    const usados = [usoParticaoC, usoParticaoD];
+    const livres = [100 - usoParticaoC, 100 - usoParticaoD];
+    
+    const canvasId = 'barParticaoChart';
+    const ctx = document.getElementById(canvasId);
+
+    if (window.graficoParticaoDisco instanceof Chart) {
+        window.graficoParticaoDisco.destroy();
+    }
+
+    window.graficoParticaoDisco = new Chart(ctx.getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Usado',
+                    data: usados,
+                    backgroundColor: 'rgba(255, 198, 75, 0.8)',
+                    order: 1,
+                },
+                {
+                    label: 'Livre',
+                    data: livres,
+                    backgroundColor: 'rgba(220, 220, 220, 1)',
+                    order: 2,
+                }
+            ]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            aspectRatio: 4,
+            plugins: {
+                legend: { display: true },
+                title: { 
+                    display: true, 
+                    font: {
+                        size: 18
+                    },
+                    text: 'Uso de Disco por Partição (%)',
+                    color: 'white',
+                },
+            },
+            scales: {
+                x: { stacked: true, max: 100, beginAtZero: true },
+                y: { stacked: true }
+            }
+        }
+    });
+}
+
+
 
 
 window.onload = () => {
