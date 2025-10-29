@@ -44,7 +44,8 @@ function editarComponente() {
 
   var tipo_componente = ipt_tipo_componente.value
   var apelidoComp = ipt_apelido_componente.value
-  var unidadeMedidaComp = ipt_unidade_medida_componente.value
+  var unidadeMedidaCompCodificada = unidade_medida.value
+  var unidadeMedidaComp = decodeURIComponent(unidadeMedidaCompCodificada)
   var parametro1Comp = ipt_parametro1_componente.value
   var statusComp = ipt_status_componente.checked
 

@@ -65,13 +65,13 @@ function inserirDadosTabela(){
         if(indice >= 0){
             if (element.tipo.toUpperCase() === 'CPU') {
                 infoTabela[indice].AlertaCPU ++;
-                infoTabela[indice].Risco ++;
+                infoTabela[indice].QuantidadeTotalAlertas ++;
             }else if (element.tipo.toUpperCase() === 'DISCO') {
                 infoTabela[indice].AlertaDisco ++;
-                infoTabela[indice].Risco ++;
+                infoTabela[indice].QuantidadeTotalAlertas ++;
             }else {
                 infoTabela[indice].AlertaRAM ++;
-                infoTabela[indice].Risco ++;
+                infoTabela[indice].QuantidadeTotalAlertas ++;
             }
         }  
         else {
@@ -81,9 +81,9 @@ function inserirDadosTabela(){
                 AlertaCPU: 0,
                 AlertaRAM: 0,
                 AlertaDisco: 0,
-                Risco: 0
+                QuantidadeTotalAlertas: 1
             })
-            indice = infoTabela.length -1
+            indice = infoTabela.length - 1
             if (element.tipo.toUpperCase() === 'CPU') {
                     infoTabela[indice].AlertaCPU ++;
                 }else if (element.tipo.toUpperCase() === 'DISCO') {
@@ -116,7 +116,7 @@ function inserirDadosTabela(){
             ${element.AlertaDisco}
             </td>
             <td>
-            ${element.Risco}
+            ${element.QuantidadeTotalAlertas}
             </td>
         </tr>
               `
@@ -235,6 +235,7 @@ function plotarGraficoLinhas(idServidor) {
                     beginAtZero: true,
                     ticks: {
                         color: 'white',
+                        stepSize: 1
                     },
                     title: {
                         display: true,
@@ -245,7 +246,7 @@ function plotarGraficoLinhas(idServidor) {
                         color: 'rgba(153, 153, 153, 0.2)',
                         display: true,
                         drawTicks: false
-                    }
+                    },
                 },
                 x: {
                     ticks: {
@@ -326,7 +327,7 @@ function plotarEspecificacaoHardware(){
                     logico = element.valor
                 } else fisico = element.valor
             } else if (element.tipo.toUpperCase() == 'ram'.toUpperCase()){
-                ramTotal.innerHTML = `RAM Total: ${element.valor}`
+                ramTotal.innerHTML = `RAM Total: ${element.valor}GB`
             } else if (element.tipo.toUpperCase() == 'disco'.toUpperCase()) disco.innerHTML = `Capacidade Disco: ${element.valor}GB`
         }
         CPU.innerHTML = `Núcleos da CPU<br>Físicos: ${fisico}<br>Lógicos: ${logico}`
@@ -347,7 +348,7 @@ function ordenarPor(item){
         document.getElementById(`table_alerta_cpu`).innerHTML = 'Alertas CPU'
         document.getElementById(`table_alerta_ram`).innerHTML = 'Alertas RAM'
         document.getElementById(`table_alerta_disco`).innerHTML = 'Alertas Disco'
-        document.getElementById(`table_alerta_risco`).innerHTML = 'Risco (%)'
+        document.getElementById(`table_alerta_risco`).innerHTML = 'Quantidade total de alertas'
 
         document.getElementById(`table_alerta_${item}`).innerHTML += `<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down">`
         jaOrdenado = true
@@ -409,7 +410,7 @@ function ordenarPor(item){
                 let inserido = false
                 for (let j = 0; j < infoOrdenada.length; j++) {
                     const elemento = infoOrdenada[j];
-                    if (Number(element.Risco) > Number(elemento.Risco)) {
+                    if (Number(element.QuantidadeTotalAlertas) > Number(elemento.QuantidadeTotalAlertas)) {
                         infoOrdenada.splice(j, 0, element)
                         inserido = true
                         break;
@@ -441,7 +442,7 @@ function ordenarPor(item){
                 ${element.AlertaDisco}
             </td>
             <td>
-                ${element.Risco}
+                ${element.QuantidadeTotalAlertas}
             </td>
         </tr>
             `

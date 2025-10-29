@@ -94,7 +94,7 @@ function listarServidores(idEmpresa) {
 function obterDadosKpi(idServidor) {
 
   var instrucaoSql = `
-    SELECT 
+  select 
     rs.uso_cpu, 
     rs.uso_ram, 
     rs.uso_disco, 
@@ -103,24 +103,19 @@ function obterDadosKpi(idServidor) {
     rs.temp_disco, 
     c.tipo, 
     pa.max 
-FROM 
-    registro_servidor rs
-INNER JOIN 
-    servidor s ON rs.fk_servidor = s.id
-INNER JOIN 
-    parametro_alerta pa ON pa.fk_servidor = s.id
-INNER JOIN 
-    componentes c ON c.id = pa.fk_componente
-WHERE 
-    rs.fk_servidor = '${idServidor}'
-    AND rs.id = (
-        SELECT id FROM registro_servidor 
-        WHERE fk_servidor = '${idServidor}' 
-        ORDER BY dt_registro DESC 
-        LIMIT 1 -- Encontra o ID do registro mais recente
+  from registro_servidor rs
+  inner join servidor s on rs.fk_servidor = s.id
+  inner join parametro_alerta pa on pa.fk_servidor = s.id
+  inner join componentes c on c.id = pa.fk_componente
+  where rs.fk_servidor = '${idServidor}'
+  and rs.id = (
+      select id from registro_servidor 
+      where fk_servidor = '${idServidor}' 
+      order by dt_registro desc 
+      LIMIT 1 
     );
   `;
-
+  
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }
@@ -133,12 +128,9 @@ function listarDadosLinhas(idServidor) {
         uso_ram, 
         uso_disco, 
         dt_registro 
-    FROM 
-        registro_servidor 
-    WHERE 
-        fk_servidor = '${idServidor}'
-    ORDER BY 
-        dt_registro DESC 
+    FROM registro_servidor 
+    WHERE fk_servidor = '${idServidor}'
+    ORDER BY dt_registro DESC 
     LIMIT 10;
 `;
 
