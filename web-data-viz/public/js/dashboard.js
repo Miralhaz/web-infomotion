@@ -93,7 +93,6 @@ function obterDadosKpi(idServidor) {
                             <div>
                                 <p class="titulo">CPU</p>
                                 <p class="titulo">Máx: <a class="dados-uso">85°C</a></p>
-                                <p class="titulo">Min: <a class="dados-uso">50°C</a></p>
                                 <div class="div-temp">
                                     <p>${Math.round(dados[0].temp_cpu)}°C</p>
                                 </div>
@@ -104,7 +103,6 @@ function obterDadosKpi(idServidor) {
                             <div>
                                 <p class="titulo">DISCO</p>
                                 <p class="titulo">Máx: <a class="dados-uso">85°C</a></p>
-                                <p class="titulo">Min: <a class="dados-uso">30°C</a></p>
                                 <div class="div-temp">
                                     <p>${Math.round(dados[0].temp_disco)}°C</p>
                                 </div>
@@ -561,7 +559,7 @@ function plotarGraficoLinhas(dados, idServidor) {
                 fill: false,
                 backgroundColor: '#FFB000',
                 borderColor: '#FFB000',
-                tension: 0.4
+                tension: 0.2
             },
             {
                 label: 'CPU',
@@ -569,7 +567,7 @@ function plotarGraficoLinhas(dados, idServidor) {
                 fill: false,
                 backgroundColor: '#E2E2E2',
                 borderColor: '#E2E2E2',
-                tension: 0.4
+                tension: 0.2
             },
             {
                 label: 'DISCO',
@@ -577,7 +575,7 @@ function plotarGraficoLinhas(dados, idServidor) {
                 fill: false,
                 backgroundColor: '#FAFF00',
                 borderColor: '#FAFF00',
-                tension: 0.4
+                tension: 0.2
             }]
         },
 
