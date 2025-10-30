@@ -131,7 +131,7 @@ function listarDadosLinhas(idServidor) {
     FROM registro_servidor 
     WHERE fk_servidor = '${idServidor}'
     ORDER BY dt_registro DESC 
-    LIMIT 10;
+    LIMIT 30;
 `;
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
