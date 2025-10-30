@@ -148,7 +148,7 @@ function fotoPerfil(){
 } 
 
 window.onload = () => {
- 
   carregarPerfil();
-  carregarServidores()
+  carregarServidores();
+  fotoPerfil();
 };
