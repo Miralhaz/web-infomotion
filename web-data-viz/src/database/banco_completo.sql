@@ -141,19 +141,17 @@ VALUES
 (2, 'srv-infodata', '10.0.0.5', 1),
 (3, 'srv-x-backup', '172.16.0.9', 0);
 
-
-
-INSERT INTO usuario (fk_empresa, cargo, nome, senha, email, ativo)
+INSERT INTO usuario (fk_empresa, cargo, nome, senha, email, ativo, imagem_url)
 VALUES
-(1, 'Gestor', "Gabriel", '123456', 'email@.', 1),
-(1, 'Gestor', 'Pedro Santos', 'infodata321', 'pedro@infodata.com', 1),
-(3, 'Suporte', 'Ana Costa', 'backup987', 'ana@serverx.com', 0);
+(1, 'Gestor', "Gabriel", '123456', 'email@.', 1, '/assets/pacote-pessoas/gabriel.png'),
+(1, 'Gestor', 'Pedro Santos', 'infodata321', 'pedro@infodata.com', 1, '/assets/pacote-pessoas/adolescente-calma-com-os-bracos-cruzados.jpg'),
+(3, 'Suporte', 'Ana Costa', 'backup987', 'ana@serverx.com', 0, '/assets/pacote-pessoas/vista-frontal-da-elegante-mulher-de-negocios-segurando-prancheta-com-espaco-de-copia.jpg'),
+(1, 'Gestor', 'Veronica', '123456', 'veronica@email.com', 1, '/assets/pacote-pessoas/veronica.png');
 
 INSERT INTO usuario_has_servidor (fk_usuario, fk_servidor)
 VALUES
 (1, 1),
 (2, 1);
-
 
 /* select * from servidor;
 select fk_servidor, tipo, numero_serie, apelido, date_format(dt_cadastro, '%d/%m/%Y %H:%i:%s') from componentes;
@@ -1670,8 +1668,3 @@ VALUES
 (1, 35.75, 71.50, 77.80, 239, 81.0, 38.1, '2025-10-24 17:25'),
 (1, 32.10, 70.40, 74.90, 234, 80.0, 37.0, '2025-10-28 12:00');
 
-
-
-insert into usuario values (5,1,'Gestor','Veronica',123456,'veronica@email.com',1,'/assets/pacote-pessoas/veronica.png','2025-10-28 18:31:04');
-
-select * from usuario;
