@@ -169,7 +169,8 @@ function receberAlertas(idUsuario) {
             ON us.fk_servidor = s.id    
             INNER JOIN componentes as c
               ON p.fk_componente = c.id      
-            WHERE us.fk_usuario = '${idUsuario}';
+            WHERE us.fk_usuario = '${idUsuario}'
+            order by data_registro;
   `;
 
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
