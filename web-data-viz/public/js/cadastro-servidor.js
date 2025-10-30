@@ -2,13 +2,45 @@ var listaServidores = []
 var cargoUsuario = sessionStorage.getItem("USUARIO_CARGO")
 
 document.addEventListener("DOMContentLoaded", function () {
-if(cargoUsuario != "Gestor"){
+  if (cargoUsuario != "Gestor") {
     var elemento = document.getElementById("usuario-header");
     elemento.style.display = "none";
-}
+  }
 })
 
+
+
+
+function calcularCorUso(percentual) {
+  percentual = Math.max(0, Math.min(100, percentual));
+
+  let r, g, b = 0;
+
+  // Primeiro if mantém 100% no verde e na medida que a porcentagem aumenta, vai ficar mais pro amarelo
+  if (percentual <= 50) {
+    r = Math.round(255 * (percentual / 50));
+    g = 255;
+  }
+  // Aqui seria do vermelho, sendo 100% vermelho e ia ate o amarelo
+  else {
+    r = 255;
+    g = Math.round(255 * (1 - ((percentual - 50) / 50)));
+  }
+
+  // Conversão da cor encontrada no rgb no if-else para hexadecimal
+  const toHex = (c) => ('0' + c.toString(16)).slice(-2);
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+
+
+
+
 function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
+
+  const corCpu = calcularCorUso(uso_cpu);
+  const corRam = calcularCorUso(uso_ram);
+  const corDisco = calcularCorUso(uso_disco);
 
   let acoesHtml = ""
   if (cargoUsuario == "Gestor") {
@@ -24,6 +56,8 @@ function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
                   `
   }
 
+
+
   let html = `
                    <div onclick="irParaDash(${id})">
               <div class="card-servidor">
@@ -37,9 +71,9 @@ function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
                 <p class="ip">IP: ${ip}</p>
 
                 <div class="metricas">
-                  <div><span>CPU</span><strong>${uso_cpu}%</strong></div>
-                  <div><span>RAM</span><strong>${uso_ram}%</strong></div>
-                  <div><span>DISCO</span><strong>${uso_disco}%</strong></div>
+                  <div><span>CPU</span><strong style="color: ${corCpu}">${uso_cpu}%</strong></div>
+                  <div><span>RAM</span><strong style="color: ${corRam}">${uso_ram}%</strong></div>
+                  <div><span>DISCO</span><strong style="color: ${corDisco}">${uso_disco}%</strong></div>
                 </div>
               </div>
             </div>`;
@@ -47,8 +81,8 @@ function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
 }
 
 function irParaDash(idServidor) {
-    sessionStorage.ID_SERVIDOR_SELECIONADO = idServidor;
-    window.location.href = 'dashboard.html'; 
+  sessionStorage.ID_SERVIDOR_SELECIONADO = idServidor;
+  window.location.href = 'dashboard.html';
 }
 
 function telaCadastroServidor() {
