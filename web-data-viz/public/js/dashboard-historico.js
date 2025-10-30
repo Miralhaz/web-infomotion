@@ -283,6 +283,9 @@ function plotarGraficoLinhas(idServidor) {
 
 }
 
+
+
+
 function listarEspecificacoes(idServidor) {
     
     fetch(`/servidores/receberEspecificacoes/${idServidor}`)
@@ -290,7 +293,7 @@ function listarEspecificacoes(idServidor) {
             if (resposta.ok) {
                 resposta.json().then(function (dados) {
                     console.log("Dados recebidos: ", JSON.stringify(dados));
-                    especificacao.push(...dados)
+                    especificacao = dados
                     console.log("especificacao", especificacao);
                     plotarEspecificacaoHardware()
                     
@@ -312,6 +315,11 @@ function listarEspecificacoes(idServidor) {
 
 }
 
+
+
+
+let totalDisco;
+
 function plotarEspecificacaoHardware(){
 
     const ramTotal = document.getElementById("ram_total")
@@ -319,6 +327,7 @@ function plotarEspecificacaoHardware(){
         const disco = document.getElementById("disco")
         let logico = ''
         let fisico = ''
+        let totalDisco = 0
 
         for (let index = 0; index < especificacao.length; index++) {
             const element = especificacao[index];
@@ -328,10 +337,14 @@ function plotarEspecificacaoHardware(){
                 } else fisico = element.valor
             } else if (element.tipo.toUpperCase() == 'ram'.toUpperCase()){
                 ramTotal.innerHTML = `RAM Total: ${element.valor}GB`
-            } else if (element.tipo.toUpperCase() == 'disco'.toUpperCase()) disco.innerHTML = `Capacidade Disco: ${element.valor}GB`
+            } else if (element.tipo.toUpperCase() == 'disco'.toUpperCase()) {
+                if (element.nome_especificacao.includes('Espaço') && element.nome_especificacao.endsWith('(GB)')) {
+                    totalDisco += parseInt(element.valor, 10)
+                }
+            } 
         }
         CPU.innerHTML = `Núcleos da CPU<br>Físicos: ${fisico}<br>Lógicos: ${logico}`
-
+        disco.innerHTML = `Capacidade Disco: ${totalDisco / 1000}TB`
 }
 
 function chamarFuncoesServidores(idServidor) {
