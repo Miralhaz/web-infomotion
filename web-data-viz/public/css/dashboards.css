@@ -508,7 +508,7 @@ input {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 5vh;
+  gap: 6vh;
   padding-left: 9vh;
 }
 
@@ -788,7 +788,7 @@ input {
 
 .listagem-servidores {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, minmax(380px, 3fr));
   gap: 25px;
 }
 
@@ -1610,7 +1610,7 @@ background-color: #222;
 .div-kpis {
   display: flex;
   flex-direction: row;
-  gap: 2vh;
+  gap: 4vh;
   justify-content: center;
   padding-top: 3vh;
 }
@@ -1843,7 +1843,7 @@ background-color: #222;
 }
 
 .dashboard_historico .tabela_alerta_servidores tbody{
-  transition: 0.3s all ease;
+  transition: background-color 0.3s ease;
 }
 
 .dashboard_historico .tabela_alerta_servidores tbody tr:hover {
@@ -1851,10 +1851,6 @@ background-color: #222;
   color: var(--cinzaDash);
   border-color: #FFC74B;
   box-shadow: 0px 0px 3px 0.2px rgba(243, 171, 15, 0.5);
-}
-
-.dashboard_historico .tabela_alerta_servidores tbody tr:hover td {
-  transform: translateY(-4px);
 }
 
 .dashboard_historico .tabela_alerta_servidores tbody tr::after {
