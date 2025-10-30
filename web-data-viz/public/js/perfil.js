@@ -1,6 +1,7 @@
-function carregarPerfil() {
-  const idUsuario = sessionStorage.ID_USUARIO;
+const idUsuario = sessionStorage.getItem("ID_USUARIO")
 
+function carregarPerfil() {
+  
   if (!idUsuario) {
     alert("Usuário não identificado. Faça login novamente.");
     window.location = "../login.html";
@@ -32,17 +33,23 @@ function carregarPerfil() {
     .catch(erro => {
       console.error("Erro ao carregar perfil:", erro);
     });
+    var cargoUsuario = sessionStorage.getItem("USUARIO_CARGO")
+    document.addEventListener("DOMContentLoaded", function () {
+    if(cargoUsuario != "Gestor"){
+        var elemento = document.getElementById("usuario-header");
+        elemento.style.display = "none";
+    }
+    })
 }
-var cargoUsuario = sessionStorage.getItem("USUARIO_CARGO")
-document.addEventListener("DOMContentLoaded", function () {
-if(cargoUsuario != "Gestor"){
-    var elemento = document.getElementById("usuario-header");
-    elemento.style.display = "none";
-}
-})
 
 function carregarServidores() {
-  const idUsuario = sessionStorage.ID_USUARIO;
+  console.log("idUsuario", idUsuario);
+  
+  if (!idUsuario) {
+    alert("Usuário não identificado. Faça login novamente.");
+    window.location = "../login.html";
+    return;
+  }
 
   fetch(`http://localhost:3333/servidores/listarServidoresPorUsuario/${idUsuario}`)
     .then(res => {
@@ -141,6 +148,7 @@ function fotoPerfil(){
 } 
 
 window.onload = () => {
+ 
   carregarPerfil();
-  carregarServidores();
+  carregarServidores()
 };
