@@ -149,11 +149,6 @@ VALUES
 (1, 'Suporte', 'Ana Costa', 'backup987', 'ana@serverx.com', 0, '/assets/pacote-pessoas/vista-frontal-da-elegante-mulher-de-negocios-segurando-prancheta-com-espaco-de-copia.jpg'),
 (1,'Suporte', 'Renata Silva', '123456', 'renata@email.com', 1, '/assets/pacote-pessoas/retrato-de-mulher-corporativa-segurando-prancheta-no-trabalho-em-pe-com-roupa-formal-sobre-fundo-branco.jpg');
 
-INSERT INTO usuario_has_servidor (fk_usuario, fk_servidor)
-VALUES
-(1, 1),
-(2, 1);
-
 /* select * from servidor;
 select fk_servidor, tipo, numero_serie, apelido, date_format(dt_cadastro, '%d/%m/%Y %H:%i:%s') from componentes;
 select * from empresa;
@@ -266,7 +261,10 @@ VALUES
 (2015, 9, 1015, '75', 10, '%'),
 (2016, 10, 1016, '95', 6, '%'),
 (2017, 10, 1017, '82', 9, '%'),
-(2018, 10, 1018, '75', 15, '%')
+(2018, 10, 1018, '75', 15, '%'),
+(2040, 2, 1022, '92', 7, '%'),
+(2041, 2, 1023, '86', 8, '%'),
+(2042, 2, 1024, '75', 12, '%')
 ;
 
 INSERT INTO infomotion.parametro_alerta (id, fk_servidor, fk_componente, max, duracao_min, unidade_medida)
@@ -306,20 +304,38 @@ VALUES
 -- USUARIO_HAS_SERVIDOR (associar usuários existentes 1 e 2 aos novos servidores)
 INSERT INTO infomotion.usuario_has_servidor (fk_usuario, fk_servidor)
 VALUES
+(1, 1),
+(1, 2),
 (1, 5),
-(2, 5),
 (1, 6),
-(2, 6),
-(1, 7),
-(2, 7),
-(1, 8),
-(2, 8),
 (1, 9),
-(2, 9),
 (1, 10),
-(2, 10)
-;
+(2, 1),
+(2, 2),
+(2, 5),
+(2, 6),
+(2, 9),
+(2, 10),
+(3, 1),
+(3, 2),
+(3, 5),
+(3, 6),
+(3, 9),
+(3, 10),
+(4, 1),
+(4, 2),
+(4, 5),
+(4, 6),
+(4, 9),
+(4, 10),
+(5, 1),
+(5, 2),
+(5, 5),
+(5, 6),
+(5, 9),
+(5, 10);
 
+select * from servidor;
 
 -- REGISTRO_SERVIDOR (30) servidor 1
 INSERT INTO infomotion.registro_servidor 
@@ -356,7 +372,7 @@ VALUES
 (1, 77.09, 62.17, 54.34, 113, 61.51, 48.99, '2025-11-04 12:08:00'),
 (1, 93.62, 71.02, 54.48, 210, 66.6, 50.97, '2025-11-04 12:09:00');
 
-
+select * from servidor;
 -- REGISTRO_SERVIDOR (30) servidor 2
 INSERT INTO infomotion.registro_servidor 
 (fk_servidor, uso_cpu, uso_ram, uso_disco, qtd_processos, temp_cpu, temp_disco, dt_registro)
