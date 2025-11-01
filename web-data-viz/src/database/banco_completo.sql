@@ -211,35 +211,44 @@ INSERT INTO infomotion.especificacao_componente (nome_especificacao, valor, fk_c
 VALUES
 ('Swap total (GB)', '8', 1002),
 ('Ram total (GB)', '64', 1002),
-('Quantidade de núcleos fisicos', '16', 1001),
-('Quantidade de núcleos lógicos', '12', 1001),
-('Quantidade de partições', '1', 1003),
+('Quantidade de nucleos fisicos', '16', 1001),
+('Quantidade de nucleos logicos', '12', 1001),
+('Quantidade de particoes', '1', 1003),
 ('Swap total (GB)', '6', 1005),
 ('Ram total (GB)', '16', 1005),
-('Quantidade de núcleos fisicos', '8', 1004),
-('Quantidade de núcleos lógicos', '24', 1004),
-('Quantidade de partições', '4', 1006),
+('Quantidade de nucleos fisicos', '8', 1004),
+('Quantidade de nucleos logicos', '24', 1004),
+('Quantidade de particoes', '4', 1006),
 ('Swap total (GB)', '16', 1008),
 ('Ram total (GB)', '16', 1008),
-('Quantidade de núcleos fisicos', '8', 1007),
-('Quantidade de núcleos lógicos', '12', 1007),
-('Quantidade de partições', '4', 1009),
+('Quantidade de nucleos fisicos', '8', 1007),
+('Quantidade de nucleos logicos', '12', 1007),
+('Quantidade de particoes', '4', 1009),
 ('Swap total (GB)', '12', 1011),
 ('Ram total (GB)', '16', 1011),
-('Quantidade de núcleos fisicos', '6', 1010),
-('Quantidade de núcleos lógicos', '32', 1010),
-('Quantidade de partições', '2', 1012),
+('Quantidade de nucleos fisicos', '6', 1010),
+('Quantidade de nucleos logicos', '32', 1010),
+('Quantidade de particoes', '2', 1012),
 ('Swap total (GB)', '4', 1014),
 ('Ram total (GB)', '32', 1014),
-('Quantidade de núcleos fisicos', '10', 1013),
-('Quantidade de núcleos lógicos', '12', 1013),
-('Quantidade de partições', '2', 1015),
+('Quantidade de nucleos fisicos', '10', 1013),
+('Quantidade de nucleos logicos', '12', 1013),
+('Quantidade de particoes', '2', 1015),
 ('Swap total (GB)', '8', 1017),
 ('Ram total (GB)', '64', 1017),
-('Quantidade de núcleos fisicos', '6', 1016),
-('Quantidade de núcleos lógicos', '12', 1016),
-('Quantidade de partições', '4', 1018)
-;
+('Quantidade de nucleos fisicos', '6', 1016),
+('Quantidade de nucleos logicos', '12', 1016),
+('Quantidade de particoes', '4', 1018),
+('Swap total (GB)', '12', 1020),
+('Ram total (GB)', '32', 1020),
+('Quantidade de nucleos fisicos', '6', 1019),
+('Quantidade de nucleos logicos', '32', 1019),
+('Quantidade de particoes', '3', 1021),
+('Swap total (GB)', '12', 1023),
+('Ram total (GB)', '32', 1023),
+('Quantidade de nucleos fisicos', '6', 1022),
+('Quantidade de nucleos logicos', '32', 1022),
+('Quantidade de particoes', '3', 1024);
 
 -- PARAMETRO_ALERTA (3 por servidor, %)
 INSERT INTO infomotion.parametro_alerta (id, fk_servidor, fk_componente, max, duracao_min, unidade_medida)
@@ -1840,59 +1849,73 @@ VALUES
 
 -- === Servidor 5 (DISCO fk_componente = 1003) ===
 INSERT INTO infomotion.especificacao_componente (nome_especificacao, valor, fk_componente) VALUES
-('Espaço na partição 1 (GB)', '120', 1003),
-('MountPoint da partição 1', '/', 1003),
-('Espaço na partição 2 (GB)', '380', 1003),
-('MountPoint da partição 2', '/var', 1003),
-('Espaço na partição 3 (GB)', '500', 1003),
-('MountPoint da partição 3', '/data', 1003);
+('Espaco na particão 1 (GB)', '120', 1003),
+('MountPoint da particão 1', '/', 1003),
+('Espaco na particão 2 (GB)', '380', 1003),
+('MountPoint da particão 2', '/var', 1003),
+('Espaco na particão 3 (GB)', '500', 1003),
+('MountPoint da particão 3', '/data', 1003);
 
 -- === Servidor 6 (DISCO fk_componente = 1006) ===
 INSERT INTO infomotion.especificacao_componente (nome_especificacao, valor, fk_componente) VALUES
-('Espaço na partição 1 (GB)', '200', 1006),
-('MountPoint da partição 1', '/', 1006),
-('Espaço na partição 2 (GB)', '800', 1006),
-('MountPoint da partição 2', '/var', 1006),
-('Espaço na partição 3 (GB)', '1024', 1006),
-('MountPoint da partição 3', '/backup', 1006);
+('Espaco na particao 1 (GB)', '200', 1006),
+('MountPoint da particao 1', '/', 1006),
+('Espaco na particao 2 (GB)', '800', 1006),
+('MountPoint da particao 2', '/var', 1006),
+('Espaco na particao 3 (GB)', '1024', 1006),
+('MountPoint da particao 3', '/backup', 1006);
 
 -- === Servidor 7 (DISCO fk_componente = 1009) ===
 INSERT INTO infomotion.especificacao_componente (nome_especificacao, valor, fk_componente) VALUES
-('Espaço na partição 1 (GB)', '180', 1009),
-('MountPoint da partição 1', '/', 1009),
-('Espaço na partição 2 (GB)', '300', 1009),
-('MountPoint da partição 2', '/var', 1009),
-('Espaço na partição 3 (GB)', '520', 1009),
-('MountPoint da partição 3', '/data', 1009);
+('Espaco na particao 1 (GB)', '180', 1009),
+('MountPoint da particao 1', '/', 1009),
+('Espaco na particao 2 (GB)', '300', 1009),
+('MountPoint da particao 2', '/var', 1009),
+('Espaco na particao 3 (GB)', '520', 1009),
+('MountPoint da particao 3', '/data', 1009);
 
 -- === Servidor 8 (DISCO fk_componente = 1012) ===
 INSERT INTO infomotion.especificacao_componente (nome_especificacao, valor, fk_componente) VALUES
-('Espaço na partição 1 (GB)', '60', 1012),
-('MountPoint da partição 1', '/', 1012),
-('Espaço na partição 2 (GB)', '200', 1012),
-('MountPoint da partição 2', '/var', 1012),
-('Espaço na partição 3 (GB)', '252', 1012),
-('MountPoint da partição 3', '/logs', 1012);
+('Espaco na particao 1 (GB)', '60', 1012),
+('MountPoint da particao 1', '/', 1012),
+('Espaco na particao 2 (GB)', '200', 1012),
+('MountPoint da particao 2', '/var', 1012),
+('Espaco na particao 3 (GB)', '252', 1012),
+('MountPoint da particao 3', '/logs', 1012);
 
 -- === Servidor 9 (DISCO fk_componente = 1015) ===
 INSERT INTO infomotion.especificacao_componente (nome_especificacao, valor, fk_componente) VALUES
-('Espaço na partição 1 (GB)', '300', 1015),
-('MountPoint da partição 1', '/', 1015),
-('Espaço na partição 2 (GB)', '700', 1015),
-('MountPoint da partição 2', '/var', 1015),
-('Espaço na partição 3 (GB)', '1000', 1015),
-('MountPoint da partição 3', '/data', 1015);
+('Espaco na particao 1 (GB)', '300', 1015),
+('MountPoint da particao 1', '/', 1015),
+('Espaco na particao 2 (GB)', '700', 1015),
+('MountPoint da particao 2', '/var', 1015),
+('Espaco na particao 3 (GB)', '1000', 1015),
+('MountPoint da particao 3', '/data', 1015);
 
 -- === Servidor 10 (DISCO fk_componente = 1018) ===
 INSERT INTO infomotion.especificacao_componente (nome_especificacao, valor, fk_componente) VALUES
-('Espaço na partição 1 (GB)', '500', 1018),
-('MountPoint da partição 1', '/', 1018),
-('Espaço na partição 2 (GB)', '1500', 1018),
-('MountPoint da partição 2', '/data', 1018),
-('Espaço na partição 3 (GB)', '2000', 1018),
-('MountPoint da partição 3', '/archive', 1018);
+('Espaco na particao 1 (GB)', '500', 1018),
+('MountPoint da particao 1', '/', 1018),
+('Espaco na particao 2 (GB)', '1500', 1018),
+('MountPoint da particao 2', '/data', 1018),
+('Espaco na particao 3 (GB)', '2000', 1018),
+('MountPoint da particao 3', '/archive', 1018);
 
+INSERT INTO infomotion.especificacao_componente (nome_especificacao, valor, fk_componente) VALUES
+('Espaco na particao 1 (GB)', '180', 1021),
+('MountPoint da particao 1', '/', 1021),
+('Espaco na particao 2 (GB)', '320', 1021),
+('MountPoint da particao 2', '/data', 1021),
+('Espaco na particao 3 (GB)', '500', 1021),
+('MountPoint da particao 3', '/archive', 1021);
 
+INSERT INTO infomotion.especificacao_componente (nome_especificacao, valor, fk_componente) VALUES
+('Espaco na particao 1 (GB)', '180', 1024),
+('MountPoint da particao 1', '/', 1024),
+('Espaco na particao 2 (GB)', '320', 1024),
+('MountPoint da particao 2', '/data', 1024),
+('Espaco na particao 3 (GB)', '500', 1024),
+('MountPoint da particao 3', '/archive', 1024);
 
 -- =========================================================
 -- 💾 10 INSERTS EM REGISTRO_SERVIDOR (fk_servidor = 1)
@@ -1909,3 +1932,91 @@ VALUES
 (1, 30.25, 69.10, 75.30, 232, 79.2, 36.0, '2025-10-20 11:55'),
 (1, 35.75, 71.50, 77.80, 239, 81.0, 38.1, '2025-10-24 17:25'),
 (1, 32.10, 70.40, 74.90, 234, 80.0, 37.0, '2025-10-28 12:00');
+
+-- SERVIDOR 1 E 2
+INSERT INTO alertas (id, fk_parametro, dt_registro, duracao, max, min) VALUES
+-- INÍCIO DA SEQUÊNCIA ORIGINAL (Ajustada a partir de 02/10)
+(10754, 2040, '2025-10-02 15:30:00', '10min', 92.50, 80.00),
+(10755, 2040, '2025-10-03 09:00:00', '3min', 78.10, 65.00),
+(10756, 2040, '2025-10-04 19:45:00', '12min', 95.00, 85.00),
+(10757, 2041, '2025-10-05 08:00:00', '4min', 80.30, 68.00),
+(10758, 2041, '2025-10-06 14:20:00', '6min', 88.70, 72.00),
+(10759, 2041, '2025-10-07 11:55:00', '8min', 91.20, 75.00),
+(10760, 2041, '2025-10-08 22:10:00', '15min', 98.90, 85.00),
+(10761, 2042, '2025-10-09 07:40:00', '7min', 82.50, 60.00),
+(10762, 2042, '2025-10-10 13:00:00', '5min', 79.90, 55.00),
+(10763, 2042, '2025-10-11 17:05:00', '9min', 93.10, 70.00),
+(10764, 2042, '2025-10-12 18:35:00', '11min', 96.40, 75.00),
+(10765, 2043, '2025-10-13 10:50:00', '3min', 75.60, 50.00),
+(10766, 2043, '2025-10-14 16:10:00', '8min', 84.80, 60.00),
+(10767, 2043, '2025-10-14 20:30:00', '6min', 89.20, 65.00),
+(10768, 2043, '2025-10-15 09:25:00', '14min', 97.50, 70.00),
+(10769, 2044, '2025-10-16 12:45:00', '5min', 81.40, 62.00),
+(10770, 2044, '2025-10-17 15:55:00', '7min', 86.90, 68.00),
+(10771, 2044, '2025-10-18 11:15:00', '10min', 94.30, 75.00),
+(10772, 2044, '2025-10-19 18:20:00', '4min', 77.80, 55.00),
+(10773, 2045, '2025-10-20 09:40:00', '6min', 83.60, 64.00),
+(10774, 2045, '2025-10-21 14:05:00', '9min', 90.10, 70.00),
+(10775, 2045, '2025-10-22 16:35:00', '12min', 95.80, 80.00),
+(10776, 2045, '2025-10-23 21:00:00', '8min', 88.50, 69.00),
+
+-- ALERTAS ADICIONAIS (Poluição de Dados)
+(10777, 2040, '2025-10-02 08:10:00', '5min', 88.20, 75.10), -- Dia 02
+(10778, 2041, '2025-10-02 23:50:00', '1min', 75.00, 60.50), -- Dia 02
+(10779, 2043, '2025-10-03 14:45:00', '7min', 90.50, 78.90), -- Dia 03
+(10780, 2045, '2025-10-04 06:15:00', '4min', 81.10, 65.20), -- Dia 04
+(10781, 2042, '2025-10-04 11:30:00', '15min', 96.20, 82.00), -- Dia 04
+(10782, 2044, '2025-10-05 17:50:00', '2min', 76.40, 58.10), -- Dia 05
+(10783, 2040, '2025-10-06 09:55:00', '9min', 91.80, 77.00), -- Dia 06
+(10784, 2041, '2025-10-06 18:40:00', '11min', 93.30, 81.50), -- Dia 06
+(10785, 2043, '2025-10-07 07:15:00', '6min', 86.90, 70.30), -- Dia 07
+(10786, 2045, '2025-10-07 20:00:00', '3min', 79.40, 63.80), -- Dia 07
+(10787, 2042, '2025-10-08 10:30:00', '14min', 97.00, 84.00), -- Dia 08
+(10788, 2044, '2025-10-08 15:10:00', '8min', 85.50, 69.10), -- Dia 08
+(10789, 2040, '2025-10-09 16:25:00', '5min', 88.00, 74.50), -- Dia 09
+(10790, 2041, '2025-10-09 21:40:00', '10min', 92.90, 80.20), -- Dia 09
+(10791, 2043, '2025-10-10 08:50:00', '7min', 90.10, 76.60), -- Dia 10
+(10792, 2045, '2025-10-10 18:15:00', '4min', 82.00, 66.70), -- Dia 10
+(10793, 2042, '2025-10-11 06:40:00', '12min', 94.50, 83.00), -- Dia 11
+(10794, 2044, '2025-10-11 11:20:00', '6min', 80.80, 62.50), -- Dia 11
+(10795, 2040, '2025-10-12 09:30:00', '3min', 77.50, 60.00), -- Dia 12
+(10796, 2041, '2025-10-13 14:00:00', '15min', 98.00, 86.00), -- Dia 13
+(10797, 2042, '2025-10-13 22:30:00', '1min', 74.80, 55.50), -- Dia 13
+(10798, 2044, '2025-10-14 08:20:00', '9min', 91.00, 77.80), -- Dia 14
+(10799, 2045, '2025-10-15 16:50:00', '11min', 93.50, 82.50), -- Dia 15
+(10800, 2040, '2025-10-15 21:30:00', '7min', 87.10, 71.00), -- Dia 15
+(10801, 2041, '2025-10-16 09:10:00', '4min', 81.30, 65.50), -- Dia 16
+(10802, 2043, '2025-10-16 18:00:00', '10min', 92.00, 79.50), -- Dia 16
+(10803, 2045, '2025-10-17 07:25:00', '6min', 84.20, 68.00), -- Dia 17
+(10804, 2042, '2025-10-17 19:15:00', '3min', 78.50, 61.20), -- Dia 17
+(10805, 2044, '2025-10-18 09:40:00', '14min', 97.20, 85.00), -- Dia 18
+(10806, 2040, '2025-10-18 16:30:00', '8min', 85.80, 70.00), -- Dia 18
+(10807, 2041, '2025-10-19 08:00:00', '5min', 88.40, 75.00), -- Dia 19
+(10808, 2043, '2025-10-19 14:50:00', '12min', 95.20, 83.20), -- Dia 19
+(10809, 2045, '2025-10-20 18:40:00', '7min', 89.60, 74.00), -- Dia 20
+(10810, 2042, '2025-10-20 23:00:00', '4min', 77.00, 56.50), -- Dia 20
+(10811, 2044, '2025-10-21 09:15:00', '11min', 96.50, 84.50), -- Dia 21
+(10812, 2040, '2025-10-21 16:50:00', '6min', 83.90, 68.50), -- Dia 21
+(10813, 2041, '2025-10-22 08:30:00', '9min', 90.30, 75.50), -- Dia 22
+(10814, 2043, '2025-10-22 19:00:00', '5min', 81.50, 66.00), -- Dia 22
+(10815, 2045, '2025-10-23 07:10:00', '10min', 92.70, 79.00), -- Dia 23
+(10816, 2042, '2025-10-23 15:45:00', '3min', 78.30, 60.80), -- Dia 23
+(10817, 2044, '2025-10-24 10:20:00', '12min', 95.50, 84.00), -- Dia 24
+(10818, 2040, '2025-10-24 18:30:00', '7min', 86.00, 71.50), -- Dia 24
+(10819, 2041, '2025-10-25 09:50:00', '4min', 80.50, 64.00), -- Dia 25
+(10820, 2043, '2025-10-25 17:15:00', '15min', 98.20, 86.50), -- Dia 25
+(10821, 2045, '2025-10-26 11:40:00', '6min', 84.40, 69.50), -- Dia 26
+(10822, 2042, '2025-10-26 22:15:00', '9min', 91.40, 77.50), -- Dia 26
+(10823, 2044, '2025-10-27 13:00:00', '5min', 82.20, 67.00), -- Dia 27
+(10824, 2040, '2025-10-27 19:30:00', '11min', 94.90, 83.50), -- Dia 27
+(10825, 2041, '2025-10-28 08:45:00', '8min', 88.80, 73.00), -- Dia 28
+(10826, 2043, '2025-10-28 15:20:00', '3min', 76.80, 59.80), -- Dia 28
+(10827, 2045, '2025-10-29 11:00:00', '14min', 97.40, 85.50), -- Dia 29
+(10828, 2042, '2025-10-29 17:40:00', '7min', 87.60, 72.50), -- Dia 29
+(10829, 2044, '2025-10-30 09:35:00', '4min', 79.00, 61.00), -- Dia 30
+(10830, 2040, '2025-10-30 16:55:00', '10min', 93.00, 80.80), -- Dia 30
+(10831, 2041, '2025-10-31 08:15:00', '6min', 84.90, 69.00), -- Dia 31
+(10832, 2043, '2025-10-31 14:00:00', '9min', 91.60, 77.00), -- Dia 31
+(10833, 2045, '2025-10-31 22:30:00', '5min', 82.40, 67.50); -- Dia 31
+
+

@@ -28,23 +28,24 @@ function receberAlertas(idUsuario) {
         });
 }
 
-function inserirDadosTabela(){
+function inserirDadosTabela() {
     let infoAjustada = JSON.parse(JSON.stringify(info)); 
 
-    let hoje = new Date();           
+    let hoje = new Date();           
     let dataLimite = new Date(); 
-    dataLimite.setDate(hoje.getDate() - tempo); // seta a data limite para exibir os dados
+    dataLimite.setDate(hoje.getDate() - tempo);
     
-
+    
     for (let index = 0; index < infoAjustada.length; index++) {
         const element = infoAjustada[index];
         const dataStr = element.data_registro;
         let [dia, mes, ano] = dataStr.split("/"); 
-        let data = new Date(`${ano}-${mes}-${dia}`);
+        let data = new Date(`${ano}-${mes}-${dia}`); 
         element.data_registro = data
     }
     
-    
+    infoExibicao = [];
+
     for (let index = 0; index < infoAjustada.length; index++) {
         const element = infoAjustada[index];
         if (element.data_registro > dataLimite){
@@ -53,45 +54,53 @@ function inserirDadosTabela(){
     }
     console.log("infoExibicao", infoExibicao);
     
-    
+    infoTabela = [];
 
     for (let index = 0; index < infoExibicao.length; index++) {
         const element = infoExibicao[index];
         let indice = -1
-            for (let j = 0; j < infoTabela.length; j++) {
-                const element2 = infoTabela[j];
-                if (element2.apelido === element.apelido) {indice = j; break;}
-            }
+        for (let j = 0; j < infoTabela.length; j++) {
+            const element2 = infoTabela[j];
+            if (element2.apelido === element.apelido) {indice = j; break;}
+        }
+
         if(indice >= 0){
-            if (element.tipo.toUpperCase() === 'CPU') {
+            const tipo = element.tipo.toUpperCase();
+            if (tipo === 'CPU') {
                 infoTabela[indice].AlertaCPU ++;
-                infoTabela[indice].QuantidadeTotalAlertas ++;
-            }else if (element.tipo.toUpperCase() === 'DISCO') {
+            }else if (tipo === 'DISCO') {
                 infoTabela[indice].AlertaDisco ++;
-                infoTabela[indice].QuantidadeTotalAlertas ++;
             }else {
                 infoTabela[indice].AlertaRAM ++;
-                infoTabela[indice].QuantidadeTotalAlertas ++;
             }
-        }  
+            infoTabela[indice].QuantidadeTotalAlertas ++;
+        }  
         else {
-            infoTabela.push({
+            let novoRegistro = {
                 id: element.id,
                 apelido: element.apelido,
                 AlertaCPU: 0,
                 AlertaRAM: 0,
                 AlertaDisco: 0,
                 QuantidadeTotalAlertas: 1
-            })
-            indice = infoTabela.length - 1
-            if (element.tipo.toUpperCase() === 'CPU') {
-                    infoTabela[indice].AlertaCPU ++;
-                }else if (element.tipo.toUpperCase() === 'DISCO') {
-                    infoTabela[indice].AlertaDisco ++;
-                }else {
-                    infoTabela[indice].AlertaRAM ++;
-                }
+            };
+            
+            const tipo = element.tipo.toUpperCase();
+            if (tipo === 'CPU') {
+                novoRegistro.AlertaCPU = 1;
+            }else if (tipo === 'DISCO') {
+                novoRegistro.AlertaDisco = 1;
+            }else {
+                novoRegistro.AlertaRAM = 1;
+            }
+            infoTabela.push(novoRegistro);
         }
+    }
+
+    if (infoExibicao.length > 0) {
+        chamarFuncoesServidores(infoExibicao[0].id);
+    } else {
+        console.log("Nenhum alerta recente encontrado para exibir.");
     }
 
     chamarFuncoesServidores(infoExibicao[0].id)
@@ -332,13 +341,13 @@ function plotarEspecificacaoHardware(){
         for (let index = 0; index < especificacao.length; index++) {
             const element = especificacao[index];
             if (element.tipo.toUpperCase() == 'cpu'.toUpperCase()){
-                if (element.nome_especificacao.toUpperCase() == "Quantidade de núcleos lógicos".toUpperCase()) {
+                if (element.nome_especificacao.toUpperCase() == "Quantidade de nucleos logicos".toUpperCase()) {
                     logico = element.valor
                 } else fisico = element.valor
             } else if (element.tipo.toUpperCase() == 'ram'.toUpperCase()){
                 ramTotal.innerHTML = `RAM Total: ${element.valor}GB`
             } else if (element.tipo.toUpperCase() == 'disco'.toUpperCase()) {
-                if (element.nome_especificacao.includes('Espaço') && element.nome_especificacao.endsWith('(GB)')) {
+                if (element.nome_especificacao.includes('Espaco') && element.nome_especificacao.endsWith('(GB)')) {
                     totalDisco += parseInt(element.valor, 10)
                 }
             } 
