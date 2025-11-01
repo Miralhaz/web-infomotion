@@ -272,28 +272,31 @@ function plotarGraficoVelocimetroCpu(dadoKpi) {
     const parametro = dadoKpi.max_cpu
 
     let corUsada;
+    let hueFinal;
 
     const corMinima = 120;
     const corMaxima = 0;
 
     if (usoCpu >= parametro) {
+        hueFinal = corMaxima
         corUsada = `hsl(${corMaxima}, 80%, 50%)`;
     } else {
         const pontoInicialMudanca = 60;
 
         if (usoCpu < pontoInicialMudanca) {
+            hueFinal = corMinima
             corUsada = `hsl(${corMinima}, 80%, 50%)`;
         } else {
             const rangeUso = parametro - pontoInicialMudanca;
             const rangeCor = corMinima - corMaxima;
 
             const fator = (usoCpu - pontoInicialMudanca) / rangeUso;
-            const hue = corMinima - (fator * rangeCor);
+            hueFinal = corMinima - (fator * rangeCor);
 
-            corUsada = `hsl(${hue}, 80%, 50%)`;
+            corUsada = `hsl(${hueFinal}, 80%, 50%)`;
         }
     }
-
+    
     const corRestante = '#c0c0c0ff'
 
     const textCenter = {
