@@ -1597,7 +1597,9 @@ background-color: #222;
 }
 
 .div-selects .nome_dash{
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 13vw;
   padding: 1vh;
   background-color: var(--cinzaDash);
@@ -1790,6 +1792,8 @@ background-color: #222;
   height: var(--title-h);
   line-height: var(--title-h);
   color: #000;
+  font-weight: 600;
+  font-size: 2.3vh;
 }
 
 .dashboard_historico .tabela_alerta_servidores table{
@@ -1867,6 +1871,7 @@ background-color: #222;
   display: block;
   max-height: 26vh;
   overflow-y: auto;    
+  overflow-x: hidden;
   direction: rtl;
   transition: all 0.3s ease;
 }
@@ -1894,12 +1899,12 @@ background-color: #222;
 }
 
 .dashboard_historico .tabela_alerta_servidores tbody::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.25);
+  background: var(--amarelo);
   border-radius: 8px;
 }
 
 .dashboard_historico .tabela_alerta_servidores tbody::-webkit-scrollbar-thumb:hover {
-  background: rgba(0,0,0,1);
+  background-color: var(--amareloOpacityLow);
   border-radius: 8px;
 }
 
@@ -1908,6 +1913,7 @@ background-color: #222;
   height: 0;
   display: none;              /* esconde as setas */
 }
+
 
 .dashboard_historico .alerta_tempo_e_especificações_hardware{
   display: grid;
