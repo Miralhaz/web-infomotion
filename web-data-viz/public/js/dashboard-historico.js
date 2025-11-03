@@ -200,9 +200,9 @@ function plotarGraficoLinhas(idServidor) {
     // Pegando o nome do servidor
     if (nomeServidor) {
         if(tempo > 1){
-            document.getElementById("nome_gráfico").innerHTML = `Quantidade de alertas dos ultimos ${tempo} dias do servidor: ${nomeServidor}`
+            document.getElementById("nome_gráfico").innerHTML = `Quantidade de alertas dos últimos ${tempo} dias do servidor: ${nomeServidor}`;
         }
-        else document.getElementById("nome_gráfico").innerHTML = `Quantidade de alertas do ultimo dia do servidor: ${nomeServidor}`
+        else document.getElementById("nome_gráfico").innerHTML = `Quantidade de alertas do último dia do servidor: ${nomeServidor}`;
     }
     
 
@@ -318,9 +318,6 @@ function listarEspecificacoes(idServidor) {
         });
 
         console.log();
-        
-        //
-        
 
 }
 
@@ -345,15 +342,15 @@ function plotarEspecificacaoHardware(){
                     logico = element.valor
                 } else fisico = element.valor
             } else if (element.tipo.toUpperCase() == 'ram'.toUpperCase()){
-                ramTotal.innerHTML = `RAM Total: ${element.valor}GB`
+                ramTotal.innerHTML = `RAM Total: <a class="destaque-hardware">${element.valor}GB</a>`
             } else if (element.tipo.toUpperCase() == 'disco'.toUpperCase()) {
                 if (element.nome_especificacao.includes('Espaco') && element.nome_especificacao.endsWith('(GB)')) {
                     totalDisco += parseInt(element.valor, 10)
                 }
             } 
         }
-        CPU.innerHTML = `Núcleos da CPU<br>Físicos: ${fisico}<br>Lógicos: ${logico}`
-        disco.innerHTML = `Capacidade Disco: ${totalDisco / 1000}TB`
+        CPU.innerHTML = `Núcleos da CPU<br>Físicos: <a class="destaque-hardware">${fisico}</a><br>Lógicos: <a class="destaque-hardware">${logico}</a>`
+        disco.innerHTML = `Capacidade Disco: <a class="destaque-hardware">${totalDisco / 1000}TB</a>`
 }
 
 function chamarFuncoesServidores(idServidor) {

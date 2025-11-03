@@ -1979,7 +1979,11 @@ background-color: #222;
 .dashboard_historico .nome_gráfico{
   margin-bottom: 1vh;
   font-size: 1.5rem;
+  text-align: center;
+}
 
+.destaque-hardware{
+  color: var(--amarelo);
 }
 
 
