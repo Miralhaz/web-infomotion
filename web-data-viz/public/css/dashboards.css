@@ -1600,7 +1600,7 @@ background-color: #222;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 13vw;
+  width: 14vw;
   padding: 1vh;
   background-color: var(--cinzaDash);
   color: white;
@@ -1618,7 +1618,7 @@ background-color: #222;
 }
 
 .div-dados {
-  width: 53vh;
+  width: 52vh;
   height: 40vh;
   background-color: var(--branco);
   display: flex;
@@ -1640,6 +1640,46 @@ background-color: #222;
   color: var(--branco);
   border-radius: 0 0 0.6vh 0.6vh;
 }
+
+.div-dados2 {
+  width: 35vh;
+  height: 40vh;
+  background-color: var(--branco);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.6vh;
+}
+
+.div-dados2 .div-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 8vh;
+  background: linear-gradient(to right, var(--cinzaDash) 49%, white 50%, var(--cinzaDash) 51%);
+  color: var(--branco);
+  border-radius: 0 0 0.6vh 0.6vh;
+}
+
+.div-dados2 .titulo {
+  font-size: 2.5vh;
+}
+
+.div-dados2 .titulo2 {
+  font-size: 2.5vh;
+  margin-top: 3vh;
+  margin-bottom: 0.4vh;
+}
+
+.div-dados2 canvas {
+  height: 270px;
+  width: 270px;
+}
+
 
 .div-container-kpi {
   width: 100%;
@@ -1681,6 +1721,16 @@ background-color: #222;
   justify-content: center;
   align-items: center;
   gap: 2vh;
+}
+
+.div-rede {
+  width: 15vh;
+  height:5vh;
+  border-radius: 1vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  font-size: 3vh;
 }
 
 .div-proc {
