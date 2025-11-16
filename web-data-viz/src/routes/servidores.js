@@ -40,10 +40,6 @@ router.get("/receberAlertas/:idUsuario", function (req, res){
   servidoresController.receberAlertas(req, res);
 });
 
-router.get("/receberEspecificacoes/:idServidor", function (req, res){
-  servidoresController.receberEspecificacoes(req, res);
-});
-
 router.put("/editarApelido/:idServidor", function (req, res) {
   servidoresController.editarApelido(req, res);
 });
