@@ -114,7 +114,7 @@ function obterDadosKpi(idServidor) {
                     </div>
                 </div>
 
-                <div class="div-dados">
+                <div class="div-dados2">
                     <p style="margin-top: 20px;" class="titulo"> Uso de CPU Atual (%) </p>
                     <div class="div-container-kpi">
                         <div class="div-velocimetro">
@@ -124,7 +124,7 @@ function obterDadosKpi(idServidor) {
                     </div>
                 </div>
 
-                <div class="div-dados">
+                <div class="div-dados2">
                     <p style="margin-top: 20px;" class="titulo"> Uso de RAM Atual (%) </p>
                     <div class="div-container-kpi">
                         <div class="div-velocimetro">
@@ -134,6 +134,15 @@ function obterDadosKpi(idServidor) {
                     </div>
                 </div>
 
+                <div class="div-dados2">
+                    <p style="margin-top: 20px;" class="titulo"> Uso de Rede Atual (Mbps) </p>
+                    <div class="div-container-kpi">
+                        <p class="titulo2" style="margin-top: 0vh;"><img src="../assets/imgs-dashboard/Upload.png" alt=""> Upload: </p>
+                        <div class="div-rede"> <p> ${parseFloat(Number(dados[0].upload).toFixed(1))} Mbps </p> </div>
+                        <p class="titulo2"><img src="../assets/imgs-dashboard/Download.png" alt=""> Download: </p>
+                        <div class="div-rede"> <p> ${parseFloat(Number(dados[0].download).toFixed(1))} Mbps </p> </div>
+                    </div>
+                </div>
                 `;
 
                     divs.innerHTML = frase;
@@ -163,6 +172,10 @@ function obterDadosKpi(idServidor) {
                     let div_temp = document.querySelectorAll('.div-temp');
                     div_temp[0].style.backgroundColor = dados[0].temp_cpu >= 85 ? '#940000' : '#C89C00';
                     div_temp[1].style.backgroundColor = dados[0].temp_disco >= 85 ? '#940000' : '#C89C00';
+
+                    let div_rede = document.querySelectorAll('.div-rede');
+                    div_rede[0].style.backgroundColor = dados[0].upload >= 85 ? '#940000' : '#C89C00';
+                    div_rede[1].style.backgroundColor = dados[0].download >= 85 ? '#940000' : '#C89C00';
 
                     let circ_cpu = document.getElementById('circ_cpu');
                     let dado_cpu = dados[0].temp_cpu;
@@ -560,8 +573,8 @@ function plotarGraficoLinhas(dados, idServidor) {
                 label: 'RAM',
                 data: ram,
                 fill: false,
-                backgroundColor: '#FFB000',
-                borderColor: '#FFB000',
+                backgroundColor: '#555555ff',
+                borderColor: '#555555ff',
                 tension: 0.2
             },
             {
@@ -576,8 +589,8 @@ function plotarGraficoLinhas(dados, idServidor) {
                 label: 'DISCO',
                 data: disco,
                 fill: false,
-                backgroundColor: '#FAFF00',
-                borderColor: '#FAFF00',
+                backgroundColor: '#D2B080',
+                borderColor: '#D2B080',
                 tension: 0.2
             }]
         },

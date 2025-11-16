@@ -101,6 +101,8 @@ function obterDadosKpi(idServidor) {
     rs.qtd_processos, 
     rs.temp_cpu, 
     rs.temp_disco, 
+    rs.upload,
+    rs.download,
     c.tipo, 
     pa.max 
   from registro_servidor rs
