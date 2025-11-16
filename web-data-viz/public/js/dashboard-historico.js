@@ -364,10 +364,10 @@ function ordenarPor(item){
         jaOrdenado = true
     } else {
         document.getElementById(`table_alerta_nome`).innerHTML = 'Nome do servidor'
-        document.getElementById(`table_alerta_cpu`).innerHTML = 'Alertas CPU'
-        document.getElementById(`table_alerta_ram`).innerHTML = 'Alertas RAM'
-        document.getElementById(`table_alerta_disco`).innerHTML = 'Alertas Disco'
-        document.getElementById(`table_alerta_risco`).innerHTML = 'Quantidade total de alertas'
+        document.getElementById(`table_alerta_cpu`).innerHTML = 'CPU'
+        document.getElementById(`table_alerta_ram`).innerHTML = 'RAM'
+        document.getElementById(`table_alerta_disco`).innerHTML = 'Disco'
+        document.getElementById(`table_alerta_risco`).innerHTML = 'Total de alertas'
 
         document.getElementById(`table_alerta_${item}`).innerHTML += `<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down">`
         jaOrdenado = true
