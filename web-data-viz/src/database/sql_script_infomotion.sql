@@ -165,6 +165,19 @@ select * from componentes;
  
  */
  
+INSERT INTO regiao (nome, cidade, estado, pais, codigo_postal, zona)
+VALUES
+('Região Sudeste', 'São Paulo', 'SP', 'Brasil', '01000-000', 'UTC-3'),
+('Região Leste dos EUA', 'Ashburn', 'VA', 'Estados Unidos', '20147', 'UTC-5'),
+('Região Europa Central', 'Frankfurt', 'HE', 'Alemanha', '60311', 'UTC+1'),
+('Região Ásia Leste', 'Tóquio', 'TK', 'Japão', '100-0001', 'UTC+9'),
+('Região Oceania', 'Sydney', 'NSW', 'Austrália', '2000', 'UTC+10'),
+('Região América Norte', 'Toronto', 'ON', 'Canadá', 'M5H 2N2', 'UTC-5'),
+('Região Europa Oeste', 'Londres', 'LDN', 'Reino Unido', 'SW1A 1AA', 'UTC+0'),
+('Região Europa Sudoeste', 'Lisboa', 'LX', 'Portugal', '1000-001', 'UTC+0'),
+('Região Oriente Médio', 'Dubai', 'DU', 'Emirados Árabes Unidos', '00000', 'UTC+4'),
+('Região América Central', 'Cidade do México', 'CDMX', 'México', '01000', 'UTC-6');
+ 
  -- SERVIDORES (6 novos, ids 5..10)
 INSERT INTO infomotion.servidor (fk_empresa, fk_regiao, apelido, ip, ativo)
 VALUES
@@ -2017,18 +2030,5 @@ INSERT INTO alertas (id, fk_parametro, dt_registro, duracao, max, min) VALUES
 (10832, 2043, '2025-10-31 14:00:00', '9min', 91.60, 77.00), -- Dia 31
 (10833, 2045, '2025-10-31 22:30:00', '5min', 82.40, 67.50); -- Dia 31
 
-
-INSERT INTO regiao (nome, cidade, estado, pais, codigo_postal, zona)
-VALUES
-('Região Sudeste', 'São Paulo', 'SP', 'Brasil', '01000-000', 'UTC-3'),
-('Região Leste dos EUA', 'Ashburn', 'VA', 'Estados Unidos', '20147', 'UTC-5'),
-('Região Europa Central', 'Frankfurt', 'HE', 'Alemanha', '60311', 'UTC+1'),
-('Região Ásia Leste', 'Tóquio', 'TK', 'Japão', '100-0001', 'UTC+9'),
-('Região Oceania', 'Sydney', 'NSW', 'Austrália', '2000', 'UTC+10'),
-('Região América Norte', 'Toronto', 'ON', 'Canadá', 'M5H 2N2', 'UTC-5'),
-('Região Europa Oeste', 'Londres', 'LDN', 'Reino Unido', 'SW1A 1AA', 'UTC+0'),
-('Região Europa Sudoeste', 'Lisboa', 'LX', 'Portugal', '1000-001', 'UTC+0'),
-('Região Oriente Médio', 'Dubai', 'DU', 'Emirados Árabes Unidos', '00000', 'UTC+4'),
-('Região América Central', 'Cidade do México', 'CDMX', 'México', '01000', 'UTC-6');
-
-select* from regiao;
+alter table servidor alter column fk_regiao set default 1;
+update servidor set fk_regiao = 4 where id = 11;
