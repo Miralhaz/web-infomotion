@@ -1915,25 +1915,31 @@ background-color: #222;
 
 
 .dashboard_historico .alerta_tempo_e_especificações_hardware{
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1.5fr 0.5fr;
+  display: flex;
+  flex-direction: row;
   column-gap: 2vw;
-  justify-self: end;
   margin-left: 5vw;
 }
 
 .dashboard_historico .gráfico_alertas_tempo_wrapper{
   background-color: var(--cinzaDash);
-  width: 60vw;
+  width: 38vw;
   height: 35vh;
-  justify-self: end;
-  align-self: flex-start;
   color: var(--branco);
   padding: 2.88vh 1.5vw;
   border-radius: 2vh;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+
+.gráfico_chart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+}
+
 
 .dashboard_historico .especificacoes_hardware{
   background-color: var(--cinzaDash);
@@ -1941,7 +1947,7 @@ background-color: #222;
   padding: 2.88vh 1.5vw;
   border-radius: 2vh;
   align-self: center;
-  width: 15vw;
+  width: 38vw;
   height: 41vh;
   padding: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
