@@ -1759,7 +1759,7 @@ background-color: #222;
 }
 
 .dashboard_historico .tabela_alerta_servidores{
-  width: 80vw;
+  width: 50vw;
   height: 35vh;
   background-color: var(--branco);
   color: #fff;
@@ -1772,7 +1772,8 @@ background-color: #222;
   position: relative;
   --title-h: 48px;
   direction: rtl;
-  justify-self: center;
+  justify-self: self-end;
+  margin-left: 5.5%;
 }
 
 
@@ -1808,7 +1809,7 @@ background-color: #222;
 }
 
 .dashboard_historico .tabela_alerta_servidores thead th:nth-child(1) { 
-  width: 25%; 
+  width: 30%; 
   text-align: left; 
   padding: 0.5vh 0.1vw 0.5vh 1vw; 
   align-content: center;
@@ -1821,8 +1822,6 @@ background-color: #222;
 .dashboard_historico .tabela_alerta_servidores tbody td:nth-child(1) {
    text-align: left; 
   }
-
-
 
 .dashboard_historico .tabela_alerta_servidores thead th{
   position: sticky;
@@ -1985,5 +1984,3 @@ background-color: #222;
 .destaque-hardware{
   color: var(--amarelo);
 }
-
-
