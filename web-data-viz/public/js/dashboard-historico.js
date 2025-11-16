@@ -140,222 +140,10 @@ function dataToString(d){
     return `${dia}/${mes}`; 
   };
 
-function plotarGraficoLinhas(idServidor) {
-
-    const canvas = document.getElementById('lineChartHistorico');
-    const existingChart = Chart.getChart(canvas);
-    if (existingChart) existingChart.destroy();
-
-   
-    const widthPx = window.innerWidth * 0.6;  // 60vw
-    const heightPx = window.innerHeight * 0.30; // 35vh
-
-    canvas.width = widthPx;
-    canvas.height = heightPx;
-
-    let labels = [];
-    let ram = [];
-    let cpu = [];
-    let disco = [];
-    let nomeServidor;
-
-    for (let index = 0; index < infoExibicao.length; index++) {
-        const element = infoExibicao[index];
-        if (element.id == idServidor){
-            nomeServidor = element.apelido
-        }
-    }
-    
-    for (let i = 0; i < infoExibicao.length; i++) {
-
-        if(infoExibicao[i].id == idServidor){
-            const el = infoExibicao[i];
-            const d = el.data_registro instanceof Date ? el.data_registro : new Date(el.data_registro); // verifica se é Date ou não
-            const key = dataToString(d);
-        
-
-            // procurar índice da label
-            let idx = -1;
-            for (let j = 0; j < labels.length; j++) {
-            if (labels[j] === key) { idx = j; break; }
-            }
-
-            // se não existe, cria linha
-            if (idx === -1) {
-            labels.push(key);
-            ram.push(0);
-            cpu.push(0);
-            disco.push(0);
-            idx = labels.length - 1; // <<< índice correto
-            }
-
-            // incrementa série correta
-            const tipo = String(el.tipo).toUpperCase();
-            if (tipo === 'CPU'){       cpu[idx]   += 1;}
-            else if (tipo === 'DISCO') {disco[idx] += 1;}
-            else                       ram[idx]   += 1;
-        }
-    }
-
-    // Pegando o nome do servidor
-    if (nomeServidor) {
-        if(tempo > 1){
-            document.getElementById("nome_gráfico").innerHTML = `Quantidade de alertas dos últimos ${tempo} dias do servidor: ${nomeServidor}`;
-        }
-        else document.getElementById("nome_gráfico").innerHTML = `Quantidade de alertas do último dia do servidor: ${nomeServidor}`;
-    }
-    
-
-    const config = {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'RAM',
-                data: ram,
-                fill: false,
-                backgroundColor: '#FFB000',
-                borderColor: '#FFB000',
-                tension: 0.1
-            },
-            {
-                label: 'CPU',
-                data: cpu,
-                fill: false,
-                backgroundColor: '#E2E2E2',
-                borderColor: '#E2E2E2',
-                tension: 0.1
-            },
-            {
-                label: 'DISCO',
-                data: disco,
-                fill: false,
-                backgroundColor: '#FAFF00',
-                borderColor: '#FAFF00',
-                tension: 0.1
-            }]
-        },
-
-        options: {
-            responsive: false,
-            maintainAspectRatio: false,         
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        color: 'white',
-                        stepSize: 1
-                    },
-                    title: {
-                        display: true,
-                        text: 'Quantidade de alertas',
-                        color: 'white'
-                    },
-                    grid: {
-                        color: 'rgba(153, 153, 153, 0.2)',
-                        display: true,
-                        drawTicks: false
-                    },
-                },
-                x: {
-                    ticks: {
-                        color: 'white',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Tempo',
-                        color: 'white'
-                    },
-                    grid: {
-                        drawOnChartArea: true
-                    }
-                }
-            },
-            plugins: {
-                title: {
-                    display: false,
-                    text: "",
-                    color: ''
-                },
-                legend: {
-                    position: 'top',
-                    labels: {
-                        usePointStyle: true,
-                        color: 'white'
-                    }
-                }
-            }
-        }
-    };
-
-    new Chart(canvas, config);
-
-}
-
-
-
-
-function listarEspecificacoes(idServidor) {
-    
-    fetch(`/servidores/receberEspecificacoes/${idServidor}`)
-        .then(function (resposta) {
-            if (resposta.ok) {
-                resposta.json().then(function (dados) {
-                    console.log("Dados recebidos: ", JSON.stringify(dados));
-                    especificacao = dados
-                    console.log("especificacao", especificacao);
-                    plotarEspecificacaoHardware()
-                    
-                });
-
-            } else {
-                throw "Houve um erro ao tentar receber as especificações dos servidores!";
-            }
-        })
-
-        .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-        });
-
-        console.log();
-
-}
-
-
-
-
 let totalDisco;
 
-function plotarEspecificacaoHardware(){
-
-    const ramTotal = document.getElementById("ram_total")
-        const CPU = document.getElementById("nucleos_cpu")
-        const disco = document.getElementById("disco")
-        let logico = ''
-        let fisico = ''
-        let totalDisco = 0
-
-        for (let index = 0; index < especificacao.length; index++) {
-            const element = especificacao[index];
-            if (element.tipo.toUpperCase() == 'cpu'.toUpperCase()){
-                if (element.nome_especificacao.toUpperCase() == "Quantidade de nucleos logicos".toUpperCase()) {
-                    logico = element.valor
-                } else fisico = element.valor
-            } else if (element.tipo.toUpperCase() == 'ram'.toUpperCase()){
-                ramTotal.innerHTML = `RAM Total: <a class="destaque-hardware">${element.valor}GB</a>`
-            } else if (element.tipo.toUpperCase() == 'disco'.toUpperCase()) {
-                if (element.nome_especificacao.includes('Espaco') && element.nome_especificacao.endsWith('(GB)')) {
-                    totalDisco += parseInt(element.valor, 10)
-                }
-            } 
-        }
-        CPU.innerHTML = `Núcleos da CPU<br>Físicos: <a class="destaque-hardware">${fisico}</a><br>Lógicos: <a class="destaque-hardware">${logico}</a>`
-        disco.innerHTML = `Capacidade Disco: <a class="destaque-hardware">${totalDisco / 1000}TB</a>`
-}
 
 function chamarFuncoesServidores(idServidor) {
-    plotarGraficoLinhas(idServidor)
-    listarEspecificacoes(idServidor)
 }
 
 function ordenarPor(item){
@@ -447,7 +235,7 @@ function ordenarPor(item){
     for (let index = 0; index < infoOrdenada.length; index++) {
         const element = infoOrdenada[index];
         bodyTabela.innerHTML += `
-            <tr onclick="chamarFuncoesServidores(${element.id})">
+            <tr onclick="(${element.id})">
             <td>
                 ${element.apelido}
             </td>
@@ -466,4 +254,37 @@ function ordenarPor(item){
         </tr>
             `
     }
+}
+
+function plotarGraficoPizza(){
+    let labels = ['Ok', 'Atenção', 'Crítico'];
+    let dados = [20, 30, 50];
+
+    const config = {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '',
+                data: dados,
+                backgroundColor: [
+                    '#BD953F',
+                    '#BD5C20',
+                    '#BD2C2C'
+                ],
+                borderColor: [
+                    '#BD953F',
+                    '#BD5C20',
+                    '#BD2C2C'
+                ],
+                borderWidth: 1
+            }]
+        },
+    };
+
+    new Chart(
+        document.getElementById(`pieChart`),
+        config
+    );
+
 }

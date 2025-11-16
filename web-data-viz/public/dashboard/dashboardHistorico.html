@@ -97,7 +97,7 @@
       
         <div class="gráfico_chart">
           <div class="nome_gráfico" id="nome_gráfico"></div>
-          <canvas id="lineChartHistorico" class="grafico_alertas_tempo" ></canvas>
+          <canvas id="pieChart" class="grafico_alertas_tempo" ></canvas>
         </div>
       </div>
 
@@ -139,6 +139,7 @@
   window.onload = function(){
     receberAlertas(idUsuario)
     selecionarTempo()
+    plotarGraficoPizza();
   }
 </script>
 </html>
