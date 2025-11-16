@@ -80,10 +80,10 @@
             <thead>
               <tr>
                 <th scope="col" onclick="ordenarPor('nome')" id="table_alerta_nome">Nome do servidor<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-                <th scope="col" onclick="ordenarPor('cpu')" id="table_alerta_cpu">Alertas CPU<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-                <th scope="col" onclick="ordenarPor('ram')" id="table_alerta_ram">Alertas RAM<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-                <th scope="col" onclick="ordenarPor('disco')" id="table_alerta_disco">Alertas Disco<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-                <th scope="col" onclick="ordenarPor('risco')" id="table_alerta_risco">Quantidade total de alertas<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+                <th scope="col" onclick="ordenarPor('cpu')" id="table_alerta_cpu">CPU<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+                <th scope="col" onclick="ordenarPor('ram')" id="table_alerta_ram">RAM<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+                <th scope="col" onclick="ordenarPor('disco')" id="table_alerta_disco">Disco<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+                <th scope="col" onclick="ordenarPor('risco')" id="table_alerta_risco">Total de alertas<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
               </tr>
             </thead>
             <tbody id="bodyTabelaAlerta">
@@ -97,7 +97,7 @@
       
         <div class="gráfico_chart">
           <div class="nome_gráfico" id="nome_gráfico"></div>
-          <canvas id="lineChartHistorico" class="grafico_alertas_tempo" ></canvas>
+          <canvas id="pieChart" class="grafico_alertas_tempo" ></canvas>
         </div>
       </div>
 
@@ -139,6 +139,7 @@
   window.onload = function(){
     receberAlertas(idUsuario)
     selecionarTempo()
+    plotarGraficoPizza();
   }
 </script>
 </html>
