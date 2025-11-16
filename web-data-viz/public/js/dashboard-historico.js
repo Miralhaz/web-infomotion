@@ -1,4 +1,3 @@
-
 let info = []
 let infoExibicao = []
 const tempo = localStorage.getItem("tempoSelecionado");
@@ -15,7 +14,7 @@ function receberAlertas(idUsuario) {
                     // console.log("Dados recebidos: ", JSON.stringify(dados));
                     info.push(...dados)
                     inserirDadosTabela()
-                    
+
                 });
 
             } else {
@@ -29,31 +28,31 @@ function receberAlertas(idUsuario) {
 }
 
 function inserirDadosTabela() {
-    let infoAjustada = JSON.parse(JSON.stringify(info)); 
+    let infoAjustada = JSON.parse(JSON.stringify(info));
 
-    let hoje = new Date();           
-    let dataLimite = new Date(); 
+    let hoje = new Date();
+    let dataLimite = new Date();
     dataLimite.setDate(hoje.getDate() - tempo);
-    
-    
+
+
     for (let index = 0; index < infoAjustada.length; index++) {
         const element = infoAjustada[index];
         const dataStr = element.data_registro;
-        let [dia, mes, ano] = dataStr.split("/"); 
-        let data = new Date(`${ano}-${mes}-${dia}`); 
+        let [dia, mes, ano] = dataStr.split("/");
+        let data = new Date(`${ano}-${mes}-${dia}`);
         element.data_registro = data
     }
-    
+
     infoExibicao = [];
 
     for (let index = 0; index < infoAjustada.length; index++) {
         const element = infoAjustada[index];
-        if (element.data_registro > dataLimite){
+        if (element.data_registro > dataLimite) {
             infoExibicao.push(element)
         }
     }
     console.log("infoExibicao", infoExibicao);
-    
+
     infoTabela = [];
 
     for (let index = 0; index < infoExibicao.length; index++) {
@@ -61,20 +60,20 @@ function inserirDadosTabela() {
         let indice = -1
         for (let j = 0; j < infoTabela.length; j++) {
             const element2 = infoTabela[j];
-            if (element2.apelido === element.apelido) {indice = j; break;}
+            if (element2.apelido === element.apelido) { indice = j; break; }
         }
 
-        if(indice >= 0){
+        if (indice >= 0) {
             const tipo = element.tipo.toUpperCase();
             if (tipo === 'CPU') {
-                infoTabela[indice].AlertaCPU ++;
-            }else if (tipo === 'DISCO') {
-                infoTabela[indice].AlertaDisco ++;
-            }else {
-                infoTabela[indice].AlertaRAM ++;
+                infoTabela[indice].AlertaCPU++;
+            } else if (tipo === 'DISCO') {
+                infoTabela[indice].AlertaDisco++;
+            } else {
+                infoTabela[indice].AlertaRAM++;
             }
-            infoTabela[indice].QuantidadeTotalAlertas ++;
-        }  
+            infoTabela[indice].QuantidadeTotalAlertas++;
+        }
         else {
             let novoRegistro = {
                 id: element.id,
@@ -84,13 +83,13 @@ function inserirDadosTabela() {
                 AlertaDisco: 0,
                 QuantidadeTotalAlertas: 1
             };
-            
+
             const tipo = element.tipo.toUpperCase();
             if (tipo === 'CPU') {
                 novoRegistro.AlertaCPU = 1;
-            }else if (tipo === 'DISCO') {
+            } else if (tipo === 'DISCO') {
                 novoRegistro.AlertaDisco = 1;
-            }else {
+            } else {
                 novoRegistro.AlertaRAM = 1;
             }
             infoTabela.push(novoRegistro);
@@ -131,14 +130,14 @@ function inserirDadosTabela() {
               `
     }
 }
-    
 
 
-function dataToString(d){
+
+function dataToString(d) {
     const dia = String(d.getDate()).padStart(2, '0');
     const mes = String(d.getMonth() + 1).padStart(2, '0');
-    return `${dia}/${mes}`; 
-  };
+    return `${dia}/${mes}`;
+};
 
 let totalDisco;
 
@@ -146,8 +145,8 @@ let totalDisco;
 function chamarFuncoesServidores(idServidor) {
 }
 
-function ordenarPor(item){
-    if (!jaOrdenado){
+function ordenarPor(item) {
+    if (!jaOrdenado) {
         document.getElementById(`table_alerta_${item}`).innerHTML += `<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down">`
         jaOrdenado = true
     } else {
@@ -164,11 +163,11 @@ function ordenarPor(item){
     let infoOrdenada = []
     for (let index = 0; index < infoTabela.length; index++) {
         const element = infoTabela[index];
-        if(item == 'nome') {
+        if (item == 'nome') {
             infoOrdenada = infoTabela
         } else if (item == 'cpu') {
-            
-            if (infoOrdenada.length > 0){
+
+            if (infoOrdenada.length > 0) {
                 let inserido = false
                 for (let j = 0; j < infoOrdenada.length; j++) {
                     const elemento = infoOrdenada[j];
@@ -176,14 +175,14 @@ function ordenarPor(item){
                         infoOrdenada.splice(j, 0, element)
                         inserido = true
                         break;
-                    } 
+                    }
                 }
                 if (!inserido) {
                     infoOrdenada.push(element)
                 }
             } else infoOrdenada.push(element)
         } else if (item == 'ram') {
-            if (infoOrdenada.length > 0){
+            if (infoOrdenada.length > 0) {
                 let inserido = false
                 for (let j = 0; j < infoOrdenada.length; j++) {
                     const elemento = infoOrdenada[j];
@@ -191,14 +190,14 @@ function ordenarPor(item){
                         infoOrdenada.splice(j, 0, element)
                         inserido = true
                         break;
-                    } 
+                    }
                 }
                 if (!inserido) {
                     infoOrdenada.push(element)
                 }
             } else infoOrdenada.push(element)
-        }else if (item == 'disco') {
-            if (infoOrdenada.length > 0){
+        } else if (item == 'disco') {
+            if (infoOrdenada.length > 0) {
                 let inserido = false
                 for (let j = 0; j < infoOrdenada.length; j++) {
                     const elemento = infoOrdenada[j];
@@ -206,14 +205,14 @@ function ordenarPor(item){
                         infoOrdenada.splice(j, 0, element)
                         inserido = true
                         break;
-                    } 
+                    }
                 }
                 if (!inserido) {
                     infoOrdenada.push(element)
                 }
             } else infoOrdenada.push(element)
-        }else { // RISCO
-            if (infoOrdenada.length > 0){
+        } else { // RISCO
+            if (infoOrdenada.length > 0) {
                 let inserido = false
                 for (let j = 0; j < infoOrdenada.length; j++) {
                     const elemento = infoOrdenada[j];
@@ -221,7 +220,7 @@ function ordenarPor(item){
                         infoOrdenada.splice(j, 0, element)
                         inserido = true
                         break;
-                    } 
+                    }
                 }
                 if (!inserido) {
                     infoOrdenada.push(element)
@@ -256,7 +255,7 @@ function ordenarPor(item){
     }
 }
 
-function plotarGraficoPizza(){
+function plotarGraficoPizza() {
     let labels = ['Ok', 'Atenção', 'Crítico'];
     let dados = [20, 30, 50];
 
@@ -280,6 +279,17 @@ function plotarGraficoPizza(){
                 borderWidth: 1
             }]
         },
+        options: {
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        color: 'white'
+                    }
+                }
+            }
+        }
     };
 
     new Chart(
@@ -287,4 +297,173 @@ function plotarGraficoPizza(){
         config
     );
 
+}
+
+function plotarGraficoBolhas() {
+
+    const config = {
+        type: 'bubble',
+        data: {
+            datasets: [
+                {
+                    label: 'Crítico',
+                    data: [
+                        { x: 3,  y: 90, r: 31 },
+                        { x: 8,  y: 86, r: 18 }
+                    ],
+                    backgroundColor: 'rgba(189, 44, 44, 0.5)'
+                },
+                {
+                    label: 'Atenção',
+                    data: [
+                        { x: 10, y: 82, r: 22 },
+                        { x: 12, y: 78, r: 15 }
+                    ],
+                    backgroundColor: 'rgba(189, 92, 32, 0.5)'
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: 'white',
+                        font: {
+                            size: 15
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Porcentagem (%)',
+                        color: 'white',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(153, 153, 153, 0.2)',
+                        display: true,
+                        drawTicks: false
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: 'white',
+                        font: {
+                            size: 15
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'ID dos servidores',
+                        color: 'white',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    grid: {
+                        drawOnChartArea: true
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        color: 'white'
+                    }
+                }
+            }
+        }
+    };
+
+    new Chart(document.getElementById('bubbleChart'), config);
+}
+
+
+function plotarGraficoBarras(){
+    const config = {
+        type: 'bar',
+        data: {
+            datasets: [
+                {
+                    label: '10/11/2025',
+                    data: [
+                        { x: 30,  y: 90 }
+                    ],
+                    backgroundColor: 'rgba(189, 44, 44, 0.5)'
+                },
+                {
+                    label: '11/11/2025',
+                    data: [
+                        { x: 18, y: 82 }
+                    ],
+                    backgroundColor: 'rgba(189, 92, 32, 0.5)'
+                },
+                {
+                    label: '12/11/2025',
+                    data: [
+                        { x: 22,  y: 86, r: 18 }
+                    ],
+                    backgroundColor: 'rgba(230, 200, 47, 0.5)'
+                }
+            ]
+        },
+        options: {
+            indexAxis: 'y',
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: 'white',
+                        font: {
+                            size: 15
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Datas',
+                        color: 'white',
+                        font: {
+                            size: 16
+                        }
+                    },
+                },
+                x: {
+                    ticks: {
+                        color: 'white',
+                        font: {
+                            size: 15
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Quantidade de alertas',
+                        color: 'white',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(153, 153, 153, 0.2)',
+                        display: true,
+                        drawTicks: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        color: 'white'
+                    }
+                }
+            }
+        }
+    };
+
+    new Chart(document.getElementById('barGraph'), config);
 }

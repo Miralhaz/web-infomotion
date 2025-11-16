@@ -179,18 +179,6 @@ function receberAlertas(idUsuario) {
   return database.executar(instrucaoSql);
 }
 
-function receberEspecificacoes(idServidor) {
-
-  var instrucaoSql = `
-    select nome_especificacao, valor, tipo from especificacao_componente e 
-    inner join componentes c on c.id = e.fk_componente
-    where fk_componente in (
-    select id from componentes where fk_servidor = '${idServidor}');
-  `;
-
-  console.log("Executando a instrução SQL: \n" + instrucaoSql);
-  return database.executar(instrucaoSql);
-}
 
 function editarApelido(idServidor, apelido) {
   var instrucaoSql = `
@@ -216,6 +204,5 @@ module.exports = {
   listarDadosBarras,
   cadastrar,
   receberAlertas,
-  receberEspecificacoes,
   editarApelido
 }
