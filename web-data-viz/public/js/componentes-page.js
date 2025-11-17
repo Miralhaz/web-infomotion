@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
 })
 
 let componentesEstatico = []
+
 function listarComponentes() {
   /* const listaIdServidor = sessionStorage.getItem('ID_SERVIDOR') */
   /* for (let index = 0; index < listaIdServidor.length; index++) { */
@@ -279,9 +280,51 @@ function salvarNovoApelido() {
     .catch(erro => console.error("Erro:", erro));
 }
 
+function receberRegiao(){
+    const idServer = sessionStorage.getItem('servidorID')
+    console.log(idServer)
+    
+    fetch(`/servidores/receberRegiao/${idServer}`) 
+    .then(function (resposta) {
+        console.log("resposta: ", resposta);
+
+        if (resposta.ok) {
+            resposta.json().then(function (dados) { 
+                console.log("Dados recebidos: ", JSON.stringify(dados));
+                
+                const regiao = dados[0]; 
+
+                const divCodigo = document.getElementById('codigo');
+                const divPais = document.getElementById('pais');
+                const divCidade = document.getElementById('cidade');
+                
+                if (regiao) { 
+                    if (divCodigo) {
+                        divCodigo.textContent = `\nCEP:\n${regiao.codigo_postal}`;
+                    }
+
+                    if (divPais) {
+                        divPais.textContent = `\nPaís:\n${regiao.pais}`;
+                    }
+                    if (divCidade) {
+                        divCidade.textContent = `\nCidade:\n${regiao.cidade}`;
+                    }
+                } else {
+                    console.warn("Nenhuma informação de região encontrada para o servidor ID:", idServer);
+                }
+            });
+        } else {
+            throw "Houve um erro ao tentar listar as info de região!";
+        }
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+}
 
 window.onload = function () {
   /* receberIdServidor();*/
   listarComponentes();
   pesquisar();
+  receberRegiao();
 }
