@@ -238,28 +238,6 @@ function receberAlertas(req, res){
     );
 }
 
-function receberEspecificacoes(req, res){
-  var idServidor = req.params.idServidor;
-
-  servidorModel.receberEspecificacoes(idServidor)
-    .then(
-      function (resultado){
-        if (resultado.length > 0) {
-          res.status(200).json(resultado);
-        } else {
-          res.status(204).send("Nenhum alerta encontrado!");
-        }
-      }
-    )
-    .catch(
-      function (erro) {
-        console.log(erro);
-        console.log("\nHouve um erro ao buscar alertas dos servidores! Erro: ", erro.sqlMessage);
-        res.status(500).json(erro.sqlMessage);
-      }
-    );
-}
-
 function editarApelido(req, res) {
   var idServidor = req.params.idServidor;
   var apelido = req.body.apelido;
@@ -291,6 +269,5 @@ module.exports = {
   listarDadosBarras,
   cadastrar,
   receberAlertas,
-  receberEspecificacoes,
   editarApelido
 }
