@@ -997,7 +997,7 @@ input {
   grid-template-rows: 1fr 1fr;
   justify-content: center;
   width: 20vw;
-  height: 7vh;
+  height: auto;
   padding: 2vh;
   padding-bottom: 2.5vh;
   background-color: #f9f9f9;
@@ -1010,14 +1010,41 @@ input {
   grid-row: 1;
   grid-column: 2;
   text-align: center;
-  font-size: 1.25rem;
+  font-size: 1.45rem;
 }
 
 .GSV .Identificador .IP {
   grid-row: 2;
   grid-column: 2;
   text-align: center;
+  font-size: 1.2rem;
+}
+
+.GSV .Identificador .codigo {
+  grid-row: 3;
+  grid-column: 1;
+  text-align: center;
   font-size: 1rem;
+  white-space: pre-wrap;
+  font-weight: bold;
+}
+
+.GSV .Identificador .pais {
+  grid-row: 3;
+  grid-column: 2;
+  text-align: center;
+  font-size: 1rem;
+  white-space: pre-wrap;
+  font-weight: bold;
+}
+
+.GSV .Identificador .cidade {
+  grid-row: 3;
+  grid-column: 3;
+  text-align: center;
+  font-size: 1rem;
+  white-space: pre-wrap;
+  font-weight: bold;
 }
 
 .GSV .Identificador .icons {

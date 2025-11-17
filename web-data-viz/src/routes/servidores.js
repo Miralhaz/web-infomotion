@@ -4,6 +4,10 @@ var router = express.Router();
 var servidoresController = require("../controllers/servidoresController");
 
 
+router.get("/receberRegiao/:idServer", function (req, res) {
+  servidoresController.receberRegiao(req, res);
+});
+
 router.get("/:empresaId", function (req, res) {
   servidoresController.buscarServidoresPorEmpresa(req, res);
 });
@@ -43,6 +47,7 @@ router.get("/receberAlertas/:idUsuario", function (req, res){
 router.put("/editarApelido/:idServidor", function (req, res) {
   servidoresController.editarApelido(req, res);
 });
+
 
 
 module.exports = router;

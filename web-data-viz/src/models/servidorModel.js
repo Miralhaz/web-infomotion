@@ -199,7 +199,12 @@ function editarApelido(idServidor, apelido) {
   return database.executar(instrucaoSql);
 }
 
+function receberRegiao(idServer){
+  var instrucaoSql = `SELECT codigo_postal, pais, cidade FROM regiao r INNER JOIN servidor s ON s.fk_regiao = r.id WHERE s.id = ${idServer};`
 
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
 
 module.exports = {
   buscarServidoresPorEmpresa,
@@ -212,5 +217,6 @@ module.exports = {
   listarDadosBarras,
   cadastrar,
   receberAlertas,
-  editarApelido
+  editarApelido,
+  receberRegiao
 }
