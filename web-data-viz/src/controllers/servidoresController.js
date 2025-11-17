@@ -39,6 +39,9 @@ function buscarServidoresPorUsuario(req, res) {
 function cadastrar(req, res) {
   var nome = req.body.nomeServer;
   var ip = req.body.ipServer;
+  var codigo = req.body.codigoServer;
+  var cidade = req.body.cidadeServer;
+  var pais = req.body.paisServer;
   var idEmpresa = req.body.idServer;
   var idUsuario = req.body.idUsuarioServer;
   console.log(nome)
@@ -52,15 +55,21 @@ function cadastrar(req, res) {
   if (nome == undefined) {
     res.status(400).send("nome está undefined!");
   } else if (ip == undefined) {
-    res.status(400).send("idEmpresa está undefined!");
-  } else if (idEmpresa == undefined) {
     res.status(400).send("ip está undefined!");
+  } else if (codigo == undefined) {
+    res.status(400).send("codigo está undefined!");
+  } else if (cidade == undefined) {
+    res.status(400).send("cidade está undefined!");
+  } else if (pais == undefined) {
+    res.status(400).send("pais está undefined!");
+  } else if (idEmpresa == undefined) {
+    res.status(400).send("idEmpresa está undefined!");
   } else if (idUsuario == undefined) {
     res.status(400).send("Id Usuario está undefined!")
   } else {
     console.log("b")
 
-    servidorModel.cadastrar(idEmpresa, ip, nome, idUsuario)
+    servidorModel.cadastrar(idEmpresa, ip, nome, codigo, cidade, pais, idUsuario)
       .then((resultado) => {
         res.status(201).json(resultado);
       }

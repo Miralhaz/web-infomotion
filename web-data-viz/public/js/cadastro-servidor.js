@@ -171,12 +171,18 @@ function cadastrar() {
   aguardar();
   var nomeVar = nome.value
   var ipVar = ip.value
+  var codigoVar = codigo.value
+  var paisVar = pais.value
+  var cidadeVar = cidade.value
   var idEmpresaVar = sessionStorage.ID_EMPRESA
   var idUsuarioVar = sessionStorage.ID_USUARIO
 
   if (
     nomeVar == "" ||
     ipVar == "" ||
+    codigoVar == "" ||
+    paisVar == "" ||
+    cidadeVar == "" ||
     idEmpresaVar == "" ||
     idUsuarioVar == ""
   ) {
@@ -190,11 +196,15 @@ function cadastrar() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      nomeServer: nomeVar,
-      ipServer: ipVar,
       idServer: idEmpresaVar,
+      ipServer: ipVar,
+      nomeServer: nomeVar,
+      codigoServer: codigoVar,
+      cidadeServer: cidadeVar,
+      paisServer: paisVar,
       idUsuarioServer: idUsuarioVar
 
+      
     }),
   })
     .then(function (resposta) {
