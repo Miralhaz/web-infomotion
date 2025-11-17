@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Disco</title>
+    <link rel="stylesheet" href="../css/styleDashDisco.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <section class="header">
+        <div class="header-left">
+            <div class="parte-cima">
+                <div class="icone">
+                    <a href="perfil.html" class="descricao-icone">
+                        <img src="../assets/imgs-dashboard/perfil.png" alt="">
+                        Perfil </a>
+                </div>
+                <div id="usuario-header" class="icone">
+                    <a href="tela-usuarios.html" class="descricao-icone">
+                        <img src="../assets/imgs-dashboard/mdi_users.png" alt="">
+                        Usuários </a>
+                </div>
+                <div class="icone">
+                    <a href="tela-servidores.html" class="descricao-icone">
+                        <img src="../assets/imgs-dashboard/teenyicons_servers-solid.png" alt="">
+                        Servidores </a>
+                </div>
+                <div class="icone">
+                    <a href="dashboardHistorico.html" class="descricao-icone">
+                        <img src="../assets/imgs-dashboard/fluent-mdl2_b-i-dashboard.png" alt="">
+                        Dashboard </a>
+                </div>
+            </div>
+            <div class="parte-baixo">
+                <div class="icone">
+                    <a href="https://sentinela-grupo-3.atlassian.net/servicedesk/customer/portal/35"
+                        class="descricao-icone">
+                        <img src="../assets/imgs-dashboard/fluent_person-suport-32-light.png" alt="">
+                        Suporte </a>
+                </div>
+                <div class="icone">
+                    <a href="../index.html" class="descricao-icone">
+                        <img src="../assets/imgs-dashboard/uil_exit.png" alt="">
+                        Sair </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+    <div class="dashboard-container">
+        <div class="kpis">
+            <div class="kpi operacao"></div>
+            <div class="kpi alertas"></div>
+            <div class="kpi lista"></div>
+            <div class="kpi impacto"></div>
+            <div class="kpi vida"></div>
+        </div>
+        <div class="dashboards">
+            <div class="dashboard chart1"></div>
+            <div class="dashboard chart2"></div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../js/dashDisco.js"></script>
+
+</html>
