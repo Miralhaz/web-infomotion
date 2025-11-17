@@ -1,0 +1,214 @@
+@import url("https://use.typekit.net/iom7tmt.css");
+
+:root {
+    --amarelo: #ffc64b;
+    --amareloOpacityLow: #ffc64bb7;
+    --cinza: #E2E1DE;
+    --branco: #ffff;
+    --preto: #000;
+    --cinzaEscuro: #1c1c1c;
+    --cinzaHeader: #222;
+    --cinzaDash: #181818;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: var(--cinza);
+    font-family: "poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    scroll-behavior: smooth;
+}
+
+/* Header */
+
+section.header .header-left {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100%;
+    width: 230px;
+    background-color: var(--cinzaHeader);
+    padding: 20px 0;
+    text-align: center;
+}
+
+section.header .header-left .parte-cima {
+    padding: 40% 0;
+}
+
+section.header .header-left .parte-baixo {
+    padding: 10% 0
+}
+
+section.header .header-left .icone {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 7% 0;
+}
+
+section.header .header-left .descricao-icone {
+    color: var(--branco);
+    align-content: center;
+    padding: 0 10px;
+}
+
+section.header .header-left .icone img {
+    height: 25px;
+    width: auto;
+    display: flex;
+    padding: 0 15px;
+    transition: all 0.3s ease-in-out;
+}
+
+section.header .header-left .icone a {
+    width: 100%;
+    text-decoration: none;
+    font-weight: 100;
+    font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+}
+
+section.header .header-left .icone a:hover {
+    background-color: var(--amarelo);
+    color: var(--preto);
+    padding: 10px;
+}
+
+section.header .header-left .icone a:hover img {
+    filter: brightness(0);
+}
+/* fim header */
+
+/* .dashboard {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+
+
+}
+
+.dashboard .box-lista {
+    border-radius: 6px;
+    margin-top: 10vh;
+    margin-left: 15vw;
+    width: 20%;
+    height: 70%;
+    background-color: black;
+}
+
+.dashboard .kpi-area {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 70%;
+    height: 100%;
+}
+
+.dashboard .kpi-area .kpi-lista {
+    margin-left: 15vw;
+    margin-top: 5vh;
+    width: 60%;
+    height: 40%;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.dashboard .kpi-area .kpi-lista .kpi1 {
+    color: white;
+    border-radius: 6px;
+    width: 45%;
+    height: 45%;
+    background-color: black;
+}
+
+
+.dashboard .kpi-area .kpi-lista .kpi2 {
+    color: white;
+    border-radius: 6px;
+    width: 45%;
+    height: 80%;
+    background-color: black;
+}
+
+.dashboard .kpi-area .chartcontainer {
+    margin-left: 7vw;
+    width: 100%;
+    height: 100%;
+    margin-top: 3vh;
+}
+
+.dashboard .kpi-area .chartcontainer .grafico_linha {
+    border-radius: 10px;
+    width: 80%;
+    height: 80%;
+    background-color: black;
+    margin-top: 3vh;
+}
+    */
+
+
+.container{
+    display: flex;
+    height: 100vh;
+    width: 80vw;
+ 
+    float: right;
+}   
+
+.dashboard-container {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/*     LINHA 1 (KPIs)     */
+.kpis {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.kpis .kpi {
+    background-color: #222222;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.operacao { width: 20%; height: 53%; }
+.alertas { width: 20%; height: 53%; }
+.lista { width: 25%; height: 220px; }
+.impacto { width: 25%; height: 45%; }
+.vida { width: 25%; height: 45% ;}
+
+/*     2 parte     */
+.dashboards {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    padding: 10px;
+}
+
+.dashboard {
+    background-color: #222222;
+    width: 48%;
+    height: 45vh;
+    border-radius: 12px;
+}
