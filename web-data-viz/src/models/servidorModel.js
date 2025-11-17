@@ -16,16 +16,24 @@ function buscarServidoresPorUsuario(usuarioId) {
   return database.executar(instrucaoSql);
 }
 
-async function cadastrar(idEmpresa, ip, nome, idUsuario) {
+async function cadastrar(idEmpresa, ip, nome, codigo, cidade, pais, idUsuario) {
 
-  var instrucaoSql1 = `INSERT INTO servidor (apelido, ip, fk_empresa, ativo)  VALUES ('${nome}', '${ip}', ${idEmpresa}, 1)`;
-  var instrucaoSql2 = `INSERT INTO usuario_has_servidor (fk_usuario, fk_servidor) SELECT ${idUsuario}, id FROM servidor WHERE apelido = '${nome}'`
-  var instrucaoSql3 = `INSERT INTO registro_servidor (fk_servidor, uso_cpu, uso_ram, uso_disco, qtd_processos, temp_cpu, temp_disco, dt_registro)
-  SELECT id, 0.00, 0.00, 0.00, 190, 36.0, 47.0, '2025-10-24 13:21' FROM servidor WHERE apelido = '${nome}'`
+var instrucaoSql1 = `INSERT INTO regiao (cidade, pais, codigo_postal) VALUES ('${cidade}', '${pais}', '${codigo}');`;
+await database.executar(instrucaoSql1);
 
-  await database.executar(instrucaoSql1);
-  await database.executar(instrucaoSql2);
-  return await database.executar(instrucaoSql3)
+var fk_regiao = `SELECT id FROM regiao WHERE codigo_postal = '${codigo}' AND cidade = '${cidade}' AND pais = '${pais}' ORDER BY id DESC LIMIT 1;`;
+var resultadoRegiao = await database.executar(fk_regiao);
+var idRegiao = resultadoRegiao[0].id;
+
+var instrucaoSql2 = `INSERT INTO servidor (apelido, fk_regiao, ip, fk_empresa, ativo)VALUES ('${nome}', ${idRegiao}, '${ip}', ${idEmpresa}, 1);`;
+await database.executar(instrucaoSql2);
+
+var instrucaoSql3 = `INSERT INTO usuario_has_servidor (fk_usuario, fk_servidor)SELECT ${idUsuario}, id FROM servidor WHERE apelido = '${nome}'`;
+await database.executar(instrucaoSql3);
+
+var instrucaoSql4 = `
+  INSERT INTO registro_servidor (fk_servidor, uso_cpu, uso_ram, uso_disco, qtd_processos, temp_cpu, temp_disco, dt_registro) SELECT id, 0.00, 0.00, 0.00, 190, 36.0, 47.0, '2025-10-24 13:21'FROM servidor WHERE apelido = '${nome}'`;
+return await database.executar(instrucaoSql4);
 
 }
 

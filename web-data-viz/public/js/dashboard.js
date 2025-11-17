@@ -174,8 +174,21 @@ function obterDadosKpi(idServidor) {
                     div_temp[1].style.backgroundColor = dados[0].temp_disco >= 85 ? '#940000' : '#C89C00';
 
                     let div_rede = document.querySelectorAll('.div-rede');
-                    div_rede[0].style.backgroundColor = dados[0].upload >= 85 ? '#940000' : '#C89C00';
-                    div_rede[1].style.backgroundColor = dados[0].download >= 85 ? '#940000' : '#C89C00';
+                    if(dados[0].upload <= 10){
+                        div_rede[0].style.backgroundColor = '#940000'
+                    }else if(dados[0].upload <= 30){
+                        div_rede[0].style.backgroundColor = '#C89C00'
+                    }else{
+                        div_rede[0].style.backgroundColor = '#009900ff'
+                    }
+                    
+                    if(dados[0].download <= 20){
+                        div_rede[1].style.backgroundColor = '#940000'
+                    }else if(dados[0].download <= 40){
+                        div_rede[1].style.backgroundColor = '#C89C00'
+                    }else{
+                        div_rede[1].style.backgroundColor = '#009900ff'
+                    }
 
                     let circ_cpu = document.getElementById('circ_cpu');
                     let dado_cpu = dados[0].temp_cpu;
