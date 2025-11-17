@@ -1963,6 +1963,21 @@ background-color: #222;
   display: none;              /* esconde as setas */
 }
 
+.div-table-grafico{
+  display: flex;
+  flex-direction: row;
+  gap: 2%;
+}
+
+.div-comparacao-alertas{
+    background-color: var(--cinzaDash);
+  width: 25vw;
+  height: 29.5vh;
+  color: var(--branco);
+  padding: 2.88vh 1.5vw;
+  border-radius: 2vh;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
 
 .dashboard_historico .alerta_tempo_e_especificações_hardware{
   display: flex;
@@ -1973,62 +1988,44 @@ background-color: #222;
 
 .dashboard_historico .gráfico_alertas_tempo_wrapper{
   background-color: var(--cinzaDash);
-  width: 38vw;
-  height: 35vh;
+  width: 36vw;
+  height: 36vh;
   color: var(--branco);
   padding: 2.88vh 1.5vw;
   border-radius: 2vh;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-
-.gráfico_chart {
+.gráfico_chart{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 40%;
+    width: 100%;
 }
 
+.div-pie-chart{
+  align-self: center;
+  width: 35%;
+}
 
-.dashboard_historico .especificacoes_hardware{
+.dashboard_historico .grafico_bubble{
   background-color: var(--cinzaDash);
   color: var(--branco);
   padding: 2.88vh 1.5vw;
   border-radius: 2vh;
-  align-self: center;
-  width: 38vw;
-  height: 41vh;
+  width: 40vw;
+  height: 42vh;
   padding: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.dashboard_historico .especificacoes_hardware .nome_div{
-  background-color: #fff;
-  color: var(--cinzaDash);
-  font-size: 1.5rem;
-  text-align: center;
-  width: 100%;
-  justify-self: center;
-  border-top-left-radius: 2vh;
-  border-top-right-radius: 2vh;
-  padding-top: 1vh;
-  font-weight: 100;
-}
-
-.dashboard_historico .especificacoes_hardware .especificacoes{
-  padding: 1rem;
-  font-size: 1.5rem;
-  align-self: center;
-  font-weight: 100;
-}
-
-.dashboard_historico .especificacoes_hardware .ram_total{
-  border-bottom: solid 1px #fff;
-}
-
-.dashboard_historico .especificacoes_hardware .nucleos_cpu{
-  border-bottom: solid 1px #fff;
+.grafico_bubble .div-bubble-chart{
+  width: 75%;
 }
 
 .dashboard_historico .nome_gráfico{
@@ -2037,6 +2034,4 @@ background-color: #222;
   text-align: center;
 }
 
-.destaque-hardware{
-  color: var(--amarelo);
-}
+

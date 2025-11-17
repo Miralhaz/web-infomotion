@@ -72,6 +72,7 @@
       </div>
     </div>
 
+    <div class="div-table-grafico">
       <div class="tabela_alerta_servidores">
         <div class="nome_tabela" id="nome_tabela">
           Relatório de alertas(X Tempo)
@@ -89,25 +90,41 @@
             <tbody id="bodyTabelaAlerta">
             </tbody>
           </table>
+
       </div>
+
+      <div class="div-comparacao-alertas">
+        <div>
+          <canvas id="barGraph"></canvas>
+        </div>
+      </div>
+
+      </div>
+      
+
 
     <div class="alerta_tempo_e_especificações_hardware">
 
       <div class="gráfico_alertas_tempo_wrapper" id="gráfico_alertas_tempo_wrapper">
       
         <div class="gráfico_chart">
-          <div class="nome_gráfico" id="nome_gráfico"></div>
-          <canvas id="pieChart" class="grafico_alertas_tempo" ></canvas>
+          <div class="nome_gráfico" id="nome_gráfico">
+            <a>Situação dos servidores</a>
+          </div>
+          <div class="div-pie-chart">
+            <canvas id="pieChart" class="grafico_alertas_tempo"></canvas>
+          </div>
         </div>
       </div>
 
-      <div class="especificacoes_hardware">
-        <div class="nome_div">Especificação Hardware</div>
-        <div class="especificacoes">
-          <div class="ram_total" id="ram_total">RAM Total:</div>
-          <div class="nucleos_cpu" id="nucleos_cpu">Núcleos da CPU<br>Físicos: <br>Lógicos: </div>
-          <div class="disco" id="disco">Capacidade Disco: </div>
-        </div>
+      <div class="grafico_bubble">
+        <div class="nome_gráfico" id="nome_gráfico">
+            <a>Situação dos servidores</a>
+          </div>
+        <div class="div-bubble-chart">
+            <canvas id="bubbleChart" class="grafico_alertas_tempo"></canvas>
+          </div>
+      </div>
       </div>
     </div>
     
@@ -137,9 +154,11 @@
   }
 
   window.onload = function(){
-    receberAlertas(idUsuario)
-    selecionarTempo()
+    receberAlertas(idUsuario);
+    selecionarTempo();
     plotarGraficoPizza();
+    plotarGraficoBolhas();
+    plotarGraficoBarras();
   }
 </script>
 </html>
