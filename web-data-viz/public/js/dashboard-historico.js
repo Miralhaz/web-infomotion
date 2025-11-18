@@ -263,7 +263,7 @@ function plotarGraficoPizza() {
     let dados = [20, 30, 50];
 
     const config = {
-        type: 'pie',
+        type: 'doughnut',
         data: {
             labels: labels,
             datasets: [{
@@ -490,12 +490,18 @@ function plotarGraficoLinhas(idServidor) {
                     beginAtZero: true,
                     ticks: {
                         color: 'white',
-                        stepSize: 1
+                        stepSize: 1,
+                        font: {
+                            size: 18
+                        }
                     },
                     title: {
                         display: true,
                         text: 'Quantidade de alertas',
-                        color: 'white'
+                        color: 'white',
+                        font: {
+                            size: 20
+                        }
                     },
                     grid: {
                         color: 'rgba(153, 153, 153, 0.2)',
@@ -506,11 +512,17 @@ function plotarGraficoLinhas(idServidor) {
                 x: {
                     ticks: {
                         color: 'white',
+                        font: {
+                            size: 18
+                        }
                     },
                     title: {
                         display: true,
                         text: 'Tempo',
-                        color: 'white'
+                        color: 'white',
+                        font: {
+                            size: 20
+                        }
                     },
                     grid: {
                         drawOnChartArea: true
@@ -527,7 +539,10 @@ function plotarGraficoLinhas(idServidor) {
                     position: 'top',
                     labels: {
                         usePointStyle: true,
-                        color: 'white'
+                        color: 'white',
+                        font: {
+                            size: 18
+                        }
                     }
                 }
             }
@@ -536,4 +551,16 @@ function plotarGraficoLinhas(idServidor) {
 
     new Chart(canvas, config);
 
+}
+
+
+function acionarFiltro() {
+
+  // Aqui apenas aciono o menu do filtro, se caso estiver exibindo, fecha se não ele aparece ao usuário
+  const menu = document.getElementById('menu')
+  if (menu.classList.contains("show")) {
+    menu.classList.remove("show");
+  } else {
+    menu.classList.add("show");
+  }
 }
