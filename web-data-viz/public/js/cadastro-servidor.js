@@ -167,23 +167,48 @@ function pesquisarServidores() {
 
 }
 
+function listarRegioes() {
+  const empresaId = sessionStorage.getItem('ID_EMPRESA')
+  console.log("Empresa ID= " + empresaId)
+  const select = document.getElementById("select_regiao");
+
+  select.innerHTML = `<option value="">Carregando regiões...</option>`;
+
+  fetch(`/servidores/listarRegioes/${empresaId}`)
+    .then(res => res.json())
+    .then(regioes => {
+      console.log("Regiões recebidas:", regioes);
+
+      select.innerHTML = "<option value='' disabled selected>Selecione uma região</option>";
+
+      regioes.forEach(regiao => {
+        select.innerHTML += `
+                    <option value="${regiao.id}">
+                        ${regiao.codigo_postal} — ${regiao.pais} — ${regiao.cidade}
+                    </option>
+                `;
+      });
+
+    })
+    .catch(err => {
+      console.error("Erro ao carregar regiões:", err);
+      select.innerHTML = "<option>Erro ao carregar regiões</option>";
+    });
+}
+
 function cadastrar() {
   aguardar();
   var nomeVar = nome.value
   var ipVar = ip.value
-  var codigoVar = codigo.value
-  var paisVar = pais.value
-  var cidadeVar = cidade.value
+  var idRegiaoVar = document.getElementById("select_regiao").value;
   var idEmpresaVar = sessionStorage.ID_EMPRESA
   var idUsuarioVar = sessionStorage.ID_USUARIO
 
   if (
     nomeVar == "" ||
     ipVar == "" ||
-    codigoVar == "" ||
-    paisVar == "" ||
-    cidadeVar == "" ||
     idEmpresaVar == "" ||
+    idRegiaoVar == "" ||
     idUsuarioVar == ""
   ) {
     finalizarAguardar("(Mensagem de erro para todos os campos em branco)");
@@ -199,12 +224,9 @@ function cadastrar() {
       idServer: idEmpresaVar,
       ipServer: ipVar,
       nomeServer: nomeVar,
-      codigoServer: codigoVar,
-      cidadeServer: cidadeVar,
-      paisServer: paisVar,
-      idUsuarioServer: idUsuarioVar
+      idUsuarioServer: idUsuarioVar,
+      idRegiaoServer: idRegiaoVar
 
-      
     }),
   })
     .then(function (resposta) {
@@ -349,4 +371,8 @@ function selecionar(opcao_filtro) {
   }
 
 
+}
+
+window.onload = function () {
+  listarRegioes();
 }

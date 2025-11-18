@@ -4,12 +4,26 @@ var router = express.Router();
 var servidoresController = require("../controllers/servidoresController");
 
 
-router.get("/:empresaId", function (req, res) {
-  servidoresController.buscarServidoresPorEmpresa(req, res);
+router.get("/receberRegiao/:idServer", function (req, res) {
+  servidoresController.receberRegiao(req, res);
 });
+
+router.get("/listarRegioes/:empresaId", function (req, res) {
+    servidoresController.listarRegioes(req, res);
+});
+
+router.put("/atualizarRegiao/:idServidor/:idRegiao", function (req, res) {
+  servidoresController.atualizarRegiao(req, res);
+});
+
 
 router.post("/cadastrar", function (req, res) {
   servidoresController.cadastrar(req, res);
+})
+
+
+router.post("/cadastrarRede", function (req, res) {
+  servidoresController.cadastrarRede(req, res);
 })
 
 router.get("/listarServidoresPorUsuario/:idUsuario", function (req, res) {
@@ -44,5 +58,9 @@ router.put("/editarApelido/:idServidor", function (req, res) {
   servidoresController.editarApelido(req, res);
 });
 
+
+router.get("/:empresaId", function (req, res) {
+  servidoresController.buscarServidoresPorEmpresa(req, res);
+});
 
 module.exports = router;

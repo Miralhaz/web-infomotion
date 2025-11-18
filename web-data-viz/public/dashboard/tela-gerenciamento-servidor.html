@@ -75,16 +75,18 @@
             <div class="Identificador">
                 <div class="nome" id="nome">Nome Servidor</div>
                 <div class="IP" id="IP">Identificador</div>
+                <div class="codigo" id="codigo">CEP:</div>
+                <div class="pais" id="pais">País:</div>
+                <div class="cidade" id="cidade">Cidade:</div>
                 <div class="icons">
                     <a onclick="chamarModal()">
                         <img src="../assets/icon/lixo-amarelo.svg" alt="Deletar" class="imgGSV">
                     </a>
                     
-                    <a onclick="editarApelidoServidor()">
+                    <a onclick="abrirEscolhaEdicao()">
                         <img src="../assets/icon/editar-amarelo.svg" alt="Editar" class="imgGSV">
                     </a>
                     
-
                 </div>
             </div>
 
@@ -139,6 +141,40 @@
         </div>
     </div>
 </div>
+
+<div class="container-modal" id="modal-escolha">
+    <div class="card-modal">
+        <h1>O QUE DESEJA EDITAR?</h1>
+        <p>Escolha uma das opções abaixo:</p>
+
+        <div style="display: flex; gap: 15px; margin-top: 20px;">
+            <button class="btn-add" onclick="abrirEditarApelido()">Editar Nome</button>
+            <button class="btn-add" onclick="abrirEditarRegiao()">Editar Região</button>
+        </div>
+
+        <button class="btn-add" style="margin-top: 20px;" onclick="fecharModalEscolha()">Voltar</button>
+    </div>
+</div>
+
+<div class="container-modal" id="modal-editar-regiao">
+    <div class="card-modal">
+        <h1>EDITAR REGIÃO DO SERVIDOR</h1>
+        <p>Escolha uma nova região cadastrada:</p>
+
+        <select id="select_regiao" style="width: 100%; padding: 10px; margin: 10px 0;">
+            <option value="">Carregando regiões...</option>
+        </select>
+
+        <div id="mensagem-regiao"></div>
+
+        <div style="margin-top: 20px;">
+            <button class="btn-add" onclick="salvarNovaRegiaoSelecionada()">Salvar</button>
+            <button class="btn-add" onclick="fecharModalEditarRegiao()">Voltar</button>
+        </div>
+    </div>
+</div>
+
+
 
 </body>
 <script src="../js/componentes-page.js"></script>

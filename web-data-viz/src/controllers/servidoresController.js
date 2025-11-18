@@ -39,24 +39,54 @@ function buscarServidoresPorUsuario(req, res) {
 function cadastrar(req, res) {
   var nome = req.body.nomeServer;
   var ip = req.body.ipServer;
-  var codigo = req.body.codigoServer;
-  var cidade = req.body.cidadeServer;
-  var pais = req.body.paisServer;
   var idEmpresa = req.body.idServer;
   var idUsuario = req.body.idUsuarioServer;
+  var idRegiao = req.body.idRegiaoServer;
   console.log(nome)
   console.log(ip)
   console.log(idEmpresa)
   console.log(idUsuario);
+  console.log(idRegiao);
 
 
 
   console.log("a")
-  if (nome == undefined) {
-    res.status(400).send("nome está undefined!");
-  } else if (ip == undefined) {
-    res.status(400).send("ip está undefined!");
-  } else if (codigo == undefined) {
+  if (idEmpresa == undefined) {
+    res.status(400).send("idEmpresa está undefined!");
+  } else if (idUsuario == undefined) {
+    res.status(400).send("Id Usuario está undefined!")
+  } else if (idRegiao == undefined){
+    res.status(400).send("Id Regiao está undefined!")
+  }else {
+    console.log("b")
+
+    servidorModel.cadastrar(nome, ip, idEmpresa, idUsuario, idRegiao)
+      .then((resultado) => {
+        res.status(201).json(resultado);
+      }
+      ).catch((erro) => {
+        console.log(erro);
+        console.log(
+          "\nHouve um erro ao realizar o cadastro! Erro: ",
+          erro.sqlMessage
+        );
+        res.status(500).json(erro.sqlMessage);
+      });
+    console.log("c")
+  }
+}
+
+function cadastrarRede(req, res) {
+  var codigo = req.body.codigoServer;
+  var cidade = req.body.cidadeServer;
+  var pais = req.body.paisServer;
+  var idEmpresa = req.body.idServer;
+  console.log(idEmpresa);
+
+
+
+  console.log("a")
+  if (codigo == undefined) {
     res.status(400).send("codigo está undefined!");
   } else if (cidade == undefined) {
     res.status(400).send("cidade está undefined!");
@@ -64,12 +94,10 @@ function cadastrar(req, res) {
     res.status(400).send("pais está undefined!");
   } else if (idEmpresa == undefined) {
     res.status(400).send("idEmpresa está undefined!");
-  } else if (idUsuario == undefined) {
-    res.status(400).send("Id Usuario está undefined!")
   } else {
     console.log("b")
 
-    servidorModel.cadastrar(idEmpresa, ip, nome, codigo, cidade, pais, idUsuario)
+    servidorModel.cadastrarRede(idEmpresa, codigo, cidade, pais)
       .then((resultado) => {
         res.status(201).json(resultado);
       }
@@ -257,6 +285,52 @@ function editarApelido(req, res) {
     });
 }
 
+function receberRegiao(req, res) {
+  var idServer = req.params.idServer;
+
+  servidorModel.receberRegiao(idServer).then((resultado) => {
+    if (resultado.length > 0) {
+      res.status(200).json(resultado);
+    } else {
+      res.status(204).json([]);
+    }
+  }).catch(function (erro) {
+    console.log(erro);
+    console.log("Houve um erro ao buscar os servidores: ", erro.sqlMessage);
+    res.status(500).json(erro.sqlMessage);
+  });
+}
+
+function listarRegioes(req, res) {
+    var empresaId = req.params.empresaId;
+
+    servidorModel.listarRegioes(empresaId)
+        .then((resultado) => {
+            if (resultado.length > 0) res.status(200).json(resultado);
+            else res.status(204).send([]);
+        })
+        .catch((erro) => {
+            console.log("Erro ao listar regiões: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function atualizarRegiao(req, res) {
+  var idServidor = req.params.idServidor;
+  var idRegiao = req.params.idRegiao;
+
+  if (!idServidor || !idRegiao) {
+    return res.status(400).send("Parâmetros inválidos!");
+  }
+
+  servidorModel.atualizarRegiao(idServidor, idRegiao)
+    .then(resultado => res.status(200).json({ mensagem: "Região atualizada com sucesso!" }))
+    .catch(erro => {
+      console.log("Erro ao atualizar região:", erro);
+      res.status(500).json(erro.sqlMessage);
+    });
+}
+
 
 module.exports = {
   buscarServidoresPorEmpresa,
@@ -269,5 +343,9 @@ module.exports = {
   listarDadosBarras,
   cadastrar,
   receberAlertas,
-  editarApelido
+  editarApelido,
+  receberRegiao,
+  listarRegioes,
+  atualizarRegiao,
+  cadastrarRede
 }
