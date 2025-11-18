@@ -94,40 +94,42 @@
           <tbody id="bodyTabelaAlerta">
           </tbody>
         </table>
-
       </div>
 
-      <div class="gráfico_alertas_tempo_wrapper1" id="gráfico_alertas_tempo_wrapper">
-        <div class="gráfico_chart">
-          <div class="nome_gráfico" id="titulo">
-            <a>Situação dos servidores</a>
-          </div>
-          <div class="div-pie-chart">
-            <canvas id="pieChart" class="grafico_alertas_tempo"></canvas>
-          </div>
+      <div class="gráfico_chart">
+        <div class="nome_gráfico" id="titulo">
+          <a>Situação dos servidores</a>
+        </div>
+        <div class="div-pie-chart">
+          <canvas id="pieChart" class="grafico_alertas_tempo"></canvas>
         </div>
       </div>
-
     </div>
 
 
 
-    <div class="alerta_tempo_e_especificações_hardware">
+    <div class="alerta_tempo_e_grafico_bolhas">
 
-      <div class="gráfico_alertas_tempo_wrapper" id="gráfico_alertas_tempo_wrapper">
-
-        <div class="gráfico_chart">
-          <div class="nome_gráfico" id="nome_gráfico">
-            <a>Situação dos servidores</a>
-          </div>
-          <div class="div-line-historico">
-            <canvas id="lineChartHistorico" class="grafico_alertas_tempo"></canvas>
-          </div>
+      <div class="gráfico_chart">
+        <div class="nome_gráfico" id="nome_gráfico">
+          <a>Situação dos servidores</a>
+        </div>
+        <div class="div-line-historico">
+          <canvas id="lineChartHistorico" class="grafico_alertas_tempo" style="width: 100%;"></canvas>
         </div>
       </div>
 
       <div class="grafico_bubble">
         <div class="nome_gráfico" id="nome_gráfico">
+          <img src="../assets/imgs-dashboard/mynaui_filter.png" alt="" onclick="acionarFiltro()"
+            style="cursor: pointer;" class="img-filtro">
+          <div class="filtro-menu" id="menu">
+            <div class="opcoes-menu">
+              <button onclick="selecionar('CPU')">CPU</button>
+              <button onclick="selecionar('RAM')">RAM</button>
+              <button onclick="selecionar('DISCO')">DISCO</button>
+            </div>
+          </div>
           <a>Criticidade de componentes</a>
         </div>
         <div class="div-bubble-chart">
@@ -136,7 +138,6 @@
       </div>
     </div>
   </div>
-
 
   </div>
 
