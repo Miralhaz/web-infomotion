@@ -40,8 +40,7 @@
 
       <div class="parte-baixo">
         <div class="icone">
-          <a href="https://sentinela-grupo-3.atlassian.net/servicedesk/customer/portal/35"
-            class="descricao-icone">
+          <a href="https://sentinela-grupo-3.atlassian.net/servicedesk/customer/portal/35" class="descricao-icone">
             <img src="../assets/imgs-dashboard/fluent_person-suport-32-light.png" alt="">
             Suporte
           </a>
@@ -60,10 +59,10 @@
     <div class="div-selects">
       Tempo de captura:
       <select name="servidores" id="selectTempo" onchange="refresh(this.value)">
-        <option value=""  disabled>Selecione o tempo de medição</option>
-        <option value="1" >1 Dia</option>
-        <option value="7" >7 Dias</option>
-        <option value="30" >30 Dias</option>
+        <option value="" disabled>Selecione o tempo de medição</option>
+        <option value="1">1 Dia</option>
+        <option value="7">7 Dias</option>
+        <option value="30">30 Dias</option>
       </select>
 
       Tipo de dashboard:
@@ -77,41 +76,30 @@
         <div class="nome_tabela" id="nome_tabela">
           Relatório de alertas(X Tempo)
         </div>
-          <table class="table_alerta_servidores">
-            <thead>
-              <tr>
-                <th scope="col" onclick="ordenarPor('nome')" id="table_alerta_nome">Nome do servidor<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-                <th scope="col" onclick="ordenarPor('cpu')" id="table_alerta_cpu">CPU<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-                <th scope="col" onclick="ordenarPor('ram')" id="table_alerta_ram">RAM<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-                <th scope="col" onclick="ordenarPor('disco')" id="table_alerta_disco">Disco<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-                <th scope="col" onclick="ordenarPor('risco')" id="table_alerta_risco">Total de alertas<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-              </tr>
-            </thead>
-            <tbody id="bodyTabelaAlerta">
-            </tbody>
-          </table>
+        <table class="table_alerta_servidores">
+          <thead>
+            <tr>
+              <th scope="col" onclick="ordenarPor('nome')" id="table_alerta_nome">Nome do servidor<img
+                  src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+              <th scope="col" onclick="ordenarPor('cpu')" id="table_alerta_cpu">CPU<img
+                  src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+              <th scope="col" onclick="ordenarPor('ram')" id="table_alerta_ram">RAM<img
+                  src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+              <th scope="col" onclick="ordenarPor('disco')" id="table_alerta_disco">Disco<img
+                  src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+              <th scope="col" onclick="ordenarPor('risco')" id="table_alerta_risco">Total de alertas<img
+                  src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+            </tr>
+          </thead>
+          <tbody id="bodyTabelaAlerta">
+          </tbody>
+        </table>
 
       </div>
 
-      <div class="div-comparacao-alertas">
-        <div class="nome_gráfico" id="nome_gráfico">
-            <a>Comparação do total de alertas do srv-tech-x</a>
-          </div>
-        <div class="div-chart-bar">
-          <canvas id="barGraph"></canvas>
-        </div>
-      </div>
-
-      </div>
-      
-
-
-    <div class="alerta_tempo_e_especificações_hardware">
-
-      <div class="gráfico_alertas_tempo_wrapper" id="gráfico_alertas_tempo_wrapper">
-      
+      <div class="gráfico_alertas_tempo_wrapper1" id="gráfico_alertas_tempo_wrapper">
         <div class="gráfico_chart">
-          <div class="nome_gráfico" id="nome_gráfico">
+          <div class="nome_gráfico" id="titulo">
             <a>Situação dos servidores</a>
           </div>
           <div class="div-pie-chart">
@@ -120,18 +108,36 @@
         </div>
       </div>
 
+    </div>
+
+
+
+    <div class="alerta_tempo_e_especificações_hardware">
+
+      <div class="gráfico_alertas_tempo_wrapper" id="gráfico_alertas_tempo_wrapper">
+
+        <div class="gráfico_chart">
+          <div class="nome_gráfico" id="nome_gráfico">
+            <a>Situação dos servidores</a>
+          </div>
+          <div class="div-line-historico">
+            <canvas id="lineChartHistorico" class="grafico_alertas_tempo"></canvas>
+          </div>
+        </div>
+      </div>
+
       <div class="grafico_bubble">
         <div class="nome_gráfico" id="nome_gráfico">
-            <a>Criticidade de componentes</a>
-          </div>
+          <a>Criticidade de componentes</a>
+        </div>
         <div class="div-bubble-chart">
-            <canvas id="bubbleChart" class="grafico_alertas_tempo"></canvas>
-          </div>
-      </div>
+          <canvas id="bubbleChart" class="grafico_alertas_tempo"></canvas>
+        </div>
       </div>
     </div>
-    
-        
+  </div>
+
+
   </div>
 
 
@@ -142,21 +148,21 @@
 <script>
   const idUsuario = sessionStorage.getItem("ID_USUARIO")
 
-  function refresh(x){
+  function refresh(x) {
     console.log('funcao refresh');
-    
+
     localStorage.setItem("tempoSelecionado", x); // salva antes do reload
     location.reload()
   }
 
-  function selecionarTempo(){
+  function selecionarTempo() {
     const tempo = localStorage.getItem("tempoSelecionado");
     if (tempo) {
       document.getElementById("selectTempo").value = tempo;
     }
   }
 
-  window.onload = function(){
+  window.onload = function () {
     receberAlertas(idUsuario);
     selecionarTempo();
     plotarGraficoPizza();
@@ -164,4 +170,5 @@
     plotarGraficoBarras();
   }
 </script>
+
 </html>
