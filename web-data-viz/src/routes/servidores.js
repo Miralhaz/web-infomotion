@@ -8,9 +8,14 @@ router.get("/receberRegiao/:idServer", function (req, res) {
   servidoresController.receberRegiao(req, res);
 });
 
-router.get("/:empresaId", function (req, res) {
-  servidoresController.buscarServidoresPorEmpresa(req, res);
+router.get("/listarRegioes/:empresaId", function (req, res) {
+    servidoresController.listarRegioes(req, res);
 });
+
+router.put("/atualizarRegiao/:idServidor/:idRegiao", function (req, res) {
+  servidoresController.atualizarRegiao(req, res);
+});
+
 
 router.post("/cadastrar", function (req, res) {
   servidoresController.cadastrar(req, res);
@@ -49,5 +54,8 @@ router.put("/editarApelido/:idServidor", function (req, res) {
 });
 
 
+router.get("/:empresaId", function (req, res) {
+  servidoresController.buscarServidoresPorEmpresa(req, res);
+});
 
 module.exports = router;

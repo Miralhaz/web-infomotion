@@ -280,46 +280,137 @@ function salvarNovoApelido() {
     .catch(erro => console.error("Erro:", erro));
 }
 
-function receberRegiao(){
-    const idServer = sessionStorage.getItem('servidorID')
-    console.log(idServer)
-    
-    fetch(`/servidores/receberRegiao/${idServer}`) 
+function receberRegiao() {
+  const idServer = sessionStorage.getItem('servidorID')
+  console.log(idServer)
+
+  fetch(`/servidores/receberRegiao/${idServer}`)
     .then(function (resposta) {
-        console.log("resposta: ", resposta);
+      console.log("resposta: ", resposta);
 
-        if (resposta.ok) {
-            resposta.json().then(function (dados) { 
-                console.log("Dados recebidos: ", JSON.stringify(dados));
-                
-                const regiao = dados[0]; 
+      if (resposta.ok) {
+        resposta.json().then(function (dados) {
+          console.log("Dados recebidos: ", JSON.stringify(dados));
 
-                const divCodigo = document.getElementById('codigo');
-                const divPais = document.getElementById('pais');
-                const divCidade = document.getElementById('cidade');
-                
-                if (regiao) { 
-                    if (divCodigo) {
-                        divCodigo.textContent = `\nCEP:\n${regiao.codigo_postal}`;
-                    }
+          const regiao = dados[0];
 
-                    if (divPais) {
-                        divPais.textContent = `\nPaís:\n${regiao.pais}`;
-                    }
-                    if (divCidade) {
-                        divCidade.textContent = `\nCidade:\n${regiao.cidade}`;
-                    }
-                } else {
-                    console.warn("Nenhuma informação de região encontrada para o servidor ID:", idServer);
-                }
-            });
-        } else {
-            throw "Houve um erro ao tentar listar as info de região!";
-        }
-      })
-      .catch(function (erro) {
-        console.error(`#ERRO: ${erro}`);
+          const divCodigo = document.getElementById('codigo');
+          const divPais = document.getElementById('pais');
+          const divCidade = document.getElementById('cidade');
+
+          if (regiao) {
+            if (divCodigo) {
+              divCodigo.textContent = `\nCEP:\n${regiao.codigo_postal}`;
+            }
+
+            if (divPais) {
+              divPais.textContent = `\nPaís:\n${regiao.pais}`;
+            }
+            if (divCidade) {
+              divCidade.textContent = `\nCidade:\n${regiao.cidade}`;
+            }
+          } else {
+            console.warn("Nenhuma informação de região encontrada para o servidor ID:", idServer);
+          }
+        });
+      } else {
+        throw "Houve um erro ao tentar listar as info de região!";
+      }
+    })
+    .catch(function (erro) {
+      console.error(`#ERRO: ${erro}`);
+    });
+}
+
+function editarEditarRegiao() {
+  const empresaId = sessionStorage.getItem('ID_EMPRESA')
+  console.log("Empresa ID= " + empresaId)
+  const modal = document.getElementById("modal-editar-regiao");
+  const select = document.getElementById("select_regiao");
+
+  select.innerHTML = `<option value="">Carregando regiões...</option>`;
+
+  fetch(`/servidores/listarRegioes/${empresaId}`)
+    .then(res => res.json())
+    .then(regioes => {
+      console.log("Regiões recebidas:", regioes);
+
+      select.innerHTML = "<option value='' disabled selected>Selecione uma região</option>";
+
+      regioes.forEach(regiao => {
+        select.innerHTML += `
+                    <option value="${regiao.id}">
+                        ${regiao.codigo_postal} — ${regiao.pais} — ${regiao.cidade}
+                    </option>
+                `;
       });
+
+      modal.classList.add("active-modal");
+    })
+    .catch(err => {
+      console.error("Erro ao carregar regiões:", err);
+      select.innerHTML = "<option>Erro ao carregar regiões</option>";
+    });
+}
+
+function salvarNovaRegiaoSelecionada() {
+  const novaRegiao = document.getElementById("select_regiao").value;
+  const idServidor = sessionStorage.getItem('servidorID');
+
+  if (!novaRegiao) {
+    document.getElementById("mensagem-regiao").innerHTML = "Selecione uma região!";
+    return;
+  }
+
+  fetch(`/servidores/atualizarRegiao/${idServidor}/${novaRegiao}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      idServidor: idServidor,
+      idRegiao: novaRegiao
+    })
+  })
+    .then(res => {
+      if (res.ok) {
+        document.getElementById("mensagem-regiao").innerHTML =
+          "<span style='color: green;'>Região atualizada com sucesso!</span>";
+        setTimeout(() => {
+          window.location = 'tela-gerenciamento-servidor.html';
+        }, 1500);
+      } else {
+        document.getElementById("mensagem-regiao").innerHTML =
+          "<span style='color: red;'>Erro ao atualizar região.</span>";
+      }
+    })
+    .catch(err => {
+      console.error("Erro no fetch:", err);
+    });
+}
+
+
+
+function abrirEscolhaEdicao() {
+  const modal = document.getElementById('modal-escolha');
+  modal.classList.add('active-modal');
+}
+
+function fecharModalEscolha() {
+  const modal = document.getElementById('modal-escolha');
+  modal.classList.remove('active-modal');
+}
+
+function abrirEditarApelido() {
+  fecharModalEscolha();
+  editarApelidoServidor();
+}
+
+function abrirEditarRegiao() {
+  fecharModalEscolha();
+  editarEditarRegiao();
+}
+
+function fecharModalEditarRegiao() {
+  window.location = 'tela-gerenciamento-servidor.html'
 }
 
 window.onload = function () {

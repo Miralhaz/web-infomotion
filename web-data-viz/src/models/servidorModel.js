@@ -206,6 +206,25 @@ function receberRegiao(idServer){
   return database.executar(instrucaoSql);
 }
 
+function listarRegioes(empresaId){
+  var instrucaoSql = `SELECT id, codigo_postal, pais, cidade FROM regiao WHERE fk_empresa = ${empresaId};`
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
+function atualizarRegiao(idServidor, idRegiao) {
+  var instrucaoSql = `
+    UPDATE servidor 
+    SET fk_regiao = ${idRegiao}
+    WHERE id = ${idServidor};
+  `;
+
+  console.log("Executando SQL:", instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
+
 module.exports = {
   buscarServidoresPorEmpresa,
   buscarServidoresPorUsuario,
@@ -218,5 +237,7 @@ module.exports = {
   cadastrar,
   receberAlertas,
   editarApelido,
-  receberRegiao
+  receberRegiao,
+  listarRegioes,
+  atualizarRegiao
 }
