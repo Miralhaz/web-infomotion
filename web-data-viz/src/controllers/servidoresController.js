@@ -273,6 +273,37 @@ function receberRegiao(req, res) {
   });
 }
 
+function listarRegioes(req, res) {
+    var empresaId = req.params.empresaId;
+
+    servidorModel.listarRegioes(empresaId)
+        .then((resultado) => {
+            if (resultado.length > 0) res.status(200).json(resultado);
+            else res.status(204).send([]);
+        })
+        .catch((erro) => {
+            console.log("Erro ao listar regiões: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function atualizarRegiao(req, res) {
+  var idServidor = req.params.idServidor;
+  var idRegiao = req.params.idRegiao;
+
+  if (!idServidor || !idRegiao) {
+    return res.status(400).send("Parâmetros inválidos!");
+  }
+
+  servidorModel.atualizarRegiao(idServidor, idRegiao)
+    .then(resultado => res.status(200).json({ mensagem: "Região atualizada com sucesso!" }))
+    .catch(erro => {
+      console.log("Erro ao atualizar região:", erro);
+      res.status(500).json(erro.sqlMessage);
+    });
+}
+
+
 module.exports = {
   buscarServidoresPorEmpresa,
   listarServidoresPorUsuario,
@@ -285,5 +316,7 @@ module.exports = {
   cadastrar,
   receberAlertas,
   editarApelido,
-  receberRegiao
+  receberRegiao,
+  listarRegioes,
+  atualizarRegiao
 }

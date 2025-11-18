@@ -776,8 +776,6 @@ input {
   border: none;
   border-radius: 10px;
   font-size: 20px;
-  width: 75px;
-  height: 45px;
   cursor: pointer;
   transition: 0.3s;
 }
