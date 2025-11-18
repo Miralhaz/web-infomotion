@@ -88,127 +88,162 @@ section.header .header-left .icone a:hover {
 section.header .header-left .icone a:hover img {
     filter: brightness(0);
 }
-/* fim header */
 
-/* .dashboard {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    width: 100vw;
+* { box-sizing: border-box; }
+
+
+.container {
+    margin-left: 230px;    
+    width: calc(100% - 230px);
     height: 100vh;
-    background-color: white;
-
-
+    padding: 20px;
+   
 }
 
-.dashboard .box-lista {
-    border-radius: 6px;
-    margin-top: 10vh;
-    margin-left: 15vw;
-    width: 20%;
-    height: 70%;
-    background-color: black;
-}
-
-.dashboard .kpi-area {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 70%;
-    height: 100%;
-}
-
-.dashboard .kpi-area .kpi-lista {
-    margin-left: 15vw;
-    margin-top: 5vh;
-    width: 60%;
-    height: 40%;
-    display: flex;
-    justify-content: space-between;
-
-}
-
-.dashboard .kpi-area .kpi-lista .kpi1 {
-    color: white;
-    border-radius: 6px;
-    width: 45%;
-    height: 45%;
-    background-color: black;
-}
-
-
-.dashboard .kpi-area .kpi-lista .kpi2 {
-    color: white;
-    border-radius: 6px;
-    width: 45%;
-    height: 80%;
-    background-color: black;
-}
-
-.dashboard .kpi-area .chartcontainer {
-    margin-left: 7vw;
-    width: 100%;
-    height: 100%;
-    margin-top: 3vh;
-}
-
-.dashboard .kpi-area .chartcontainer .grafico_linha {
-    border-radius: 10px;
-    width: 80%;
-    height: 80%;
-    background-color: black;
-    margin-top: 3vh;
-}
-    */
-
-
-.container{
-    display: flex;
-    height: 100vh;
-    width: 80vw;
- 
-    float: right;
-}   
 
 .dashboard-container {
     width: 100%;
-    padding: 20px;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 20px;            
+    overflow: hidden;
+    padding: 0;
 }
 
-/*     LINHA 1 (KPIs)     */
-.kpis {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
+
+.kpis { 
+    display: grid;
+    grid-template-columns: 30% 30% 35%;
+    grid-template-rows: 140px 140px;
+    gap: 24px;     
+    width: 100%;
 }
 
-.kpis .kpi {
+
+.lista { 
+    grid-column: 3;
+    grid-row: 1 / span 2;
+}
+
+.operacao { grid-column: 1; grid-row: 1; }
+.alertas  { grid-column: 2; grid-row: 1; }
+.impacto  { grid-column: 1; grid-row: 2; }
+.vida     { grid-column: 2; grid-row: 2; }
+
+.kpi {
     background-color: #222222;
     border-radius: 12px;
-    padding: 10px;
+    padding: 12px;
 }
 
-.operacao { width: 20%; height: 53%; }
-.alertas { width: 20%; height: 53%; }
-.lista { width: 25%; height: 220px; }
-.impacto { width: 25%; height: 45%; }
-.vida { width: 25%; height: 45% ;}
 
-/*     2 parte     */
 .dashboards {
     display: flex;
     justify-content: space-between;
     gap: 20px;
     width: 100%;
-    padding: 10px;
+    padding: 0;
+    height: calc(100% -  (140px * 2) - 40px); 
+    min-height: 220px;
 }
 
 .dashboard {
     background-color: #222222;
-    width: 48%;
-    height: 45vh;
+    width: 50%;
+    height: 100%;
     border-radius: 12px;
+    overflow: hidden;
 }
+
+.chart1{
+    background-color: #222222;
+    width: 45%;
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* conteudo operação */
+
+.kpi {
+    background-color: #222222;
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    color: #f3f3f3;
+}
+
+.kpi-header {
+    background-color: #f3f3f3;
+    padding: 10px 10px;
+}
+
+.kpi-header h2 {
+    display: flex;
+    justify-content: center;
+    color: #000;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.operacao .kpi-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;   
+}
+
+.kpi-status-operacao{
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    margin-top: 5px;
+}
+
+
+.kpi-body img {
+    width: 60px;
+    height: 60px;
+}
+
+.kpi-body h3 {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.kpi-footer {
+   
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-acao {
+    width:35%;
+    padding: 6px 0;
+    border-radius: 8px;
+    border: none;
+    background-color: #f3f3f3;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #000;
+    transition: 0.3s;
+}
+
+.btn-acao:hover {
+    background-color: #ffdb82;
+}
+
+
+
+.kpi {
+    background-color: #222222;
+    border-radius: 12px;
+    padding: 0; 
+    overflow: hidden; 
+}
+
+
+/* conteudo kpi alertas */

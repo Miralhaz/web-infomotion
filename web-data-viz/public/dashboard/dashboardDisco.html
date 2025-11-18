@@ -4,13 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dashboard disco</title>
+    <title>Dashboard Disco</title>
     <link rel="stylesheet" href="../css/styleDashDisco.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-
     <section class="header">
         <div class="header-left">
             <div class="parte-cima">
@@ -51,43 +50,75 @@
         </div>
     </section>
 
-    <div class="dashboard" id="dashboard">
-
-        <div class="box-lista" id="box-lista">
-            <div class="estado">
-                <p>confortável</p>
-                <p>risco</p>
-                <p>crítica</p>
-            </div>
-            <div class="exibir_disco" id="exibirDiscos">
-
-            </div>
-            <button onclick="AnalisarEmGrafico()">Analisar</button>
-        </div>
-
-        <div class="kpi-area">
-            <div class="kpi-lista">
-                <div class="kpi1" id="kpi1">
-                    <p>servidor01</p>
-                    <p>servidor05</p>
-                    <p>servidor07</p>
-                    <button onclick="VerDiscoNoGrafico()">Ver disco</button>
-                </div>
-                <div class="kpi2" id="kpi2">
-                    <h3>discos com uso operacional maior</h3>
-                    <div class="exibir_disco">
-                        <p>HD-01: 2TB - 90%</p>
-                        <p>HD-01: 2TB - 90%</p>
-                        <p>HD-01: 2TB - 90%</p>
+    <div class="container">
+        <div class="dashboard-container">
+            <div class="kpis">
+                <div class="kpi operacao">
+                    <div class="kpi-header">
+                        <h2>Status Operação</h2>
                     </div>
-                    <div class="estado">
-                        <p>muito importante</p>
-                        <p>importante</p>
+                    <div class="kpi-body">
+                        <div class="kpi-status-operacao">
+                                 <img id="img_status" src="../assets/icon/alerta_estadoDisco.png" alt="Status Operação">
+
+        <h3 id="txt_status_operacao">Carregando...</h3>
+                        </div>
+                        <div class="kpi-footer">
+                            <button class="btn-acao" onclick="sinalizarProblema()">Sinalizar Problema</button>
+                        </div>
                     </div>
-                    <button>Analisar</button>
+                </div>
+
+                <div class="kpi alertas">
+                    <div class="kpi-header">
+                        <h2>Alertas de Discos</h2>
+                    </div>
+                    <div class="tituloPeriodo"></div>
+                    <div class="kpi-body">
+                       
+                    </div>
+                </div>
+
+                <div class="kpi lista">
+                    <div class="kpi-header">
+                        <h2>Disco em Alerta de espaço</h2>
+                    </div>
+                  
+                    <div class="kpi-body">
+                       
+                    </div>
+                </div>
+                <div class="kpi impacto">
+                    <div class="kpi-header">
+                        <h2>Impacto Operacional dos Discos</h2>
+                    </div>
+                   
+                    <div class="kpi-body">
+                       
+                    </div>
+                </div>
+                <div class="kpi vida">
+                    <div class="kpi-header">
+                        <h2>Discos com Vida Útil Crítica</h2>
+                    </div>
+                  
+                    <div class="kpi-body">
+                       
+                    </div>
                 </div>
             </div>
-            <div class="chartcontainer" id="chartcontainer"></div>
+            <div class="dashboards">
+                <div class="dashboard chart1">
+                    <div class="kpi-header">
+                        <h2>Criticidade de armazenamento por servidor</h2>
+                    </div>
+                  
+                    <div class="kpi-body">
+                       
+                    </div>
+                </div>
+                <div class="dashboard chart2"></div>
+            </div>
         </div>
     </div>
 </body>
