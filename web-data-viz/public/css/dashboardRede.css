@@ -1,0 +1,304 @@
+:root {
+  --amarelo: #ffc64b;
+  --amareloOpacityLow: #ffc64bb7;
+  --cinza: #E2E1DE;
+  --branco: #ffff;
+  --preto: #000;
+  --cinzaEscuro: #1c1c1c;
+  --cinzaHeader: #222;
+  --cinzaDash: #181818;
+  --letraBox: #fff;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: var(--cinza);
+  font-family: "poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  scroll-behavior: smooth;
+  overflow: hidden;
+}
+
+.dashboardRede {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  margin-left: 12vw;
+  height: calc(100vh - 2vh);
+  width: calc(100vw - 12vw - 10vw);
+  padding: 1vh 5vw;
+  grid-row-gap: 2vh;
+}
+
+.dashboardRede .kpiAlerta {
+  grid-column: 1;
+  grid-row: 1;
+  height: auto;
+  width: 20vw;
+  background-color: var(--cinzaDash);
+  justify-self: start;
+  color: var(--letraBox);
+  font-size: 2rem;
+}
+
+.dashboardRede .kpiAlerta .box{
+  padding: 1vh 0.56vw;
+  height: calc(100% - 4vw);
+  align-content: center;
+  display: grid;
+  grid-template-columns: 2.5fr 1fr;
+  align-items: center;
+}
+
+.dashboardRede .kpiAlerta .box .num{
+  font-size: 3rem;
+  justify-self: center;
+}
+
+.dashboardRede .kpiInternet {
+  grid-column: 2;
+  grid-row: 1;
+  height: auto;
+  width: 100%;
+  background-color: var(--cinzaDash);
+  justify-self: center;
+}
+
+.dashboardRede .kpiInternet .cardHeader{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.dashboardRede .kpiInternet .cardHeader .upDown{
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 0.75fr 1fr;
+  align-items: center;
+  text-align: center;
+}
+
+.dashboardRede .kpiInternet .cardHeader .upDown .cima{
+  align-self: end;
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 0.75rem;
+
+}
+
+.dashboardRede .kpiInternet .cardHeader .upDown .baixo{
+  grid-column: 2;
+  grid-row: 2;
+  font-size: 1.5rem;
+}
+
+.dashboardRede .kpiInternet .cardHeader .upDown .icon {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  height: 90%;
+}
+
+.dashboardRede .kpiInternet .cardHeader .upDown .seta {
+  grid-row: 1 / -1;
+  align-self: center;
+  justify-self: start;
+}
+
+.dashboardRede .kpiInternet .lados{
+  display: flex;
+  height: calc(100% - 8vh);
+  padding: 1vh 0.56vw;
+}
+
+.dashboardRede .kpiInternet .ladoEsquerdo{
+  width: 50%;
+  height: 100%;
+  border-right: solid 1px white;
+}
+
+.dashboardRede .kpiInternet .ladoDireito{
+  width: 50%;
+}
+
+.dashboardRede .lados .ladoEsquerdo canvas,
+.dashboardRede .lados .ladoDireito canvas {
+  width: 100%;
+  height: 100%; 
+  display: block;
+  box-sizing: border-box;
+}
+
+
+.dashboardRede .selects{
+  grid-column: 3;
+  grid-row: 1;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
+  text-align: center;
+  justify-content: space-around;
+}
+
+.dashboardRede .selects select{
+  background-color: var(--cinzaDash);
+  color: var(--letraBox);
+  height: 7.5vh;
+  width: 15vw;
+  border-radius: 3rem;
+  align-self: center;
+  font-family: "poppins", sans-serif;
+  padding: 0 1.12vw;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;        /* centra vertical */
+  justify-content: center;    /* opcional: centra horizontal */
+  line-height: 1; 
+}
+
+.dashboardRede .graficoLinhaPrincipal {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  height: auto;
+  width: 100%;
+  background-color: var(--cinzaDash);
+  justify-self: center;
+}
+
+.dashboardRede .graficoLinhaPrincipal .divGraficoLinhaPrincipal {
+  padding: 1vh 0.56vw;
+  width: calc(100% - 1.12vw);
+  height: calc(100% - 8vh);
+}
+
+.dashboardRede .graficoLinhaSecundario .divGraficoLinhaSecundario{
+  padding: 1vh 0.56vw;
+  width: calc(100% - 1.12vw);
+  height: calc(100% - 8vh);
+}
+
+
+.dashboardRede .parteBaixo{
+  grid-column: 1 / -1;
+  grid-row: 3;
+  width: 100%;
+  justify-self: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dashboardRede .tabelaRede .tableScroll {
+  max-height: 26vh;            
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  direction: rtl;
+}
+
+.dashboardRede .tabelaRede .tableScroll {
+  scrollbar-width: thin; 
+  scrollbar-color: var(--amarelo) var(--branco); 
+  
+}
+
+.dashboardRede .tabelaRede .tableScroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+
+.dashboardRede .tabelaRede table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
+  overflow: visible;
+  direction: ltr;
+}
+
+.dashboardRede .tabelaRede thead th {
+  position: sticky;
+  top: 0;
+  background: #fff; 
+  z-index: 5;
+}
+
+.dashboardRede .parteBaixo .cardDashRede .tabelaRede table,
+.dashboardRede .tabelaRede table {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.dashboardRede .tabelaRede th,
+.dashboardRede .tabelaRede td {
+  padding: 0; /* ajuste se quiser espaço interno */
+  border: none;
+}
+
+.dashboardRede .tabelaRede thead th {
+  padding: 0;
+  margin: 0;
+  background-color: white;
+  font-weight: 400;
+}
+
+.dashboardRede .tabelaRede tbody td{
+  padding: 1vh 0.56vw;
+  color: var(--letraBox);
+  text-align: center;
+}
+
+.dashboardRede .tabelaRede tbody tr {
+  background-image: linear-gradient(to right, #fff 100%, rgba(255,255,255,0) 0);
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: 90% 1px; 
+}
+
+
+.dashboardRede .tabelaRede tbody tr td {
+  background: transparent;
+}
+
+.cardDashRede {
+    background-color: #2e2e2e; 
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.cardHeader {
+    background-color: white; 
+    width: 100%;
+    height: 6vh; 
+    display: flex;
+    align-items: center;
+    padding: 0 10px; 
+    font-size: 1rem; 
+    color: #2e2e2e;
+}
+
+.cardHeader.cardDashRedeT{
+  height: 2vw;
+}
+
+.dashboardRede .graficoLinhaSecundario {
+  height: auto;
+  width: 35vw;
+  background-color: var(--cinzaDash);
+}
+
+.dashboardRede .tabelaRede {
+  height: auto;
+  width: 35vw;
+  background-color: var(--cinzaDash);
+}
