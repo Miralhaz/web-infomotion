@@ -393,21 +393,21 @@ function plotarGraficoBarras(){
                     data: [
                         { x: 30,  y: 90 }
                     ],
-                    backgroundColor: 'rgba(189, 44, 44, 0.5)'
+                    backgroundColor: 'rgba(255, 255, 224, 0.7)'
                 },
                 {
                     label: '11/11/2025',
                     data: [
                         { x: 18, y: 82 }
                     ],
-                    backgroundColor: 'rgba(189, 92, 32, 0.5)'
+                    backgroundColor: 'rgba(255, 250, 205, 0.7)'
                 },
                 {
                     label: '12/11/2025',
                     data: [
                         { x: 22,  y: 86, r: 18 }
                     ],
-                    backgroundColor: 'rgba(230, 200, 47, 0.5)'
+                    backgroundColor: 'rgba(250, 250, 210, 0.7)'
                 }
             ]
         },
