@@ -139,10 +139,12 @@ function dataToString(d) {
     return `${dia}/${mes}`;
 };
 
+
 let totalDisco;
 
 
 function chamarFuncoesServidores(idServidor) {
+    plotarGraficoLinhas(idServidor)
 }
 
 function ordenarPor(item) {
@@ -234,6 +236,7 @@ function ordenarPor(item) {
     for (let index = 0; index < infoOrdenada.length; index++) {
         const element = infoOrdenada[index];
         bodyTabela.innerHTML += `
+        <tr onclick="chamarFuncoesServidores(${element.id})">
             <tr onclick="(${element.id})">
             <td>
                 ${element.apelido}
@@ -383,79 +386,145 @@ function plotarGraficoBolhas() {
 }
 
 
-function plotarGraficoBarras(){
+function plotarGraficoLinhas(idServidor) {
+
+    const canvas = document.getElementById('lineChartHistorico');
+    const existingChart = Chart.getChart(canvas);
+    if (existingChart) existingChart.destroy();
+
+   
+    const widthPx = window.innerWidth * 0.6;  // 60vw
+    const heightPx = window.innerHeight * 0.30; // 35vh
+
+    canvas.width = widthPx;
+    canvas.height = heightPx;
+
+    let labels = [];
+    let ram = [];
+    let cpu = [];
+    let disco = [];
+    let nomeServidor;
+
+    for (let index = 0; index < infoExibicao.length; index++) {
+        const element = infoExibicao[index];
+        if (element.id == idServidor){
+            nomeServidor = element.apelido
+        }
+    }
+    
+    for (let i = 0; i < infoExibicao.length; i++) {
+
+        if(infoExibicao[i].id == idServidor){
+            const el = infoExibicao[i];
+            const d = el.data_registro instanceof Date ? el.data_registro : new Date(el.data_registro); // verifica se é Date ou não
+            const key = dataToString(d);
+        
+
+            // procurar índice da label
+            let idx = -1;
+            for (let j = 0; j < labels.length; j++) {
+            if (labels[j] === key) { idx = j; break; }
+            }
+
+            // se não existe, cria linha
+            if (idx === -1) {
+            labels.push(key);
+            ram.push(0);
+            cpu.push(0);
+            disco.push(0);
+            idx = labels.length - 1; // <<< índice correto
+            }
+
+            // incrementa série correta
+            const tipo = String(el.tipo).toUpperCase();
+            if (tipo === 'CPU'){       cpu[idx]   += 1;}
+            else if (tipo === 'DISCO') {disco[idx] += 1;}
+            else                       ram[idx]   += 1;
+        }
+    }
+
+    // Pegando o nome do servidor
+    if (nomeServidor) {
+        if(tempo > 1){
+            document.getElementById("nome_gráfico").innerHTML = `Quantidade de alertas dos últimos ${tempo} dias do servidor: ${nomeServidor}`;
+        }
+        else document.getElementById("nome_gráfico").innerHTML = `Quantidade de alertas do último dia do servidor: ${nomeServidor}`;
+    }
+    
+
     const config = {
-        type: 'bar',
+        type: 'line',
         data: {
-            datasets: [
-                {
-                    label: '10/11/2025',
-                    data: [
-                        { x: 30,  y: 90 }
-                    ],
-                    backgroundColor: 'rgba(255, 255, 224, 0.7)'
-                },
-                {
-                    label: '11/11/2025',
-                    data: [
-                        { x: 18, y: 82 }
-                    ],
-                    backgroundColor: 'rgba(255, 250, 205, 0.7)'
-                },
-                {
-                    label: '12/11/2025',
-                    data: [
-                        { x: 22,  y: 86, r: 18 }
-                    ],
-                    backgroundColor: 'rgba(250, 250, 210, 0.7)'
-                }
-            ]
+            labels: labels,
+            datasets: [{
+                label: 'RAM',
+                data: ram,
+                fill: false,
+                backgroundColor: '#FFB000',
+                borderColor: '#FFB000',
+                tension: 0.1
+            },
+            {
+                label: 'CPU',
+                data: cpu,
+                fill: false,
+                backgroundColor: '#E2E2E2',
+                borderColor: '#E2E2E2',
+                tension: 0.1
+            },
+            {
+                label: 'DISCO',
+                data: disco,
+                fill: false,
+                backgroundColor: '#FAFF00',
+                borderColor: '#FAFF00',
+                tension: 0.1
+            }]
         },
+
         options: {
-            indexAxis: 'y',
+            responsive: false,
+            maintainAspectRatio: false,         
             scales: {
                 y: {
                     beginAtZero: true,
                     ticks: {
                         color: 'white',
-                        font: {
-                            size: 15
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Datas',
-                        color: 'white',
-                        font: {
-                            size: 16
-                        }
-                    },
-                },
-                x: {
-                    ticks: {
-                        color: 'white',
-                        font: {
-                            size: 15
-                        }
+                        stepSize: 1
                     },
                     title: {
                         display: true,
                         text: 'Quantidade de alertas',
-                        color: 'white',
-                        font: {
-                            size: 16
-                        }
+                        color: 'white'
                     },
                     grid: {
                         color: 'rgba(153, 153, 153, 0.2)',
                         display: true,
                         drawTicks: false
+                    },
+                },
+                x: {
+                    ticks: {
+                        color: 'white',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Tempo',
+                        color: 'white'
+                    },
+                    grid: {
+                        drawOnChartArea: true
                     }
                 }
             },
             plugins: {
+                title: {
+                    display: false,
+                    text: "",
+                    color: ''
+                },
                 legend: {
-                    position: 'bottom',
+                    position: 'top',
                     labels: {
                         usePointStyle: true,
                         color: 'white'
@@ -465,5 +534,6 @@ function plotarGraficoBarras(){
         }
     };
 
-    new Chart(document.getElementById('barGraph'), config);
+    new Chart(canvas, config);
+
 }

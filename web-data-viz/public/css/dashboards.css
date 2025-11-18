@@ -1994,33 +1994,26 @@ background-color: #222;
   gap: 2%;
 }
 
-.div-comparacao-alertas{
-  background-color: var(--cinzaDash);
-  width: 25vw;
-  height: 29.5vh;
-  color: var(--branco);
-  padding: 2.88vh 1.5vw;
-  border-radius: 2vh;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.div-comparacao-alertas .nome_gráfico a{
-  font-size: 2vh;
-}
-
-.div-chart-bar{
-  width: 50vh;
-}
-
 .dashboard_historico .alerta_tempo_e_especificações_hardware{
   display: flex;
   flex-direction: row;
   column-gap: 2vw;
   margin-left: 5vw;
+}
+
+.gráfico_alertas_tempo_wrapper1{
+  background-color: var(--cinzaDash);
+  width: 30vw;
+  height: 30vh;
+  color: var(--branco);
+  padding: 2.88vh 1.5vw;
+  border-radius: 2vh;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.div-pie-chart{
+  align-self: center;
+  width: 40%;
 }
 
 .dashboard_historico .gráfico_alertas_tempo_wrapper{
@@ -2039,11 +2032,6 @@ background-color: #222;
     align-items: center;
     justify-content: center;
     width: 100%;
-}
-
-.div-pie-chart{
-  align-self: center;
-  width: 35%;
 }
 
 .dashboard_historico .grafico_bubble{
@@ -2072,3 +2060,9 @@ background-color: #222;
 }
 
 
+.gráfico_chart .div-line-historico{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10px;
+}
