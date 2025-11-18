@@ -21,6 +21,11 @@ router.post("/cadastrar", function (req, res) {
   servidoresController.cadastrar(req, res);
 })
 
+
+router.post("/cadastrarRede", function (req, res) {
+  servidoresController.cadastrarRede(req, res);
+})
+
 router.get("/listarServidoresPorUsuario/:idUsuario", function (req, res) {
   servidoresController.listarServidoresPorUsuario(req, res);
 });

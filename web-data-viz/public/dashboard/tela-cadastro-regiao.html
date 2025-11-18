@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro de funcionarios - InfoMotion</title>
+  <title>Cadastro de Região - InfoMotion</title>
   <link rel="stylesheet" href="../css/dashboards.css">
   <script src="../js/sessao.js"></script>
   <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
@@ -43,29 +43,26 @@
 <body>
   <div class="container-cadastro">
     <div class="left-side">
-      <h1>Faça o cadastro de um servidor</h1>
+      <h1>Faça o cadastro de uma região</h1>
       <span><a href="https://sentinela-grupo-3.atlassian.net/servicedesk/customer/portal/35">Entre em
           contato</a></span>
     </div>
     <div class="rigth-side">
       <a href="tela-servidores.html"><img class="logo-img" src="../img/logo.png" alt=""></a>
       <div class="input-container">
-        <label for="">Nome e tags:</label>
-        <input type="text" placeholder="Meu servidor" id="nome">
-      </div>
+        <label for="">Codigo Postal:</label>
+        <input type="text" placeholder="Exemplo: 12345-678" id="codigo">
+      </div>   
       <div class="input-container">
-        <label for="">IP:</label>
-        <input type="text" placeholder="Exemplo: 108.108.108.108" id="ip">
-      </div>     
+        <label for="">País:</label>
+        <input type="text" placeholder="País" id="pais">
+      </div>   
       <div class="input-container">
-        <label for="">Região:</label>
-        <select id="select_regiao" style="width: 100%; padding: 10px; margin: 10px 0;">
-            <option value="">Carregando regiões...</option>
-        </select>
-        <a href="tela-cadastro-regiao.html"><p style="color: #000;">Cadastrar região</p></a>
-      </div>     
-      <button onclick="cadastrar()">Cadastrar</button>
-    </div>a
+        <label for="">Cidade:</label>
+        <input type="text" placeholder="Cidade" id="cidade">
+      </div>   
+      <button onclick="cadastrarRede()">Cadastrar</button>
+    </div>
     <section id="section_aguardar" class="loading-section">
       <section class="quadrado">
         <section class="borda_aguardar"></section>
@@ -74,6 +71,6 @@
     <section id="section_erros_login"></section>
   </div>
 </body>
-<script src="../js/cadastro-servidor.js"></script>
+<script src="../js/cadastro-regiao.js"></script>
 
 </html>
