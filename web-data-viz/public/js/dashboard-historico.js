@@ -258,7 +258,7 @@ function ordenarPor(item) {
     }
 }
 
-function plotarGraficoPizza() {
+function plotarGraficoDonut() {
     let labels = ['Ok', 'Atenção', 'Crítico'];
     let dados = [20, 30, 50];
 
@@ -272,6 +272,7 @@ function plotarGraficoPizza() {
             ctx.save(); // salva o contexto atual
             ctx.fillStyle = '#BD2C2C';
             ctx.font = 'bold 22px poppins';
+
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(dados[2] + "% " + labels[2], centerX, centerY); // Texto que vai aparecer no meio!
