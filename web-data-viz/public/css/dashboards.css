@@ -273,7 +273,7 @@ section.header .header-left .icone a:hover img {
   background: none;
   border: 0;
   box-shadow: inset 0 0 0 1px var(--branco);
-  box-shadow: inset 0 0 0 1.5px var(--cinzaHeader); 
+  box-shadow: inset 0 0 0 1.5px var(--cinzaHeader);
   appearance: none;
   padding: 0;
   margin: 0;
@@ -1500,16 +1500,16 @@ input {
   height: 18px;
 }
 
-.icone-editar:hover{
-transform: scale(1.1);
-background-color: #222;
+.icone-editar:hover {
+  transform: scale(1.1);
+  background-color: #222;
 }
 
-.icone-editar:hover img{
+.icone-editar:hover img {
   filter: invert(100%);
 }
 
-.swal2-html-container{
+.swal2-html-container {
   justify-items: center;
 }
 
@@ -1588,8 +1588,9 @@ background-color: #222;
 }
 
 .swal2-confirm:hover {
-    background-color: var(--amareloOpacityLow); 
+  background-color: var(--amareloOpacityLow);
 }
+
 /* Dashboard ao vivo */
 
 .container {
@@ -1621,7 +1622,7 @@ background-color: #222;
   font-size: 1rem;
 }
 
-.div-selects .nome_dash{
+.div-selects .nome_dash {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1754,7 +1755,7 @@ background-color: #222;
 
 .div-rede {
   width: 20vh;
-  height:5vh;
+  height: 5vh;
   border-radius: 1vh;
   display: flex;
   align-items: stretch;
@@ -1775,7 +1776,7 @@ background-color: #222;
   border-radius: 0 0 0.6vh 0.6vh;
 }
 
-.div-chart{
+.div-chart {
   width: 75%;
   height: 40vh;
   display: flex;
@@ -1797,7 +1798,8 @@ background-color: #222;
   justify-content: center;
 }
 
-#circ_cpu, #circ_disco{
+#circ_cpu,
+#circ_disco {
   position: relative;
   text-align: center;
 }
@@ -1805,7 +1807,7 @@ background-color: #222;
 
 /* -------------------------------------------- DASHBOARD HISTORICO -------------------------------------------- */
 
-.container.dashboard_historico{
+.container.dashboard_historico {
   max-width: fit-content;
   display: grid;
   justify-content: center;
@@ -1816,19 +1818,19 @@ background-color: #222;
   overflow: hidden;
 }
 
-.container.dashboard_historico select{
+.container.dashboard_historico select {
   margin: 0;
   font-family: "poppins", sans-serif;
   font-size: 1rem;
 }
 
-.container.dashboard_historico .div-selects{
+.container.dashboard_historico .div-selects {
   grid-row: 1;
   width: 80vw;
   justify-self: center;
 }
 
-.container.dashboard_historico .nome_dash{
+.container.dashboard_historico .nome_dash {
   text-align: center;
   width: 13vw;
   padding: 1vh;
@@ -1838,7 +1840,7 @@ background-color: #222;
   margin: 1px;
 }
 
-.dashboard_historico .tabela_alerta_servidores{
+.dashboard_historico .tabela_alerta_servidores {
   width: 50vw;
   height: 35vh;
   background-color: var(--branco);
@@ -1857,19 +1859,26 @@ background-color: #222;
 }
 
 
-.dashboard_historico .table_alerta_servidores{
+.dashboard_historico .table_alerta_servidores {
   background-color: var(--cinzaDash);
 }
 
-#table_alerta_nome, #table_alerta_cpu, #table_alerta_ram, #table_alerta_disco, #table_alerta_risco{
+#table_alerta_nome,
+#table_alerta_cpu,
+#table_alerta_ram,
+#table_alerta_disco,
+#table_alerta_risco {
   cursor: pointer;
 }
 
-.dashboard_historico .tabela_alerta_servidores .nome_tabela{
+.dashboard_historico .tabela_alerta_servidores .nome_tabela {
   position: sticky;
-  top: 0;                 /* cola primeiro */
-  z-index: 1;             /* acima do header */
-  background: #fff;       /* tampa o que passa por trás */
+  top: 0;
+  /* cola primeiro */
+  z-index: 1;
+  /* acima do header */
+  background: #fff;
+  /* tampa o que passa por trás */
   height: var(--title-h);
   line-height: var(--title-h);
   color: #000;
@@ -1877,7 +1886,7 @@ background-color: #222;
   font-size: 2.3vh;
 }
 
-.dashboard_historico .tabela_alerta_servidores table{
+.dashboard_historico .tabela_alerta_servidores table {
   table-layout: fixed;
   width: 100%;
   height: auto;
@@ -1888,33 +1897,37 @@ background-color: #222;
   transition: all 0.3s ease;
 }
 
-.dashboard_historico .tabela_alerta_servidores thead th:nth-child(1) { 
-  width: 30%; 
-  text-align: left; 
-  padding: 0.5vh 0.1vw 0.5vh 1vw; 
+.dashboard_historico .tabela_alerta_servidores thead th:nth-child(1) {
+  width: 30%;
+  text-align: left;
+  padding: 0.5vh 0.1vw 0.5vh 1vw;
   align-content: center;
-}  
+}
+
 .dashboard_historico .tabela_alerta_servidores thead th:nth-child(2),
 .dashboard_historico .tabela_alerta_servidores thead th:nth-child(3),
 .dashboard_historico .tabela_alerta_servidores thead th:nth-child(4),
-.dashboard_historico .tabela_alerta_servidores thead th:nth-child(5) { width: 18.75%; align-content: center; }  
+.dashboard_historico .tabela_alerta_servidores thead th:nth-child(5) {
+  width: 18.75%;
+  align-content: center;
+}
 
 .dashboard_historico .tabela_alerta_servidores tbody td:nth-child(1) {
-   text-align: left; 
-  }
+  text-align: left;
+}
 
-.dashboard_historico .tabela_alerta_servidores thead th{
+.dashboard_historico .tabela_alerta_servidores thead th {
   position: sticky;
   top: var(--title-h);
   z-index: 1;
   background-color: #fff;
   color: var(--cinzaDash);
   margin: 0;
-  text-align: center; 
-  padding: 0.5vh 0.1vw; 
+  text-align: center;
+  padding: 0.5vh 0.1vw;
 }
 
-.dashboard_historico .tabela_alerta_servidores tbody td{
+.dashboard_historico .tabela_alerta_servidores tbody td {
   padding: 1vh 0vw 1vh 1vw;
   cursor: pointer;
 }
@@ -1925,7 +1938,7 @@ background-color: #222;
   border: solid 1px var(--cinzaDash);
 }
 
-.dashboard_historico .tabela_alerta_servidores tbody{
+.dashboard_historico .tabela_alerta_servidores tbody {
   transition: background-color 0.3s ease;
 }
 
@@ -1937,19 +1950,19 @@ background-color: #222;
 }
 
 .dashboard_historico .tabela_alerta_servidores tbody tr::after {
-  content:"";
-  position:absolute;
-  bottom:0;
-  left:1%; 
-  width:95%;    
-  height:1px;
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 1%;
+  width: 95%;
+  height: 1px;
   background: #fff
 }
 
 .dashboard_historico .tabela_alerta_servidores tbody {
   display: block;
   max-height: 26vh;
-  overflow-y: auto;    
+  overflow-y: auto;
   overflow-x: hidden;
   direction: rtl;
   transition: all 0.3s ease;
@@ -1968,12 +1981,18 @@ background-color: #222;
   box-sizing: border-box;
 }
 
-.tabela_alerta_servidores tbody td:nth-child(1){ width:25%; }
-.tabela_alerta_servidores tbody td:nth-child(n+2){ width:18.75%; text-align:center; }
+.tabela_alerta_servidores tbody td:nth-child(1) {
+  width: 25%;
+}
+
+.tabela_alerta_servidores tbody td:nth-child(n+2) {
+  width: 18.75%;
+  text-align: center;
+}
 
 /* aplica no contêiner que rola */
 .dashboard_historico .tabela_alerta_servidores tbody::-webkit-scrollbar {
-  width: 8px;               
+  width: 8px;
   background-color: #fff;
 }
 
@@ -1990,47 +2009,59 @@ background-color: #222;
 .dashboard_historico .tabela_alerta_servidores tbody::-webkit-scrollbar-button {
   width: 0;
   height: 0;
-  display: none;              /* esconde as setas */
+  display: none;
+  /* esconde as setas */
 }
 
-.div-table-grafico{
+.div-table-grafico {
   display: flex;
   flex-direction: row;
   gap: 2%;
 }
 
-.div-comparacao-alertas{
-  background-color: var(--cinzaDash);
-  width: 25vw;
-  height: 29.5vh;
-  color: var(--branco);
-  padding: 2.88vh 1.5vw;
-  border-radius: 2vh;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.div-comparacao-alertas .nome_gráfico a{
-  font-size: 2vh;
-}
-
-.div-chart-bar{
-  width: 50vh;
-}
-
-.dashboard_historico .alerta_tempo_e_especificações_hardware{
+.dashboard_historico .alerta_tempo_e_grafico_bolhas {
   display: flex;
   flex-direction: row;
   column-gap: 2vw;
   margin-left: 5vw;
 }
 
-.dashboard_historico .gráfico_alertas_tempo_wrapper{
+.gráfico_alertas_tempo_wrapper1 {
   background-color: var(--cinzaDash);
-  width: 36vw;
+  width: 30vw;
+  height: 30vh;
+  color: var(--branco);
+  padding: 2.88vh 1.5vw;
+  border-radius: 2vh;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.div-pie-chart {
+  align-self: center;
+  width: 40%;
+}
+
+.div-table-grafico .gráfico_chart{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--cinzaDash);
+  width: 33vw;
+  height: 30vh;
+  color: var(--branco);
+  padding: 2.88vh 1.5vw;
+  border-radius: 2vh;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.gráfico_chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--cinzaDash);
+  width: 42.5vw;
   height: 36vh;
   color: var(--branco);
   padding: 2.88vh 1.5vw;
@@ -2038,25 +2069,12 @@ background-color: #222;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.gráfico_chart{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-.div-pie-chart{
-  align-self: center;
-  width: 35%;
-}
-
-.dashboard_historico .grafico_bubble{
+.dashboard_historico .grafico_bubble {
   background-color: var(--cinzaDash);
   color: var(--branco);
   padding: 2.88vh 1.5vw;
   border-radius: 2vh;
-  width: 40vw;
+  width: 33.5vw;
   height: 42vh;
   padding: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -2066,14 +2084,21 @@ background-color: #222;
   align-items: center;
 }
 
-.grafico_bubble .div-bubble-chart{
-  width: 75%;
+.grafico_bubble .div-bubble-chart {
+  width: 85%;
 }
 
-.dashboard_historico .nome_gráfico{
+.dashboard_historico .nome_gráfico {
   margin-bottom: 1vh;
   font-size: 1.5rem;
   text-align: center;
 }
 
 
+.div-line-historico {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 20vh;
+}
