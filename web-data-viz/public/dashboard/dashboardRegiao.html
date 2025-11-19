@@ -4,13 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuários - InfoMotion</title>
-    <link rel="stylesheet" href="../css/dashboards.css">
-    <script src="../js/cadastro-usuarios.js"></script>
-    <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
+    <title>Dashboard Disco</title>
+    <link rel="stylesheet" href="../css/styleDashDisco.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body onload="listarFuncionarios()">
+<body>
     <section class="header">
         <div class="header-left">
             <div class="parte-cima">
@@ -20,7 +19,7 @@
                         Perfil </a>
                 </div>
                 <div id="usuario-header" class="icone">
-                    <a href="#" class="descricao-icone">
+                    <a href="tela-usuarios.html" class="descricao-icone">
                         <img src="../assets/imgs-dashboard/mdi_users.png" alt="">
                         Usuários </a>
                 </div>
@@ -34,11 +33,11 @@
                         <img src="../assets/imgs-dashboard/fluent-mdl2_b-i-dashboard.png" alt="">
                         Dashboard </a>
                 </div>
-                  <div class="icone">
+                   <div class="icone">
                     <a href="dashboardRegiao.html" class="descricao-icone">
                         <img src="../assets/imgs-dashboard/regiao-icon.png" alt="">
                         Regiões </a>
-                    </div>
+                </div>
             </div>
             <div class="parte-baixo">
                 <div class="icone">
@@ -52,41 +51,16 @@
                         <img src="../assets/imgs-dashboard/uil_exit.png" alt="">
                         Sair </a>
                 </div>
+                
             </div>
         </div>
-        </div>
+    </section>
+    <section>
 
-        <div class="container-usuario">
-            <div class="container-content">
-                <div class="content">
-                    <img src="../assets/imgs-dashboard/Monitoramento-removebg-preview 1.png" alt="Logo InfoMotion">
-                    <input type="text" placeholder="Pesquisar" id="ipt_pesquisar_user" oninput="pesquisarFuncionario()">
-                    <img src="../assets/imgs-dashboard/mdi_search.png" alt="" style="cursor: pointer;">
-                    <img src="../assets/imgs-dashboard/mynaui_filter.png" alt="" style="display: none;">
-                    <button class="btn-add" onclick="telaCadastroFuncionario()">+</button>
-                </div>
 
-                <div class="div-table">
-                    <div id="tabela1"></div>
 
-                    <div id="editar-funcionario-container" style="display: none;">
-                        <h3>Editar Funcionário</h3>
-                        <div id="editar-funcionario-card" class="div-colunas"></div>
-                    </div>
 
-                    <div class="pesquisa-usuario-servidor">
-                        <label for="ipt_pesquisar_server" id="label_pesquisar_server"
-                            style="padding-left: 2vh;">Pesquisar por servidor:</label>
-                        <input type="text" placeholder="Pesquisar" id="ipt_pesquisar_server" class="pesquisa-server"
-                            oninput="pesquisarServidor()">
-                    </div>
-
-                    <table id="tabela2"></table>
-                </div>
-            </div>
-        </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</body>
+    </section>
+<script src="../js/dashRegiao.js"></script>
 
 </html>
