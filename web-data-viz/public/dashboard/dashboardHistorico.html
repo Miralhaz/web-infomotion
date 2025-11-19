@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Histórico - InfoMotion</title>
-  <link rel="stylesheet" href="../css/dashboards.css">
+  <link rel="stylesheet" href="../css/dashboard-historico.css">
   <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
 </head>
 
@@ -35,6 +35,11 @@
             <img src="../assets/imgs-dashboard/fluent-mdl2_b-i-dashboard.png" alt="">
             Dashboard
           </a>
+        </div>
+        <div class="icone">
+          <a href="dashboardRegiao.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/regiao-icon.png" alt="">
+            Regiões </a>
         </div>
       </div>
 
@@ -121,15 +126,19 @@
 
       <div class="grafico_bubble">
         <div class="nome_gráfico" id="nome_gráfico">
-          <img src="../assets/imgs-dashboard/mynaui_filter.png" alt="" onclick="acionarFiltro()"
-            style="cursor: pointer;" class="img-filtro">
-          <div class="filtro-menu" id="menu">
-            <div class="opcoes-menu">
-              <button onclick="selecionar('CPU')">CPU</button>
-              <button onclick="selecionar('RAM')">RAM</button>
-              <button onclick="selecionar('DISCO')">DISCO</button>
+
+          <div class="filtro-wrapper">
+            <img src="../assets/imgs-dashboard/mynaui_filter_white.png" class="img-filtro" onclick="acionarFiltro()">
+
+            <div class="filtro-menu" id="menu">
+              <div class="opcoes-menu">
+                <button onclick="selecionar('CPU')">CPU</button>
+                <button onclick="selecionar('RAM')">RAM</button>
+                <button onclick="selecionar('DISCO')">DISCO</button>
+              </div>
             </div>
           </div>
+
           <a>Criticidade de componentes</a>
         </div>
         <div class="div-bubble-chart">
@@ -166,7 +175,7 @@
   window.onload = function () {
     receberAlertas(idUsuario);
     selecionarTempo();
-    plotarGraficoPizza();
+    plotarGraficoDonut();
     plotarGraficoBolhas();
     plotarGraficoBarras();
   }

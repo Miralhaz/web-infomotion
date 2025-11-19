@@ -258,9 +258,27 @@ function ordenarPor(item) {
     }
 }
 
-function plotarGraficoPizza() {
+function plotarGraficoDonut() {
     let labels = ['Ok', 'Atenção', 'Crítico'];
     let dados = [20, 30, 50];
+
+    const textoCentro = { // obj de pluggin
+        id: 'kpiCentro', // chart.js reconhece os pluggins a partir de um id
+        afterDraw(chart) { // função do chart.js que roda dps que o gráfico tiver sido plotado
+            const ctx = chart.ctx; // contexto de desenho
+            const centerX = chart.getDatasetMeta(0).data[0].x; // coordenada x
+            const centerY = chart.getDatasetMeta(0).data[0].y; // coordenada y
+
+            ctx.save(); // salva o contexto atual
+            ctx.fillStyle = '#BD2C2C';
+            ctx.font = 'bold 22px poppins';
+
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(dados[2] + "% " + labels[2], centerX, centerY); // Texto que vai aparecer no meio!
+            ctx.restore(); // restaura o contexto salvo
+        }
+    };
 
     const config = {
         type: 'doughnut',
@@ -283,6 +301,7 @@ function plotarGraficoPizza() {
             }]
         },
         options: {
+            cutout: '75%',
             plugins: {
                 legend: {
                     position: 'bottom',
@@ -292,7 +311,8 @@ function plotarGraficoPizza() {
                     }
                 }
             }
-        }
+        },
+        plugins: [textoCentro]
     };
 
     new Chart(
@@ -311,8 +331,8 @@ function plotarGraficoBolhas() {
                 {
                     label: 'Crítico',
                     data: [
-                        { x: 3,  y: 90, r: 31 },
-                        { x: 8,  y: 86, r: 18 }
+                        { x: 3, y: 90, r: 31 },
+                        { x: 8, y: 86, r: 18 }
                     ],
                     backgroundColor: 'rgba(189, 44, 44, 0.5)'
                 },
@@ -392,7 +412,7 @@ function plotarGraficoLinhas(idServidor) {
     const existingChart = Chart.getChart(canvas);
     if (existingChart) existingChart.destroy();
 
-   
+
     const widthPx = window.innerWidth * 0.6;  // 60vw
     const heightPx = window.innerHeight * 0.30; // 35vh
 
@@ -407,50 +427,50 @@ function plotarGraficoLinhas(idServidor) {
 
     for (let index = 0; index < infoExibicao.length; index++) {
         const element = infoExibicao[index];
-        if (element.id == idServidor){
+        if (element.id == idServidor) {
             nomeServidor = element.apelido
         }
     }
-    
+
     for (let i = 0; i < infoExibicao.length; i++) {
 
-        if(infoExibicao[i].id == idServidor){
+        if (infoExibicao[i].id == idServidor) {
             const el = infoExibicao[i];
             const d = el.data_registro instanceof Date ? el.data_registro : new Date(el.data_registro); // verifica se é Date ou não
             const key = dataToString(d);
-        
+
 
             // procurar índice da label
             let idx = -1;
             for (let j = 0; j < labels.length; j++) {
-            if (labels[j] === key) { idx = j; break; }
+                if (labels[j] === key) { idx = j; break; }
             }
 
             // se não existe, cria linha
             if (idx === -1) {
-            labels.push(key);
-            ram.push(0);
-            cpu.push(0);
-            disco.push(0);
-            idx = labels.length - 1; // <<< índice correto
+                labels.push(key);
+                ram.push(0);
+                cpu.push(0);
+                disco.push(0);
+                idx = labels.length - 1; // <<< índice correto
             }
 
             // incrementa série correta
             const tipo = String(el.tipo).toUpperCase();
-            if (tipo === 'CPU'){       cpu[idx]   += 1;}
-            else if (tipo === 'DISCO') {disco[idx] += 1;}
-            else                       ram[idx]   += 1;
+            if (tipo === 'CPU') { cpu[idx] += 1; }
+            else if (tipo === 'DISCO') { disco[idx] += 1; }
+            else ram[idx] += 1;
         }
     }
 
     // Pegando o nome do servidor
     if (nomeServidor) {
-        if(tempo > 1){
+        if (tempo > 1) {
             document.getElementById("nome_gráfico").innerHTML = `Quantidade de alertas dos últimos ${tempo} dias do servidor: ${nomeServidor}`;
         }
         else document.getElementById("nome_gráfico").innerHTML = `Quantidade de alertas do último dia do servidor: ${nomeServidor}`;
     }
-    
+
 
     const config = {
         type: 'line',
@@ -484,7 +504,7 @@ function plotarGraficoLinhas(idServidor) {
 
         options: {
             responsive: false,
-            maintainAspectRatio: false,         
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,
@@ -556,11 +576,11 @@ function plotarGraficoLinhas(idServidor) {
 
 function acionarFiltro() {
 
-  // Aqui apenas aciono o menu do filtro, se caso estiver exibindo, fecha se não ele aparece ao usuário
-  const menu = document.getElementById('menu')
-  if (menu.classList.contains("show")) {
-    menu.classList.remove("show");
-  } else {
-    menu.classList.add("show");
-  }
+    // Aqui apenas aciono o menu do filtro, se caso estiver exibindo, fecha se não ele aparece ao usuário
+    const menu = document.getElementById('menu')
+    if (menu.classList.contains("show")) {
+        menu.classList.remove("show");
+    } else {
+        menu.classList.add("show");
+    }
 }
