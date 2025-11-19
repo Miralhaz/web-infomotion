@@ -1722,6 +1722,10 @@ background-color: #222;
   margin-bottom: 2.5vh;
 }
 
+.div-container-kpi .div-rede p {
+  margin-bottom: 0vh;
+}
+
 .div-dados .titulo {
   font-size: 2.5vh;
 }
@@ -1756,6 +1760,7 @@ background-color: #222;
   align-items: stretch;
   justify-content: center;
   font-size: 3vh;
+  align-items: center;
 }
 
 .div-proc {
