@@ -139,10 +139,10 @@ function obterDadosKpi(idServidor) {
                     <div class="div-container-kpi">
                         <p class="titulo2" style="margin-top: 0vh;"><img src="../assets/imgs-dashboard/Upload.png" alt=""> Upload: </p>
                         <div class="div-rede"> <p> ${parseFloat(Number(dados[0].upload).toFixed(1))} Mbps </p> </div>
-                        <p>Parâmetro Máximo de Upload: 20Mbps</p>
+                        <p>Mínimo: 20Mbps</p>
                         <p class="titulo2"><img src="../assets/imgs-dashboard/Download.png" alt=""> Download: </p>
                         <div class="div-rede"> <p> ${parseFloat(Number(dados[0].download).toFixed(1))} Mbps </p> </div>
-                        <p>Parâmetro Máximo de Download: 20Mbps</p>
+                        <p>Mínimo: 20Mbps</p>
                     </div>
                 </div>
                 `;
@@ -174,9 +174,9 @@ function obterDadosKpi(idServidor) {
                     let div_temp = document.querySelectorAll('.div-temp');
 
                     let div_rede = document.querySelectorAll('.div-rede');
-                    if(dados[0].upload <= 10){
+                    if(dados[0].upload <= 20){
                         div_rede[0].style.backgroundColor = '#940000'
-                    }else if(dados[0].upload <= 30){
+                    }else if(dados[0].upload <= 40){
                         div_rede[0].style.backgroundColor = '#C89C00'
                     }else{
                         div_rede[0].style.backgroundColor = '#009900ff'
@@ -584,128 +584,6 @@ function listarDadosLinhas(idServidor) {
 
 
 function plotarGraficoLinhas(dados, idServidor) {
-    let labels = [];
-    let ram = [];
-    let cpu = [];
-    let disco = [];
-
-    for (let i = 0; i < dados.length; i++) {
-
-        const dtHora = new Date(dados[i].dt_registro);
-        const hora = dtHora.getHours();
-        const min = dtHora.getMinutes();
-        const minFormatado = ('0' + min).slice(-2);
-
-        labels.push((hora + ':' + minFormatado));
-        ram.push(dados[i].uso_ram);
-        cpu.push(dados[i].uso_cpu);
-        disco.push(dados[i].uso_disco);
-    }
-
-    if (window.graficoLinhas instanceof Chart) {
-        window.graficoLinhas.destroy();
-    }
-
-    const config = {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'RAM',
-                data: ram,
-                fill: false,
-                backgroundColor: '#555555ff',
-                borderColor: '#555555ff',
-                tension: 0.2
-            },
-            {
-                label: 'CPU',
-                data: cpu,
-                fill: false,
-                backgroundColor: '#E2E2E2',
-                borderColor: '#E2E2E2',
-                tension: 0.2
-            },
-            {
-                label: 'DISCO',
-                data: disco,
-                fill: false,
-                backgroundColor: '#D2B080',
-                borderColor: '#D2B080',
-                tension: 0.2
-            }]
-        },
-
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        color: 'white',
-                        font: {
-                            size: 15
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Porcentagem (%)',
-                        color: 'white',
-                        font: {
-                            size: 16
-                        }
-                    },
-                    grid: {
-                        color: 'rgba(153, 153, 153, 0.2)',
-                        display: true,
-                        drawTicks: false
-                    }
-                },
-                x: {
-                    ticks: {
-                        color: 'white',
-                        font: {
-                            size: 15
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Horário',
-                        color: 'white',
-                        font: {
-                            size: 16
-                        }
-                    },
-                    grid: {
-                        drawOnChartArea: true
-                    }
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: "Porcentagem de uso de componentes (%)",
-                    color: 'white',
-                    font: {
-                        size: 18
-                    }
-                },
-                legend: {
-                    position: 'top',
-                    labels: {
-                        usePointStyle: true,
-                        color: 'white'
-                    }
-                }
-            }
-        }
-    };
-
-    window.graficoLinhas = new Chart(
-        document.getElementById('lineChart'),
-        config
-    );
 }
 
 
