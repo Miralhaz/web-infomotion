@@ -13,13 +13,16 @@ CREATE TABLE IF NOT EXISTS infomotion.empresa (
 
 CREATE TABLE IF NOT EXISTS infomotion.regiao (
   id INT NOT NULL AUTO_INCREMENT,
+  fk_empresa int,
   nome VARCHAR(50),
   cidade VARCHAR(60),
   estado VARCHAR(60),
   pais VARCHAR(50),
   codigo_postal VARCHAR(20),
   zona VARCHAR(50),
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  CONSTRAINT regiao_ibfk_1
+  FOREIGN KEY (fk_empresa) REFERENCES infomotion.empresa (id)
 );
 
 CREATE TABLE IF NOT EXISTS infomotion.servidor (
@@ -167,18 +170,18 @@ select * from componentes;
  
  */
  
-INSERT INTO regiao (nome, cidade, estado, pais, codigo_postal, zona)
+INSERT INTO regiao (fk_empresa, nome, cidade, estado, pais, codigo_postal, zona)
 VALUES
-('Região Sudeste', 'São Paulo', 'SP', 'Brasil', '01000-000', 'UTC-3'),
-('Região Leste dos EUA', 'Ashburn', 'VA', 'Estados Unidos', '20147', 'UTC-5'),
-('Região Europa Central', 'Frankfurt', 'HE', 'Alemanha', '60311', 'UTC+1'),
-('Região Ásia Leste', 'Tóquio', 'TK', 'Japão', '100-0001', 'UTC+9'),
-('Região Oceania', 'Sydney', 'NSW', 'Austrália', '2000', 'UTC+10'),
-('Região América Norte', 'Toronto', 'ON', 'Canadá', 'M5H 2N2', 'UTC-5'),
-('Região Europa Oeste', 'Londres', 'LDN', 'Reino Unido', 'SW1A 1AA', 'UTC+0'),
-('Região Europa Sudoeste', 'Lisboa', 'LX', 'Portugal', '1000-001', 'UTC+0'),
-('Região Oriente Médio', 'Dubai', 'DU', 'Emirados Árabes Unidos', '00000', 'UTC+4'),
-('Região América Central', 'Cidade do México', 'CDMX', 'México', '01000', 'UTC-6');
+(1, 'Região Sudeste', 'São Paulo', 'SP', 'Brasil', '01000-000', 'UTC-3'),
+(1, 'Região Leste dos EUA', 'Ashburn', 'VA', 'Estados Unidos', '20147', 'UTC-5'),
+(1, 'Região Europa Central', 'Frankfurt', 'HE', 'Alemanha', '60311', 'UTC+1'),
+(1, 'Região Ásia Leste', 'Tóquio', 'TK', 'Japão', '100-0001', 'UTC+9'),
+(1, 'Região Oceania', 'Sydney', 'NSW', 'Austrália', '2000', 'UTC+10'),
+(1, 'Região América Norte', 'Toronto', 'ON', 'Canadá', 'M5H 2N2', 'UTC-5'),
+(1, 'Região Europa Oeste', 'Londres', 'LDN', 'Reino Unido', 'SW1A 1AA', 'UTC+0'),
+(1, 'Região Europa Sudoeste', 'Lisboa', 'LX', 'Portugal', '1000-001', 'UTC+0'),
+(1, 'Região Oriente Médio', 'Dubai', 'DU', 'Emirados Árabes Unidos', '00000', 'UTC+4'),
+(1, 'Região América Central', 'Cidade do México', 'CDMX', 'México', '01000', 'UTC-6');
  
  -- SERVIDORES (6 novos, ids 5..10)
 INSERT INTO infomotion.servidor (fk_empresa, fk_regiao, apelido, ip, ativo)
@@ -1838,3 +1841,4 @@ INSERT INTO alertas (id, fk_parametro, dt_registro, duracao, max, min) VALUES
 
 alter table servidor alter column fk_regiao set default 1;
 update servidor set fk_regiao = 4 where id = 11;
+
