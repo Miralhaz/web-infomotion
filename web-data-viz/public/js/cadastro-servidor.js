@@ -59,7 +59,7 @@ function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
 
 
   let html = `
-                   <div onclick="irParaDash(${id})">
+                   <div onclick="abrirPopUp(${id}, '${apelido}')">
               <div class="card-servidor">
                 <div class="card-top">
                   <h3>${apelido}</h3>
@@ -80,8 +80,81 @@ function exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco) {
   return html;
 }
 
-function irParaDash(idServidor) {
-  sessionStorage.ID_SERVIDOR_SELECIONADO = idServidor;
+function abrirPopUp(id, apelido){
+  Swal.fire({
+    title: `<strong>Escolha uma dashboard<br>para o servidor: ${apelido}</strong>`,
+    icon: false,
+    html: `
+      <style>
+        /* CSS para os Cards dentro do SweetAlert */
+        .container-cards {
+          display: flex;
+          justify-content: space-around;
+          gap: 0.56vw;
+          margin-top: 1.852vh;
+        }
+        .card-opcao {
+          background: #f9f9f9;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          padding: 15px;
+          width: 40%; /* Para caber 3 */
+          cursor: pointer;
+          transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card-opcao:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+          border-color: #ffc47b;
+        }
+        .card-icon {
+          font-size: 30px;
+          margin-bottom: 10px;
+          display: block;
+        }
+        .card-title {
+          font-weight: bold;
+          font-size: 14px;
+          color: #333;
+        }
+      </style>
+
+      <div class="container-cards">
+        <div class="card-opcao" onclick="Swal.clickConfirm(); irParaDashNRT(${id})">
+          <span class="card-icon">⏱️</span>
+          <div class="card-title">Near-Real-time</div>
+        </div>
+
+        <div class="card-opcao" onclick="Swal.clickConfirm(); irPraDashTemp(${id})">
+          <span class="card-icon">🌡️</span>
+          <div class="card-title">Temperatura</div>
+        </div>
+
+        <div class="card-opcao" onclick="Swal.clickConfirm(); irPraDashRede(${id})">
+          <span class="card-icon">📡</span>
+          <div class="card-title">Rede</div>
+        </div>
+      </div>
+    `,
+    showCloseButton: true,
+    showConfirmButton: false, // Escondemos o botão "OK" padrão
+    focusConfirm: false
+  });
+}
+
+// Funções que serão chamadas ao clicar nos cards
+function irPraDashTemp(idServidor) {
+  sessionStorage.setItem("ID_SERVIDOR_SELECIONADO", idServidor);
+  window.location.href = 'dashboardTemperatura.html';
+}
+
+function irPraDashRede(idServidor) {
+  sessionStorage.setItem("ID_SERVIDOR_SELECIONADO", idServidor)
+  window.location.href = 'dashboardRede.html';
+}
+
+function irParaDashNRT(idServidor) {
+  sessionStorage.setItem("ID_SERVIDOR_SELECIONADO", idServidor)
   window.location.href = 'dashboard.html';
 }
 
