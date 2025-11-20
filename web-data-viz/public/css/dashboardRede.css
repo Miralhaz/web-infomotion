@@ -43,7 +43,7 @@ body {
   background-color: var(--cinzaDash);
   justify-self: start;
   color: var(--letraBox);
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .dashboardRede .kpiAlerta .box{
@@ -149,7 +149,7 @@ body {
   background-color: var(--cinzaDash);
   color: var(--letraBox);
   height: 7.5vh;
-  width: 15vw;
+  width: 17.5vw;
   border-radius: 3rem;
   align-self: center;
   font-family: "poppins", sans-serif;

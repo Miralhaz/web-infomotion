@@ -222,6 +222,17 @@ VALUES
 (1023, 2, 'RAM', 20, 'Memória DDR4 32GB', 1),
 (1024, 2, 'DISCO', 21, 'HDD 1TB', 1);
 
+INSERT INTO infomotion.componentes (fk_servidor, tipo, numero_serie, apelido, ativo)
+VALUES
+(1, 'REDE', 72, 'Intel I350-T4', 1),
+(2, 'REDE', 73, 'Broadcom NetXtreme', 1),
+(3, 'REDE', 74, 'Intel X710-DA2', 1),
+(4, 'REDE', 75, 'Broadcom NetXtreme-E', 1),
+(5, 'REDE', 76, 'Intel I350-T4', 1),
+(6, 'REDE', 77, 'Broadcom NetXtreme', 1),
+(7, 'REDE', 78, 'Intel X710-DA2', 1),
+(8, 'REDE', 79, 'Broadcom NetXtreme-E', 1);
+
 -- ESPECIFICACOES (apenas nomes solicitados)
 INSERT INTO infomotion.especificacao_componente (nome_especificacao, valor, fk_componente)
 VALUES
@@ -292,8 +303,45 @@ VALUES
 (2042, 2, 1024, '75', 12, '%')
 ;
 
+INSERT INTO infomotion.parametro_alerta (Fk_servidor, fk_componente, max, duracao_min, unidade_medida)
+VALUES
+(1, 1025, 50000, 12, 'DOWNLOAD'),
+(1, 1025, 50000, 12, 'UPLOAD'),
+(1, 1025, 500, 12, 'PACKET_RECEIVED'),
+(1, 1025, 500, 12, 'PACKET_SENT'),
+(2, 1026, 50000, 12, 'DOWNLOAD'),
+(2, 1026, 50000, 12, 'UPLOAD'),
+(2, 1026, 500, 12, 'PACKET_RECEIVED'),
+(2, 1026, 500, 12, 'PACKET_SENT'),
+(3, 1027, 50000, 12, 'DOWNLOAD'),
+(3, 1027, 50000, 12, 'UPLOAD'),
+(3, 1027, 500, 12, 'PACKET_RECEIVED'),
+(3, 1027, 500, 12, 'PACKET_SENT'),
+(4, 1028, 50000, 12, 'DOWNLOAD'),
+(4, 1028, 50000, 12, 'UPLOAD'),
+(4, 1028, 500, 12, 'PACKET_RECEIVED'),
+(4, 1028, 500, 12, 'PACKET_SENT'),
+(5, 1029, 50000, 12, 'DOWNLOAD'),
+(5, 1029, 50000, 12, 'UPLOAD'),
+(5, 1029, 500, 12, 'PACKET_RECEIVED'),
+(5, 1029, 500, 12, 'PACKET_SENT'),
+(6, 1030, 50000, 12, 'DOWNLOAD'),
+(6, 1030, 50000, 12, 'UPLOAD'),
+(6, 1030, 500, 12, 'PACKET_RECEIVED'),
+(6, 1030, 500, 12, 'PACKET_SENT'),
+(7, 1031, 50000, 12, 'DOWNLOAD'),
+(7, 1031, 50000, 12, 'UPLOAD'),
+(7, 1031, 500, 12, 'PACKET_RECEIVED'),
+(7, 1031, 500, 12, 'PACKET_SENT'),
+(8, 1032, 50000, 12, 'DOWNLOAD'),
+(8, 1032, 50000, 12, 'UPLOAD'),
+(8, 1032, 500, 12, 'PACKET_RECEIVED'),
+(8, 1032, 500, 12, 'PACKET_SENT');
+
+
 INSERT INTO infomotion.parametro_alerta (id, fk_servidor, fk_componente, max, duracao_min, unidade_medida)
 VALUES
+
 -- Servidor 5
 (2019, 5, 1001, 90, 15, 'C'), -- CPU Temperatura (90°C é um limite comum)
 (2020, 5, 1003, 48, 15, 'C'), -- DISCO Temperatura (48°C é um limite para SSD/HDD)
