@@ -30,6 +30,7 @@ section.header .header-left {
   display: flex;
   flex-direction: column;
   position: fixed;
+  z-index: 1000;
   height: 100%;
   width: 230px;
   background-color: var(--cinzaHeader);
@@ -87,6 +88,49 @@ section.header .header-left .icone a:hover {
 
 section.header .header-left .icone a:hover img {
   filter: brightness(0);
+}
+
+section.header .header-left .container-submenu {
+  position: relative;
+  padding: 7% 0;
+}
+
+.submenu {
+  position: absolute;
+  left: 100%;
+  top: 16%;
+  background-color: var(--cinzaHeader);
+  border: 1px solid var(--amarelo);
+  width: 250px;
+  z-index: 9999;
+  padding: 10px 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.submenu a {
+  color: var(--branco);
+  text-decoration: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 300;
+  width: 100%;
+  display: block;
+  transition: background-color 0.2s ease;
+}
+
+.submenu a:hover {
+  background-color: var(--amarelo);
+  color: var(--preto);
+  padding: 10px 20px;
+}
+
+section.header .header-left .container-submenu:hover .submenu {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* TELA CADASTRO DE USUÁRIOS */
@@ -1645,7 +1689,7 @@ input {
 
 .div-dados {
   width: 52vh;
-  height: 40vh;
+  height: 35vh;
   background-color: var(--branco);
   display: flex;
   flex-direction: column;
@@ -1669,7 +1713,7 @@ input {
 
 .div-dados2 {
   width: 35vh;
-  height: 40vh;
+  height: 32vh;
   background-color: var(--branco);
   display: flex;
   flex-direction: column;
@@ -1696,8 +1740,14 @@ input {
 }
 
 .div-dados2 .titulo2 {
+  margin-top: 0.4vh;
   font-size: 2.5vh;
   margin-bottom: 0.4vh;
+}
+
+.div-dados2 .titulo2 img {
+  width: 2.5vh;
+  height: 2.5vh;
 }
 
 .div-dados2 canvas {
@@ -1708,7 +1758,7 @@ input {
 
 .div-container-kpi {
   width: 100%;
-  height: 100%;
+  height: 96%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1813,4 +1863,109 @@ input {
 #circ_disco {
   position: relative;
   text-align: center;
+}
+.div-graficos {
+    display: flex;
+    flex-direction: row;
+    width: 95%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    gap: 20px;
+    height: 45vh;
+    box-sizing: border-box;
+}
+
+.box-esquerda {
+    flex: 1;
+    min-width: 400px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent !important;
+    padding: 0 !important;
+}
+
+.titulo-card {
+    background-color: #ffffff;
+    color: #000;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-align: center;
+    padding: 10px 0;
+    border-top-left-radius: 0.6vh;
+    border-top-right-radius: 0.6vh;
+    width: 100%;
+}
+
+.corpo-card {
+    background-color: var(--cinzaDash);
+    height: 100%;
+    padding: 1.5vh;
+    border-bottom-left-radius: 0.6vh;
+    border-bottom-right-radius: 0.6vh;
+    box-sizing: border-box;
+}
+
+.container-tabela-grande {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #1e1e1e;
+    border-radius: 6px;
+    border: 1px solid #333;
+}
+
+.tabela-alertas-historico {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.9rem;
+}
+
+.tabela-alertas-historico th {
+    position: sticky;
+    top: 0;
+    background-color: #252525;
+    color: #fff;
+    padding: 12px;
+    text-align: left;
+    z-index: 5;
+    border-bottom: 2px solid #444;
+}
+
+.tabela-alertas-historico td {
+    padding: 12px;
+    border-bottom: 1px solid #333;
+    color: #ddd;
+}
+
+.tabela-alertas-historico tbody tr:hover {
+    background-color: #2c2c2c;
+}
+
+.linha-critica td:first-child {
+    border-left: 5px solid #ff4d4d;
+}
+
+.linha-alerta td:first-child {
+    border-left: 5px solid #ffcc00;
+}
+
+.box-direita {
+    flex: 1.4;
+    background-color: var(--cinzaDash);
+    border-radius: 1vh;
+    padding: 1.5vh;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.box-direita canvas {
+    width: 100% !important;
+    height: 48% !important;
 }

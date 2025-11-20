@@ -1,0 +1,554 @@
+@import url("https://use.typekit.net/iom7tmt.css");
+
+:root {
+  --amarelo: #ffc64b;
+  --amareloOpacityLow: #ffc64bb7;
+  --cinza: #E2E1DE;
+  --branco: #fff;
+  --preto: #000;
+  --cinzaEscuro: #1c1c1c;
+  --cinzaHeader: #222;
+  --cinzaDash: #353535f3;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: var(--cinza);
+  font-family: "poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  scroll-behavior: smooth;
+  display: flex;
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+.header {
+  width: 250px;
+}
+
+section.header .header-left {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 1000;
+  height: 100%;
+  width: 230px;
+  background-color: var(--cinzaHeader);
+  padding: 20px 0;
+  text-align: center;
+}
+
+section.header .header-left .parte-cima {
+  padding: 40% 0;
+}
+
+section.header .header-left .parte-baixo {
+  padding: 10% 0
+}
+
+section.header .header-left .icone {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 7% 0;
+}
+
+section.header .header-left .descricao-icone {
+  color: var(--branco);
+  align-content: center;
+  padding: 0 10px;
+}
+
+section.header .header-left .icone img {
+  height: 25px;
+  width: auto;
+  display: flex;
+  padding: 0 15px;
+  transition: all 0.3s ease-in-out;
+}
+
+section.header .header-left .icone a {
+  width: 100%;
+  text-decoration: none;
+  font-weight: 100;
+  font-size: 18px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+}
+
+section.header .header-left .icone a:hover {
+  background-color: var(--amarelo);
+  color: var(--preto);
+  padding: 10px;
+}
+
+section.header .header-left .icone a:hover img {
+  filter: brightness(0);
+}
+
+section.header .header-left .container-submenu {
+  position: relative;
+  padding: 7% 0;
+}
+
+.submenu {
+  position: absolute;
+  left: 100%;
+  top: 16%;
+  background-color: var(--cinzaHeader);
+  border: 1px solid var(--amarelo);
+  width: 250px;
+  z-index: 9999;
+  padding: 10px 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.submenu a {
+  color: var(--branco);
+  text-decoration: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 300;
+  width: 100%;
+  display: block;
+  transition: background-color 0.2s ease;
+}
+
+.submenu a:hover {
+  background-color: var(--amarelo);
+  color: var(--preto);
+  padding: 10px 20px;
+}
+
+section.header .header-left .container-submenu:hover .submenu {
+  opacity: 1;
+  visibility: visible;
+}
+
+.content-geral {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 5px 20px 20px 20px;
+  flex-grow: 1;
+  margin-left: 1%;
+}
+
+.div-selects {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.5fr 1fr;
+  justify-items: center;
+}
+
+.div-selects select {
+  text-align: center;
+  width: 13vw;
+  padding: 1vh;
+  background-color: var(--preto);
+  color: white;
+  border-radius: 2vh;
+  margin: 1px;
+  grid-row: 2;
+  font-family: "poppins", sans-serif;
+  font-size: 1rem;
+}
+
+.div-selects .nome_dash{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14vw;
+  padding: 1vh;
+  background-color: var(--preto);
+  color: white;
+  border-radius: 2vh;
+  margin: 1px;
+}
+
+.dashboard-content-kpi {
+  display: flex;
+  width: 100%;
+}
+
+.container-kpis {
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 0;
+  gap: 20px;
+}
+
+.kpi1,
+.kpi2,
+.kpi3 {
+  width: 23%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--preto);
+  border-radius: 8px;
+  align-items: center;
+  padding: 0 0 10px 0;
+  overflow: hidden;
+}
+
+.titulo {
+  width: 100%;
+  background-color: var(--branco);
+  padding: 10px;
+  text-align: center;
+  box-sizing: border-box;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.titulo p {
+  color: var(--preto);
+  margin: 0 10px;
+}
+
+.kpi1>div:last-child,
+.kpi2>div:last-child,
+.kpi3>div:last-child {
+  padding: 0;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.kpi3 {
+  width: 48%;
+}
+
+.container-eficiencia {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.container-eficiencia:first-of-type {
+  border-bottom: 1px solid var(--cinzaHeader);
+  margin-bottom: 10px;
+  padding-bottom: 15px;
+}
+
+.container-info-componente {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-grow: 1;
+  margin-left: 25px;
+  min-width: 0;
+}
+
+.nome-componente {
+  color: var(--amarelo);
+  font-size: 1.2em;
+  font-weight: 700;
+}
+
+.info-eficiencia {
+  color: var(--branco);
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+.status-eficiencia {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  margin-right: 25px;
+}
+
+.numero-eficiencia {
+  font-size: 1.5em;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.unidade-eficiencia {
+  font-size: 0.6em;
+  font-weight: 400;
+  color: var(--cinza);
+  vertical-align: top;
+}
+
+.container-eficiencia .status {
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+
+.legenda {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.container-legenda {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-basis: 25%;
+  padding: 0 5px;
+}
+
+.legenda-descricao {
+  color: var(--branco);
+  font-size: 0.7em;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.legenda-valor {
+  font-size: 0.8em;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 3px;
+}
+
+.content-graficos {
+  display: flex;
+  flex-direction: row;
+  margin-top: 0;
+  padding: 0 13px;
+  align-items: stretch;
+  flex-grow: 1;
+  gap: 20px;
+}
+
+.dashboard-content-graficos-meio {
+  display: flex;
+  width: 58%;
+  flex-grow: 1;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.dashboard-content-graficos-direita {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  flex-grow: 1;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.select-grafico {
+  position: relative; /* relativo pois vai ser necessário para que as opções apareçam certas depois com o JS */
+  display: inline-block; /* praticamente deixa como um texto e permite que blocos ou containers sejam colocados do lado */
+  min-width: 150px; /* permite que apenas tenha uma largura de no mínimo 150px */
+  font-size: 14px;
+}
+
+.container-select {
+  background-color: var(--preto);
+  color: var(--amarelo);
+  padding: 5px 15px;
+  border: 2px solid var(--amarelo);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container-select:hover {
+  background-color: var(--cinzaDash);
+  box-shadow: 0 0 8px var(--amareloOpacityLow); /* hover de box shadow (deixa a borda com um efeito de neon amarelo em volta) */
+}
+
+.seta {
+  margin-left: 10px;
+  transition: transform 0.3s ease; 
+}
+
+.lista-opcoes {
+  position: absolute; /* aqui onde permite que a lista apareça debaixo do container que deixamos como relative */
+  top: 100%; /* aparecer bem junto ao container quando for clicado */
+  left: 0;
+  right: 0;
+  margin-top: 5px;
+  list-style: none;
+  padding: 0;
+  background-color: var(--preto);
+  border: 1px solid var(--amarelo);
+  border-radius: 8px;
+  z-index: 10; /* faz com que a lista sobreponha outros elementos da página */
+  overflow: hidden;
+  max-height: 0; /* o max-height e o opacity são o que permite que a lista esconda após ela ser "desativada" */
+  opacity: 0;
+  transition: max-height 0.4s ease-in-out, opacity 0.3s ease;
+}
+
+/* esta classe só vai ser usada quando o JS for chamar ela */
+.lista-opcoes.visible /* exibe a lista */ {
+  max-height: 200px; 
+  opacity: 1;
+}
+
+.container-select.open .seta {
+  transform: rotate(180deg); /* faz com que na hora de abrir a lista a seta gira para baixo */
+}
+
+.lista-opcoes li {
+  padding: 10px 15px;
+  color: var(--branco);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.lista-opcoes li:hover {
+  background-color: var(--amareloOpacityLow);
+  color: var(--cinzaDash);
+}
+
+.grafico-linha-hist,
+.grafico-linha-curto-prazo,
+.grafico-dispersao-temperatura,
+.top-processos {
+  background-color: var(--preto);
+  opacity: 1;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.grafico-linha-hist {
+  width: 100%;
+  height: auto;
+  flex-grow: 0.7;
+}
+
+.grafico-linha-hist>div:last-child {
+  flex-grow: 1;
+  padding: 10px;
+  min-width: 0;
+  display: flex;
+  max-height: 70%;
+}
+
+.grafico-linha-hist canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.grafico-dispersao-temperatura {
+  height: auto;
+  flex-grow: 0.7;
+  margin-bottom: 20px;
+  min-height: 150px;
+}
+
+.grafico-dispersao-temperatura canvas {
+  width: 95% !important;
+  height: 90% !important;
+}
+
+.top-processos {
+  height: auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.processos-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  background-color: var(--cinzaEscuro);
+  color: var(--amarelo);
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.processos-lista {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.processo-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 15px;
+  color: var(--branco);
+  font-size: 14px;
+  border-bottom: 1px dashed var(--cinzaHeader);
+  transition: background-color 0.2s;
+}
+
+.processo-item:hover {
+  background-color: #4a4a4a;
+}
+
+.col-nome {
+  flex-basis: 55%;
+  /* ocupar mais espaço na listagem */
+  text-align: left;
+  /* alinhar a esquerda da listagem */
+  white-space: nowrap;
+  /* não permitir a quebra de linha, mantendo tudo na mesma linha */
+  overflow: hidden;
+  /* sem scroll */
+  text-overflow: ellipsis;
+  /* coloca os ... caso o nome do processo seja longo demais ao 
+  container (ponto de transbordamento do nome) */
+}
+
+.col-cpu,
+.col-ram {
+  text-align: right;
+  flex-basis: 20%;
+  font-weight: 700;
+}
+
+.processos-lista::-webkit-scrollbar {
+  width: 8px;
+  background-color: var(--branco);
+}
+
+.processos-lista::-webkit-scrollbar-thumb {
+  background: var(--amarelo);
+  border-radius: 8px;
+}
+
+.processos-lista::-webkit-scrollbar-thumb:hover {
+  background-color: var(--amareloOpacityLow);
+  border-radius: 8px;
+}
+
+.processos-lista::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}

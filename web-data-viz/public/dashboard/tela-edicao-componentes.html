@@ -36,7 +36,6 @@
         align-items: center;
         height: 100%;
     }
-
 </style>
 
 <body>
@@ -59,15 +58,17 @@
                         <img src="../assets/imgs-dashboard/teenyicons_servers-solid.png" alt="">
                         Servidores </a>
                 </div>
-                <div class="icone">
+                <div class="icone container-submenu">
                     <a href="dashboardHistorico.html" class="descricao-icone">
                         <img src="../assets/imgs-dashboard/fluent-mdl2_b-i-dashboard.png" alt="">
-                        Dashboard </a>
-                </div>
-                  <div class="icone">
-                    <a href="dashboardRegiao.html" class="descricao-icone">
-                        <img src="../assets/imgs-dashboard/regiao-icon.png" alt="">
-                        Regiões </a>
+                        Dashboard
+                        <p style="margin-left: 10px; font-size: 12px;">▶</p>
+                    </a>
+                    <div class="submenu">
+                        <a href="dashboardHistorico.html">Histórico</a>
+                        <a href="dashboardDisco.html">Disco dos Servidores</a>
+                        <a href="dashboardRegiao.html">Região</a>
+                    </div>
                 </div>
             </div>
             <div class="parte-baixo">
@@ -96,7 +97,7 @@
                 <input type="text" id="ipt_apelido_componente">
                 <label>Unidade de medida:</label>
                 <select name="unidade_medida" id="unidade_medida" onchange="atualizarParametro(this.value)">
-                    
+
                 </select>
                 <label>Parametro:</label>
                 <div class="parametro">
@@ -110,9 +111,9 @@
                     </label>
                 </div>
                 <div style="margin-top: 5vh;">
-                    <p style="font-size: 16px;">🛈 Recomendações: 
+                    <p style="font-size: 16px;">🛈 Recomendações:
                         <br>
-                        CPU: 79%  
+                        CPU: 79%
                         <br>
                         RAM: 61%
                         <br>

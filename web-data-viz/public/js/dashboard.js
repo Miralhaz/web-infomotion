@@ -139,10 +139,10 @@ function obterDadosKpi(idServidor) {
                     <div class="div-container-kpi">
                         <p class="titulo2" style="margin-top: 0vh;"><img src="../assets/imgs-dashboard/Upload.png" alt=""> Upload: </p>
                         <div class="div-rede"> <p> ${parseFloat(Number(dados[0].upload).toFixed(1))} Mbps </p> </div>
-                        <p>Parâmetro Máximo de Upload: 20Mbps</p>
+                        <p>Mínimo: 20Mbps</p>
                         <p class="titulo2"><img src="../assets/imgs-dashboard/Download.png" alt=""> Download: </p>
                         <div class="div-rede"> <p> ${parseFloat(Number(dados[0].download).toFixed(1))} Mbps </p> </div>
-                        <p>Parâmetro Máximo de Download: 20Mbps</p>
+                        <p>Mínimo: 20Mbps</p>
                     </div>
                 </div>
                 `;
@@ -174,9 +174,9 @@ function obterDadosKpi(idServidor) {
                     let div_temp = document.querySelectorAll('.div-temp');
 
                     let div_rede = document.querySelectorAll('.div-rede');
-                    if(dados[0].upload <= 10){
+                    if(dados[0].upload <= 20){
                         div_rede[0].style.backgroundColor = '#940000'
-                    }else if(dados[0].upload <= 30){
+                    }else if(dados[0].upload <= 40){
                         div_rede[0].style.backgroundColor = '#C89C00'
                     }else{
                         div_rede[0].style.backgroundColor = '#009900ff'
@@ -602,9 +602,7 @@ function plotarGraficoLinhas(dados, idServidor) {
         disco.push(dados[i].uso_disco);
     }
 
-    if (window.graficoLinhas instanceof Chart) {
-        window.graficoLinhas.destroy();
-    }
+   
 
     const config = {
         type: 'line',

@@ -397,6 +397,23 @@ function plotarGraficoBolhas() {
                         usePointStyle: true,
                         color: 'white'
                     }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function (context){
+                            const nivel = context[0].dataset.label;
+                            return `Estado: ${nivel}`;
+                        },
+                        beforeLabel: function (context) {
+                            const servidor = context.parsed.x;
+                            return `Servidor: ${servidor}`;
+                        },
+                        label: function (context) {
+                            const uso = context.parsed.y;
+                            const minutos = context.raw.r;
+                            return `Uso: ${uso}% por ${minutos} minutos`;
+                        }
+                    }
                 }
             }
         }
