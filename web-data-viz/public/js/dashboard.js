@@ -139,8 +139,10 @@ function obterDadosKpi(idServidor) {
                     <div class="div-container-kpi">
                         <p class="titulo2" style="margin-top: 0vh;"><img src="../assets/imgs-dashboard/Upload.png" alt=""> Upload: </p>
                         <div class="div-rede"> <p> ${parseFloat(Number(dados[0].upload).toFixed(1))} Mbps </p> </div>
+                        <p>Mínimo: 20Mbps</p>
                         <p class="titulo2"><img src="../assets/imgs-dashboard/Download.png" alt=""> Download: </p>
                         <div class="div-rede"> <p> ${parseFloat(Number(dados[0].download).toFixed(1))} Mbps </p> </div>
+                        <p>Mínimo: 20Mbps</p>
                     </div>
                 </div>
                 `;
@@ -170,13 +172,11 @@ function obterDadosKpi(idServidor) {
 
 
                     let div_temp = document.querySelectorAll('.div-temp');
-                    div_temp[0].style.backgroundColor = dados[0].temp_cpu >= 85 ? '#940000' : '#C89C00';
-                    div_temp[1].style.backgroundColor = dados[0].temp_disco >= 85 ? '#940000' : '#C89C00';
 
                     let div_rede = document.querySelectorAll('.div-rede');
-                    if(dados[0].upload <= 10){
+                    if(dados[0].upload <= 20){
                         div_rede[0].style.backgroundColor = '#940000'
-                    }else if(dados[0].upload <= 30){
+                    }else if(dados[0].upload <= 40){
                         div_rede[0].style.backgroundColor = '#C89C00'
                     }else{
                         div_rede[0].style.backgroundColor = '#009900ff'
@@ -193,6 +193,34 @@ function obterDadosKpi(idServidor) {
                     let circ_cpu = document.getElementById('circ_cpu');
                     let dado_cpu = dados[0].temp_cpu;
 
+                    if (dados[0].temp_cpu >= 75) {
+                        div_temp[0].style.backgroundColor = '#940000'
+                    }
+                    else if (dados[0].temp_cpu >= 55) {
+                        div_temp[0].style.backgroundColor = '#ff3c00ff'
+                    }
+                    else if (dados[0].temp_cpu >= 40) {
+                        div_temp[0].style.backgroundColor = '#ff7b00ff'
+                    } 
+                    else {
+                        div_temp[0].style.backgroundColor = '#fdd700ff'
+                    }
+
+                    
+
+                    if (dados[0].temp_disco >= 75) {
+                        div_temp[1].style.backgroundColor = '#940000'
+                    }
+                    else if (dados[0].temp_disco >= 55) {
+                        div_temp[1].style.backgroundColor = '#ff3c00ff'
+                    }
+                    else if (dados[0].temp_disco >= 40) {
+                        div_temp[1].style.backgroundColor = '#ff7b00ff'
+                    }
+                    else {
+                        div_temp[1].style.backgroundColor = '#fdd700ff'
+                    }
+                
                     if (dado_cpu >= 95) {
                         circ_cpu.style.top = '0%';
                     }
@@ -911,7 +939,14 @@ function plotarGraficoParticaoDisco(dadosKpi) {
 }
 
 
+const selectElement = document.getElementById('dash');
 
+selectElement.addEventListener('change', function(){
+    const url = this.value;
+    if(url){
+        window.location = url;
+    }
+});
 
 window.onload = () => {
     carregarDashboardInicial();
