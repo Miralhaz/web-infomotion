@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Disco</title>
+    <title>Dashboard região</title>
     <link rel="stylesheet" href="../css/dashRegiao.css">
+    <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
     <script src="../js/dashRegiao.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -34,7 +35,7 @@
                         <img src="../assets/imgs-dashboard/fluent-mdl2_b-i-dashboard.png" alt="">
                         Dashboard </a>
                 </div>
-                   <div class="icone">
+                <div class="icone">
                     <a href="dashboardRegiao.html" class="descricao-icone">
                         <img src="../assets/imgs-dashboard/regiao-icon.png" alt="">
                         Regiões </a>
@@ -52,7 +53,7 @@
                         <img src="../assets/imgs-dashboard/uil_exit.png" alt="">
                         Sair </a>
                 </div>
-                
+
             </div>
         </div>
     </section>
@@ -66,7 +67,7 @@
                             <h1>Previsão de requisição nos proximos 16 dias</h1>
                         </div>
                         <div class="container-canva">
-                            <canvas id="grafico-linha-barra-previsao"></canvas>
+                         <canvas id="grafico-linha-barra-previsao"></canvas>
                         </div>
                     </div>
 
@@ -86,15 +87,18 @@
                             <h3>Comparação com distancia de 7 dias</h3>
                         </div>
                         <div class="container-canva">
-                            <canvas id="grafico-barra-comparacao"></canvas>
+                            <div><canvas id="grafico-barra-comparacao-r"></canvas></div>
+                            <div><canvas id="grafico-barra-comparacao-l"></canvas></div>
                         </div>
                     </div>
 
-                    <div class="grafico-horarioDePico">
+                    <div class="grafico-horarioDePico"> 
                         <div class="card-dash">
-                             <h3>Horários com maior pico</h3>
+                            <h3>Horários com maior pico</h3>
                         </div>
-                        <canvas id="grafico-barra-horarioDePico"></canvas>
+                        <div class="container-canva">
+                                <canvas id="grafico-barra-horarioDePico"></canvas>
+                        </div>
                     </div>
 
                     <div class="descicao-regiao">

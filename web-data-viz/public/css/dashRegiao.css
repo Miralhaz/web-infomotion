@@ -136,6 +136,8 @@ section.header .header-left .icone a:hover img {
 width: 97%;
     height: 80%;
      margin: 10px;
+     display: flex;
+     flex-direction: row;
 }
 
 .lista-regiao{
