@@ -89,6 +89,50 @@ section.header .header-left .icone a:hover img {
     filter: brightness(0);
 }
 
+
+section.header .header-left .container-submenu {
+  position: relative;
+  padding: 7% 0;
+}
+
+.submenu {
+  position: absolute;
+  left: 100%;
+  top: 16%;
+  background-color: var(--cinzaHeader);
+  border: 1px solid var(--amarelo);
+  width: 250px;
+  z-index: 10;
+  padding: 10px 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.submenu a {
+  color: var(--branco);
+  text-decoration: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 300;
+  width: 100%;
+  display: block;
+  transition: background-color 0.2s ease;
+}
+
+.submenu a:hover {
+  background-color: var(--amarelo);
+  color: var(--preto);
+  padding: 10px 20px;
+}
+
+section.header .header-left .container-submenu:hover .submenu {
+  opacity: 1;
+  visibility: visible;
+}
+
 * { box-sizing: border-box; }
 
 
