@@ -24,7 +24,6 @@ body {
     scroll-behavior: smooth;
 }
 
-/* Header */
 
 section.header .header-left {
     display: flex;
@@ -150,144 +149,83 @@ section.header .header-left .container-submenu:hover .submenu {
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 20px;            
+    gap: 10px;            
     overflow: hidden;
     padding: 0;
 }
 
+.container-grafico{
+ width: 100%;
+ height: 60%;
+ display: flex;
+ flex-direction: row;
+}
 
-.kpis { 
-    display: grid;
-    grid-template-columns: 30% 30% 35%;
-    grid-template-rows: 140px 140px;
-    gap: 24px;     
+.container-kpi{
     width: 100%;
-}
-
-
-.lista { 
-    grid-column: 3;
-    grid-row: 1 / span 2;
-}
-
-.operacao { grid-column: 1; grid-row: 1; }
-.alertas  { grid-column: 2; grid-row: 1; }
-.impacto  { grid-column: 1; grid-row: 2; }
-.vida     { grid-column: 2; grid-row: 2; }
-
-.kpi {
-    background-color: #222222;
-    border-radius: 12px;
-    padding: 12px;
-}
-
-
-.dashboards {
+    height: 40%;
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
+    flex-direction: row;
+}
+
+.grafico-previsao{
+    width: 80%;
+    height: 95%;
+      margin: 10px;
+    background-color: var(--cinzaDash);
+    border-radius: 20px;
+}
+
+.container-canva{
+width: 97%;
+    height: 80%;
+     margin: 10px;
+}
+
+.lista-regiao{
+    width: 20%;
+    height: 95%;
+      margin: 10px;
+    background-color: var(--cinzaDash);
+       border-radius: 20px;
+}
+
+.grafico-comparacao{
+ width: 40%;
+    height: 95%;
+      margin: 10px;
+   background-color: var(--cinzaDash);
+      border-radius: 20px;
+}
+
+.grafico-horarioDePico{
+ width: 40%;
+    height: 95%;
+      margin: 10px;
+    background-color: var(--cinzaDash);
+       border-radius: 20px;
+
+}
+
+.descicao-regiao{
+ width: 20%;
+    height: 95%;
+      margin: 10px;
+    background-color: var(--cinzaDash);
+       border-radius: 20px;
+}
+
+.card-dash{
+    background-color: #fff;
     width: 100%;
-    padding: 0;
-    height: calc(100% -  (140px * 2) - 40px); 
-    min-height: 220px;
-}
-
-.dashboard {
-    background-color: #222222;
-    width: 50%;
-    height: 100%;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.chart1{
-    background-color: #222222;
-    width: 45%;
-    height: 100%;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-/* conteudo operação */
-
-.kpi {
-    background-color: #222222;
-    border-radius: 12px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    color: #f3f3f3;
-}
-
-.kpi-header {
-    background-color: #f3f3f3;
-    padding: 10px 10px;
-}
-
-.kpi-header h2 {
-    display: flex;
-    justify-content: center;
-    color: #000;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.operacao .kpi-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;   
-}
-
-.kpi-status-operacao{
+    height: 15%;
+    border-radius: 20px;
+    border-bottom-left-radius: 0px ;
+    border-bottom-right-radius: 0px ;
+            
+  
     display: flex;
     align-items: center;
-    margin-right: 20px;
-    margin-top: 5px;
-}
-
-
-.kpi-body img {
-    width: 60px;
-    height: 60px;
-}
-
-.kpi-body h3 {
-    font-size: 22px;
-    font-weight: 700;
-}
-
-.kpi-footer {
-   
-    width: 100%;
-    display: flex;
     justify-content: center;
+    text-align: center var(--cinzaDash);
 }
-
-.btn-acao {
-    width:35%;
-    padding: 6px 0;
-    border-radius: 8px;
-    border: none;
-    background-color: #f3f3f3;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    color: #000;
-    transition: 0.3s;
-}
-
-.btn-acao:hover {
-    background-color: #ffdb82;
-}
-
-
-
-.kpi {
-    background-color: #222222;
-    border-radius: 12px;
-    padding: 0; 
-    overflow: hidden; 
-}
-
-
-/* conteudo kpi alertas */
