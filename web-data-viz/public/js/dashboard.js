@@ -574,9 +574,7 @@ function plotarGraficoLinhas(dados, idServidor) {
         disco.push(dados[i].uso_disco);
     }
 
-    if (window.graficoLinhas instanceof Chart) {
-        window.graficoLinhas.destroy();
-    }
+   
 
     const config = {
         type: 'line',
