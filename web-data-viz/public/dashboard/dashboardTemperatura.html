@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Temperatura - InfoMotion</title>
+  <link rel="stylesheet" href="../css/dashboardTemperatura.css">
+  <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
+</head>
+
+<body onload="listarServidores()">
+  <section class="header">
+    <div class="header-left">
+      <div class="parte-cima">
+        <div class="icone ativo">
+          <a href="perfil.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/perfil.png" alt="">
+            Perfil </a>
+        </div>
+        <div id="usuario-header" class="icone">
+          <a href="tela-usuarios.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/mdi_users.png" alt="">
+            Usuários
+          </a>
+        </div>
+        <div class="icone">
+          <a href="tela-servidores.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/teenyicons_servers-solid.png" alt="">
+            Servidores
+          </a>
+        </div>
+        <div class="icone container-submenu">
+          <a href="dashboardHistorico.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/fluent-mdl2_b-i-dashboard.png" alt="">
+            Dashboard
+            <p style="margin-left: 10px; font-size: 12px;">▶</p>
+          </a>
+          <div class="submenu">
+            <a href="dashboardHistorico.html">Histórico</a>
+            <a href="dashboardDisco.html">Disco dos Servidores</a>
+            <a href="dashboardRegiao.html">Região</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="parte-baixo">
+        <div class="icone">
+          <a href="https://sentinela-grupo-3.atlassian.net/servicedesk/customer/portal/35" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/fluent_person-suport-32-light.png" alt="">
+            Suporte
+          </a>
+        </div>
+        <div class="icone">
+          <a href="../index.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/uil_exit.png" alt="">
+            Sair
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="content-geral">
+
+    <div class="div-selects">
+      Nome do servidor:
+      <select name="servidores" id="servidores"></select>
+      Tipo de dashboard:
+      <select name="dash" id="dash" class="nome_dash" onchange="trocarDePagina()">
+        <option value="dashboard.html">Dashboard Near-Real-Time</option>
+        <option value="#">Dashboard de Temperatura</option>
+        <option value="dashboardRede.html">Dashboard de Rede</option>
+      </select>
+    </div>
+
+    <div class="dashboard-content-kpi">
+      <div class="container-kpis">
+        <div class="kpi1">
+          <div class="titulo">
+            <p> Temperatura Atual CPU: </p>
+          </div>
+          <div>
+            <canvas style="width: fit-content; height: 160px; padding: 2vh;" id="gaugeCPUTempChart"></canvas>
+          </div>
+          <p style="color: white; margin-top: 3%;"> Parâmetro Atual Temp. CPU: 80°C </p>
+        </div>
+        <div class="kpi2">
+          <div class="titulo">
+            <p> Temperatura Atual Disco: </p>
+          </div>
+          <div>
+            <canvas id="gaugeDiscoTempChart" style="width: fit-content; height: 160px; padding: 2vh;"></canvas>
+          </div>
+          <p style="color: white; margin-top: 3%;"> Parâmetro Atual Temp. Disco: 80°C </p>
+        </div>
+        <div class="kpi3">
+          <div class="titulo">
+            <p> Eficiência térmica entre os componentes (última hora): </p>
+          </div>
+          <div class="container-eficiencia" style="margin-top: 10px;">
+            <div class="container-info-componente">
+              <p class="nome-componente"> CPU </p>
+              <p class="info-eficiencia"> 78°C • 65% uso </p>
+            </div>
+            <div class="status-eficiencia">
+              <p class="numero-eficiencia" style="color: #8bc34a"> 1.20 <span class="unidade-eficiencia"> °C/% </span>
+              </p>
+              <p class="status" style="color: #8bc34a;"> Adequado </p>
+            </div>
+          </div>
+          <div class="container-eficiencia">
+            <div class="container-info-componente">
+              <p class="nome-componente"> Disco </p>
+              <p class="info-eficiencia"> 78°C • 65% uso </p>
+            </div>
+            <div class="status-eficiencia">
+              <p class="numero-eficiencia" style="color: #8bc34a"> 1.20 <span class="unidade-eficiencia"> °C/% </span>
+              </p>
+              <p class="status" style="color: #8bc34a"> Adequado </p>
+            </div>
+          </div>
+          <div class="legenda">
+            <div class="container-legenda">
+              <div class="legenda-descricao">Excelente</div>
+              <div class="legenda-valor" style="color: #4caf50;">&lt; 1.0</div>
+            </div>
+            <div class="container-legenda">
+              <div class="legenda-descricao">Adequado</div>
+              <div class="legenda-valor" style="color: #8bc34a;">1.0 - 1.5</div>
+            </div>
+            <div class="container-legenda">
+              <div class="legenda-descricao">Atenção</div>
+              <div class="legenda-valor" style="color: #ffc107;">1.5 - 2.0</div>
+            </div>
+            <div class="container-legenda">
+              <div class="legenda-descricao">Crítico</div>
+              <div class="legenda-valor" style="color: #f44336;">&gt; 2.0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-graficos">
+      <div class="dashboard-content-graficos-meio">
+        <div class="grafico-linha-hist">
+          <div class="titulo" style="display: flex; justify-content: space-between; align-items: center;">
+            <p> Uso CPU X Temperatura CPU (última(s) X horas): </p>
+
+            <div style="display: flex; gap: 1vh;">
+
+              <div class="select-grafico">
+                <div class="container-select" id="select_display">
+                  1 hora
+                  <span class="seta"> &#9660; </span>
+                </div>
+
+                <ul class="lista-opcoes hidden" id="lista_opcoes">
+                  <li data-value="1hora"> 1 hora </li>
+                  <li data-value="24horas"> 24 horas</li>
+                  <li data-value="dias"> 7 dias</li>
+                </ul>
+
+                <input type="hidden" id="select_value" value="horas">
+              </div>
+
+              <div class="select-grafico">
+                <div class="container-select" id="select_display_componentes">
+                  CPU
+                  <span class="seta"> &#9660; </span>
+                </div>
+                <ul class="lista-opcoes hidden" id="lista_opcoes_componentes">
+                  <li data-value="cpu"> CPU </li>
+                  <li data-value="disco"> Disco </li>
+                </ul>
+                <input type="hidden" id="select_value_componentes" value="cpu">
+              </div>
+
+            </div>
+
+          </div>
+          <div>
+            <canvas id="lineChart" style="width: 600px; height: 220px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-content-graficos-direita">
+        <div class="grafico-dispersao-temperatura">
+          <div class="titulo" style="display: flex; justify-content: space-between; align-items: center;">
+            <p> Dispersão da temperatura do servidor X: </p>
+          </div>
+          <div style="width: 100%; height: 100%; padding: 10px;">
+            <canvas id="histogramChart"></canvas>
+          </div>
+        </div>
+        <div class="top-processos">
+          <div class="titulo" style="display: flex; justify-content: space-between; align-items: center;">
+            <p> Top 5 processos ativos (maior RAM e CPU): </p>
+          </div>
+          <div class="processos-header">
+            <span class="col-nome">Nome do Processo</span>
+            <span class="col-cpu">CPU %</span>
+            <span class="col-ram">RAM %</span>
+          </div>
+          <div class="processos-lista" id="processosLista">
+            <div class="processo-item">
+              <span class="col-nome">System Idle Process</span>
+              <span class="col-cpu">92.1%</span>
+              <span class="col-ram">0.0%</span>
+            </div>
+            <div class="processo-item">
+              <span class="col-nome">Chrome.exe</span>
+              <span class="col-cpu">3.5%</span>
+              <span class="col-ram">8.5%</span>
+            </div>
+            <div class="processo-item">
+              <span class="col-nome">Chrome.exe</span>
+              <span class="col-cpu">3.5%</span>
+              <span class="col-ram">8.5%</span>
+            </div>
+            <div class="processo-item">
+              <span class="col-nome">Chrome.exe</span>
+              <span class="col-cpu">3.5%</span>
+              <span class="col-ram">8.5%</span>
+            </div>
+            <div class="processo-item">
+              <span class="col-nome">Chrome.exe</span>
+              <span class="col-cpu">3.5%</span>
+              <span class="col-ram">8.5%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../js/dashboard-temperatura.js"></script>
+<script>
+
+  /* todas as variáveis que vai utilizar para que o JS funcione */
+  var display = document.getElementById('select_display');
+  var lista_opcoes = document.getElementById('lista_opcoes');
+  var input_escondido = document.getElementById('select_value');
+
+  /* essa função justamente faz com que o display do select, quando ele é clicado pelo usuário, faça justamente
+  que ative aquelas classes do CSS, então a lista de opcoes, com o .classList e com o .toggle (ativar) deixa com o css de .visible
+  que existe no CSS, e o mesmo com o de baixo, mas agora mudança na seta (.open da seta que faz com que ela gire 180 graus) */
+  display.onclick = function () {
+    lista_opcoes.classList.toggle('visible');
+    display.classList.toggle('open');
+  }
+
+  /* pega todos os li presentes na lista do JS */
+  var lista_de_li_opcoes = lista_opcoes.getElementsByTagName('li');
+
+  /* percorre um for para verificar todas as opcoes e também ver qual o usuário selecionou */
+  for (var i = 0; i < lista_de_li_opcoes.length; i++) {
+    var item = lista_de_li_opcoes[i];
+
+    item.onclick = function () {
+      var value = this.getAttribute('data-value');
+      var text = this.textContent.trim();
+
+      // atualiza o texto visível do select.
+      // É importante usar firstChild para não atrapalhar da seta.
+      display.firstChild.nodeValue = text;
+
+      // atualiza o valor do campo escondido
+      input_escondido.value = value;
+
+      const componenteSelecionado = document.getElementById('select_value_componentes').value;
+      carregarEAtualizarGraficoLinhas(componenteSelecionado, value);
+
+      // fecha o dropdown 
+      lista_opcoes.classList.remove('visible');
+      display.classList.remove('open');
+    };
+  }
+
+  document.onclick = function (e) {
+    if (!display.contains(e.target) && !lista_opcoes.contains(e.target)) {
+      lista_opcoes.classList.remove('visible');
+      display.classList.remove('open');
+    }
+  }
+
+
+
+
+
+
+  function trocarDePagina() {
+
+    var select_dashboards = document.getElementById('dash')
+    var select_selecionado = select_dashboards.value
+
+    if (select_selecionado !== '#' && select_selecionado !== '') {
+      window.location.href = select_selecionado;
+    }
+  }
+
+
+
+
+
+
+  /* todas as variáveis que vai utilizar para que o JS funcione */
+  var display_componentes = document.getElementById('select_display_componentes');
+  var lista_opcoes_componentes = document.getElementById('lista_opcoes_componentes');
+  var input_escondido_componente = document.getElementById('select_value_componentes');
+
+  /* essa função justamente faz com que o display do select, quando ele é clicado pelo usuário, faça justamente
+  que ative aquelas classes do CSS, então a lista de opcoes, com o .classList e com o .toggle (ativar) deixa com o css de .visible
+  que existe no CSS, e o mesmo com o de baixo, mas agora mudança na seta (.open da seta que faz com que ela gire 180 graus) */
+  display_componentes.onclick = function () {
+    lista_opcoes_componentes.classList.toggle('visible');
+    display_componentes.classList.toggle('open');
+  }
+
+  /* pega todos os li presentes na lista do JS */
+  var lista_de_li_opcoes_componentes = lista_opcoes_componentes.getElementsByTagName('li');
+
+  /* percorre um for para verificar todas as opcoes e também ver qual o usuário selecionou */
+  for (var i = 0; i < lista_de_li_opcoes_componentes.length; i++) {
+    var item = lista_de_li_opcoes_componentes[i];
+
+    item.onclick = function () {
+      var value = this.getAttribute('data-value');
+      var text = this.textContent.trim();
+
+      // atualiza o texto visível do select.
+      // É importante usar firstChild para não atrapalhar da seta.
+      display_componentes.firstChild.nodeValue = text;
+
+      // atualiza o valor do campo escondido
+      input_escondido_componente.value = value;
+
+      const periodoSelecionado = document.getElementById('select_value').value;
+      carregarEAtualizarGraficoLinhas(value, periodoSelecionado);
+
+      // fecha o dropdown 
+      lista_opcoes_componentes.classList.remove('visible');
+      display_componentes.classList.remove('open');
+    };
+  }
+
+  document.onclick = function (e) {
+    if (!display_componentes.contains(e.target) && !lista_opcoes_componentes.contains(e.target)) {
+      lista_opcoes_componentes.classList.remove('visible');
+      display_componentes.classList.remove('open');
+    }
+  }
+
+</script>
+
+</html>

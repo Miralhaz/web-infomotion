@@ -89,6 +89,50 @@ section.header .header-left .icone a:hover img {
     filter: brightness(0);
 }
 
+
+section.header .header-left .container-submenu {
+  position: relative;
+  padding: 7% 0;
+}
+
+.submenu {
+  position: absolute;
+  left: 100%;
+  top: 16%;
+  background-color: var(--cinzaHeader);
+  border: 1px solid var(--amarelo);
+  width: 250px;
+  z-index: 10;
+  padding: 10px 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.submenu a {
+  color: var(--branco);
+  text-decoration: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 300;
+  width: 100%;
+  display: block;
+  transition: background-color 0.2s ease;
+}
+
+.submenu a:hover {
+  background-color: var(--amarelo);
+  color: var(--preto);
+  padding: 10px 20px;
+}
+
+section.header .header-left .container-submenu:hover .submenu {
+  opacity: 1;
+  visibility: visible;
+}
+
 * { box-sizing: border-box; }
 
 
@@ -184,7 +228,15 @@ section.header .header-left .icone a:hover img {
     display: flex;
     justify-content: center;
     color: #000;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.kpi-header p {
+    display: flex;
+    justify-content: center;
+    color: #000;
+    font-size: 14px;
     font-weight: 600;
 }
 
@@ -213,10 +265,40 @@ section.header .header-left .icone a:hover img {
 }
 
 .kpi-footer {
-   
+    flex-direction: column;
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+
+.lista .kpi-footer {
+    flex-direction: column;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+
+.kpi-footer p{
+    font-size: 12px;
+    margin-bottom: -2px;
+}
+
+.lista .btn-acao {
+    width:45%;
+    padding: 6px 0;
+    border-radius: 8px;
+    border: none;
+    background-color: #f3f3f3;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #000;
+    transition: 0.3s;
 }
 
 .btn-acao {
@@ -247,3 +329,214 @@ section.header .header-left .icone a:hover img {
 
 
 /* conteudo kpi alertas */
+
+.status_alertas{
+    display: flex;
+    margin: 0;
+    justify-content: center;
+}
+
+.alertas .kpi-body{
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+}
+ 
+.alertas .kpi-body span{
+   font-size: 40px;
+}
+
+.alertas .kpi-footer{
+    margin-top: -12px;
+}
+/* conteudo lista */
+.organizador_lista{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+.pesquisa{
+    margin-right: 5px;
+    margin-top: 3px;
+    display: flex;
+    justify-content: right;
+    background-color: white;
+    color: black;
+    width: 30%;
+    height: 65%;
+    border-radius: 12px;
+    align-items: center;
+    
+}
+.pesquisa img{
+    width: 20px;
+    height: 20px;
+}
+.estados_lista{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+.estados_lista span{
+margin: 0px 0px 0px 10px;
+}
+
+
+.lista .moderado{
+    font-size: 14px;
+    background-color: #bd953f;
+    border-radius: 10px;
+    width: 25%;
+    display: flex;
+    justify-content: center;
+}
+
+.lista .risco{
+    font-size: 14px;
+    background-color: red;
+    border-radius: 10px;
+    width: 25%;
+    display: flex;
+    justify-content: center;
+}
+
+.lista .kpi-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+}
+
+.lista .kpi-body div{
+    padding: 0;
+    margin: 0;
+}
+
+.lista .kpi-body p{
+    padding: 2px;
+
+}
+
+/* kpi impacto */
+.impacto .kpi-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.impacto .tudo{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.impacto .importancia{
+    font-size: 10px;
+    margin-top: 30px;
+}
+
+.impacto .discos{
+    font-size: 15px;
+}
+
+.impacto .listagem{
+    margin-left: 10px;
+    font-size: 13px;
+}
+
+.vida .kpi-header h2 {
+    display: flex;
+    justify-content: center;
+    color: #000;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.vida .kpi-header {
+    background-color: #f3f3f3;
+    margin: 0;
+    padding: 0;
+}
+
+
+.vida .kpi-body{
+justify-content: center;
+display: flex;
+flex-direction: row-reverse;
+gap: 15px;
+}
+
+.vida .classificacao{
+    font-size: 11px;
+    margin-top: 15px;
+}
+
+.vida .discos{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    margin-top: 5px;
+    font-size: 14px;
+    margin-right: 25px;
+    padding: 10px;
+}
+
+/* gráfico de linha */
+.dashboards .chart2 .kpi-body {
+    background: #1e1e1e;
+    padding: 20px;
+
+    border: 1px solid #444;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    width: 100%;
+    height: 90%;
+}
+
+#graficolinhas {
+    width: 100%;
+}
+
+/* grafico barras  */
+
+
+
+#graficobarras {
+    width: 100%;
+}
+
+.dashboards .chart1 .kpi-body {
+    background: #1e1e1e;
+    padding: 20px;
+
+    border: 1px solid #444;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    width: 100%;
+    height: 90%;
+}
+
+.chart1 .kpi-header h2 {
+    display: flex;
+    justify-content: center;
+    color: #000;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.chart1 .kpi-header {
+    background-color: #f3f3f3;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+
+

@@ -8,7 +8,7 @@
           labels: ['MAX', 'MÉD', 'MIN'],
           datasets: [{
             label: 'Métricas',
-            data: [12, 9, 7,],
+            data: [429, 312, 44,],
             backgroundColor: ['#fff','#fffae6','#e6e1c8']
           }]
         },
@@ -30,7 +30,7 @@
           labels: ['MAX', 'MÉD', 'MIN'],
           datasets: [{
             label: 'Métricas',
-            data: [5, 15, 10],
+            data: [623, 434, 72],
             backgroundColor: ['#d9b98a','#b89360','#8c6f45']
           }]
         },

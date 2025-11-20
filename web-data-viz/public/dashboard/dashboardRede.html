@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,60 +10,69 @@
   <link rel="stylesheet" href="../css/dashboardRede.css">
   <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
 </head>
+
 <body>
   <section class="header">
-        <div class="header-left">
-            <div class="parte-cima">
-                <div class="icone">
-                    <a href="perfil.html" class="descricao-icone">
-                        <img src="../assets/imgs-dashboard/perfil.png" alt="">
-                        Perfil </a>
-                </div>
-                <div id="usuario-header" class="icone">
-                    <a href="tela-usuarios.html" class="descricao-icone">
-                        <img src="../assets/imgs-dashboard/mdi_users.png" alt="">
-                        Usuários </a>
-                </div>
-                <div class="icone">
-                    <a href="tela-servidores.html" class="descricao-icone">
-                        <img src="../assets/imgs-dashboard/teenyicons_servers-solid.png" alt="">
-                        Servidores </a>
-                </div>
-                <div class="icone">
-                    <a href="dashboardHistorico.html" class="descricao-icone">
-                        <img src="../assets/imgs-dashboard/fluent-mdl2_b-i-dashboard.png" alt="">
-                        Dashboard </a>
-                </div>
-            </div>
-            <div class="parte-baixo">
-                <div class="icone">
-                    <a href="https://sentinela-grupo-3.atlassian.net/servicedesk/customer/portal/35"
-                        class="descricao-icone">
-                        <img src="../assets/imgs-dashboard/fluent_person-suport-32-light.png" alt="">
-                        Suporte </a>
-                </div>
-                <div class="icone">
-                    <a href="../index.html" class="descricao-icone">
-                        <img src="../assets/imgs-dashboard/uil_exit.png" alt="">
-                        Sair </a>
-                </div>
-            </div>
+    <div class="header-left">
+      <div class="parte-cima">
+        <div class="icone">
+          <a href="perfil.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/perfil.png" alt="">
+            Perfil </a>
         </div>
+        <div id="usuario-header" class="icone">
+          <a href="tela-usuarios.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/mdi_users.png" alt="">
+            Usuários </a>
+        </div>
+        <div class="icone">
+          <a href="tela-servidores.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/teenyicons_servers-solid.png" alt="">
+            Servidores </a>
+        </div>
+        <div class="icone container-submenu">
+          <a href="dashboardHistorico.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/fluent-mdl2_b-i-dashboard.png" alt="">
+            Dashboard
+            <p style="margin-left: 10px; font-size: 12px;">▶</p>
+          </a>
+          <div class="submenu">
+            <a href="dashboardHistorico.html">Histórico</a>
+            <a href="dashboardDisco.html">Disco dos Servidores</a>
+            <a href="dashboardRegiao.html">Região</a>
+          </div>
+        </div>
+      </div>
+      <div class="parte-baixo">
+        <div class="icone">
+          <a href="https://sentinela-grupo-3.atlassian.net/servicedesk/customer/portal/35" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/fluent_person-suport-32-light.png" alt="">
+            Suporte </a>
+        </div>
+        <div class="icone">
+          <a href="../index.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/uil_exit.png" alt="">
+            Sair </a>
+        </div>
+      </div>
+    </div>
   </section>
 
   <div class="dashboardRede">
 
-    
+
     <div class="cardDashRede kpiAlerta">
       <div class="cardHeader">
         <p>Quantidade de alertas</p>
-      </div> 
+      </div>
       <div class="box">
-        <div class="totalHoras">Ultimas x horas: </div> <t class="num">8</t>
-        <div class="atual">Alertas ativos: </div> <t class="num">2</t>
+        <div class="totalHoras">Ultimas x dias: </div>
+        <t class="num">8</t>
+        <div class="atual">Alertas ativos: </div>
+        <t class="num">2</t>
       </div>
     </div>
-    
+
     <div class="cardDashRede kpiInternet">
       <div class="cardHeader">
         <div class="upDown">
@@ -72,7 +82,7 @@
           <img src="../assets/icon/setaPior.svg" class="seta" alt="">
         </div>
         <div class="upDown">
-          <img src="../assets/icon/setaPior.svg" class="seta" alt="">
+          <img src="../assets/icon/setaMelhor.svg" class="seta" alt="">
           <img src="../assets/icon/icondownload.svg" class="icon" alt="download">
           <div class="cima">Download</div>
           <div class="baixo">434 Mbps</div>
@@ -86,23 +96,23 @@
           <canvas id="chartRight"></canvas>
         </div>
       </div>
-        
+
     </div>
-    
+
     <div class="selects">
-      
-        Tempo de captura:
-        <select name="servidores" id="selectTempo" onchange="refresh(this.value)">
-          <option value="" selected disabled>Tempo</option>
-          <option value="1" >1 Dia</option>
-          <option value="7" >7 Dias</option>
-          <option value="30" >30 Dias</option>
-        </select>
-        Nome da dashboard
-        <select name="" id="">
-          <option value="" selected disabled>Dashboard Rede</option>
-        </select>
-      
+
+      Tempo de captura:
+      <select name="servidores" id="selectTempo" onchange="refresh(this.value)">
+        <option value="" selected disabled>Tempo</option>
+        <option value="1">1 Dia</option>
+        <option value="7">7 Dias</option>
+        <option value="30">30 Dias</option>
+      </select>
+      Nome da dashboard
+      <select name="" id="">
+        <option value="" selected disabled>Dashboard Rede</option>
+      </select>
+
     </div>
 
     <div class="cardDashRede graficoLinhaPrincipal">
@@ -110,11 +120,11 @@
         <p>Gráfico de linhas de pacotes enviados e recebidos x tempo</p>
       </div>
       <div class="divGraficoLinhaPrincipal">
-        <canvas id="graficoLinhaPrincipal"></canvas> 
+        <canvas id="graficoLinhaPrincipal"></canvas>
       </div>
 
     </div>
-    
+
     <div class="parteBaixo">
 
       <div class="cardDashRede graficoLinhaSecundario">
@@ -122,17 +132,17 @@
           <p>Quantidade de pacotes perdidos x tempo</p>
         </div>
         <div class="divGraficoLinhaSecundario">
-          <canvas id="graficoLinhaSecundario"></canvas> 
+          <canvas id="graficoLinhaSecundario"></canvas>
         </div>
       </div>
-      
+
       <div class="cardDashRede  tabelaRede">
         <div class="cardHeader cardDashRedeT">
-          <p>Tabela conexões</p>
+          <p>Tabela conexões (12 ativas no momento)</p>
         </div>
         <div class="tableScroll">
           <table>
-            <thead >
+            <thead>
               <tr class="cabecalho">
                 <th>Nome</th>
                 <th>Local adress</th>
@@ -210,12 +220,13 @@
         </div>
       </div>
     </div>
-    
+
 
   </div>
 
- 
+
   <script src="../js/dashboardRede.js">
   </script>
 </body>
+
 </html>
