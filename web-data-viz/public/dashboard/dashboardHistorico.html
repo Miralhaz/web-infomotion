@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Histórico - InfoMotion</title>
-  <link rel="stylesheet" href="../css/dashboards.css">
+  <link rel="stylesheet" href="../css/dashboard-historico.css">
   <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
 </head>
 
@@ -30,18 +30,27 @@
             Servidores
           </a>
         </div>
-        <div class="icone">
+        <div class="icone container-submenu">
           <a href="dashboardHistorico.html" class="descricao-icone">
             <img src="../assets/imgs-dashboard/fluent-mdl2_b-i-dashboard.png" alt="">
             Dashboard
+            <p style="margin-left: 10px; font-size: 12px;">▶</p>
           </a>
+          <div class="submenu">
+            <a href="dashboardHistorico.html">Histórico</a>
+            <a href="dashboardDisco.html">Disco dos Servidores</a>
+          </div>
+        </div>
+        <div class="icone">
+          <a href="dashboardRegiao.html" class="descricao-icone">
+            <img src="../assets/imgs-dashboard/regiao-icon.png" alt="">
+            Regiões </a>
         </div>
       </div>
 
       <div class="parte-baixo">
         <div class="icone">
-          <a href="https://sentinela-grupo-3.atlassian.net/servicedesk/customer/portal/35"
-            class="descricao-icone">
+          <a href="https://sentinela-grupo-3.atlassian.net/servicedesk/customer/portal/35" class="descricao-icone">
             <img src="../assets/imgs-dashboard/fluent_person-suport-32-light.png" alt="">
             Suporte
           </a>
@@ -60,10 +69,10 @@
     <div class="div-selects">
       Tempo de captura:
       <select name="servidores" id="selectTempo" onchange="refresh(this.value)">
-        <option value=""  disabled>Selecione o tempo de medição</option>
-        <option value="1" >1 Dia</option>
-        <option value="7" >7 Dias</option>
-        <option value="30" >30 Dias</option>
+        <option value="" disabled>Selecione o tempo de medição</option>
+        <option value="1">1 Dia</option>
+        <option value="7">7 Dias</option>
+        <option value="30">30 Dias</option>
       </select>
 
       Tipo de dashboard:
@@ -77,61 +86,73 @@
         <div class="nome_tabela" id="nome_tabela">
           Relatório de alertas(X Tempo)
         </div>
-          <table class="table_alerta_servidores">
-            <thead>
-              <tr>
-                <th scope="col" onclick="ordenarPor('nome')" id="table_alerta_nome">Nome do servidor<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-                <th scope="col" onclick="ordenarPor('cpu')" id="table_alerta_cpu">CPU<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-                <th scope="col" onclick="ordenarPor('ram')" id="table_alerta_ram">RAM<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-                <th scope="col" onclick="ordenarPor('disco')" id="table_alerta_disco">Disco<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-                <th scope="col" onclick="ordenarPor('risco')" id="table_alerta_risco">Total de alertas<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-              </tr>
-            </thead>
-            <tbody id="bodyTabelaAlerta">
-            </tbody>
-          </table>
-
+        <table class="table_alerta_servidores">
+          <thead>
+            <tr>
+              <th scope="col" onclick="ordenarPor('nome')" id="table_alerta_nome">Nome do servidor<img
+                  src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+              <th scope="col" onclick="ordenarPor('cpu')" id="table_alerta_cpu">CPU<img
+                  src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+              <th scope="col" onclick="ordenarPor('ram')" id="table_alerta_ram">RAM<img
+                  src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+              <th scope="col" onclick="ordenarPor('disco')" id="table_alerta_disco">Disco<img
+                  src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+              <th scope="col" onclick="ordenarPor('risco')" id="table_alerta_risco">Total de alertas<img
+                  src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+            </tr>
+          </thead>
+          <tbody id="bodyTabelaAlerta">
+          </tbody>
+        </table>
       </div>
 
-      <div class="div-comparacao-alertas">
-        <div class="nome_gráfico" id="nome_gráfico">
-            <a>Comparação do total de alertas do srv-tech-x</a>
-          </div>
-        <div class="div-chart-bar">
-          <canvas id="barGraph"></canvas>
+      <div class="gráfico_chart">
+        <div class="nome_gráfico" id="titulo">
+          <a>Situação dos servidores</a>
+        </div>
+        <div class="div-pie-chart">
+          <canvas id="pieChart" class="grafico_alertas_tempo"></canvas>
         </div>
       </div>
-
-      </div>
-      
+    </div>
 
 
-    <div class="alerta_tempo_e_especificações_hardware">
 
-      <div class="gráfico_alertas_tempo_wrapper" id="gráfico_alertas_tempo_wrapper">
-      
-        <div class="gráfico_chart">
-          <div class="nome_gráfico" id="nome_gráfico">
-            <a>Situação dos servidores</a>
-          </div>
-          <div class="div-pie-chart">
-            <canvas id="pieChart" class="grafico_alertas_tempo"></canvas>
-          </div>
+    <div class="alerta_tempo_e_grafico_bolhas">
+
+      <div class="gráfico_chart">
+        <div class="nome_gráfico" id="nome_gráfico">
+          <a>Situação dos servidores</a>
+        </div>
+        <div class="div-line-historico">
+          <canvas id="lineChartHistorico" class="grafico_alertas_tempo" style="width: 100%;"></canvas>
         </div>
       </div>
 
       <div class="grafico_bubble">
         <div class="nome_gráfico" id="nome_gráfico">
-            <a>Criticidade de componentes</a>
+
+          <div class="filtro-wrapper">
+            <img src="../assets/imgs-dashboard/mynaui_filter_white.png" class="img-filtro" onclick="acionarFiltro()">
+
+            <div class="filtro-menu" id="menu">
+              <div class="opcoes-menu">
+                <button onclick="selecionar('CPU')">CPU</button>
+                <button onclick="selecionar('RAM')">RAM</button>
+                <button onclick="selecionar('DISCO')">DISCO</button>
+              </div>
+            </div>
           </div>
+
+          <a>Criticidade de componentes</a>
+        </div>
         <div class="div-bubble-chart">
-            <canvas id="bubbleChart" class="grafico_alertas_tempo"></canvas>
-          </div>
-      </div>
+          <canvas id="bubbleChart" class="grafico_alertas_tempo"></canvas>
+        </div>
       </div>
     </div>
-    
-        
+  </div>
+
   </div>
 
 
@@ -142,26 +163,27 @@
 <script>
   const idUsuario = sessionStorage.getItem("ID_USUARIO")
 
-  function refresh(x){
+  function refresh(x) {
     console.log('funcao refresh');
-    
+
     localStorage.setItem("tempoSelecionado", x); // salva antes do reload
     location.reload()
   }
 
-  function selecionarTempo(){
+  function selecionarTempo() {
     const tempo = localStorage.getItem("tempoSelecionado");
     if (tempo) {
       document.getElementById("selectTempo").value = tempo;
     }
   }
 
-  window.onload = function(){
+  window.onload = function () {
     receberAlertas(idUsuario);
     selecionarTempo();
-    plotarGraficoPizza();
+    plotarGraficoDonut();
     plotarGraficoBolhas();
     plotarGraficoBarras();
   }
 </script>
+
 </html>

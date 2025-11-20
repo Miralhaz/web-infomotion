@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servidores - InfoMotion</title>
-    <link rel="stylesheet" href="../css/dashboards.css">
-    <script src="../js/cadastro-servidor.js"></script>
-    <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
+    <title>Dashboard Disco</title>
+    <link rel="stylesheet" href="../css/dashRegiao.css">
+    <script src="../js/dashRegiao.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body onload="listarServidoresPorUsuario()">
+<body>
     <section class="header">
         <div class="header-left">
             <div class="parte-cima">
@@ -25,11 +25,11 @@
                         Usuários </a>
                 </div>
                 <div class="icone">
-                    <a href="#" class="descricao-icone">
+                    <a href="tela-servidores.html" class="descricao-icone">
                         <img src="../assets/imgs-dashboard/teenyicons_servers-solid.png" alt="">
                         Servidores </a>
                 </div>
-                <div class="icone container-submenu">
+                 <div class="icone container-submenu">
                     <a href="dashboardHistorico.html" class="descricao-icone">
                         <img src="../assets/imgs-dashboard/fluent-mdl2_b-i-dashboard.png" alt="">
                         Dashboard
@@ -40,7 +40,7 @@
                         <a href="dashboardDisco.html">Disco dos Servidores</a>
                     </div>
                 </div>
-                <div class="icone">
+                   <div class="icone">
                     <a href="dashboardRegiao.html" class="descricao-icone">
                         <img src="../assets/imgs-dashboard/regiao-icon.png" alt="">
                         Regiões </a>
@@ -58,49 +58,61 @@
                         <img src="../assets/imgs-dashboard/uil_exit.png" alt="">
                         Sair </a>
                 </div>
+                
             </div>
         </div>
-        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="dashboard-container">
+                <div class="container-grafico">
 
-        <div class="container-servidor">
-            <div class="container-content-servidor">
-                <div class="container-pesquisa-servidor">
-                    <img src="../assets/imgs-dashboard/Monitoramento-removebg-preview 1.png" alt="">
-                    <input type="search" placeholder="Pesquisa" id="ipt_pesquisarServidor"
-                        oninput="pesquisarServidores()">
-                    <img src="../assets/imgs-dashboard/mdi_search.png" alt="" style="cursor: pointer;">
-                    <div class="filtro_servidores">
-                        <img src="../assets/imgs-dashboard/mynaui_filter.png" alt="" onclick="acionarFiltro()"
-                            style="cursor: pointer;" class="img-filtro">
-                        <div class="filtro-menu" id="menu">
-                            <div class="opcoes-menu">
-                                <button onclick="selecionar('CPU')">CPU ↓</button>
-                                <button onclick="selecionar('RAM')">RAM ↓</button>
-                                <button onclick="selecionar('DISCO')">DISCO ↓</button>
-                            </div>
+                    <div class="grafico-previsao">
+                        <div class="card-dash">
+                            <h1>Previsão de requisição nos proximos 16 dias</h1>
+                        </div>
+                        <div class="container-canva">
+                            <canvas id="grafico-linha-barra-previsao"></canvas>
                         </div>
                     </div>
-                    <button class="btn-add" onclick="telaCadastroServidor()">+</button>
+
+                    <div class="lista-regiao">
+                        <div class="card-dash">
+                            <h2>Regiões por demanda</h2>
+                        </div>
+                        <div></div>
+                    </div>
+
                 </div>
-                <div class="listagem-servidores">
+
+                <div class="container-kpi">
+
+                    <div class="grafico-comparacao">
+                        <div class="card-dash">
+                            <h3>Comparação com distancia de 7 dias</h3>
+                        </div>
+                        <div class="container-canva">
+                            <canvas id="grafico-barra-comparacao"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="grafico-horarioDePico">
+                        <div class="card-dash">
+                             <h3>Horários com maior pico</h3>
+                        </div>
+                        <canvas id="grafico-barra-horarioDePico"></canvas>
+                    </div>
+
+                    <div class="descicao-regiao">
+                        <div class="card-dash">
+                            <h3>Informações de região</h3>
+                        </div>
+                        <div></div>
+                    </div>
 
                 </div>
             </div>
         </div>
-        <div class="container-modal">
-            <div class="card-modal">
-                <h1>EXCLUIR SERVIDOR</h1>
-                <p>Deseja excluir um servidor? Tenha em mente que será excluido para sempre, e não poderá ser
-                    restaurado!
-                </p>
-                <p>Digite "excluir" para excluir o servidor</p>
-                <input type="text" id="ipt_excluir" placeholder="excluir">
-                <div id="btn_excluir">
-
-                </div>
-            </div>
-        </div>
-
-</body>
+    </section>
 
 </html>
