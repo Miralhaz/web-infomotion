@@ -54,22 +54,61 @@
 document.addEventListener('DOMContentLoaded', () => {
       const mainCtx = document.getElementById('graficoLinhaPrincipal').getContext('2d');
 
-  const labels = ['2022', '2023', '2024']   
+  const labels = ['10/11/2025 11:40', '10/11/2025 11:50', '10/11/2025 12:00', '10/11/2025 12:10', '10/11/2025 12:20' ]   
 
   const dataMain = {
     labels: labels,
     datasets: [
       {
         label: 'Pacotes enviados',
-        data: [12, 23, 43, 52],
-        borderColor: '#fffae6',
-        backgroundColor: '#fffae6'
+        data: [8, 10, 15, 52, 7],
+        
+        backgroundColor: (context) => {
+            const valor = context.raw;
+            if (valor > 20) return '#0cff03ff'; 
+            if (valor > 10) return '#fffb00ff';   
+            return 'red';                      
+        },
+        borderColor: 'fffae6', 
+        segment: {
+          borderColor: (ctx) => {
+              
+              if (!ctx.p1 || !ctx.p1.parsed) return 'gray';
+              const valor = ctx.p1.parsed.y; 
+              if (valor > 20) {
+                  return '#0cff03ff'; 
+              } else if (valor > 10) {
+                  return '#fffb00ff';   
+              } else {
+                  return 'red';       
+              }
+          },},
+        borderDash: [20, 5], 
+        borderWidth: 2
       },
       {
         label: 'Pacotes recebidos',
-        data: [52, 43, 23, 12],
-        borderColor: '#b89360',
-        backgroundColor: '#b89360'
+        data: [3, 12, 17, 27, 50,],
+        backgroundColor: (context) => {
+            const valor = context.raw;
+            if (valor > 20) return '#0cff03ff'; 
+            if (valor > 10) return '#fffb00ff';   
+            return 'red';                      
+        },
+        borderColor: 'fffae6', 
+        segment: {
+          borderColor: (ctx) => {
+              
+              if (!ctx.p1 || !ctx.p1.parsed) return 'gray';
+              const valor = ctx.p1.parsed.y; 
+              if (valor > 20) {
+                  return '#0cff03ff'; 
+              } else if (valor > 10) {
+                  return '#fffb00ff';   
+              } else {
+                  return 'red';       
+              }
+          },},
       }
     ]
   }
@@ -83,6 +122,19 @@ document.addEventListener('DOMContentLoaded', () => {
       plugins: {
         legend: {
           position: 'top',
+          labels: {
+                color: '#E2E1DE' ,
+                generateLabels: function(chart) {
+                  const defaults = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                  return defaults.map(item => ({
+                    ...item,
+                    fillStyle: 'transparent',                
+                  }));
+                },
+                
+              boxWidth: 40,
+              padding: 8
+            }
         },
         title: {
           display: false

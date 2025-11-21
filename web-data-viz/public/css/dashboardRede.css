@@ -27,7 +27,7 @@ body {
 .dashboardRede {
   display: grid;
   grid-template-columns: 1fr 1.5fr 1fr;
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: 0.25fr 1fr 1.5fr 0.2fr;
   margin-left: 12vw;
   height: calc(100vh - 2vh);
   width: calc(100vw - 12vw - 10vw);
@@ -37,7 +37,7 @@ body {
 
 .dashboardRede .kpiAlerta {
   grid-column: 1;
-  grid-row: 1;
+  grid-row: 2;
   height: auto;
   width: 20vw;
   background-color: var(--cinzaDash);
@@ -61,8 +61,8 @@ body {
 }
 
 .dashboardRede .kpiInternet {
-  grid-column: 2;
-  grid-row: 1;
+  grid-column: 2 / -1;
+  grid-row: 2;
   height: auto;
   width: 100%;
   background-color: var(--cinzaDash);
@@ -70,16 +70,18 @@ body {
 }
 
 .dashboardRede .kpiInternet .cardHeader{
+  padding: 0;
   display: flex;
   justify-content: space-evenly;
 }
 
 .dashboardRede .kpiInternet .cardHeader .upDown{
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 0.5fr 1fr 1fr 0.2fr ;
   grid-template-rows: 0.75fr 1fr;
   align-items: center;
   text-align: center;
+  width: 40%;
 }
 
 .dashboardRede .kpiInternet .cardHeader .upDown .cima{
@@ -87,7 +89,8 @@ body {
   grid-column: 2;
   grid-row: 1;
   font-size: 0.75rem;
-
+  width: fit-content;
+  justify-self: center;
 }
 
 .dashboardRede .kpiInternet .cardHeader .upDown .baixo{
@@ -100,12 +103,67 @@ body {
   grid-column: 1;
   grid-row: 1 / -1;
   height: 90%;
+  justify-self: center;
+}
+
+.dashboardRede .kpiInternet .cardHeader .upDown .parametro{
+  justify-self: center;
+  font-size: 1rem;
+  grid-column: 3;
+  grid-row: 1 / -1;
 }
 
 .dashboardRede .kpiInternet .cardHeader .upDown .seta {
   grid-row: 1 / -1;
+  grid-column: -1;
   align-self: center;
   justify-self: start;
+}
+
+.dashboardRede .kpiInternet .cardHeader .internetDown{
+  display: grid;
+  grid-template-columns: 0.1fr 1fr 1fr;
+  grid-template-rows: 0.75fr 1fr;
+  grid-column-gap: 10px;
+  align-items: center;
+  text-align: center;
+  width: 40%;
+}
+
+.dashboardRede .kpiInternet .cardHeader .internetDown .seta{
+  grid-column: 1;
+  grid-row:  1 / -1;
+  align-self: center;
+  justify-self: center;
+}
+
+.dashboardRede .kpiInternet .cardHeader .internetDown .icon{
+  grid-column: -1;
+  grid-row: 1 / -1;
+  height: 90%;
+  justify-self: start;
+  padding-right: 20px;
+}
+
+.dashboardRede .kpiInternet .cardHeader .internetDown .cima{
+  align-self: end;
+  grid-column: 3;
+  grid-row: 1;
+  font-size: 0.75rem;
+}
+
+.dashboardRede .kpiInternet .cardHeader .internetDown .baixo{
+  grid-column: 3;
+  grid-row: 2;
+  font-size: 1.5rem;
+}
+
+.dashboardRede .kpiInternet .cardHeader .internetDown .parametro{
+  justify-self: center;
+  width: 100%;
+  font-size: 1rem;
+  grid-column: 2;
+  grid-row: 1 / -1;
 }
 
 .dashboardRede .kpiInternet .lados{
@@ -124,6 +182,8 @@ body {
   width: 50%;
 }
 
+
+
 .dashboardRede .lados .ladoEsquerdo canvas,
 .dashboardRede .lados .ladoDireito canvas {
   width: 100%;
@@ -134,13 +194,11 @@ body {
 
 
 .dashboardRede .selects{
-  grid-column: 3;
+  grid-column: 1 / -1;
   grid-row: 1;
   width: 100%;
   height: auto;
   display: flex;
-  flex-direction: column;
-  align-content: space-between;
   text-align: center;
   justify-content: space-around;
 }
@@ -148,24 +206,21 @@ body {
 .dashboardRede .selects select{
   background-color: var(--cinzaDash);
   color: var(--letraBox);
-  height: 7.5vh;
+  height: 50%;
   width: 17.5vw;
-  border-radius: 3rem;
+  border-radius: 1.5rem;
   align-self: center;
   font-family: "poppins", sans-serif;
   padding: 0 1.12vw;
-  font-size: 1.5rem;
+  font-size: 1rem;
   margin-bottom: 20px;
-  box-sizing: border-box;
   display: flex;
-  align-items: center;        /* centra vertical */
-  justify-content: center;    /* opcional: centra horizontal */
-  line-height: 1; 
+  align-content: space-around;
 }
 
 .dashboardRede .graficoLinhaPrincipal {
   grid-column: 1 / -1;
-  grid-row: 2;
+  grid-row: 3;
   height: auto;
   width: 100%;
   background-color: var(--cinzaDash);
@@ -175,20 +230,33 @@ body {
 .dashboardRede .graficoLinhaPrincipal .divGraficoLinhaPrincipal {
   padding: 1vh 0.56vw;
   width: calc(100% - 1.12vw);
-  height: calc(100% - 8vh);
+  height: calc(100% - 13.5vh);
+}
+
+.dashboardRede .graficoLinhaPrincipal .parametroGraficoLinhaPrincipal{
+  font-size: 1.5rem;
+  color: var(--cinza);
+  justify-self: center;
 }
 
 .dashboardRede .graficoLinhaSecundario .divGraficoLinhaSecundario{
   padding: 1vh 0.56vw;
   width: calc(100% - 1.12vw);
-  height: calc(100% - 8vh);
+  height: calc(100% - 12vh);
+}
+
+.dashboardRede .graficoLinhaSecundario .parametroGraficoLinhaSecundario{
+  font-size: 1rem;
+  color: var(--cinza);
+  justify-self: center;
 }
 
 
 .dashboardRede .parteBaixo{
   grid-column: 1 / -1;
-  grid-row: 3;
+  grid-row: 4;
   width: 100%;
+  height: 25vh;
   justify-self: center;
   display: flex;
   justify-content: space-between;

@@ -80,12 +80,14 @@
           <div class="cima">Upload</div>
           <div class="baixo">312 Mbps</div>
           <img src="../assets/icon/setaPior.svg" class="seta" alt="">
+          <div class="parametro">Paramêtro máximo: 0.5mbps</div>
         </div>
-        <div class="upDown">
+        <div class="internetDown">
           <img src="../assets/icon/setaMelhor.svg" class="seta" alt="">
           <img src="../assets/icon/icondownload.svg" class="icon" alt="download">
           <div class="cima">Download</div>
           <div class="baixo">434 Mbps</div>
+          <div class="parametro">Paramêtro máximo: 0.5mbps</div>
         </div>
       </div>
       <div class="lados">
@@ -100,19 +102,28 @@
     </div>
 
     <div class="selects">
+      <div class="servidor">
+         Nome da dashboard
+        <select name="" id="">
+          <option value="" selected disabled>Dashboard Rede</option>
+        </select>
+      </div>
 
-      Tempo de captura:
-      <select name="servidores" id="selectTempo" onchange="refresh(this.value)">
-        <option value="" selected disabled>Tempo</option>
-        <option value="1">1 Dia</option>
-        <option value="7">7 Dias</option>
-        <option value="30">30 Dias</option>
-      </select>
-      Nome da dashboard
-      <select name="" id="">
-        <option value="" selected disabled>Dashboard Rede</option>
-      </select>
-
+      <div class="tempo">
+        Tempo de captura:
+        <select name="servidores" id="selectTempo" onchange="refresh(this.value)">
+          <option value="" selected disabled>Tempo</option>
+          <option value="1">1 Dia</option>
+          <option value="7">7 Dias</option>
+          <option value="30">30 Dias</option>
+        </select>
+      </div>
+      <div class="dashboard">
+        Nome da dashboard
+        <select name="" id="">
+          <option value="" selected disabled>Dashboard Rede</option>
+        </select>
+      </div>
     </div>
 
     <div class="cardDashRede graficoLinhaPrincipal">
@@ -121,6 +132,9 @@
       </div>
       <div class="divGraficoLinhaPrincipal">
         <canvas id="graficoLinhaPrincipal"></canvas>
+      </div>
+      <div class="parametroGraficoLinhaPrincipal" id="parametroGraficoLinhaPrincipal">
+        Paramêtro minimo: 20.000 pacotes(enviados e recebidos)
       </div>
 
     </div>
@@ -133,6 +147,9 @@
         </div>
         <div class="divGraficoLinhaSecundario">
           <canvas id="graficoLinhaSecundario"></canvas>
+        </div>
+        <div class="parametroGraficoLinhaSecundario" id="parametroGraficoLinhaSecundario">
+        Paramêtro máximo: 1% dos pacotes(enviados e recebidos)
         </div>
       </div>
 

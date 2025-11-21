@@ -180,6 +180,8 @@ section.header .header-left .container-submenu:hover .submenu {
 width: 97%;
     height: 80%;
      margin: 10px;
+     display: flex;
+     flex-direction: row;
 }
 
 .lista-regiao{
