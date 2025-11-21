@@ -1890,11 +1890,9 @@ input {
 .titulo-card {
     background-color: #ffffff;
     color: #000;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.75rem;
     font-weight: 500;
     text-align: center;
-    padding: 10px 0;
     border-top-left-radius: 0.6vh;
     border-top-right-radius: 0.6vh;
     width: 100%;
@@ -1913,9 +1911,10 @@ input {
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    background-color: #1e1e1e;
-    border-radius: 6px;
-    border: 1px solid #333;
+    background-color: var(--cinzaDash);
+    border: 1px solid var(--cinzaDash);
+    border-bottom-right-radius: 0.6vh;
+    border-bottom-left-radius: 0.6vh;
 }
 
 .tabela-alertas-historico {
@@ -1958,8 +1957,7 @@ input {
     flex: 1.4;
     background-color: var(--cinzaDash);
     border-radius: 1vh;
-    padding: 1.5vh;
-    height: 100%;
+    height: 45vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1967,5 +1965,5 @@ input {
 
 .box-direita canvas {
     width: 100% !important;
-    height: 48% !important;
+    height: 45% !important;
 }
