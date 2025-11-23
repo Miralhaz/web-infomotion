@@ -7,6 +7,7 @@
     <title>Dashboard Disco</title>
     <link rel="stylesheet" href="../css/styleDashDisco.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -28,7 +29,7 @@
                         <img src="../assets/imgs-dashboard/teenyicons_servers-solid.png" alt="">
                         Servidores </a>
                 </div>
-                 <div class="icone container-submenu">
+                <div class="icone container-submenu">
                     <a href="dashboardHistorico.html" class="descricao-icone">
                         <img src="../assets/imgs-dashboard/fluent-mdl2_b-i-dashboard.png" alt="">
                         Dashboard
@@ -37,12 +38,8 @@
                     <div class="submenu">
                         <a href="dashboardHistorico.html">Histórico</a>
                         <a href="dashboardDisco.html">Disco dos Servidores</a>
+                        <a href="dashboardRegiao.html">Região</a>
                     </div>
-                </div>
-                <div class="icone">
-                    <a href="dashboardRegiao.html" class="descricao-icone">
-                        <img src="../assets/imgs-dashboard/regiao-icon.png" alt="">
-                        Regiões </a>
                 </div>
             </div>
             <div class="parte-baixo">
@@ -70,9 +67,9 @@
                     </div>
                     <div class="kpi-body">
                         <div class="kpi-status-operacao">
-                                 <img id="img_status" src="../assets/icon/alerta_estadoDisco.png" alt="Status Operação">
+                            <img id="img_status" src="../assets/icon/alerta_estadoDisco.png" alt="Status Operação">
 
-        <h3 id="txt_status_operacao">Carregando...</h3>
+                            <h3 id="txt_status_operacao">Carregando...</h3>
                         </div>
                         <div class="kpi-footer">
                             <button class="btn-acao" onclick="sinalizarProblema()">Sinalizar Problema</button>
@@ -84,55 +81,123 @@
                     <div class="kpi-header">
                         <h2>Alertas de Discos</h2>
                     </div>
-                    <div class="tituloPeriodo"></div>
+                    <div class="status_alertas">
+                        <div><span>ontem x hoje</span></div>
+                    </div>
                     <div class="kpi-body">
-                       
+                        <span class="op-status-passado">33</span>
+                    </div>
+                    <div class="kpi-footer">
+                        <p>10 a menos que ontem</p>
                     </div>
                 </div>
 
+                <!--lista-->
                 <div class="kpi lista">
                     <div class="kpi-header">
                         <h2>Disco em Alerta de espaço</h2>
                     </div>
-                  
-                    <div class="kpi-body">
-                       
+                    <div class="organizador_lista">
+                        <div class="pesquisa"><Span>Pesquisar</Span> <img src="../assets/imgs-dashboard/mdi_search.png"
+                                alt="iconePesquisa"></div>
+
+                    </div>
+                    <div class="estado-listagem">
+                        <div class="estados_lista">
+                            <span class="moderado">Moderado </span>
+                            <span class="risco">Alto Risco</span>
+
+                        </div>
+                        <div class="kpi-body">
+                            <div class="para-status">
+                                <p id="item-lista1">HD-01: 1TB - 90%</p>
+                            </div>
+                            <div class="para-status">
+                                <p id="item-lista2">NVME-01: 3TB - 85%</p>
+                            </div>
+                            <div class="para-status">
+                                <p id="item-lista3">SSD-01: 5TB - 75%</p>
+                            </div>
+                            <div class="para-status">
+                                <p id="item-lista4">HD-01: 200GB - 55%</p>
+                            </div>
+                            <div class="para-status">
+                                <p id="item-lista5">HD-01: 200GB - 55%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kpi-footer">
+                        <p>selecione um disco e preveja</p>
+                        <button class="btn-acao" onclick="MudarPeriodokpi()">ver tendencia no gráfico</button>
                     </div>
                 </div>
+
+
                 <div class="kpi impacto">
                     <div class="kpi-header">
-                        <h2>Impacto Operacional dos Discos</h2>
+                        <h2>Discos que recebem mais requisições</h2>
                     </div>
-                   
+
                     <div class="kpi-body">
-                       
+                        <div class="tudo">
+                            <div class="importancia"> muito importante</div>
+                            <div class="discos">
+                                <p>Relevância para operação</p>
+                                <div class="listagem">
+                                    <p>HD-03: 2TB - 90%</p>
+                                    <p>HD-04: 2TB - 70%</p>
+                                    <p>HD-01: 2TB - 40%</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="kpi vida">
                     <div class="kpi-header">
-                        <h2>Discos com Vida Útil Crítica</h2>
+                        <p>Discos com risco de falha</p>
+                        <h2>(classificado por tempo de operação)</h2>
                     </div>
-                  
+
                     <div class="kpi-body">
-                       
+                        <div class="classificacao">
+                            <p>Riscos de falhas</p>
+                            <p>Zona de preocupação</p>
+                        </div>
+                        <div class="discos">
+                            <p>HD-03: Servidor-2</p>
+                            <p>HD-05: Servidor-2</p>
+                            <p>HD-07: Servidor-2</p>
+
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="dashboards">
                 <div class="dashboard chart1">
                     <div class="kpi-header">
-                        <h2>Criticidade de armazenamento por servidor</h2>
+                        <p>Criticidade de armazenamento por servidor</p>
+                        <h2>(classificado por quantidade de alertas)</h2>
                     </div>
-                  
+
                     <div class="kpi-body">
-                       
+                        <canvas id="graficobarras"></canvas>
                     </div>
                 </div>
-                <div class="dashboard chart2"></div>
+                <div class="dashboard chart2">
+                    <div class="kpi-header">
+                        <h2>Previsão de Tendência de espaço (Discos em Risco)</h2>
+                    </div>
+
+                    <div class="kpi-body">
+
+                        <canvas id="graficolinhas"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </body>
 <script src="../js/dashDisco.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </html>

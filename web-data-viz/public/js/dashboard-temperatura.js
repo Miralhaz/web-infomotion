@@ -1,3 +1,43 @@
+function listarServidores() {
+    let idEmpresa = sessionStorage.ID_EMPRESA;
+
+    fetch(`/servidores/listarServidores/${idEmpresa}`)
+        .then(function (resposta) {
+            console.log("resposta:", resposta);
+
+            if (resposta.ok) {
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+
+                    const select = document.getElementById('servidores');
+
+                    let frase = `<option value="escolha_op">Escolha um servidor</option>`;
+
+                    for (let i = 0; i < resposta.length; i++) {
+                        frase += `
+                                <option value="${resposta[i].idServidor}" data-id="${resposta[i].idServidor}">${resposta[i].apelido}</option>
+                        `;
+                    }
+
+                    select.innerHTML = frase;
+
+                });
+
+            } else {
+                throw "Houve um erro ao tentar listar os servidores!";
+            }
+        })
+
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
+
+
+
+
+
+
 async function carregarDadosCpu() {
     const nomeArquivoCPU = 'cpu_temperaturas_uso.json';
 
@@ -24,6 +64,7 @@ async function carregarDadosCpu() {
     // const labels = data.map(d => d[labelKey]);
     // const values = data.map(d => Number(d[valueKey]) || 0);
 }
+
 
 
 
@@ -126,6 +167,7 @@ function atualizarKPIsDisco(tempDisco, usoDisco, limiteMaximoDisco) {
 
 
 
+
 function calcularStatus(eficiencia) {
     if (eficiencia < 1.0) {
         return { texto: 'Excelente', cor: '#4caf50' };
@@ -139,15 +181,29 @@ function calcularStatus(eficiencia) {
 }
 
 
-document.addEventListener('DOMContentLoaded', carregarDadosCpu);
-document.addEventListener('DOMContentLoaded', carregarDadosDisco);
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+    carregarDadosCpu();
+    carregarDadosDisco();
+
+    const componenteInicial = document.getElementById('select_value_componentes').value; 
+    const periodoInicial = document.getElementById('select_value').value; 
+    
+    carregarEAtualizarGraficoLinhas(componenteInicial, periodoInicial);
+
+    // atualizarGraficoDispersaoPorComponente(componenteInicial);
+});
 
 
 
 
 
 
-async function carregarEAtualizarGraficoLinhas(componente) {
+
+async function carregarEAtualizarGraficoLinhas(componente, periodo) {
     let nomeArquivo;
     let labelTempKey;
     let labelUsoKey;
@@ -156,21 +212,31 @@ async function carregarEAtualizarGraficoLinhas(componente) {
         nomeArquivo = 'cpu_temperaturas_uso.json';
         labelTempKey = 'temperatura_cpu';
         labelUsoKey = 'cpu_uso';
-        document.querySelector('.grafico-linha-hist .titulo p').textContent = 'Uso CPU X Temperatura CPU (últimas X horas):';
+
+        if (periodo === '1hora'){
+            document.querySelector('.grafico-linha-hist .titulo p').textContent = `Uso CPU X Temperatura CPU (na última hora):`;
+        } else if (periodo === '24horas'){
+            document.querySelector('.grafico-linha-hist .titulo p').textContent = `Uso CPU X Temperatura CPU (últimas 24 horas):`;
+        } else if (periodo === 'dias'){
+            document.querySelector('.grafico-linha-hist .titulo p').textContent = `Uso CPU X Temperatura CPU (últimos 7 dias):`;
+        }
+
     } else if (componente === 'disco') {
         nomeArquivo = 'disco_temperaturas_uso.json';
         labelTempKey = 'temperatura_disco';
         labelUsoKey = 'disco_uso';
-        document.querySelector('.grafico-linha-hist .titulo p').textContent = 'Uso Disco X Temperatura Disco (últimas X horas):';
+
+        if (periodo === '1hora'){
+            document.querySelector('.grafico-linha-hist .titulo p').textContent = `Uso Disco X Temperatura Disco (na última hora):`;
+        } else if (periodo === '24horas'){
+            document.querySelector('.grafico-linha-hist .titulo p').textContent = `Uso Disco X Temperatura Disco (últimas 24 horas):`;
+        } else if (periodo === 'dias'){
+            document.querySelector('.grafico-linha-hist .titulo p').textContent = `Uso Disco X Temperatura Disco (últimos 7 dias):`;
+        }
+        
     } else {
         return; 
     }
-
-
-
-
-
-
 
     try {
         const resposta = await fetch(`/dados/${nomeArquivo}`);

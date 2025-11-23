@@ -9,7 +9,7 @@
   <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
 </head>
 
-<body>
+<body onload="listarServidores()">
   <section class="header">
     <div class="header-left">
       <div class="parte-cima">
@@ -39,12 +39,8 @@
           <div class="submenu">
             <a href="dashboardHistorico.html">Histórico</a>
             <a href="dashboardDisco.html">Disco dos Servidores</a>
+            <a href="dashboardRegiao.html">Região</a>
           </div>
-        </div>
-        <div class="icone">
-          <a href="dashboardRegiao.html" class="descricao-icone">
-            <img src="../assets/imgs-dashboard/regiao-icon.png" alt="">
-            Regiões </a>
         </div>
       </div>
 
@@ -150,13 +146,13 @@
       <div class="dashboard-content-graficos-meio">
         <div class="grafico-linha-hist">
           <div class="titulo" style="display: flex; justify-content: space-between; align-items: center;">
-            <p> Uso CPU X Temperatura CPU (últimas X horas): </p>
+            <p> Uso CPU X Temperatura CPU (última(s) X horas): </p>
 
             <div style="display: flex; gap: 1vh;">
 
               <div class="select-grafico">
                 <div class="container-select" id="select_display">
-                  24 horas
+                  1 hora
                   <span class="seta"> &#9660; </span>
                 </div>
 
@@ -277,6 +273,9 @@
       // atualiza o valor do campo escondido
       input_escondido.value = value;
 
+      const componenteSelecionado = document.getElementById('select_value_componentes').value;
+      carregarEAtualizarGraficoLinhas(componenteSelecionado, value);
+
       // fecha o dropdown 
       lista_opcoes.classList.remove('visible');
       display.classList.remove('open');
@@ -341,7 +340,8 @@
       // atualiza o valor do campo escondido
       input_escondido_componente.value = value;
 
-      carregarEAtualizarGraficoLinhas(value);
+      const periodoSelecionado = document.getElementById('select_value').value;
+      carregarEAtualizarGraficoLinhas(value, periodoSelecionado);
 
       // fecha o dropdown 
       lista_opcoes_componentes.classList.remove('visible');

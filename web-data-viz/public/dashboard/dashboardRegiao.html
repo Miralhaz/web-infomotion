@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Disco</title>
+    <title>Dashboard região</title>
     <link rel="stylesheet" href="../css/dashRegiao.css">
+    <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
     <script src="../js/dashRegiao.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -29,7 +30,7 @@
                         <img src="../assets/imgs-dashboard/teenyicons_servers-solid.png" alt="">
                         Servidores </a>
                 </div>
-                 <div class="icone container-submenu">
+                <div class="icone container-submenu">
                     <a href="dashboardHistorico.html" class="descricao-icone">
                         <img src="../assets/imgs-dashboard/fluent-mdl2_b-i-dashboard.png" alt="">
                         Dashboard
@@ -38,12 +39,8 @@
                     <div class="submenu">
                         <a href="dashboardHistorico.html">Histórico</a>
                         <a href="dashboardDisco.html">Disco dos Servidores</a>
+                        <a href="dashboardRegiao.html">Região</a>
                     </div>
-                </div>
-                   <div class="icone">
-                    <a href="dashboardRegiao.html" class="descricao-icone">
-                        <img src="../assets/imgs-dashboard/regiao-icon.png" alt="">
-                        Regiões </a>
                 </div>
             </div>
             <div class="parte-baixo">
@@ -58,7 +55,7 @@
                         <img src="../assets/imgs-dashboard/uil_exit.png" alt="">
                         Sair </a>
                 </div>
-                
+
             </div>
         </div>
     </section>
@@ -67,14 +64,18 @@
             <div class="dashboard-container">
                 <div class="container-grafico">
 
+                
                     <div class="grafico-previsao">
-                        <div class="card-dash">
-                            <h1>Previsão de requisição nos proximos 16 dias</h1>
-                        </div>
-                        <div class="container-canva">
-                            <canvas id="grafico-linha-barra-previsao"></canvas>
+                        <div class="container-grafico-previsao">
+                            <div class="container-canva">
+                                <canvas id="grafico-barra-previsao"></canvas>
+                            </div>
+                            <div class="container-canva">
+                                <canvas id = "grafico-linha-previsao"></canvas>
+                            </div>
                         </div>
                     </div>
+
 
                     <div class="lista-regiao">
                         <div class="card-dash">
@@ -87,20 +88,39 @@
 
                 <div class="container-kpi">
 
-                    <div class="grafico-comparacao">
-                        <div class="card-dash">
-                            <h3>Comparação com distancia de 7 dias</h3>
-                        </div>
-                        <div class="container-canva">
-                            <canvas id="grafico-barra-comparacao"></canvas>
-                        </div>
-                    </div>
+
 
                     <div class="grafico-horarioDePico">
                         <div class="card-dash">
-                             <h3>Horários com maior pico</h3>
+                            <h3>Requisições por hora</h3>
                         </div>
-                        <canvas id="grafico-barra-horarioDePico"></canvas>
+                        <div class="container-canva">
+                            <canvas id="grafico-barra-horarioDePico"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="container-kpi-mini">
+                        <div class="kpi">
+                            <div class="card-dash-kpi">Dia com maior risco</div>
+                        </div>
+                        <div class="kpi">
+                            <div  class="card-dash-kpi">Risco uso excessivo de RAM</div>
+                        </div>
+                        <div class="kpi">
+                            <div class="card-dash-kpi">Uso do disco na região</div> 
+                    
+                                <div class="container-canva-kpi">
+                                    <canvas id="grafico_uso_de_disco_total_regiao"></canvas>
+                                    <p>Uso em % <br>
+                                        Total Livre: <br>
+                                        Total em uso : 
+                                    </p>
+                                </div>
+
+                        </div>
+                        <div class="kpi">
+                            <div class="card-dash-kpi">Quantidade de RAM indicada</div>
+                        </div>
                     </div>
 
                     <div class="descicao-regiao">
