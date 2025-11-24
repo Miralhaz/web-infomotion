@@ -1,4 +1,3 @@
-let graficoLinhas;
 let graficoStackBarDisco;
 let graficoParticaoDisco;
 
@@ -56,31 +55,13 @@ document.addEventListener("DOMContentLoaded", function () {
 })
 
 function obterDadosKpi(idServidor) {
-
-    fetch(`/servidores/obterDadosKpi/${idServidor}`)
+    fetch(`/dashboardNear/obterDados/${idServidor}`)
         .then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(function (dados) {
                     console.log("Dados recebidos: ", JSON.stringify(dados));
 
-                    let divs = document.querySelector('.div-kpis');
-                    let max_cpu, max_ram, max_disco;
-
-
-                    for (let i = 0; i < dados.length; i++) {
-
-                        if (dados[i].tipo.toLowerCase() == 'CPU'.toLowerCase()) {
-                            max_cpu = dados[i].max;
-                        }
-
-                        else if (dados[i].tipo.toLowerCase() == 'RAM'.toLowerCase()) {
-                            max_ram = dados[i].max;
-                        }
-
-                        else if (dados[i].tipo.toLowerCase() == 'DISCO'.toLowerCase()) {
-                            max_disco = dados[i].max;
-                        }
-                    }
+                    const divs = document.querySelector(".div-kpis");
 
                     let frase = `
                 <div class="div-dados">
@@ -92,9 +73,9 @@ function obterDadosKpi(idServidor) {
                             </div>
                             <div>
                                 <p class="titulo">CPU</p>
-                                <p class="titulo">Máx: <a class="dados-uso">85°C</a></p>
+                                <p class="titulo">Máx: <a class="dados-uso">${dados.maximo.maxCpuTemp}°C</a></p>
                                 <div class="div-temp">
-                                    <p>${Math.round(dados[0].temp_cpu)}°C</p>
+                                    <p>${dados.atual.temperatura_cpu}°C</p>
                                 </div>
                             </div>
                         </div>
@@ -102,9 +83,9 @@ function obterDadosKpi(idServidor) {
                         <div class="temp-atual">
                             <div>
                                 <p class="titulo">DISCO</p>
-                                <p class="titulo">Máx: <a class="dados-uso">85°C</a></p>
+                                <p class="titulo">Máx: <a class="dados-uso">${dados.maximo.maxDiscoTemp}°C</a></p>
                                 <div class="div-temp">
-                                    <p>${Math.round(dados[0].temp_disco)}°C</p>
+                                    <p>${dados.atual.temperatura_disco}°C</p>
                                 </div>
                             </div>
                             <div class="div-graph">
@@ -120,7 +101,7 @@ function obterDadosKpi(idServidor) {
                         <div class="div-velocimetro">
                             <canvas id="velocimeterCpuChart"></canvas>
                         </div>
-                        <p> Parâmetro Máximo da CPU: ${max_cpu}% </p>
+                        <p> Parâmetro Máximo da CPU: ${dados.maximo.maxCpuUso}% </p>
                     </div>
                 </div>
 
@@ -130,7 +111,7 @@ function obterDadosKpi(idServidor) {
                         <div class="div-velocimetro">
                             <canvas id="velocimeterRamChart"></canvas>
                         </div>
-                        <p> Parâmetro Máximo da RAM: ${max_ram}% </p>
+                        <p> Parâmetro Máximo da RAM: ${dados.maximo.maxRam}% </p>
                     </div>
                 </div>
 
@@ -138,11 +119,11 @@ function obterDadosKpi(idServidor) {
                     <p style="margin-top: 20px;" class="titulo"> Uso de Rede Atual (Mbps) </p>
                     <div class="div-container-kpi">
                         <p class="titulo2" style="margin-top: 0vh;"><img src="../assets/imgs-dashboard/Upload.png" alt=""> Upload: </p>
-                        <div class="div-rede"> <p> ${parseFloat(Number(dados[0].upload).toFixed(1))} Mbps </p> </div>
-                        <p>Mínimo: 20Mbps</p>
+                        <div class="div-rede"> <p> ${dados.atual.uploadByte} Mbps </p> </div>
+                        <p>Mínimo: ${dados.maximo.maxUpload}Mbps</p>
                         <p class="titulo2"><img src="../assets/imgs-dashboard/Download.png" alt=""> Download: </p>
-                        <div class="div-rede"> <p> ${parseFloat(Number(dados[0].download).toFixed(1))} Mbps </p> </div>
-                        <p>Mínimo: 20Mbps</p>
+                        <div class="div-rede"> <p> ${dados.atual.downloadByte} Mbps </p> </div>
+                        <p>Mínimo: ${dados.maximo.maxDownload}Mbps</p>
                     </div>
                 </div>
                 `;
@@ -150,23 +131,22 @@ function obterDadosKpi(idServidor) {
                     divs.innerHTML = frase;
 
                     const dadosKpiCpu = {
-                        uso_cpu: dados[0].uso_cpu,
-                        max_cpu: max_cpu
+                        uso_cpu: dados.atual.cpu,
+                        max_cpu: dados.maximo.maxCpu
                     };
 
                     const dadosKpiRam = {
-                        uso_ram: dados[0].uso_ram,
-                        max_ram: max_ram
+                        uso_ram: dados.atual.ram,
+                        max_ram: dados.maximo.maxRam
                     };
 
                     const dadosKpiDisco = {
-                        uso_disco: dados[0].uso_disco,
-                        max_disco: max_disco
+                        uso_disco: dados.atual.disco,
+                        max_disco: dados.maximo.maxDisco
                     }
 
                     plotarGraficoVelocimetroCpu(dadosKpiCpu);
                     plotarGraficoVelocimetroRam(dadosKpiRam);
-                    listarDadosLinhas(idServidor);
                     plotarGraficoStackBarDisco(dadosKpiDisco);
                     plotarGraficoParticaoDisco(dadosKpiDisco);
 
@@ -174,32 +154,31 @@ function obterDadosKpi(idServidor) {
                     let div_temp = document.querySelectorAll('.div-temp');
 
                     let div_rede = document.querySelectorAll('.div-rede');
-                    if(dados[0].upload <= 20){
+                    if(dados.atual.uploadByte <= 20){
                         div_rede[0].style.backgroundColor = '#940000'
-                    }else if(dados[0].upload <= 40){
+                    }else if(dados.atual.uploadByte <= 40){
                         div_rede[0].style.backgroundColor = '#C89C00'
                     }else{
                         div_rede[0].style.backgroundColor = '#009900ff'
                     }
                     
-                    if(dados[0].download <= 20){
+                    if(dados.atual.downloadByte <= 20){
                         div_rede[1].style.backgroundColor = '#940000'
-                    }else if(dados[0].download <= 40){
+                    }else if(dados.atual.downloadByte <= 40){
                         div_rede[1].style.backgroundColor = '#C89C00'
                     }else{
                         div_rede[1].style.backgroundColor = '#009900ff'
                     }
 
                     let circ_cpu = document.getElementById('circ_cpu');
-                    let dado_cpu = dados[0].temp_cpu;
 
-                    if (dados[0].temp_cpu >= 75) {
+                    if (dados.atual.temperatura_cpu >= 75) {
                         div_temp[0].style.backgroundColor = '#940000'
                     }
-                    else if (dados[0].temp_cpu >= 55) {
+                    else if (dados.atual.temperatura_cpu  >= 55) {
                         div_temp[0].style.backgroundColor = '#ff3c00ff'
                     }
-                    else if (dados[0].temp_cpu >= 40) {
+                    else if (dados.atual.temperatura_cpu  >= 40) {
                         div_temp[0].style.backgroundColor = '#ff7b00ff'
                     } 
                     else {
@@ -208,101 +187,100 @@ function obterDadosKpi(idServidor) {
 
                     
 
-                    if (dados[0].temp_disco >= 75) {
+                    if (dados.atual.temperatura_disco >= 75) {
                         div_temp[1].style.backgroundColor = '#940000'
                     }
-                    else if (dados[0].temp_disco >= 55) {
+                    else if (dados.atual.temperatura_disco >= 55) {
                         div_temp[1].style.backgroundColor = '#ff3c00ff'
                     }
-                    else if (dados[0].temp_disco >= 40) {
+                    else if (dados.atual.temperatura_disco >= 40) {
                         div_temp[1].style.backgroundColor = '#ff7b00ff'
                     }
                     else {
                         div_temp[1].style.backgroundColor = '#fdd700ff'
                     }
                 
-                    if (dado_cpu >= 95) {
+                    if (dados.atual.temperatura_cpu >= 95) {
                         circ_cpu.style.top = '0%';
                     }
 
-                    else if (dado_cpu >= 90) {
+                    else if (dados.atual.temperatura_cpu >= 90) {
                         circ_cpu.style.top = '5%';
                     }
 
-                    else if (dado_cpu >= 80) {
+                    else if (dados.atual.temperatura_cpu >= 80) {
                         circ_cpu.style.top = '10%';
                     }
 
-                    else if (dado_cpu >= 70) {
+                    else if (dados.atual.temperatura_cpu >= 70) {
                         circ_cpu.style.top = '20%';
                     }
 
-                    else if (dado_cpu >= 60) {
+                    else if (dados.atual.temperatura_cpu >= 60) {
                         circ_cpu.style.top = '30%';
                     }
 
-                    else if (dado_cpu >= 50) {
+                    else if (dados.atual.temperatura_cpu >= 50) {
                         circ_cpu.style.top = '40%';
                     }
 
-                    else if (dado_cpu >= 40) {
+                    else if (dados.atual.temperatura_cpu >= 40) {
                         circ_cpu.style.top = '50%';
                     }
 
-                    else if (dado_cpu >= 30) {
+                    else if (dados.atual.temperatura_cpu >= 30) {
                         circ_cpu.style.top = '60%';
                     }
 
-                    else if (dado_cpu >= 20) {
+                    else if (dados.atual.temperatura_cpu >= 20) {
                         circ_cpu.style.top = '70%';
                     }
 
-                    else if (dado_cpu >= 10) {
+                    else if (dados.atual.temperatura_cpu >= 10) {
                         circ_cpu.style.top = '80%';
                     }
 
 
                     let circ_disco = document.getElementById('circ_disco');
-                    let dado_disco = dados[0].temp_disco;
 
 
-                    if (dado_disco >= 95) {
+                    if (dados.atual.temperatura_disco >= 95) {
                         circ_disco.style.top = '0%';
                     }
 
-                    else if (dado_disco >= 90) {
+                    else if (dados.atual.temperatura_disco >= 90) {
                         circ_disco.style.top = '5%';
                     }
 
-                    else if (dado_disco >= 80) {
+                    else if (dados.atual.temperatura_disco >= 80) {
                         circ_disco.style.top = '10%';
                     }
 
-                    else if (dado_disco >= 70) {
+                    else if (dados.atual.temperatura_disco >= 70) {
                         circ_disco.style.top = '20%';
                     }
 
-                    else if (dado_disco >= 60) {
+                    else if (dados.atual.temperatura_disco >= 60) {
                         circ_disco.style.top = '30%';
                     }
 
-                    else if (dado_disco >= 50) {
+                    else if (dados.atual.temperatura_disco >= 50) {
                         circ_disco.style.top = '40%';
                     }
 
-                    else if (dado_disco >= 40) {
+                    else if (dados.atual.temperatura_disco >= 40) {
                         circ_disco.style.top = '50%';
                     }
 
-                    else if (dado_disco >= 30) {
+                    else if (dados.atual.temperatura_disco >= 30) {
                         circ_disco.style.top = '60%';
                     }
 
-                    else if (dado_disco >= 20) {
+                    else if (dados.atual.temperatura_disco >= 20) {
                         circ_disco.style.top = '70%';
                     }
 
-                    else if (dado_disco >= 10) {
+                    else if (dados.atual.temperatura_disco >= 10) {
                         circ_disco.style.top = '80%';
                     }
 
@@ -555,159 +533,6 @@ function plotarGraficoVelocimetroRam(dadoKpi) {
         chart[i].style.display = 'flex';
     }
 }
-
-function listarDadosLinhas(idServidor) {
-    fetch(`/servidores/listarDadosLinhas/${idServidor}`)
-        .then(function (resposta) {
-            if (resposta.ok) {
-                resposta.json().then(function (dados) {
-                    console.log("Dados recebidos: ", JSON.stringify(dados));
-                    console.log("Dados recebidos: ", JSON.stringify(dados));
-
-                    dados.reverse();
-
-                    plotarGraficoLinhas(dados, idServidor);
-
-                });
-
-            } else {
-                throw "Houve um erro ao tentar listar os servidores!";
-            }
-        })
-
-        .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-        });
-}
-
-
-
-
-function plotarGraficoLinhas(dados, idServidor) {
-    let labels = [];
-    let ram = [];
-    let cpu = [];
-    let disco = [];
-
-    for (let i = 0; i < dados.length; i++) {
-
-        const dtHora = new Date(dados[i].dt_registro);
-        const hora = dtHora.getHours();
-        const min = dtHora.getMinutes();
-        const minFormatado = ('0' + min).slice(-2);
-
-        labels.push((hora + ':' + minFormatado));
-        ram.push(dados[i].uso_ram);
-        cpu.push(dados[i].uso_cpu);
-        disco.push(dados[i].uso_disco);
-    }
-
-   
-
-    const config = {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'RAM',
-                data: ram,
-                fill: false,
-                backgroundColor: '#555555ff',
-                borderColor: '#555555ff',
-                tension: 0.2
-            },
-            {
-                label: 'CPU',
-                data: cpu,
-                fill: false,
-                backgroundColor: '#E2E2E2',
-                borderColor: '#E2E2E2',
-                tension: 0.2
-            },
-            {
-                label: 'DISCO',
-                data: disco,
-                fill: false,
-                backgroundColor: '#D2B080',
-                borderColor: '#D2B080',
-                tension: 0.2
-            }]
-        },
-
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        color: 'white',
-                        font: {
-                            size: 15
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Porcentagem (%)',
-                        color: 'white',
-                        font: {
-                            size: 16
-                        }
-                    },
-                    grid: {
-                        color: 'rgba(153, 153, 153, 0.2)',
-                        display: true,
-                        drawTicks: false
-                    }
-                },
-                x: {
-                    ticks: {
-                        color: 'white',
-                        font: {
-                            size: 15
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Horário',
-                        color: 'white',
-                        font: {
-                            size: 16
-                        }
-                    },
-                    grid: {
-                        drawOnChartArea: true
-                    }
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: "Porcentagem de uso de componentes (%)",
-                    color: 'white',
-                    font: {
-                        size: 18
-                    }
-                },
-                legend: {
-                    position: 'top',
-                    labels: {
-                        usePointStyle: true,
-                        color: 'white'
-                    }
-                }
-            }
-        }
-    };
-
-    window.graficoLinhas = new Chart(
-        document.getElementById('lineChart'),
-        config
-    );
-}
-
-
-
 
 function plotarGraficoStackBarDisco(dadosKpi) {
     const usado = dadosKpi.uso_disco;
