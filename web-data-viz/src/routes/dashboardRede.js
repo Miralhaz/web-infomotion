@@ -6,7 +6,6 @@ const dashboardRedeController = require('../controllers/dashboardRedeController'
 
 router.get('/:arquivo', dashboardRedeController.lerArquivoRede);
 
-router.get('/:arquivo', dashboardRedeController.lerArquivoRede);
-
+router.get('/jira/count', dashboardRedeController.contarTicketsPorTermo);
 
 module.exports = router;

@@ -177,7 +177,34 @@ async function lerArquivoConexoes(req, res) {
   }
 }
 
+async function contarTicketsPorTermo(req, res) {
+  try {
+    const termo = String(req.query.term || '').trim();
+    if (!termo) return res.status(400).json({ error: 'term query param obrigatório' });
+
+    const jql = `project = ${process.env.JIRA_PROJECT_KEY || 'INF'} AND summary ~ "${termo.replace(/"/g, '\\"')}"`;
+    const url = `https://${process.env.JIRA_HOST || 'sentinela-grupo-3.atlassian.net'}/rest/api/2/search?jql=${encodeURIComponent(jql)}&maxResults=0`;
+
+    const auth = Buffer.from(`${process.env.JIRA_API_EMAIL}:${process.env.JIRA_API_TOKEN}`).toString('base64');
+
+    const r = await axios.get(url, {
+      headers: {
+        Authorization: `Basic ${auth}`,
+        Accept: 'application/json'
+      },
+      timeout: 10000
+    });
+
+    return res.json({ total: r.data.total });
+  } catch (err) {
+    console.error('Jira count error:', err && err.message ? err.message : err);
+    const status = err.response && err.response.status ? err.response.status : 500;
+    return res.status(status).json({ error: 'Erro ao consultar Jira' });
+  }
+}
+
 module.exports = {
   lerArquivoRede,
-  lerArquivoConexoes
+  lerArquivoConexoes,
+  contarTicketsPorTermo
 };

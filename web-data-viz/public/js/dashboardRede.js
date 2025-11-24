@@ -379,55 +379,37 @@ function carregarTabelaConexoes(dados) {
 
 }
 
-function ticketsAtivos(){
-  const auth = Buffer.from(`${API_EMAIL}:${API_TOKEN}`).toString('base64');
 
-  // JQL para buscar tickets ativos
-  const jql = `project = ${PROJECT_KEY} AND status NOT IN (Done, Closed, Resolved)`;
-  const encodedJql = encodeURIComponent(jql);
-
-  // Configuração da requisição
-  const options = {
-      hostname: 'sentinela-grupo-3.atlassian.net',
-      path: `/rest/api/2/search?jql=${encodedJql}&maxResults=0`,
-      method: 'GET',
-      headers: {
-          'Authorization': `Basic ${auth}`,
-          'Accept': 'application/json'
-      }
-  };
-
-  // Faz a requisição
-  const req = https.request(options, (res) => {
-      let data = '';
-      
-      res.on('data', (chunk) => {
-          data += chunk;
-      });
-      
-      res.on('end', () => {
-          const json = JSON.parse(data);
-          console.log(`Total de tickets ativos: ${json.total}`);
-      });
-  });
-
-  req.on('error', (error) => {
-      console.error('Erro:', error.message);
-  });
-
-  req.end();
+async function contarTicketsPorTermo(termo) {
+  try {
+    const res = await fetch(`/dashboardRede/jira/count?term=${encodeURIComponent(termo)}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    
+    console.log('Tickets ativos no momento:', json);
+  
+    return json.total;
+  } catch (err) {
+    console.error('Erro ao contar tickets:', err);
+    return null;
+  }
 }
+
 
 function receberAlertasPorServidor() {
 
     const idServidor = idServidorSelecionado;
     const tipo = 'REDE'
+    const tempo = sessionStorage.getItem('TEMPO_SELECIONADO')
+    console.log('tempo: ', tempo);
+    
+    
+    
 
-    fetch(`/servidores/receberAlertasPorServidor/${idServidor}/${tipo}`)
+    fetch(`/servidores/receberAlertasPorServidor/${idServidor}/${tipo}/${tempo}`)
         .then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(function (dados) {
-                    console.log("Dados recebidos: ", dados);
                     document.getElementById('alertasTotais').innerHTML =dados[0].total_alertas
                 });
 
@@ -441,6 +423,19 @@ function receberAlertasPorServidor() {
         });
 }
 
+function refresh(x) {
+
+    sessionStorage.setItem("TEMPO_SELECIONADO", x); // salva antes do reload
+    location.reload()
+  }
+
+function selecionarTempo() {
+  const tempo = sessionStorage.getItem("TEMPO_SELECIONADO");
+  if (tempo) {
+    document.getElementById("selectTempo").value = tempo;
+  }
+}
+
 window.onload = () => {
   //listarServidores()
   //carregarDadosRede()
@@ -448,5 +443,7 @@ window.onload = () => {
   //ticketsAtivos()
   receberAlertasPorServidor()
   //kpiInternet()
+  selecionarTempo()
+  contarTicketsPorTermo('Rede')
 
 }
