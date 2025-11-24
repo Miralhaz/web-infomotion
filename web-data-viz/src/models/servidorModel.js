@@ -37,7 +37,6 @@ await database.executar(instrucaoSql1);
 
 }
 
-
 function listarServidoresPorUsuario(idUsuario) {
   var instrucaoSql = `
     SELECT s.id, s.ip, s.apelido, rs.uso_cpu, rs.uso_ram, rs.uso_disco 
@@ -187,6 +186,18 @@ function receberAlertas(idUsuario) {
   return database.executar(instrucaoSql);
 }
 
+function receberAlertasPorServidor(idServidor, tipo){
+  const instrucaoSql = `
+    select count(a.id) as total_alertas from alertas a 
+    inner join parametro_alerta pa on a.fk_parametro = pa.id
+    inner join servidor s on s.id = pa.fk_servidor
+    inner join componentes c on c.id = pa.fk_componente
+    where s.id = ${idServidor} and c.tipo = '${tipo}';
+  `;
+  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+  
+}
 
 function editarApelido(idServidor, apelido) {
   var instrucaoSql = `
@@ -240,5 +251,6 @@ module.exports = {
   receberRegiao,
   listarRegioes,
   atualizarRegiao,
-  cadastrarRede
+  cadastrarRede,
+  receberAlertasPorServidor
 }

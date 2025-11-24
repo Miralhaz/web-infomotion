@@ -331,6 +331,28 @@ function atualizarRegiao(req, res) {
     });
 }
 
+function receberAlertasPorServidor(req, res) {
+  const idServidor = req.params.idServidor;
+  const tipo = req.params.tipo;
+  
+    servidorModel.receberAlertasPorServidor(idServidor, tipo)
+      .then(
+        function (resultado){
+          if (resultado.length > 0) {
+            res.status(200).json(resultado);
+          } else {
+            res.status(204).send("Nenhum alerta encontrado!");
+          }
+        }
+      )
+      .catch(
+        function (erro) {
+          console.log(erro);
+          console.log("\nHouve um erro ao buscar alertas dos servidores! Erro: ", erro.sqlMessage);
+          res.status(500).json(erro.sqlMessage);
+        }
+      );
+}
 
 module.exports = {
   buscarServidoresPorEmpresa,
@@ -347,5 +369,6 @@ module.exports = {
   receberRegiao,
   listarRegioes,
   atualizarRegiao,
-  cadastrarRede
+  cadastrarRede,
+  receberAlertasPorServidor
 }
