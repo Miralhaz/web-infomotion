@@ -1,3 +1,10 @@
+
+
+const JIRA_BASE_URL = "https://sentinela-grupo-3.atlassian.net";
+const API_EMAIL = "lucas.silva051@sptech.school";
+const API_TOKEN = '';
+const PROJECT_KEY = "INF";
+
 let idServidorSelecionado = sessionStorage.getItem('ID_SERVIDOR_SELECIONADO')
 
 let labelsData = []
@@ -7,7 +14,7 @@ let dadosUpload = []
 let dadosDownload = []
 let dadosPacketLoss = []
 
-document.addEventListener('DOMContentLoaded', () => {
+function kpiInternet()  {
       const leftCtx = document.getElementById('chartLeft').getContext('2d');
       const rightCtx = document.getElementById('chartRight').getContext('2d');
 
@@ -17,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
           labels: ['MAX', 'MÉD', 'MIN'],
           datasets: [{
             label: 'Métricas',
-            data: [429, 312, 44,],
+            data: dadosUpload,
             backgroundColor: ['#fff','#fffae6','#e6e1c8']
           }]
         },
@@ -39,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
           labels: ['MAX', 'MÉD', 'MIN'],
           datasets: [{
             label: 'Métricas',
-            data: [623, 434, 72],
+            data: dadosDownload,
             backgroundColor: ['#d9b98a','#b89360','#8c6f45']
           }]
         },
@@ -57,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       new Chart(leftCtx, leftConfig);
       new Chart(rightCtx, rightConfig);
-    });
+    };
 
 
 function graficoLinhaPrincipal() {
@@ -372,8 +379,74 @@ function carregarTabelaConexoes(dados) {
 
 }
 
+function ticketsAtivos(){
+  const auth = Buffer.from(`${API_EMAIL}:${API_TOKEN}`).toString('base64');
+
+  // JQL para buscar tickets ativos
+  const jql = `project = ${PROJECT_KEY} AND status NOT IN (Done, Closed, Resolved)`;
+  const encodedJql = encodeURIComponent(jql);
+
+  // Configuração da requisição
+  const options = {
+      hostname: 'sentinela-grupo-3.atlassian.net',
+      path: `/rest/api/2/search?jql=${encodedJql}&maxResults=0`,
+      method: 'GET',
+      headers: {
+          'Authorization': `Basic ${auth}`,
+          'Accept': 'application/json'
+      }
+  };
+
+  // Faz a requisição
+  const req = https.request(options, (res) => {
+      let data = '';
+      
+      res.on('data', (chunk) => {
+          data += chunk;
+      });
+      
+      res.on('end', () => {
+          const json = JSON.parse(data);
+          console.log(`Total de tickets ativos: ${json.total}`);
+      });
+  });
+
+  req.on('error', (error) => {
+      console.error('Erro:', error.message);
+  });
+
+  req.end();
+}
+
+function receberAlertasPorServidor() {
+
+    const idServidor = idServidorSelecionado;
+    const tipo = 'REDE'
+
+    fetch(`/servidores/receberAlertasPorServidor/${idServidor}/${tipo}`)
+        .then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(function (dados) {
+                    console.log("Dados recebidos: ", dados);
+                    document.getElementById('alertasTotais').innerHTML =dados[0].total_alertas
+                });
+
+            } else {
+                throw "Houve um erro ao tentar receber os alertas por servidor e tipo!";
+            }
+        })
+
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+}
+
 window.onload = () => {
-  listarServidores()
-  carregarDadosRede()
-  carregarDadosConexao()
+  //listarServidores()
+  //carregarDadosRede()
+  //carregarDadosConexao()
+  //ticketsAtivos()
+  receberAlertasPorServidor()
+  //kpiInternet()
+
 }

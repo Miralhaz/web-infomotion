@@ -3,7 +3,6 @@ var router = express.Router();
 
 var servidoresController = require("../controllers/servidoresController");
 
-
 router.get("/receberRegiao/:idServer", function (req, res) {
   servidoresController.receberRegiao(req, res);
 });
@@ -16,15 +15,17 @@ router.put("/atualizarRegiao/:idServidor/:idRegiao", function (req, res) {
   servidoresController.atualizarRegiao(req, res);
 });
 
-
 router.post("/cadastrar", function (req, res) {
   servidoresController.cadastrar(req, res);
 })
 
-
 router.post("/cadastrarRede", function (req, res) {
   servidoresController.cadastrarRede(req, res);
 })
+
+router.get("/receberAlertasPorServidor/:idServidor/:tipo", function (req, res) {
+  servidoresController.receberAlertasPorServidor(req, res);
+});
 
 router.get("/listarServidoresPorUsuario/:idUsuario", function (req, res) {
   servidoresController.listarServidoresPorUsuario(req, res);
