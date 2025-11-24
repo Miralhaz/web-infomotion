@@ -22,7 +22,7 @@ var empresasRouter = require("./src/routes/empresas");
 var componentesRouter = require("./src/routes/componentes");
 var dashboardTemperaturaRouter = require("./src/routes/dashboardTemperatura")
 var dashboardNearRouter = require("./src/routes/dashboardNear");
-
+var dashboardRede = require("./src/routes/dashboardRede")
 
 app.use(cors());
 
@@ -37,6 +37,7 @@ app.use("/empresas", empresasRouter);
 app.use("/componentes", componentesRouter);
 app.use("/dados", dashboardTemperaturaRouter);
 app.use("/dashboardNear", dashboardNearRouter);
+app.use('/dashboardRede', dashboardRede);
 
 app.listen(PORTA_APP, function () {
     console.log(`
