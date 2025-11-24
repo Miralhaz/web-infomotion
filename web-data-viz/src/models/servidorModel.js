@@ -186,13 +186,14 @@ function receberAlertas(idUsuario) {
   return database.executar(instrucaoSql);
 }
 
-function receberAlertasPorServidor(idServidor, tipo){
+function receberAlertasPorServidor(idServidor, tipo, tempo){
   const instrucaoSql = `
     select count(a.id) as total_alertas from alertas a 
     inner join parametro_alerta pa on a.fk_parametro = pa.id
     inner join servidor s on s.id = pa.fk_servidor
     inner join componentes c on c.id = pa.fk_componente
-    where s.id = ${idServidor} and c.tipo = '${tipo}';
+    where s.id = ${idServidor} and c.tipo = '${tipo}' and a.dt_registro >= DATE_SUB(NOW(), INTERVAL ${tempo} HOUR);
+
   `;
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);

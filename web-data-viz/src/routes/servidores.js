@@ -23,7 +23,7 @@ router.post("/cadastrarRede", function (req, res) {
   servidoresController.cadastrarRede(req, res);
 })
 
-router.get("/receberAlertasPorServidor/:idServidor/:tipo", function (req, res) {
+router.get("/receberAlertasPorServidor/:idServidor/:tipo/:tempo", function (req, res) {
   servidoresController.receberAlertasPorServidor(req, res);
 });
 

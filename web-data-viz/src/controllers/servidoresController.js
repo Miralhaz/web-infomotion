@@ -334,8 +334,9 @@ function atualizarRegiao(req, res) {
 function receberAlertasPorServidor(req, res) {
   const idServidor = req.params.idServidor;
   const tipo = req.params.tipo;
+  const tempo = req.params.tempo
   
-    servidorModel.receberAlertasPorServidor(idServidor, tipo)
+    servidorModel.receberAlertasPorServidor(idServidor, tipo, tempo)
       .then(
         function (resultado){
           if (resultado.length > 0) {
