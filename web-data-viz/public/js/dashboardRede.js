@@ -267,7 +267,7 @@ function listarServidores() {
 }
 
 async function carregarDadosRede() {
-    const nomeArquivoRede = `jsonRede_11_${tempo}.json`;
+    const nomeArquivoRede = `jsonRede_${idServidorSelecionado}_${tempo}.json`;
 
     const resposta = await fetch(`/dashboardRede/rede/${nomeArquivoRede}`);
     if (!resposta.ok) {
@@ -430,8 +430,18 @@ async function contarTicketsPorTermo(termo) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
     
-    console.log('Tickets ativos no momento:', json.issues);
-    document.getElementById("alertasAtivos").innerHTML = json.issues.length;
+    console.log('Tickets ativos no momento', json.issues);
+    
+
+    let qtdAlertas = 0;
+    for (let index = 0; index < json.issues.length; index++) {
+      const element = json.issues[index].fields.summary
+      if (element.includes('REDE') && element.includes(`Servidor ${idServidorSelecionado}`)){
+        qtdAlertas++
+      }
+  
+    }
+    document.getElementById("alertasAtivos").innerHTML = qtdAlertas
   
     return json.total;
   } catch (err) {
@@ -456,7 +466,12 @@ function receberAlertasPorServidor() {
             if (resposta.ok) {
                 resposta.json().then(function (dados) {
                     document.getElementById('alertasTotais').innerHTML = dados[0].total_alertas
-                    
+                    const tituloAlertas = document.getElementById('totalHoras')
+                    if(tempo == 1){
+                      tituloAlertas.innerHTML = `Ultima hora:`
+                    } else if (tempo == 24){
+                      tituloAlertas.innerHTML = `Ultimas 24 horas:`
+                    } else tituloAlertas.innerHTML = `Ultimos 7 dias:`
                 });
 
             } else {

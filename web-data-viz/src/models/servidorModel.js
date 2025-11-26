@@ -250,7 +250,7 @@ async function buscartickets(idServidor, tempo, termo){
             jql: `project = ${JIRA_PROJECT_KEY} AND resolution = Unresolved ORDER BY created DESC`,
             maxResults: 50,
             fieldsByKeys: true,
-            fields: ["summary", "created"],
+            fields: ["summary", "created", "status"],
         };
 
         let response = await axios.post(
