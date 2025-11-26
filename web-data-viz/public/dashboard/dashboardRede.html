@@ -69,7 +69,7 @@
         <div class="totalHoras">Ultimos x dias: </div>
         <t class="num" id="alertasTotais"></t>
         <div class="atual">Alertas ativos: </div>
-        <t class="num">2</t>
+        <t class="num" id="alertasAtivos">2</t>
       </div>
     </div>
 
@@ -79,11 +79,11 @@
           <img src="../assets/icon/icon-upload.svg" class="icon" alt="upload">
           <div class="cima">Upload</div>
           <div class="baixo">312 Mbps</div>
-          <img src="../assets/icon/setaPior.svg" class="seta" alt="">
+          <img id="seta_up" src="../assets/icon/setaPior.svg" class="seta" alt="">
           <div class="parametro">Paramêtro máximo: 0.5mbps</div>
         </div>
         <div class="internetDown">
-          <img src="../assets/icon/setaMelhor.svg" class="seta" alt="">
+          <img id="seta_down" src="../assets/icon/setaMelhor.svg" class="seta" alt="">
           <img src="../assets/icon/icondownload.svg" class="icon" alt="download">
           <div class="cima">Download</div>
           <div class="baixo">434 Mbps</div>
@@ -115,7 +115,7 @@
           <option value="" disabled>Tempo</option>
           <option value="1">1 hora</option>
           <option value="24">24 horas</option>
-          <option value="16">7 dias</option>
+          <option value="168" selected>7 dias</option>
         </select>
       </div>
       <div class="dashboard">
@@ -158,7 +158,7 @@
           <p>Tabela conexões (12 ativas no momento)</p>
         </div>
         <div class="tableScroll">
-          <table id="tableConexao">
+          <table >
             <thead>
               <tr class="cabecalho">
                 <th>Nome</th>
@@ -168,7 +168,7 @@
                 <th>Proc ID</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="tableConexao">
               
             </tbody>
           </table>

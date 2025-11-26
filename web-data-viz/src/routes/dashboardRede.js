@@ -4,8 +4,10 @@ const path = require('path');
 
 const dashboardRedeController = require('../controllers/dashboardRedeController');
 
-router.get('/:arquivo', dashboardRedeController.lerArquivoRede);
+router.get('/rede/:arquivo', dashboardRedeController.lerArquivoRede);
 
-router.get('/jira/count', dashboardRedeController.contarTicketsPorTermo);
+router.get('/conexoes/:arquivo', dashboardRedeController.lerArquivoConexoes);
+
+router.get('/jira/:termo/:idServidor/:tempo', dashboardRedeController.contarTicketsPorTermo);
 
 module.exports = router;

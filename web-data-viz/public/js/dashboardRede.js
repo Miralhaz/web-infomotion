@@ -1,4 +1,7 @@
-
+const tempo = 168
+if (sessionStorage.getItem('TEMPO_SELECIONADO')) {
+  const tempo = sessionStorage.getItem('TEMPO_SELECIONADO')
+} 
 
 const JIRA_BASE_URL = "https://sentinela-grupo-3.atlassian.net";
 const API_EMAIL = "lucas.silva051@sptech.school";
@@ -13,11 +16,15 @@ let dadosPacotesRecebidos = []
 let dadosUpload = []
 let dadosDownload = []
 let dadosPacketLoss = []
+let parametroPacotes = 20000
+let parametroPacketLoss = parametroPacotes * 0.01
 
 function kpiInternet()  {
       const leftCtx = document.getElementById('chartLeft').getContext('2d');
       const rightCtx = document.getElementById('chartRight').getContext('2d');
 
+      console.log('dadosUpload', dadosUpload);
+      
       const leftConfig = {
         type: 'bar',
         data: {
@@ -260,9 +267,9 @@ function listarServidores() {
 }
 
 async function carregarDadosRede() {
-    const nomeArquivoRede = `jsonRede11.json`;
+    const nomeArquivoRede = `jsonRede_11_${tempo}.json`;
 
-    const resposta = await fetch(`/dashboardRede/${nomeArquivoRede}`);
+    const resposta = await fetch(`/dashboardRede/rede/${nomeArquivoRede}`);
     if (!resposta.ok) {
       const txt = await resposta.text();
       console.error('Erro ao carregar arquivo:', resposta.status, txt);
@@ -271,8 +278,8 @@ async function carregarDadosRede() {
     const data = await resposta.json();
 
     if (!Array.isArray(data) || data.length === 0) return;
-
-    console.log(data);
+    console.log('conexoes ', data);
+    
   
     carregarGraficosLinha(data)
 }
@@ -280,7 +287,7 @@ async function carregarDadosRede() {
 async function carregarDadosConexao() {
     const nomeArquivoRede = `conexoes11.json`;
 
-    const resposta = await fetch(`/dashboardRede/${nomeArquivoRede}`);
+    const resposta = await fetch(`/dashboardRede/conexoes/${nomeArquivoRede}`);
     if (!resposta.ok) {
       const txt = await resposta.text();
       console.error('Erro ao carregar arquivo:', resposta.status, txt);
@@ -290,7 +297,7 @@ async function carregarDadosConexao() {
 
     if (!Array.isArray(data) || data.length === 0) return;
 
-    console.log(data);
+    console.log('conexoes',data);
   
     carregarTabelaConexoes(data)
 }
@@ -312,6 +319,12 @@ function carregarGraficosLinha(dados) {
     'Minimo': 0
   }
 
+  parametroPacotes = dados[1].parametroPacotesEnviados
+  parametroPacketLoss = parametroPacotes * 0.01
+  
+  document.getElementById("parametroGraficoLinhaPrincipal").innerHTML = `Paramêtro minimo: ${parametroPacotes} pacotes(enviados e recebidos)`
+  document.getElementById("parametroGraficoLinhaSecundario").innerHTML = `Paramêtro máximo: ${parametroPacketLoss} pacotes(Total)`
+
   for (let index = 0; index < tamanhoVetor; index++) {
     
     const element = dados[index];
@@ -321,19 +334,26 @@ function carregarGraficosLinha(dados) {
     let packetLoss = element.packetLossSent + element.packetLossReceived
     dadosPacketLoss.push(packetLoss)
 
-    downloadSoma += element.downloadByte
-    uploadSoma += element.uploadByte
+    if(index == 0){
+      download.Pico = element.downloadByte / 1048576;
+      download.Minimo = element.downloadByte / 1048576;
+      upload.Minimo =( element.uploadByte / 1048576);
+      upload.Pico =( element.uploadByte / 1048576);
+    }
+
+    downloadSoma += (element.downloadByte / 1048576) 
+    uploadSoma += (element.uploadByte / 1048576) 
 
     if(element.downloadByte > download.Pico){
-      download.Pico = element.downloadByte;
+      download.Pico = element.downloadByte / 1048576;
     } else if (element.downloadByte < download.Minimo){
-      download.Minimo = element.downloadByte;
+      download.Minimo = element.downloadByte / 1048576;
     }
 
     if (element.uploadByte > upload.Pico){
-      upload.Pico = element.uploadByte;
+      upload.Pico =( element.uploadByte / 1048576);
     } else if (element.uploadByte < upload.Minimo){
-      upload.Minimo = element.uploadByte;
+      upload.Minimo =( element.uploadByte / 1048576);
     }
 
   }
@@ -349,28 +369,51 @@ function carregarGraficosLinha(dados) {
   dadosUpload.push(upload.Media)
   dadosUpload.push(upload.Minimo)
 
+  if(sessionStorage.getItem("MEDIA_UP") && sessionStorage.getItem("MEDIA_DOWN")){
 
-  console.log('labels', labelsData );
+    const up = document.getElementById("seta_up")
+    const down = document.getElementById("seta_down")
+
+    if (sessionStorage.getItem("MEDIA_UP") >= upload.Media){
+      up.src =  "../assets/icon/setaPior.svg"
+    } else up.src = "../assets/icon/setaMelhor.svg"
+
+    if (sessionStorage.getItem("MEDIA_DOWN") >= download.Media) {
+      down.src =  "../assets/icon/setaPior.svg"
+    } else down.src =  "../assets/icon/setaMelhor.svg"
+  }
+
+
+  sessionStorage.setItem("MEDIA_DOWN", download.Media)
+  sessionStorage.setItem("MEDIA_UP", upload.Media)
+
+  
+  
   
   graficoLinhaPrincipal()
   graficoLinhaSecundario()
+  kpiInternet()
 }
 
 function carregarTabelaConexoes(dados) {
-
+  console.log('entrou na função carregarTabelaConexoes');
+  
   const tamanhoVetor = dados.length
   const tabela = document.getElementById('tableConexao')
+  console.log('tabela', tabela);
 
-  for (let index = 0; index < tamanhoVetor.length; index++) {
-    const element = array[index];
+  for (let index = 0; index < dados.length; index++) {
+    const element = dados[index];
+    console.log('Dados index', dados[index] );
     
-    let row = `
+
+     tabela.innerHTML += `
               <tr>
-                <td>${element.nomeConexao}</td>
-                <td>2.34.43.21:5343</td>
-                <td>2.34.43.21:5343</td>
-                <td>Ouvindo</td>
-                <td>734</td>
+                <td>${element.nome_processo}</td>
+                <td>${element.laddr}</td>
+                <td>${element.raddr}</td>
+                <td>${element.status}</td>
+                <td>${element.idProcessoConexao}</td>
               </tr>
     `
   }
@@ -381,12 +424,14 @@ function carregarTabelaConexoes(dados) {
 
 
 async function contarTicketsPorTermo(termo) {
+  const idServidor = idServidorSelecionado;
   try {
-    const res = await fetch(`/dashboardRede/jira/count?term=${encodeURIComponent(termo)}`);
+    const res = await fetch(`/dashboardRede/jira/${termo}/2/${tempo}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
     
-    console.log('Tickets ativos no momento:', json);
+    console.log('Tickets ativos no momento:', json.issues);
+    document.getElementById("alertasAtivos").innerHTML = json.issues.length;
   
     return json.total;
   } catch (err) {
@@ -410,7 +455,8 @@ function receberAlertasPorServidor() {
         .then(function (resposta) {
             if (resposta.ok) {
                 resposta.json().then(function (dados) {
-                    document.getElementById('alertasTotais').innerHTML =dados[0].total_alertas
+                    document.getElementById('alertasTotais').innerHTML = dados[0].total_alertas
+                    
                 });
 
             } else {
@@ -437,12 +483,10 @@ function selecionarTempo() {
 }
 
 window.onload = () => {
-  //listarServidores()
-  //carregarDadosRede()
-  //carregarDadosConexao()
-  //ticketsAtivos()
+  listarServidores()
+  carregarDadosRede()
+  carregarDadosConexao()
   receberAlertasPorServidor()
-  //kpiInternet()
   selecionarTempo()
   contarTicketsPorTermo('Rede')
 

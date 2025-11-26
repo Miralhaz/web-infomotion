@@ -1,4 +1,11 @@
 var database = require("../database/config");
+const axios = require("axios");
+require('dotenv').config({ path: '../.env.dev' });
+
+const JIRA_EMAIL = process.env.JIRA_EMAIL;
+const JIRA_API_TOKEN = process.env.JIRA_API_TOKEN;
+const JIRA_HOST = process.env.JIRA_HOST;
+const JIRA_PROJECT_KEY = process.env.JIRA_PROJECT_KEY;
 
 function buscarServidoresPorEmpresa(empresaId) {
 
@@ -236,6 +243,37 @@ function atualizarRegiao(idServidor, idRegiao) {
   return database.executar(instrucaoSql);
 }
 
+async function buscartickets(idServidor, tempo, termo){
+  try {
+
+        let body = {
+            jql: `project = ${JIRA_PROJECT_KEY} AND resolution = Unresolved ORDER BY created DESC`,
+            maxResults: 50,
+            fieldsByKeys: true,
+            fields: ["summary", "created"],
+        };
+
+        let response = await axios.post(
+            `${JIRA_HOST}/rest/api/3/search/jql`,
+            body,
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization: `Basic ${Buffer.from(
+                        `${JIRA_EMAIL}:${JIRA_API_TOKEN}`,
+                    ).toString("base64")}`,
+                },
+            }
+        );
+
+        return response.data;
+
+    } catch (error) {
+        console.error("Erro ao buscar alertas do Jira:", error);
+        throw error;
+    }
+}
 
 module.exports = {
   buscarServidoresPorEmpresa,
@@ -253,5 +291,6 @@ module.exports = {
   listarRegioes,
   atualizarRegiao,
   cadastrarRede,
-  receberAlertasPorServidor
+  receberAlertasPorServidor,
+  buscartickets
 }
