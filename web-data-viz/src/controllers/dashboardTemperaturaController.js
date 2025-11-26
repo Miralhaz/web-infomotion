@@ -1,6 +1,8 @@
 const AWS = require('aws-sdk');
 const Papa = require('papaparse');
 
+var dashboardTemperaturaModel = require("../models/dashboardTemperaturaModel");
+
 AWS.config.update({
   region: process.env.AWS_REGION,
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -10,103 +12,94 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-async function lerArquivoCpu(req, res) {
+async function lerArquivoPorServidor(req, res) {
+  
   try {
-    const nomeDoArquivo = req.params.arquivo;
-    const PASTA_S3 = "produto_final/";
-    const fileKey = PASTA_S3 + nomeDoArquivo;
+    const componente = req.params.componente; 
+    const idServidor = req.params.idServidor; 
+    const periodo = req.params.periodo; 
 
-    if (!/^[\w.\-\/]+$/.test(fileKey)) {
-      return res.status(400).send('❌ Nome de arquivo inválido.');
+    let pastaS3;
+    if (componente === 'cpu') {
+      pastaS3 = `tratamentoMiralha/temperatura/cpu/servidor_${idServidor}/`;
+    } else if (componente === 'disco') {
+      pastaS3 = `tratamentoMiralha/temperatura/disco/servidor_${idServidor}/`;
+    } else {
+      return res.status(400).send('❌ Componente inválido. Use "cpu" ou "disco".');
     }
 
-    const params = {
+    const caminhoCompleto = pastaS3 + periodo;
+
+    console.log(`📥 Buscando arquivo: ${caminhoCompleto}`);
+
+    const parametros = {
       Bucket: process.env.S3_BUCKET,
-      Key: fileKey
+      Key: caminhoCompleto
     };
 
-    console.log(`📥 Lendo do S3: ${params.Bucket}/${params.Key}`);
+    const dados = await s3.getObject(parametros).promise();
+    const textoArquivo = dados.Body.toString('utf-8');
 
-    const data = await s3.getObject(params).promise();
-    const text = data.Body.toString('utf-8').trim();
+    const dadosJson = JSON.parse(textoArquivo);
 
-    let content;
-    if (text.startsWith('[') || text.startsWith('{')) {
+    res.json(dadosJson);
 
-      let correctedText = text.replace(/(\d),(\d)/g, '$1.$2');
-
-      try {
-        content = JSON.parse(correctedText);
-      } catch (parseError) {
-        console.error("Erro fatal ao analisar JSON:", parseError.message);
-        // Se falhar, retorne o erro 500
-        return res.status(500).send("Erro fatal: Estrutura JSON inválida.");
-      }
-    } else {
-      const parsed = Papa.parse(text, {
-        header: true,
-        delimiter: text.includes(';') ? ';' : ',',
-        skipEmptyLines: true
-      });
-      content = parsed.data;
-    }
-
-    res.json(content);
-  } catch (err) {
-    console.error('❌ Erro ao buscar arquivo:', err.message);
-    res.status(500).send('Erro ao buscar arquivo: ' + err.message);
+  } catch (erro) {
+    console.error('❌ Erro ao buscar arquivo:', erro.message);
+    res.status(500).send('Erro ao buscar arquivo: ' + erro.message);
   }
 }
 
-async function lerArquivoDisco(req, res) {
+async function lerArquivoProcessos(req, res) {
+
   try {
-    const nomeDoArquivo = req.params.arquivo;
-    const PASTA_S3 = "produto_final/";
-    const fileKey = PASTA_S3 + nomeDoArquivo;
+    const nomeArquivo = req.params.arquivo; 
 
-    if (!/^[\w.\-\/]+$/.test(fileKey)) {
-      return res.status(400).send('❌ Nome de arquivo inválido.');
-    }
+    const caminhoCompleto = `tratamentoMiralha/processos/${nomeArquivo}`;
 
-    const params = {
+    console.log(`📥 Buscando arquivo de processos: ${caminhoCompleto}`);
+
+    const parametros = {
       Bucket: process.env.S3_BUCKET,
-      Key: fileKey
+      Key: caminhoCompleto
     };
 
-    console.log(`📥 Lendo do S3: ${params.Bucket}/${params.Key}`);
+    const dados = await s3.getObject(parametros).promise();
+    const textoArquivo = dados.Body.toString('utf-8');
+    const dadosJson = JSON.parse(textoArquivo);
 
-    const data = await s3.getObject(params).promise();
-    const text = data.Body.toString('utf-8').trim();
+    res.json(dadosJson);
 
-    let content;
-    if (text.startsWith('[') || text.startsWith('{')) {
-
-      let correctedText = text.replace(/(\d),(\d)/g, '$1.$2');
-
-      try {
-        content = JSON.parse(correctedText);
-      } catch (parseError) {
-        console.error("Erro fatal ao analisar JSON:", parseError.message);
-        // Se falhar, retorne o erro 500
-        return res.status(500).send("Erro fatal: Estrutura JSON inválida.");
-      }
-    } else {
-      const parsed = Papa.parse(text, {
-        header: true,
-        delimiter: text.includes(';') ? ';' : ',',
-        skipEmptyLines: true
-      });
-      content = parsed.data;
-    }
-
-    res.json(content);
-  } catch (err) {
-    console.error('❌ Erro ao buscar arquivo:', err.message);
-    res.status(500).send('Erro ao buscar arquivo: ' + err.message);
+  } catch (erro) {
+    console.error('❌ Erro ao buscar arquivo de processos:', erro.message);
+    res.status(500).send('Erro ao buscar arquivo: ' + erro.message);
   }
+}
+
+function buscarParametros(req, res) {
+  var idServidor = req.params.idServidor;
+  
+    dashboardTemperaturaModel.buscarParametros(idServidor)
+      .then(
+        function (resultado) {
+          if (resultado.length > 0) {
+            res.status(200).json(resultado);
+          } else {
+            res.status(204).send("Nenhum servidor encontrado!");
+          }
+        }
+      )
+      .catch(
+        function (erro) {
+          console.log(erro);
+          console.log("\nHouve um erro ao listar os servidores! Erro: ", erro.sqlMessage);
+          res.status(500).json(erro.sqlMessage);
+        }
+      );
 }
 
 module.exports = {
-  lerArquivoCpu,
-  lerArquivoDisco
+  lerArquivoPorServidor,
+  lerArquivoProcessos,
+  buscarParametros
 };

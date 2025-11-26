@@ -173,46 +173,72 @@ function telaEdicaoServidor(apelido, ip, idServidor) {
 }
 
 function listarServidoresPorUsuario() {
-  var idUsuario = sessionStorage.ID_USUARIO
+  var idUsuario = sessionStorage.ID_USUARIO;
 
   fetch(`/servidores/listarServidoresPorUsuario/${idUsuario}`)
     .then(function (resposta) {
-      console.log("resposta:", resposta);
-
-      if (resposta.ok) {
-        resposta.json().then(function (resposta) {
-          console.log("Dados recebidos: ", JSON.stringify(resposta));
-          listaServidores = resposta;
-          sessionStorage.ID_SERVIDORES = resposta.map(resposta => resposta.id)
-
-
-
-          let container = document.querySelector('.listagem-servidores');
-
-
-          let html = ""
-          for (let i = 0; i < listaServidores.length; i++) {
-            let apelido = listaServidores[i].apelido
-            let id = listaServidores[i].id
-            let ip = listaServidores[i].ip
-            let uso_cpu = listaServidores[i].uso_cpu
-            let uso_ram = listaServidores[i].uso_ram
-            let uso_disco = listaServidores[i].uso_disco
-
-            html += exibirServidor(apelido, id, ip, uso_cpu, uso_ram, uso_disco);
-
-          }
-          container.innerHTML = html
-
-
-        });
-      } else {
-        throw "Houve um erro ao tentar listar os servidores!";
+      if (!resposta.ok) {
+        throw `Erro ${resposta.status}: ao listar servidores do usuário! Verifique o modelo SQL simplificado.`;
       }
+      return resposta.json();
     })
-    .catch(function (resposta) {
-      console.log(`#ERRO: ${resposta}`);
+    .then(function (servidoresDoUsuario) {
+      const idsPermitidos = servidoresDoUsuario.map(s => s.id); 
+      console.log("Servidores do usuário (IDs Permitidos):", idsPermitidos);
+
+      return fetch('/servidores/status/servidores')
+        .then(res => {
+          if (!res.ok) {
+            throw `Erro ${res.status}: ao buscar status dos servidores do bucket!`;
+          }
+          return res.json();
+        })
+        .then(statusTodosServidores => {
+          console.log("✅ Status de TODOS os servidores (do Bucket):", statusTodosServidores);
+                    
+          listaServidores = statusTodosServidores
+            .filter(servidorStatus => 
+              idsPermitidos.includes(servidorStatus.fk_servidor)
+            )
+            .map(s => ({
+              id: s.fk_servidor, 
+              apelido: s.apelido,
+              ip: s.ip,
+              uso_cpu: s.uso_cpu,
+              uso_ram: s.uso_ram,
+              uso_disco: s.uso_disco,
+              ...s 
+            })); 
+          
+          console.log("✅ Servidores FILTRADOS e PRONTOS para exibição:", listaServidores);
+          
+          exibirCardsServidores();
+        });
+    })
+    .catch(function (erro) {
+      console.error(`❌ ERRO: ${erro}`);
+      alert("Erro ao carregar servidores. Verifique o console.");
     });
+}
+
+function exibirCardsServidores() {
+  let container = document.querySelector('.listagem-servidores');
+  let html = "";
+  
+  for (let i = 0; i < listaServidores.length; i++) {
+    let servidor = listaServidores[i];
+    
+    html += exibirServidor(
+      servidor.apelido,
+      servidor.fk_servidor,
+      servidor.ip,
+      servidor.uso_cpu,
+      servidor.uso_ram,
+      servidor.uso_disco
+    );
+  }
+  
+  container.innerHTML = html;
 }
 
 function pesquisarServidores() {
