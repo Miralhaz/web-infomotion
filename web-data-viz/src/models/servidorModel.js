@@ -46,20 +46,9 @@ await database.executar(instrucaoSql1);
 
 function listarServidoresPorUsuario(idUsuario) {
   var instrucaoSql = `
-    SELECT s.id, s.ip, s.apelido, rs.uso_cpu, rs.uso_ram, rs.uso_disco 
-FROM servidor as s
-INNER JOIN usuario_has_servidor as uhs on s.id = uhs.fk_servidor
-INNER JOIN usuario as u on uhs.fk_usuario = u.id
-INNER JOIN (
-    SELECT rs1.* FROM registro_servidor as rs1
-    WHERE rs1.dt_registro = (
-        SELECT MAX(rs2.dt_registro) 
-        FROM registro_servidor as rs2
-        WHERE rs2.fk_servidor = rs1.fk_servidor
-    )
-) as rs ON s.id = rs.fk_servidor
-WHERE u.id = ${idUsuario}
-ORDER BY rs.dt_registro desc;`
+  select s.id, s.apelido, s.ip from servidor as s
+  inner join usuario_has_servidor as uhs on s.id = uhs.fk_servidor
+  where uhs.fk_usuario = ${idUsuario};`
   console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
 }

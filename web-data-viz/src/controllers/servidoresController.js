@@ -1,4 +1,16 @@
+const AWS = require('aws-sdk');
+const Papa = require('papaparse');
+
 var servidorModel = require("../models/servidorModel");
+
+AWS.config.update({
+  region: process.env.AWS_REGION,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  sessionToken: process.env.AWS_SESSION_TOKEN
+});
+
+const s3 = new AWS.S3();
 
 function buscarServidoresPorEmpresa(req, res) {
   var idUsuario = req.params.idUsuario;
@@ -355,6 +367,30 @@ function receberAlertasPorServidor(req, res) {
       );
 }
 
+async function buscarStatusServidores(req, res) {
+  try {
+    const nomeArquivo = 'servidores_status_atual.json';
+    const caminhoCompleto = `status_servidores/${nomeArquivo}`;
+
+    console.log(`📥 Buscando status dos servidores: ${caminhoCompleto}`);
+
+    const parametros = {
+      Bucket: process.env.S3_BUCKET,
+      Key: caminhoCompleto
+    };
+
+    const dados = await s3.getObject(parametros).promise();
+    const textoArquivo = dados.Body.toString('utf-8');
+    const dadosJson = JSON.parse(textoArquivo);
+
+    res.json(dadosJson);
+
+  } catch (erro) {
+    console.error('❌ Erro ao buscar status:', erro.message);
+    res.status(500).send('Erro ao buscar status: ' + erro.message);
+  }
+}
+
 module.exports = {
   buscarServidoresPorEmpresa,
   listarServidoresPorUsuario,
@@ -371,5 +407,6 @@ module.exports = {
   listarRegioes,
   atualizarRegiao,
   cadastrarRede,
-  receberAlertasPorServidor
+  receberAlertasPorServidor,
+  buscarStatusServidores
 }

@@ -64,4 +64,6 @@ router.get("/:empresaId", function (req, res) {
   servidoresController.buscarServidoresPorEmpresa(req, res);
 });
 
+router.get('/status/servidores', servidoresController.buscarStatusServidores);
+
 module.exports = router;
