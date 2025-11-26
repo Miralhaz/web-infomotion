@@ -35,6 +35,7 @@ app.use("/usuarios", usuarioRouter);
 app.use("/servidores", servidoresRouter);
 app.use("/empresas", empresasRouter);
 app.use("/componentes", componentesRouter);
+app.use("/dashboardTemperatura", dashboardTemperaturaRouter);
 app.use("/dados", dashboardTemperaturaRouter);
 app.use("/dashboardNear", dashboardNearRouter);
 app.use('/dashboardRede', dashboardRede);

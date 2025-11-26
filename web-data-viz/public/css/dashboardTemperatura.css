@@ -475,7 +475,6 @@ section.header .header-left .container-submenu:hover .submenu {
 }
 
 .top-processos {
-  height: auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
