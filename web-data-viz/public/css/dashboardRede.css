@@ -288,6 +288,7 @@ body {
   margin: 0;
   overflow: visible;
   direction: ltr;
+  font-size: 0.85rem;
 }
 
 .dashboardRede .tabelaRede thead th {
@@ -309,7 +310,7 @@ body {
 
 .dashboardRede .tabelaRede th,
 .dashboardRede .tabelaRede td {
-  padding: 0; /* ajuste se quiser espaço interno */
+  padding: 0; 
   border: none;
 }
 
