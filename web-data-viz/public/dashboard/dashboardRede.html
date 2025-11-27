@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard rede - InfoMotion</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="../css/dashboards.css">
   <link rel="stylesheet" href="../css/dashboardRede.css">
   <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
@@ -78,16 +79,16 @@
         <div class="upDown">
           <img src="../assets/icon/icon-upload.svg" class="icon" alt="upload">
           <div class="cima">Upload</div>
-          <div class="baixo">312 Mbps</div>
+          <div class="baixo" id="baixo_upload">...</div>
           <img id="seta_up" src="../assets/icon/setaPior.svg" class="seta" alt="">
-          <div class="parametro">Paramêtro máximo: 0.5mbps</div>
+          <div class="parametro" id="parametro_up">...</div>
         </div>
         <div class="internetDown">
           <img id="seta_down" src="../assets/icon/setaMelhor.svg" class="seta" alt="">
           <img src="../assets/icon/icondownload.svg" class="icon" alt="download">
           <div class="cima">Download</div>
-          <div class="baixo">434 Mbps</div>
-          <div class="parametro">Paramêtro máximo: 0.5mbps</div>
+          <div class="baixo" id="baixo_download">...</div>
+          <div class="parametro" id="parametro_down">...</div>
         </div>
       </div>
       <div class="lados">
@@ -128,13 +129,13 @@
 
     <div class="cardDashRede graficoLinhaPrincipal">
       <div class="cardHeader">
-        <p>Gráfico de linhas de pacotes enviados e recebidos x tempo</p>
+        <p id="headerMainGraph">Gráfico de linhas de pacotes enviados e recebidos ...</p>
       </div>
       <div class="divGraficoLinhaPrincipal">
         <canvas id="graficoLinhaPrincipal"></canvas>
       </div>
       <div class="parametroGraficoLinhaPrincipal" id="parametroGraficoLinhaPrincipal">
-        Paramêtro minimo: 20.000 pacotes(enviados e recebidos)
+        Paramêtro minimo: ... pacotes(enviados e recebidos)
       </div>
 
     </div>
@@ -143,19 +144,20 @@
 
       <div class="cardDashRede graficoLinhaSecundario">
         <div class="cardHeader">
-          <p>Quantidade de pacotes perdidos x tempo</p>
+          <p id="headerSecGraph">Quantidade de pacotes perdidos ...</p>
         </div>
         <div class="divGraficoLinhaSecundario">
           <canvas id="graficoLinhaSecundario"></canvas>
         </div>
         <div class="parametroGraficoLinhaSecundario" id="parametroGraficoLinhaSecundario">
-        Paramêtro máximo: 1% dos pacotes(enviados e recebidos)
+        Paramêtro máximo: 1% dos pacotes(Total)
         </div>
       </div>
 
       <div class="cardDashRede  tabelaRede">
         <div class="cardHeader cardDashRedeT">
-          <p>Tabela conexões (12 ativas no momento)</p>
+          <p id="tabela_conexoes">Tabela conexões (... ativas no momento) </p>
+          <img src="../assets/icon/fullscreen.svg" alt="FullScreen" onclick="popUpLista()">
         </div>
         <div class="tableScroll">
           <table >
