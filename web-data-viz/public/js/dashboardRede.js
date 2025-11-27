@@ -19,11 +19,12 @@ let dadosPacketLoss = []
 let parametroPacotes = 20000
 let parametroPacketLoss = parametroPacotes * 0.01
 
+let dadosConexoes = []
+
 function kpiInternet()  {
       const leftCtx = document.getElementById('chartLeft').getContext('2d');
       const rightCtx = document.getElementById('chartRight').getContext('2d');
 
-      console.log('dadosUpload', dadosUpload);
       
       const leftConfig = {
         type: 'bar',
@@ -86,8 +87,8 @@ function graficoLinhaPrincipal() {
         
         backgroundColor: (context) => {
             const valor = context.raw;
-            if (valor > 20) return '#0cff03ff'; 
-            if (valor > 10) return '#fffb00ff';   
+            if (valor > (parametroPacotes * 2)) return '#0cff03ff'; 
+            else if (valor > parametroPacotes) return '#fffb00ff';   
             return 'red';                      
         },
         borderColor: 'fffae6', 
@@ -112,8 +113,8 @@ function graficoLinhaPrincipal() {
         data: dadosPacotesRecebidos,
         backgroundColor: (context) => {
             const valor = context.raw;
-            if (valor > 20) return '#0cff03ff'; 
-            if (valor > 10) return '#fffb00ff';   
+            if (valor > (parametroPacotes * 2)) return '#0cff03ff'; 
+            else if (valor > parametroPacotes) return '#fffb00ff';  
             return 'red';                      
         },
         borderColor: 'fffae6', 
@@ -122,9 +123,9 @@ function graficoLinhaPrincipal() {
               
               if (!ctx.p1 || !ctx.p1.parsed) return 'gray';
               const valor = ctx.p1.parsed.y; 
-              if (valor > 20000) {
+              if (valor > (parametroPacotes * 2)) {
                   return '#0cff03ff'; 
-              } else if (valor > 10000) {
+              } else if (valor > parametroPacotes) {
                   return '#fffb00ff';   
               } else {
                   return 'red';       
@@ -190,7 +191,27 @@ function graficoLinhaSecundario() {
         label: 'Quantidade de pacotes perdidos',
         data: dadosPacketLoss,
         borderColor: '#ccc',
-        backgroundColor: '#ccc'
+        backgroundColor: (context) => {
+            const valor = context.raw;
+            const valorCorrespondente = ((dadosPacotesEnviados[context.dataIndex] + dadosPacotesRecebidos[context.dataIndex]) * 0.01);
+
+            if (valor > (valorCorrespondente * 2)) return 'red'; 
+            else if (valor > valorCorrespondente) return '#fffb00ff';   
+            return '#0cff03ff';                      
+        },
+        segment: {
+          borderColor: (ctx) => {
+              const valorCorrespondente = ((dadosPacotesEnviados[ctx.p1DataIndex] + dadosPacotesRecebidos[ctx.p1DataIndex]) * 0.01);
+              if (!ctx.p1 || !ctx.p1.parsed) return 'gray';
+              const valor = ctx.p1.parsed.y; 
+              if (valor > (valorCorrespondente * 2)) {
+                  return 'red'; 
+              } else if (valor > valorCorrespondente) {
+                  return '#fffb00ff';   
+              } else {
+                  return '#0cff03ff';       
+              }
+          },},
       }
     ]
   }
@@ -267,7 +288,7 @@ function listarServidores() {
 }
 
 async function carregarDadosRede() {
-    const nomeArquivoRede = `jsonRede_${idServidorSelecionado}_${tempo}.json`;
+    const nomeArquivoRede = `jsonRede_2_${tempo}.json`;
 
     const resposta = await fetch(`/dashboardRede/rede/${nomeArquivoRede}`);
     if (!resposta.ok) {
@@ -278,9 +299,9 @@ async function carregarDadosRede() {
     const data = await resposta.json();
 
     if (!Array.isArray(data) || data.length === 0) return;
-    console.log('conexoes ', data);
     
-  
+   console.log('Dados rede', data);
+   
     carregarGraficosLinha(data)
 }
 
@@ -297,8 +318,7 @@ async function carregarDadosConexao() {
 
     if (!Array.isArray(data) || data.length === 0) return;
 
-    console.log('conexoes',data);
-  
+    dadosConexoes = data
     carregarTabelaConexoes(data)
 }
 
@@ -323,7 +343,16 @@ function carregarGraficosLinha(dados) {
   parametroPacketLoss = parametroPacotes * 0.01
   
   document.getElementById("parametroGraficoLinhaPrincipal").innerHTML = `Paramêtro minimo: ${parametroPacotes} pacotes(enviados e recebidos)`
-  document.getElementById("parametroGraficoLinhaSecundario").innerHTML = `Paramêtro máximo: ${parametroPacketLoss} pacotes(Total)`
+
+  let stringTempo
+  if(tempo == 1){
+                      stringTempo = `na ultima hora`
+                    } else if (tempo == 24){
+                      stringTempo = `nas ultimas 24 horas`
+                    } else stringTempo = `nos ultimos 7 dias`
+  document.getElementById("headerMainGraph").innerHTML = `Quantidade de pacotes perdidos ${stringTempo}`
+  document.getElementById("headerSecGraph").innerHTML = `Quantidade de pacotes perdidos ${stringTempo}`
+  
 
   for (let index = 0; index < tamanhoVetor; index++) {
     
@@ -365,6 +394,12 @@ function carregarGraficosLinha(dados) {
   dadosDownload.push(download.Media)
   dadosDownload.push(download.Minimo)
 
+  document.getElementById('parametro_up').innerHTML = `Paramêtro máximo: ${dados[1].parametroUp}Mbps`
+  document.getElementById('baixo_upload').innerHTML = `${(upload.Media).toFixed(1)} Mbps`
+
+  document.getElementById('parametro_down').innerHTML = `Paramêtro máximo: ${dados[1].parametroDown}Mbps`
+  document.getElementById('baixo_download').innerHTML = `${(download.Media).toFixed(1)} Mbps`
+
   dadosUpload.push(upload.Pico)
   dadosUpload.push(upload.Media)
   dadosUpload.push(upload.Minimo)
@@ -396,15 +431,13 @@ function carregarGraficosLinha(dados) {
 }
 
 function carregarTabelaConexoes(dados) {
-  console.log('entrou na função carregarTabelaConexoes');
   
   const tamanhoVetor = dados.length
   const tabela = document.getElementById('tableConexao')
-  console.log('tabela', tabela);
 
+    document.getElementById('tabela_conexoes').innerHTML = `Tabela conexões (${tamanhoVetor} ativas no momento)`
   for (let index = 0; index < dados.length; index++) {
     const element = dados[index];
-    console.log('Dados index', dados[index] );
     
 
      tabela.innerHTML += `
@@ -424,7 +457,7 @@ function carregarTabelaConexoes(dados) {
 
 
 async function contarTicketsPorTermo(termo) {
-  const idServidor = idServidorSelecionado;
+  const tempo = sessionStorage.getItem('TEMPO_SELECIONADO')
   try {
     const res = await fetch(`/dashboardRede/jira/${termo}/2/${tempo}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -432,56 +465,50 @@ async function contarTicketsPorTermo(termo) {
     
     console.log('Tickets ativos no momento', json.issues);
     
-
     let qtdAlertas = 0;
+    let qtdAlertasAtivos = 0;
     for (let index = 0; index < json.issues.length; index++) {
-      const element = json.issues[index].fields.summary
-      if (element.includes('REDE') && element.includes(`Servidor ${idServidorSelecionado}`)){
-        qtdAlertas++
+      const element = json.issues[index]
+      
+      
+      if (element.fields && element.fields.summary){
+        const summary = element.fields.summary.toUpperCase();
+        const dataHoraString = element.fields.created
+        
+        
+        const termoServidor = `SERVIDOR ${idServidorSelecionado}`.toUpperCase();
+        if (summary.includes('REDE') && summary.includes(termoServidor)) {
+          if((element.fields.status.name).toUpperCase() == "aberto".toUpperCase() || (element.fields.status.name).toUpperCase() == "reaberto".toUpperCase()){
+            qtdAlertasAtivos++
+          }
+          const data = new Date(dataHoraString)
+          const agora = new Date();
+
+          const diferencaMs = agora - data;
+          const diferencaHoras = diferencaMs / (1000 * 60 * 60);
+
+          if (diferencaHoras <= tempo) {
+            qtdAlertas++
+          } 
+        }
       }
-  
     }
-    document.getElementById("alertasAtivos").innerHTML = qtdAlertas
+    
+    const tituloAlertas = document.getElementById('totalHoras')
+    if(tempo == 1){
+      tituloAlertas.innerHTML = `Ultima hora:`
+    } else if (tempo == 24){
+      tituloAlertas.innerHTML = `Ultimas 24 horas:`
+    } else tituloAlertas.innerHTML = `Ultimos 7 dias:`
+    document.getElementById('alertasTotais').innerHTML = qtdAlertas
+
+    document.getElementById("alertasAtivos").innerHTML = qtdAlertasAtivos
   
     return json.total;
   } catch (err) {
     console.error('Erro ao contar tickets:', err);
     return null;
   }
-}
-
-
-function receberAlertasPorServidor() {
-
-    const idServidor = idServidorSelecionado;
-    const tipo = 'REDE'
-    const tempo = sessionStorage.getItem('TEMPO_SELECIONADO')
-    console.log('tempo: ', tempo);
-    
-    
-    
-
-    fetch(`/servidores/receberAlertasPorServidor/${idServidor}/${tipo}/${tempo}`)
-        .then(function (resposta) {
-            if (resposta.ok) {
-                resposta.json().then(function (dados) {
-                    document.getElementById('alertasTotais').innerHTML = dados[0].total_alertas
-                    const tituloAlertas = document.getElementById('totalHoras')
-                    if(tempo == 1){
-                      tituloAlertas.innerHTML = `Ultima hora:`
-                    } else if (tempo == 24){
-                      tituloAlertas.innerHTML = `Ultimas 24 horas:`
-                    } else tituloAlertas.innerHTML = `Ultimos 7 dias:`
-                });
-
-            } else {
-                throw "Houve um erro ao tentar receber os alertas por servidor e tipo!";
-            }
-        })
-
-        .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-        });
 }
 
 function refresh(x) {
@@ -497,11 +524,185 @@ function selecionarTempo() {
   }
 }
 
+function popUpLista() {
+
+  Swal.fire({
+    title: false,
+    icon: false,
+    width: '90vw',
+    padding: '2rem',
+    background: '#f5f5f5',
+    showCloseButton: true,
+    showConfirmButton: false,
+    customClass: {
+        popup: 'popup-tabela-conexoes',
+        closeButton: 'close-button-custom'
+    },
+    html: `
+      <style>
+        .popup-tabela-conexoes {
+          border-radius: 12px;
+        }
+
+        .close-button-custom {
+          font-size: 2rem;
+          color: #666;
+        }
+
+        .cardDashRede.tabelaRede {
+          background: white;
+          border-radius: 8px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          overflow: hidden;
+        }
+
+        .cardDashRede .cardHeader.cardDashRedeT {
+          padding: 1.5rem 2rem;
+          background: white;
+          border-bottom: 1px solid #e0e0e0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .cardDashRede .cardHeader p {
+          margin: 0;
+          font-size: 1.1rem;
+          font-weight: 500;
+          color: #333;
+        }
+
+        .cardDashRede .cardHeader img {
+          cursor: pointer;
+          width: 20px;
+          height: 20px;
+          opacity: 0.6;
+          transition: opacity 0.2s;
+        }
+
+        .cardDashRede .cardHeader img:hover {
+          opacity: 1;
+        }
+
+        .dashboardRede .tabelaRede .tableScroll {
+          max-height: 70vh;            
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .dashboardRede .tabelaRede .tableScroll::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        .dashboardRede .tabelaRede .tableScroll::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        .dashboardRede .tabelaRede .tableScroll::-webkit-scrollbar-thumb {
+          background: #888;
+          border-radius: 4px;
+        }
+
+        .dashboardRede .tabelaRede .tableScroll::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+
+        .dashboardRede .tabelaRede table {
+          width: 100%;
+          border-collapse: collapse;
+          border-spacing: 0;
+          margin: 0;
+          font-size: 0.95rem;
+        }
+
+        .dashboardRede .tabelaRede thead th {
+          position: sticky;
+          top: 0;
+          background: #fff;
+          z-index: 5;
+          padding: 1rem 1.5rem;
+          text-align: left;
+          font-weight: 500;
+          color: #666;
+          font-size: 0.9rem;
+          border-bottom: 2px solid #e0e0e0;
+        }
+
+        .dashboardRede .tabelaRede tbody tr {
+          background: #1a1a1a;
+          transition: background 0.2s;
+        }
+
+        .dashboardRede .tabelaRede tbody tr:hover {
+          background: #2a2a2a;
+        }
+
+        .dashboardRede .tabelaRede tbody td {
+          padding: 1rem 1.5rem;
+          color: white;
+          text-align: left;
+          border-bottom: 1px solid #2a2a2a;
+        }
+
+        .dashboardRede .tabelaRede tbody tr:last-child td {
+          border-bottom: none;
+        }
+      </style>
+
+      <div class="cardDashRede tabelaRede dashboardRede">
+        <div class="cardHeader cardDashRedeT">
+          <p id="tabela_conexoes">Tabela conexões (11 ativas no momento)</p>
+          <img src="../assets/icon/fullscreen.svg" alt="FullScreen" onclick="popUpLista()">
+        </div>
+        <div class="tableScroll">
+          <table>
+            <thead>
+              <tr class="cabecalho">
+                <th>Nome</th>
+                <th>Local adress</th>
+                <th>Remote adress</th>
+                <th>Status</th>
+                <th>Proc ID</th>
+              </tr>
+            </thead>
+            <tbody id="tableConexao">
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <script>
+        carregarTabelaPopUp()
+      </script>
+    `,
+})
+}
+
+function carregarTabelaPopUp() {
+  const tamanhoVetor = dadosConexoes.length
+        const tabela = document.getElementById('tableConexao')
+
+        document.getElementById('tabela_conexoes').innerHTML = `Tabela conexões (${tamanhoVetor} ativas no momento)`
+        for (let index = 0; index < dadosConexoes.length; index++) {
+          const element = dadosConexoes[index];
+          
+          tabela.innerHTML += `
+                    <tr>
+                      <td>${element.nome_processo}</td>
+                      <td>${element.laddr}</td>
+                      <td>${element.raddr}</td>
+                      <td>${element.status}</td>
+                      <td>${element.idProcessoConexao}</td>
+                    </tr>
+          `
+        }
+}
+
 window.onload = () => {
   listarServidores()
   carregarDadosRede()
   carregarDadosConexao()
-  receberAlertasPorServidor()
   selecionarTempo()
   contarTicketsPorTermo('Rede')
 

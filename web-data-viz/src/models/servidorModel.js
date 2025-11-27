@@ -236,7 +236,7 @@ async function buscartickets(idServidor, tempo, termo){
   try {
 
         let body = {
-            jql: `project = ${JIRA_PROJECT_KEY} AND resolution = Unresolved ORDER BY created DESC`,
+            jql: `project = ${JIRA_PROJECT_KEY} AND created >= -7d ORDER BY created DESC`,
             maxResults: 50,
             fieldsByKeys: true,
             fields: ["summary", "created", "status"],

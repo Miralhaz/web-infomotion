@@ -182,7 +182,9 @@ body {
   width: 50%;
 }
 
-
+.dashboardRede .kpiAlerta .baixo{
+  font-size: 0.5rem;
+}
 
 .dashboardRede .lados .ladoEsquerdo canvas,
 .dashboardRede .lados .ladoDireito canvas {
@@ -357,7 +359,14 @@ body {
 }
 
 .cardHeader.cardDashRedeT{
+  width: 34vw;
   height: 2vw;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cardHeader.cardDashRedeT img{
+  cursor: pointer;
 }
 
 .dashboardRede .graficoLinhaSecundario {
