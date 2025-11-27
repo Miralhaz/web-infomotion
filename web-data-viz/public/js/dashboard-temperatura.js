@@ -89,8 +89,7 @@ function trocarDePagina() {
   }
 }
 
-function buscarParametros() {
-  let idServidor = sessionStorage.getItem('ID_SERVIDOR_SELECIONADO')
+function buscarParametros(idServidor) {
 
   fetch(`/dashboardTemperatura/buscarParametro/${idServidor}`)
     .then(function (resposta) {
@@ -845,8 +844,8 @@ function graficoDispersao(intervalos, componente, nomeServidor) {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          position: 'top',
-        },
+          display: false 
+        }
       },
       scales: {
         y: {
