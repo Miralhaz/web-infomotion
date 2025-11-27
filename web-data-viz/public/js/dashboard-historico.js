@@ -10,22 +10,27 @@ let resumoTabela = [];
 let serieLinhas = [];
 
 async function carregarJsonS3(nomeArquivo) {
-    const resp = await fetch(`/s3Route/dados/${nomeArquivo}`);
+    const resp = await fetch(`/dashboardHistorico/dados/${nomeArquivo}`);
     if (!resp.ok) throw new Error(`Falha ao carregar ${nomeArquivo}`);
     return await resp.json();
 }
 
 async function carregarDashboardDoS3() {
-    const tempo = Number(localStorage.getItem("tempoSelecionado") || 1);
+    const tempo = Number(localStorage.getItem("tempoSelecionado"));
 
     const arqTabela = `historicoAlertas_${tempo}.json`;
     const arqLinhas = `historicoAlertasLinhas_${tempo}.json`;
+
+    console.log("Buscando:", arqTabela, arqLinhas);
 
     try {
         [resumoTabela, serieLinhas] = await Promise.all([
             carregarJsonS3(arqTabela),
             carregarJsonS3(arqLinhas)
         ]);
+
+        console.log("resumoTabela len:", resumoTabela?.length, resumoTabela);
+        console.log("serieLinhas len:", serieLinhas?.length, serieLinhas);
 
         inserirDadosTabela(tempo);
 
@@ -39,81 +44,6 @@ async function carregarDashboardDoS3() {
 
 
 function inserirDadosTabela(tempo) {
-    let infoAjustada = JSON.parse(JSON.stringify(info));
-
-    let hoje = new Date();
-    let dataLimite = new Date();
-    dataLimite.setDate(hoje.getDate() - tempo);
-
-
-    for (let index = 0; index < infoAjustada.length; index++) {
-        const element = infoAjustada[index];
-        const dataStr = element.data_registro;
-        let [dia, mes, ano] = dataStr.split("/");
-        let data = new Date(`${ano}-${mes}-${dia}`);
-        element.data_registro = data
-    }
-
-    infoExibicao = [];
-
-    for (let index = 0; index < infoAjustada.length; index++) {
-        const element = infoAjustada[index];
-        if (element.data_registro > dataLimite) {
-            infoExibicao.push(element)
-        }
-    }
-    console.log("infoExibicao", infoExibicao);
-
-    infoTabela = [];
-
-    for (let index = 0; index < infoExibicao.length; index++) {
-        const element = infoExibicao[index];
-        let indice = -1
-        for (let j = 0; j < infoTabela.length; j++) {
-            const element2 = infoTabela[j];
-            if (element2.apelido === element.apelido) { indice = j; break; }
-        }
-
-        if (indice >= 0) {
-            const tipo = element.tipo.toUpperCase();
-            if (tipo === 'CPU') {
-                infoTabela[indice].AlertaCPU++;
-            } else if (tipo === 'DISCO') {
-                infoTabela[indice].AlertaDisco++;
-            } else {
-                infoTabela[indice].AlertaRAM++;
-            }
-            infoTabela[indice].QuantidadeTotalAlertas++;
-        }
-        else {
-            let novoRegistro = {
-                id: element.id,
-                apelido: element.apelido,
-                AlertaCPU: 0,
-                AlertaRAM: 0,
-                AlertaDisco: 0,
-                QuantidadeTotalAlertas: 1
-            };
-
-            const tipo = element.tipo.toUpperCase();
-            if (tipo === 'CPU') {
-                novoRegistro.AlertaCPU = 1;
-            } else if (tipo === 'DISCO') {
-                novoRegistro.AlertaDisco = 1;
-            } else {
-                novoRegistro.AlertaRAM = 1;
-            }
-            infoTabela.push(novoRegistro);
-        }
-    }
-
-    if (infoExibicao.length > 0) {
-        chamarFuncoesServidores(infoExibicao[0].id);
-    } else {
-        console.log("Nenhum alerta recente encontrado para exibir.");
-    }
-
-    chamarFuncoesServidores(infoExibicao[0].id)
 
     document.getElementById("nome_tabela").innerHTML = `Relatório de alertas X ${tempo} dias`
     const bodyTabela = document.getElementById("bodyTabelaAlerta")
@@ -138,6 +68,12 @@ function inserirDadosTabela(tempo) {
             <td>${element.QuantidadeTotalAlertas}</td>
         </tr>
               `;
+    }
+
+    if (resumoTabela.length > 0) {
+        plotarGraficoDonut();
+        plotarGraficoBolhas();
+        chamarFuncoesServidores(resumoTabela[0].fk_servidor);
     }
 }
 
@@ -252,8 +188,8 @@ function ordenarPor(item) {
 function plotarGraficoDonut() {
     const counts = { OK: 0, ATENCAO: 0, CRITICO: 0 };
 
-    for (const d of data) {
-        const c = (d.classificacao || "").toUpperCase();
+    for (const i of resumoTabela) {
+        const c = (i.classificacao).toUpperCase();
         if (counts[c] != null) counts[c]++;
     }
 
@@ -270,7 +206,6 @@ function plotarGraficoDonut() {
             ctx.save(); // salva o contexto atual
             ctx.fillStyle = '#BD2C2C';
             ctx.font = 'bold 22px poppins';
-
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(dados[2] + "% " + labels[2], centerX, centerY); // Texto que vai aparecer no meio!
@@ -322,10 +257,10 @@ function plotarGraficoDonut() {
 
 function plotarGraficoBolhas() {
 
-    const bolhas = data.map(d => ({
-        x: Number(d.apelido) || 0,
-        y: Number(d.percentual) || 0,
-        r: Number(d.minutos) || 0
+    const bolhas = resumoTabela.map(i => ({
+        x: Number(i.apelido),
+        y: Number(i.percentual),
+        r: Number(i.minutos)
     }));
 
     const config = {
@@ -420,7 +355,7 @@ function plotarGraficoLinhas(idServidor) {
     const existingChart = Chart.getChart(canvas);
     if (existingChart) existingChart.destroy();
 
-    const tempo = Number(localStorage.getItem("tempoSelecionado") || 1);
+    const tempo = Number(localStorage.getItem("tempoSelecionado"));
     const dadosServidor = serieLinhas
         .filter(d => String(d.fk_servidor) === String(idServidor))
         .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
@@ -440,55 +375,12 @@ function plotarGraficoLinhas(idServidor) {
     const cpu = dadosServidor.map(d => Number(d.alertasCpu));
     let ram = dadosServidor.map(d => Number(d.alertasRam));
     let disco = dadosServidor.map(d => Number(d.alertasDisco));
+    let nomeServidor = dadosServidor[0]?.apelido;
 
-    const nomeServidor = dadosServidor[0].apelido || "";
-
-    for (let index = 0; index < infoExibicao.length; index++) {
-        const element = infoExibicao[index];
-        if (element.id == idServidor) {
-            nomeServidor = element.apelido
-        }
-    }
-
-    for (let i = 0; i < infoExibicao.length; i++) {
-
-        if (infoExibicao[i].id == idServidor) {
-            const el = infoExibicao[i];
-            const d = el.data_registro instanceof Date ? el.data_registro : new Date(el.data_registro); // verifica se é Date ou não
-            const key = dataToString(d);
-
-
-            // procurar índice da label
-            let idx = -1;
-            for (let j = 0; j < labels.length; j++) {
-                if (labels[j] === key) { idx = j; break; }
-            }
-
-            // se não existe, cria linha
-            if (idx === -1) {
-                labels.push(key);
-                ram.push(0);
-                cpu.push(0);
-                disco.push(0);
-                idx = labels.length - 1; // <<< índice correto
-            }
-
-            // incrementa série correta
-            const tipo = String(el.tipo).toUpperCase();
-            if (tipo === 'CPU') { cpu[idx] += 1; }
-            else if (tipo === 'DISCO') { disco[idx] += 1; }
-            else ram[idx] += 1;
-        }
-    }
-
-    // Pegando o nome do servidor
-    if (nomeServidor) {
-        if (tempo > 1) {
-            document.getElementById("nome_gráfico").innerHTML = `Quantidade de alertas dos últimos ${tempo} dias do servidor: ${nomeServidor}`;
-        }
-        else document.getElementById("nome_gráfico").innerHTML = `Quantidade de alertas do último dia do servidor: ${nomeServidor}`;
-    }
-
+    const titulo = tempo > 1
+        ? `Quantidade de alertas dos últimos ${tempo} dias do servidor: ${nomeServidor}`
+        : `Quantidade de alertas do último dia do servidor: ${nomeServidor}`;
+    document.getElementById("nome_gráfico_linhas").innerHTML = titulo;
 
     const config = {
         type: 'line',

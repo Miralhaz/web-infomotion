@@ -15,11 +15,12 @@ async function lerArquivo(req, res) {
   try {
 
     const nomeArq = req.params.arquivo;
-    const fileKey = PASTA_S3 + nomeArq;
-
-    if (!/^[\w.\-\/]+$/.test(fileKey) || fileKey.includes("..")) {
-      return res.status(400).send('❌ Nome de arquivo inválido!');
+    
+    if (!nomeArq || !/^[a-zA-Z0-9_.-]+$/.test(nomeArq)) {
+      return res.status(400).json({ error: 'Nome de arquivo inválido' });
     }
+    
+    const fileKey = PASTA_S3 + nomeArq;
 
     const params = {
       Bucket: process.env.S3_BUCKET,
