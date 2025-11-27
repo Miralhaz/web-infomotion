@@ -117,7 +117,7 @@
     <div class="alerta_tempo_e_grafico_bolhas">
 
       <div class="gráfico_chart">
-        <div class="nome_gráfico" id="nome_gráfico">
+        <div class="nome_gráfico" id="nome_gráfico_linhas">
           <a>Situação dos servidores</a>
         </div>
         <div class="div-line-historico">
@@ -173,12 +173,9 @@
     }
   }
 
-  window.onload = function () {
-    carregarDashboardDoS3();
+  window.onload = async function () {
     selecionarTempo();
-    plotarGraficoDonut();
-    plotarGraficoBolhas();
-    plotarGraficoBarras();
+    await carregarDashboardDoS3();
   }
 </script>
 
