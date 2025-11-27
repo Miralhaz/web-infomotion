@@ -111,6 +111,7 @@ body {
   font-size: 1rem;
   grid-column: 3;
   grid-row: 1 / -1;
+  font-size: 0.95rem;
 }
 
 .dashboardRede .kpiInternet .cardHeader .upDown .seta {
@@ -161,7 +162,7 @@ body {
 .dashboardRede .kpiInternet .cardHeader .internetDown .parametro{
   justify-self: center;
   width: 100%;
-  font-size: 1rem;
+  font-size: 0.95rem;
   grid-column: 2;
   grid-row: 1 / -1;
 }

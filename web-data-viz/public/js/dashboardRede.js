@@ -1,3 +1,5 @@
+Chart.register(ChartDataLabels);
+
 const tempo = 168
 if (sessionStorage.getItem('TEMPO_SELECIONADO')) {
   const tempo = sessionStorage.getItem('TEMPO_SELECIONADO')
@@ -18,6 +20,10 @@ let dadosDownload = []
 let dadosPacketLoss = []
 let parametroPacotes = 20000
 let parametroPacketLoss = parametroPacotes * 0.01
+
+let unidadeMedidaDown = '...'
+let unidadeMedidaUp = '...'
+
 
 let dadosConexoes = []
 
@@ -40,7 +46,23 @@ function kpiInternet()  {
           indexAxis: 'y', 
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
+          plugins: { legend: { display: false },
+            datalabels: {
+              color: '#1e0f0fff', // cor do texto
+              font: {
+                weight: 'bold',
+                size: 14
+              },
+              // Exibe o valor numérico da barra
+              formatter: (value, context) => {
+                return `${value.toFixed(1)} ${unidadeMedidaUp}`; // ou `${value} unidades`, etc.
+              },
+              // Posição: 'top', 'bottom', 'center', 'inside', etc.
+              anchor: 'center', // fixa no topo da barra
+              align: 'right',  // alinha acima da barra
+              offset: -10,    // ajuste fino (negativo puxa pra dentro)
+            }
+          },
           scales: {
             x: { beginAtZero: true },
             y: { ticks: { color: '#fff' } }
@@ -62,7 +84,23 @@ function kpiInternet()  {
           indexAxis: 'y',
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
+          plugins: { legend: { display: false },
+          datalabels: {
+              color: '#ffffffff', // cor do texto
+              font: {
+                weight: 'bold',
+                size: 14
+              },
+              
+              formatter: (value, context) => {
+                return `${value.toFixed(1)} ${unidadeMedidaDown}`; 
+              },
+              
+              anchor: 'center', 
+              align: 'right',  
+              offset: -10,    
+            }
+        },
           scales: {
             x: { beginAtZero: true },
             y: { ticks: { color: '#fff' } }
@@ -159,6 +197,9 @@ function graficoLinhaPrincipal() {
       tooltip: {
         titleFont: { size: 11 },
         bodyFont: { size: 11 }
+      }, 
+      datalabels: {
+        display: false
       }
     },
     scales: {
@@ -227,10 +268,13 @@ function graficoLinhaSecundario() {
         position: 'top',
         labels: { font: { size: 11 }, color: '#E2E1DE' } // menor legenda
       },
-      title: { display: false }
+      title: { display: false }, 
+      datalabels: {
+        display: false
+      }
     },
     scales: {
-      x: { display: false },
+      x: { display: true },
       y: { ticks: { font: { size: 9 }, color: '#E2E1DE' } }
     }
   },
@@ -288,7 +332,7 @@ function listarServidores() {
 }
 
 async function carregarDadosRede() {
-    const nomeArquivoRede = `jsonRede_2_${tempo}.json`;
+    const nomeArquivoRede = `jsonRede_14_${tempo}.json`;
 
     const resposta = await fetch(`/dashboardRede/rede/${nomeArquivoRede}`);
     if (!resposta.ok) {
@@ -300,7 +344,6 @@ async function carregarDadosRede() {
 
     if (!Array.isArray(data) || data.length === 0) return;
     
-   console.log('Dados rede', data);
    
     carregarGraficosLinha(data)
 }
@@ -350,7 +393,7 @@ function carregarGraficosLinha(dados) {
                     } else if (tempo == 24){
                       stringTempo = `nas ultimas 24 horas`
                     } else stringTempo = `nos ultimos 7 dias`
-  document.getElementById("headerMainGraph").innerHTML = `Quantidade de pacotes perdidos ${stringTempo}`
+  document.getElementById("headerMainGraph").innerHTML = `Quantidade de pacotes enviados e recebidos ${stringTempo}`
   document.getElementById("headerSecGraph").innerHTML = `Quantidade de pacotes perdidos ${stringTempo}`
   
 
@@ -394,10 +437,44 @@ function carregarGraficosLinha(dados) {
   dadosDownload.push(download.Media)
   dadosDownload.push(download.Minimo)
 
-  document.getElementById('parametro_up').innerHTML = `Paramêtro máximo: ${dados[1].parametroUp}Mbps`
+  if (upload.Media > 1000){
+      unidadeMedidaUp = 'Gbps'
+    } else if (upload.Media > 0){
+      unidadeMedidaUp = 'Mbps'
+    } else unidadeMedidaUp = 'Kbps'
+
+    if (download.Media > 1000){
+      unidadeMedidaDown = 'Gbps'
+    } else if (download.Media > 0){
+      unidadeMedidaDown = 'Mbps'
+    } else unidadeMedidaDown = 'Kbps'
+    
+    
+
+  let parametro_up = `...`;
+  if (dados[1].parametroUp > 1000000){
+    parametro_up = `Paramêtro máximo: ${(dados[1].parametroUp / 1000000).toFixed(1)}Mbps`
+  } else if (dados[1].parametroUp > 1000){
+    parametro_up = `Paramêtro máximo: ${(dados[1].parametroUp / 1000).toFixed(1)}Kbps`
+  } else {
+    parametro_up = `Paramêtro máximo: ${(dados[1].parametroUp).toFixed(1)}Bps`}
+
+  let parametro_down = `...`;
+  if (dados[1].parametroUp > 1000000){
+    parametro_down = `Paramêtro máximo: ${(dados[1].parametroUp / 1000000).toFixed(1)}Mbps`
+  } else if (dados[1].parametroUp > 1000){
+    parametro_down = `Paramêtro máximo: ${(dados[1].parametroUp / 1000).toFixed(1)}Kbps`
+  } else {
+    parametro_down = `Paramêtro máximo: ${(dados[1].parametroUp).toFixed(1)}Bps`}
+
+    
+    
+   
+
+  document.getElementById('parametro_up').innerHTML = parametro_up
   document.getElementById('baixo_upload').innerHTML = `${(upload.Media).toFixed(1)} Mbps`
 
-  document.getElementById('parametro_down').innerHTML = `Paramêtro máximo: ${dados[1].parametroDown}Mbps`
+  document.getElementById('parametro_down').innerHTML = parametro_down
   document.getElementById('baixo_download').innerHTML = `${(download.Media).toFixed(1)} Mbps`
 
   dadosUpload.push(upload.Pico)
@@ -462,8 +539,11 @@ async function contarTicketsPorTermo(termo) {
     const res = await fetch(`/dashboardRede/jira/${termo}/2/${tempo}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
+
+    function removerAcentos(str) {
+      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
     
-    console.log('Tickets ativos no momento', json.issues);
     
     let qtdAlertas = 0;
     let qtdAlertasAtivos = 0;
@@ -472,12 +552,14 @@ async function contarTicketsPorTermo(termo) {
       
       
       if (element.fields && element.fields.summary){
-        const summary = element.fields.summary.toUpperCase();
+        const summary = removerAcentos(element.fields.summary.toUpperCase())
         const dataHoraString = element.fields.created
         
         
-        const termoServidor = `SERVIDOR ${idServidorSelecionado}`.toUpperCase();
+        
+        const termoServidor = `SERVIDOR 10`.toUpperCase();
         if (summary.includes('REDE') && summary.includes(termoServidor)) {
+        
           if((element.fields.status.name).toUpperCase() == "aberto".toUpperCase() || (element.fields.status.name).toUpperCase() == "reaberto".toUpperCase()){
             qtdAlertasAtivos++
           }
@@ -697,6 +779,25 @@ function carregarTabelaPopUp() {
                     </tr>
           `
         }
+}
+
+function popUpInfo() {
+  Swal.fire({
+    title: `<strong>Informações da tabela de conexões</strong>`,
+    icon: false,
+    html: `
+      
+          <div>
+            <div>
+              Esta tabela mostra somente conexões externas atualmente ativas
+            </div>
+          </div>
+      
+    `,
+    showCloseButton: true,
+    showConfirmButton: false, // Escondemos o botão "OK" padrão
+    focusConfirm: false
+  });
 }
 
 window.onload = () => {

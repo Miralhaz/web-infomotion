@@ -7,6 +7,7 @@
   <title>Dashboard rede - InfoMotion</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
   <link rel="stylesheet" href="../css/dashboards.css">
   <link rel="stylesheet" href="../css/dashboardRede.css">
   <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
@@ -157,6 +158,7 @@
       <div class="cardDashRede  tabelaRede">
         <div class="cardHeader cardDashRedeT">
           <p id="tabela_conexoes">Tabela conexões (... ativas no momento) </p>
+          <img src="../assets/icon/info.svg" alt="Info" onclick="popUpInfo()">
           <img src="../assets/icon/fullscreen.svg" alt="FullScreen" onclick="popUpLista()">
         </div>
         <div class="tableScroll">
