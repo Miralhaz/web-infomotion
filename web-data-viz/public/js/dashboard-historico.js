@@ -6,28 +6,39 @@ let especificacao = []
 let infoTabela = []
 let jaOrdenado = true;
 
-function receberAlertas(idUsuario) {
-    fetch(`/servidores/receberAlertas/${idUsuario}`)
-        .then(function (resposta) {
-            if (resposta.ok) {
-                resposta.json().then(function (dados) {
-                    // console.log("Dados recebidos: ", JSON.stringify(dados));
-                    info.push(...dados)
-                    inserirDadosTabela()
+let resumoTabela = [];
+let serieLinhas = [];
 
-                });
-
-            } else {
-                throw "Houve um erro ao tentar listar os servidores!";
-            }
-        })
-
-        .catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
-        });
+async function carregarJsonS3(nomeArquivo) {
+    const resp = await fetch(`/s3Route/dados/${nomeArquivo}`);
+    if (!resp.ok) throw new Error(`Falha ao carregar ${nomeArquivo}`);
+    return await resp.json();
 }
 
-function inserirDadosTabela() {
+async function carregarDashboardDoS3() {
+    const tempo = Number(localStorage.getItem("tempoSelecionado") || 1);
+
+    const arqTabela = `historicoAlertas_${tempo}.json`;
+    const arqLinhas = `historicoAlertasLinhas_${tempo}.json`;
+
+    try {
+        [resumoTabela, serieLinhas] = await Promise.all([
+            carregarJsonS3(arqTabela),
+            carregarJsonS3(arqLinhas)
+        ]);
+
+        inserirDadosTabela(tempo);
+
+        if (resumoTabela.length > 0) {
+            chamarFuncoesServidores(resumoTabela[0].fk_servidor);
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+
+function inserirDadosTabela(tempo) {
     let infoAjustada = JSON.parse(JSON.stringify(info));
 
     let hoje = new Date();
@@ -104,48 +115,39 @@ function inserirDadosTabela() {
 
     chamarFuncoesServidores(infoExibicao[0].id)
 
-    // jogando os dados no HTML
     document.getElementById("nome_tabela").innerHTML = `Relatório de alertas X ${tempo} dias`
     const bodyTabela = document.getElementById("bodyTabelaAlerta")
-    for (let index = 0; index < infoTabela.length; index++) {
-        const element = infoTabela[index];
+    bodyTabela.innerHTML = "";
+
+    infoTabela = resumoTabela.map(r => ({
+        id: r.fk_servidor,
+        apelido: r.apelido,
+        AlertaCPU: Number(r.alertasCpu),
+        AlertaRAM: Number(r.alertasRam),
+        AlertaDisco: Number(r.alertasDisco),
+        QuantidadeTotalAlertas: Number(r.totalAlertas)
+    }));
+
+    for (const element of infoTabela) {
         bodyTabela.innerHTML += `
-        <tr  onclick="chamarFuncoesServidores(${element.id})">
-            <td>
-                ${element.apelido}
-            </td>
-            <td>
-            ${element.AlertaCPU}
-            </td>
-            <td>
-            ${element.AlertaRAM}
-            </td>
-            <td>
-            ${element.AlertaDisco}
-            </td>
-            <td>
-            ${element.QuantidadeTotalAlertas}
-            </td>
+        <tr onclick="chamarFuncoesServidores(${element.id})">
+            <td>${element.apelido}</td>
+            <td>${element.AlertaCPU}</td>
+            <td>${element.AlertaRAM}</td>
+            <td>${element.AlertaDisco}</td>
+            <td>${element.QuantidadeTotalAlertas}</td>
         </tr>
-              `
+              `;
     }
 }
 
 
-
-function dataToString(d) {
-    const dia = String(d.getDate()).padStart(2, '0');
-    const mes = String(d.getMonth() + 1).padStart(2, '0');
-    return `${dia}/${mes}`;
-};
-
-
 let totalDisco;
-
 
 function chamarFuncoesServidores(idServidor) {
     plotarGraficoLinhas(idServidor)
 }
+
 
 function ordenarPor(item) {
     if (!jaOrdenado) {
@@ -213,7 +215,7 @@ function ordenarPor(item) {
                     infoOrdenada.push(element)
                 }
             } else infoOrdenada.push(element)
-        } else { // RISCO
+        } else {
             if (infoOrdenada.length > 0) {
                 let inserido = false
                 for (let j = 0; j < infoOrdenada.length; j++) {
@@ -238,29 +240,25 @@ function ordenarPor(item) {
         bodyTabela.innerHTML += `
         <tr onclick="chamarFuncoesServidores(${element.id})">
             <tr onclick="(${element.id})">
-            <td>
-                ${element.apelido}
-            </td>
-            <td>
-                ${element.AlertaCPU}
-            </td>
-            <td>
-                ${element.AlertaRAM}
-            </td>
-            <td>
-                ${element.AlertaDisco}
-            </td>
-            <td>
-                ${element.QuantidadeTotalAlertas}
-            </td>
-        </tr>
-            `
+            <td>${element.apelido}</td>
+            <td>${element.AlertaCPU}</td>
+            <td>${element.AlertaRAM}</td>
+            <td>${element.AlertaDisco}</td>
+            <td>${element.QuantidadeTotalAlertas}</td>
+        </tr>`;
     }
 }
 
 function plotarGraficoDonut() {
-    let labels = ['Ok', 'Atenção', 'Crítico'];
-    let dados = [20, 30, 50];
+    const counts = { OK: 0, ATENCAO: 0, CRITICO: 0 };
+
+    for (const d of data) {
+        const c = (d.classificacao || "").toUpperCase();
+        if (counts[c] != null) counts[c]++;
+    }
+
+    const labels = Object.keys(counts);
+    const dados = labels.map(k => counts[k]);
 
     const textoCentro = { // obj de pluggin
         id: 'kpiCentro', // chart.js reconhece os pluggins a partir de um id
@@ -285,7 +283,7 @@ function plotarGraficoDonut() {
         data: {
             labels: labels,
             datasets: [{
-                label: '',
+                label: 'Criticidade',
                 data: dados,
                 backgroundColor: [
                     '#BD953F',
@@ -324,27 +322,20 @@ function plotarGraficoDonut() {
 
 function plotarGraficoBolhas() {
 
+    const bolhas = data.map(d => ({
+        x: Number(d.apelido) || 0,
+        y: Number(d.percentual) || 0,
+        r: Number(d.minutos) || 0
+    }));
+
     const config = {
         type: 'bubble',
         data: {
-            datasets: [
-                {
-                    label: 'Crítico',
-                    data: [
-                        { x: 3, y: 90, r: 31 },
-                        { x: 8, y: 86, r: 18 }
-                    ],
-                    backgroundColor: 'rgba(189, 44, 44, 0.5)'
-                },
-                {
-                    label: 'Atenção',
-                    data: [
-                        { x: 10, y: 82, r: 22 },
-                        { x: 12, y: 78, r: 15 }
-                    ],
-                    backgroundColor: 'rgba(189, 92, 32, 0.5)'
-                }
-            ]
+            datasets: [{
+                label: 'Servidores',
+                data: bolhas,
+                backgroundColor: 'rgba(189, 44, 44, 0.5)'
+            }]
         },
         options: {
             scales: {
@@ -379,7 +370,7 @@ function plotarGraficoBolhas() {
                     },
                     title: {
                         display: true,
-                        text: 'ID dos servidores',
+                        text: 'Apelido dos servidores',
                         color: 'white',
                         font: {
                             size: 16
@@ -400,7 +391,7 @@ function plotarGraficoBolhas() {
                 },
                 tooltip: {
                     callbacks: {
-                        title: function (context){
+                        title: function (context) {
                             const nivel = context[0].dataset.label;
                             return `Estado: ${nivel}`;
                         },
@@ -429,18 +420,28 @@ function plotarGraficoLinhas(idServidor) {
     const existingChart = Chart.getChart(canvas);
     if (existingChart) existingChart.destroy();
 
+    const tempo = Number(localStorage.getItem("tempoSelecionado") || 1);
+    const dadosServidor = serieLinhas
+        .filter(d => String(d.fk_servidor) === String(idServidor))
+        .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
+
+    if (dadosServidor.length === 0) {
+        console.log("Sem dados de linhas para esse servidor.");
+        return;
+    }
 
     const widthPx = window.innerWidth * 0.6;  // 60vw
-    const heightPx = window.innerHeight * 0.30; // 35vh
-
     canvas.width = widthPx;
+
+    const heightPx = window.innerHeight * 0.30; // 35vh
     canvas.height = heightPx;
 
-    let labels = [];
-    let ram = [];
-    let cpu = [];
-    let disco = [];
-    let nomeServidor;
+    const labels = dadosServidor.map(d => d.timestamp);
+    const cpu = dadosServidor.map(d => Number(d.alertasCpu));
+    let ram = dadosServidor.map(d => Number(d.alertasRam));
+    let disco = dadosServidor.map(d => Number(d.alertasDisco));
+
+    const nomeServidor = dadosServidor[0].apelido || "";
 
     for (let index = 0; index < infoExibicao.length; index++) {
         const element = infoExibicao[index];
@@ -592,9 +593,9 @@ function plotarGraficoLinhas(idServidor) {
 
 
 function acionarFiltro() {
-
     // Aqui apenas aciono o menu do filtro, se caso estiver exibindo, fecha se não ele aparece ao usuário
     const menu = document.getElementById('menu')
+
     if (menu.classList.contains("show")) {
         menu.classList.remove("show");
     } else {
