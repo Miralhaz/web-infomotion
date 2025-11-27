@@ -157,19 +157,19 @@ function obterDadosKpi(idServidor) {
                     let div_temp = document.querySelectorAll('.div-temp');
 
                     let div_rede = document.querySelectorAll('.div-rede');
-                    if(dados.atual.uploadByte < dados.maximo.maxUpload){
+                    if (dados.atual.uploadByte < dados.maximo.maxUpload) {
                         div_rede[0].style.backgroundColor = '#940000'
-                    }else if(dados.atual.uploadByte <= dados.maximo.maxUpload + 20){
+                    } else if (dados.atual.uploadByte <= dados.maximo.maxUpload + 20) {
                         div_rede[0].style.backgroundColor = '#C89C00'
-                    }else{
+                    } else {
                         div_rede[0].style.backgroundColor = '#009900ff'
                     }
-                    
-                    if(dados.atual.downloadByte <= dados.maximo.maxDownload){
+
+                    if (dados.atual.downloadByte <= dados.maximo.maxDownload) {
                         div_rede[1].style.backgroundColor = '#940000'
-                    }else if(dados.atual.downloadByte <= dados.maximo.maxDownload + 20){
+                    } else if (dados.atual.downloadByte <= dados.maximo.maxDownload + 20) {
                         div_rede[1].style.backgroundColor = '#C89C00'
-                    }else{
+                    } else {
                         div_rede[1].style.backgroundColor = '#009900ff'
                     }
 
@@ -178,17 +178,17 @@ function obterDadosKpi(idServidor) {
                     if (dados.atual.temperatura_cpu >= 75) {
                         div_temp[0].style.backgroundColor = '#940000'
                     }
-                    else if (dados.atual.temperatura_cpu  >= 55) {
+                    else if (dados.atual.temperatura_cpu >= 55) {
                         div_temp[0].style.backgroundColor = '#ff3c00ff'
                     }
-                    else if (dados.atual.temperatura_cpu  >= 40) {
+                    else if (dados.atual.temperatura_cpu >= 40) {
                         div_temp[0].style.backgroundColor = '#ff7b00ff'
-                    } 
+                    }
                     else {
                         div_temp[0].style.backgroundColor = '#fdd700ff'
                     }
 
-                    
+
 
                     if (dados.atual.temperatura_disco >= 75) {
                         div_temp[1].style.backgroundColor = '#940000'
@@ -202,7 +202,7 @@ function obterDadosKpi(idServidor) {
                     else {
                         div_temp[1].style.backgroundColor = '#fdd700ff'
                     }
-                
+
                     if (dados.atual.temperatura_cpu >= 95) {
                         circ_cpu.style.top = '0%';
                     }
@@ -328,7 +328,7 @@ function plotarGraficoVelocimetroCpu(dadoKpi) {
             corUsada = `hsl(${hueFinal}, 80%, 50%)`;
         }
     }
-    
+
     const corRestante = '#c0c0c0ff'
 
     const textCenter = {
@@ -557,7 +557,7 @@ function plotarGraficoStackBarDisco(dadosKpi) {
     } else {
         // deixa o ponto de mudanca = 50, que é a % intermediária para mudança de cor em relação ao uso 
         const pontoInicialMudanca = 50;
-        
+
         if (usado < pontoInicialMudanca) {
             // cor usada começa a ficar mais esverdeada ou se mantém em perto do amarelo
             corUsada = `hsl(${corMinima}, 80%, 50%)`;
@@ -684,7 +684,7 @@ function plotarGraficoParticaoDisco(dadosKpiDiscoParticao) {
         usados.push(p.uso);
         livres.push(100 - p.uso);
     }
-    
+
     const canvasId = 'barParticaoChart';
     const ctx = document.getElementById(canvasId);
 
@@ -716,7 +716,7 @@ function plotarGraficoParticaoDisco(dadosKpiDiscoParticao) {
             responsive: true,
             aspectRatio: 4,
             plugins: {
-                legend: { 
+                legend: {
                     display: true,
                     labels: {
                         usePointStyle: true,
@@ -726,8 +726,8 @@ function plotarGraficoParticaoDisco(dadosKpiDiscoParticao) {
                         }
                     }
                 },
-                title: { 
-                    display: true, 
+                title: {
+                    display: true,
                     font: {
                         size: 18
                     },
@@ -736,38 +736,167 @@ function plotarGraficoParticaoDisco(dadosKpiDiscoParticao) {
                 },
             },
             scales: {
-                x: { 
-                        stacked: true, 
-                        max: 100, 
-                        beginAtZero: true,
-                        ticks: {
-                            padding: 10,
-                            color: 'white',
-                            font: {
-                                size: 15
-                            }
-                        }
-                    },
-                y: { 
-                        stacked: true,
-                        ticks: {
-                            padding: 10,
-                            color: 'white',
-                            font: {
-                                size: 15
-                            }
+                x: {
+                    stacked: true,
+                    max: 100,
+                    beginAtZero: true,
+                    ticks: {
+                        padding: 10,
+                        color: 'white',
+                        font: {
+                            size: 15
                         }
                     }
+                },
+                y: {
+                    stacked: true,
+                    ticks: {
+                        padding: 10,
+                        color: 'white',
+                        font: {
+                            size: 15
+                        }
+                    }
+                }
             }
         }
     });
 }
 
+async function obterAlertas() {
+    const idServidorSelecionado = sessionStorage.ID_SERVIDOR_SELECIONADO;
+    try {
+        const res = await fetch(`/dashboardNear/obterAlertas/${idServidorSelecionado}`);
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+
+        console.log("Últimos alertas:", json.issues);
+
+        preencherTabelaAlertas(json.issues);
+
+        return json.issues;
+
+    } catch (err) {
+        console.error("Erro ao obter alertas:", err);
+        document.getElementById("tabela_alertas_corpo").innerHTML =
+            `<tr><td colspan="3" style="text-align:center;color:red;">Erro ao carregar alertas</td></tr>`;
+    }
+}
+
+function formatarValorComUnidade(componente, valorBruto) {
+    const valorNumerico = valorBruto.replace(/[^\d.,]/g, '').replace(',', '.');
+
+    const comp = componente.toLowerCase().trim();
+
+    if (isNaN(valorNumerico)) {
+        return valorBruto;
+    }
+
+    if (comp.includes('cpu') && comp.includes('temperatura')) {
+        return `${valorNumerico}°C`;
+    }
+    if (comp.includes('disco') && comp.includes('temperatura')) {
+        return `${valorNumerico}°C`;
+    }
+    if (comp === 'cpu' || comp === 'ram' || comp === 'disco' || comp.includes('uso')) {
+        return `${valorNumerico}%`;
+    }
+    if (comp === 'rede') {
+        return `${valorNumerico} Mbps`;
+    }
+
+    return valorBruto;
+}
+
+function preencherTabelaAlertas(issues) {
+  const tabela = document.getElementById("tabela_alertas_corpo");
+  if (!tabela) return;
+
+  tabela.innerHTML = "";
+
+  if (!issues || issues.length === 0) {
+    tabela.innerHTML = `<tr><td colspan="3" style="text-align:center;">Nenhum alerta encontrado</td></tr>`;
+    return;
+  }
+
+  issues.forEach(issue => {
+    const titulo = issue.fields.summary;
+    const dataCriacao = issue.fields.created;
+    const status = issue.fields.status.name; 
+
+    let classeLinha = "";
+    const statusUpper = status.toUpperCase();
+    if (statusUpper === "ABERTO" || statusUpper === "REABERTO") {
+      classeLinha = "linha-critica"; 
+    } else {
+      classeLinha = "linha-alerta"; 
+    }
+
+    const regex = /^Alerta Crítico:\s*([A-Za-zÀ-ÿ\s]+?)\s+em\s+([^\s]+)/i;
+    const match = titulo.match(regex);
+
+    let componente, valorFormatado;
+    if (match) {
+      componente = match[1].trim();
+      const valorBruto = match[2];
+
+      let valorLimpo = valorBruto
+        .replace(/[^\d,\.]/g, '')
+        .replace(/,/g, '.');
+      valorLimpo = valorLimpo.replace(/(\.\d*)\./g, '$1');
+
+      const valorNumerico = parseFloat(valorLimpo);
+
+      if (isNaN(valorNumerico)) {
+        valorFormatado = valorBruto;
+      } else {
+        const compLower = componente.toLowerCase();
+
+        if (compLower === "rede") {
+          const mbps = (valorNumerico * 8) / 1_000_000;
+          valorFormatado = `${mbps.toFixed(2)} Mbps`;
+        } else if (compLower.includes("temperatura")) {
+          valorFormatado = `${valorNumerico}°C`;
+        } else if (
+          ["cpu", "ram", "disco"].includes(compLower) ||
+          compLower.includes("uso")
+        ) {
+          valorFormatado = `${valorNumerico}%`;
+        } else {
+          valorFormatado = valorBruto;
+        }
+      }
+    } else {
+      componente = "Desconhecido";
+      valorFormatado = "—";
+    }
+
+    const dataFormatada = new Date(dataCriacao).toLocaleString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+
+    const tr = document.createElement("tr");
+    tr.className = classeLinha; 
+    tr.innerHTML = `
+      <td>${componente}</td>
+      <td>${valorFormatado}</td>
+      <td>${dataFormatada}</td>
+    `;
+    tabela.appendChild(tr);
+  });
+}
+
 const selectElement = document.getElementById('dash');
 
-selectElement.addEventListener('change', function(){
+selectElement.addEventListener('change', function () {
     const url = this.value;
-    if(url){
+    if (url) {
         window.location = url;
     }
 });
@@ -789,4 +918,5 @@ window.onload = () => {
     }
 
     listarServidores();
+    obterAlertas();
 };

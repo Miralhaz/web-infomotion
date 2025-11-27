@@ -13,6 +13,22 @@ function obterDados(req, res) {
     });
 }
 
+async function obterAlertas(req, res) {
+  const idServidor = req.params.idServidor;
+
+  dashboardNearModel.obterAlertas(idServidor)
+    .then(resultado => {
+      res.json(resultado);
+    })
+    .catch(erro => {
+      console.log("Erro ao obter alertas:", erro);
+      res.status(500).json(erro.sqlMessage || erro);
+    });
+}
+
+
+
 module.exports = {
-  obterDados
+  obterDados,
+  obterAlertas
 };

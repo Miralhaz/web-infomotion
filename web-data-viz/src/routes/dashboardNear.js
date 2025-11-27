@@ -7,4 +7,7 @@ router.get("/obterDados/:idServidor", function (req, res) {
   dashboardNearController.obterDados(req, res);
 });
 
+router.get('/obterAlertas/:idServidor', dashboardNearController.obterAlertas);
+
+
 module.exports = router;
