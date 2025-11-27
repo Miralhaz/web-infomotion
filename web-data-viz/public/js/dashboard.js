@@ -132,7 +132,7 @@ function obterDadosKpi(idServidor) {
 
                     const dadosKpiCpu = {
                         uso_cpu: dados.atual.cpu,
-                        max_cpu: dados.maximo.maxCpu
+                        max_cpu: dados.maximo.maxCpuUso
                     };
 
                     const dadosKpiRam = {
@@ -142,29 +142,32 @@ function obterDadosKpi(idServidor) {
 
                     const dadosKpiDisco = {
                         uso_disco: dados.atual.disco,
-                        max_disco: dados.maximo.maxDisco
+                        max_disco: dados.maximo.maxDiscoUso
                     }
+
+                    const dadosKpiDiscoParticao = {
+                        particoes: dados.particoes
+                    };
 
                     plotarGraficoVelocimetroCpu(dadosKpiCpu);
                     plotarGraficoVelocimetroRam(dadosKpiRam);
                     plotarGraficoStackBarDisco(dadosKpiDisco);
-                    plotarGraficoParticaoDisco(dadosKpiDisco);
-
+                    plotarGraficoParticaoDisco(dadosKpiDiscoParticao);
 
                     let div_temp = document.querySelectorAll('.div-temp');
 
                     let div_rede = document.querySelectorAll('.div-rede');
-                    if(dados.atual.uploadByte <= 20){
+                    if(dados.atual.uploadByte < dados.maximo.maxUpload){
                         div_rede[0].style.backgroundColor = '#940000'
-                    }else if(dados.atual.uploadByte <= 40){
+                    }else if(dados.atual.uploadByte <= dados.maximo.maxUpload + 20){
                         div_rede[0].style.backgroundColor = '#C89C00'
                     }else{
                         div_rede[0].style.backgroundColor = '#009900ff'
                     }
                     
-                    if(dados.atual.downloadByte <= 20){
+                    if(dados.atual.downloadByte <= dados.maximo.maxDownload){
                         div_rede[1].style.backgroundColor = '#940000'
-                    }else if(dados.atual.downloadByte <= 40){
+                    }else if(dados.atual.downloadByte <= dados.maximo.maxDownload + 20){
                         div_rede[1].style.backgroundColor = '#C89C00'
                     }else{
                         div_rede[1].style.backgroundColor = '#009900ff'
@@ -240,9 +243,7 @@ function obterDadosKpi(idServidor) {
                         circ_cpu.style.top = '80%';
                     }
 
-
                     let circ_disco = document.getElementById('circ_disco');
-
 
                     if (dados.atual.temperatura_disco >= 95) {
                         circ_disco.style.top = '0%';
@@ -296,7 +297,6 @@ function obterDadosKpi(idServidor) {
         });
 
 }
-
 
 function plotarGraficoVelocimetroCpu(dadoKpi) {
     const usoCpu = dadoKpi.uso_cpu;
@@ -447,7 +447,6 @@ function plotarGraficoVelocimetroRam(dadoKpi) {
 
     const corRestante = '#c0c0c0ff'
 
-
     const textCenter = {
         id: 'textCenter',
         beforeDatasetsDraw(chart, args, pluginOptions) {
@@ -535,6 +534,7 @@ function plotarGraficoVelocimetroRam(dadoKpi) {
 }
 
 function plotarGraficoStackBarDisco(dadosKpi) {
+    console.log("dados Grafico Bar: " + dadosKpi)
     const usado = dadosKpi.uso_disco;
     const parametro = dadosKpi.max_disco;
     const total = 100;
@@ -672,18 +672,18 @@ function plotarGraficoStackBarDisco(dadosKpi) {
 
 
 
+function plotarGraficoParticaoDisco(dadosKpiDiscoParticao) {
+    const labels = [];
+    const usados = [];
+    const livres = [];
 
-function plotarGraficoParticaoDisco(dadosKpi) {
-        
-    const fatorParticaoC = 0.74;
-    const fatorParticaoD = 0.61; 
-    
-    const usoParticaoC = 100 * fatorParticaoC;
-    const usoParticaoD = 100 * fatorParticaoD;
+    for (let i = 0; i < dadosKpiDiscoParticao.particoes.length; i++) {
+        const p = dadosKpiDiscoParticao.particoes[i];
 
-    const labels = ['Partição C:/', 'Partição D:/'];
-    const usados = [usoParticaoC, usoParticaoD];
-    const livres = [100 - usoParticaoC, 100 - usoParticaoD];
+        labels.push(`Partição ${p.nome}:/`);
+        usados.push(p.uso);
+        livres.push(100 - p.uso);
+    }
     
     const canvasId = 'barParticaoChart';
     const ctx = document.getElementById(canvasId);
@@ -762,7 +762,6 @@ function plotarGraficoParticaoDisco(dadosKpi) {
         }
     });
 }
-
 
 const selectElement = document.getElementById('dash');
 
