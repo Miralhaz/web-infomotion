@@ -1967,3 +1967,18 @@ input {
     width: 100% !important;
     height: 45% !important;
 }
+
+.container-tabela-grande::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.container-tabela-grande::-webkit-scrollbar-track {
+  background: var(--branco);
+  border-radius: 5px;
+}
+
+.container-tabela-grande::-webkit-scrollbar-thumb {
+  background: var(--amarelo);
+  border-radius: 5px;
+}

@@ -1,10 +1,16 @@
 const AWS = require("aws-sdk");
+const axios = require('axios');
 
 const s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY,
     secretAccessKey: process.env.AWS_SECRET_KEY,
     region: "us-east-1"
 });
+
+const JIRA_EMAIL = process.env.JIRA_EMAIL;
+const JIRA_API_TOKEN = process.env.JIRA_API_TOKEN;
+const JIRA_HOST = process.env.JIRA_HOST;
+const JIRA_PROJECT_KEY = process.env.JIRA_PROJECT_KEY;
 
 function obterDados(idServidor) {
     return new Promise((resolve, reject) => {
@@ -32,6 +38,46 @@ function obterDados(idServidor) {
     });
 }
 
+async function obterAlertas(idServidor) {
+  try {
+
+    const jql = `
+      project = ${JIRA_PROJECT_KEY}
+      AND summary ~ "SERVIDOR ${idServidor}"
+      ORDER BY created DESC
+    `;
+
+    const body = {
+      jql,
+      fieldsByKeys: true,
+      fields: ["summary", "created", "status"],
+    };
+
+    const response = await axios.post(
+      `${JIRA_HOST}/rest/api/3/search/jql`,
+      body,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization:
+            "Basic " +
+            Buffer.from(`${JIRA_EMAIL}:${JIRA_API_TOKEN}`).toString("base64"),
+        },
+      }
+    );
+
+    return response.data;
+
+  } catch (error) {
+    console.error("Erro ao obter alertas do Jira:", error);
+    throw error;
+  }
+}
+
+
+
 module.exports = {
-    obterDados
+    obterDados,
+    obterAlertas
 };
