@@ -189,29 +189,29 @@ function plotarGraficoDonut() {
     const counts = { OK: 0, ATENCAO: 0, CRITICO: 0 };
 
     for (const i of resumoTabela) {
-        const c = (i.classificacao).toUpperCase();
+        const c = (i.classificacao) || "OK";
         if (counts[c] != null) counts[c]++;
     }
 
     const labels = Object.keys(counts);
     const dados = labels.map(k => counts[k]);
 
-    const textoCentro = { // obj de pluggin
-        id: 'kpiCentro', // chart.js reconhece os pluggins a partir de um id
-        afterDraw(chart) { // função do chart.js que roda dps que o gráfico tiver sido plotado
-            const ctx = chart.ctx; // contexto de desenho
-            const centerX = chart.getDatasetMeta(0).data[0].x; // coordenada x
-            const centerY = chart.getDatasetMeta(0).data[0].y; // coordenada y
+    // const textoCentro = { // obj de pluggin
+    //     id: 'kpiCentro', // chart.js reconhece os pluggins a partir de um id
+    //     afterDraw(chart) { // função do chart.js que roda dps que o gráfico tiver sido plotado
+    //         const ctx = chart.ctx; // contexto de desenho
+    //         const centerX = chart.getDatasetMeta(0).data[0].x; // coordenada x
+    //         const centerY = chart.getDatasetMeta(0).data[0].y; // coordenada y
 
-            ctx.save(); // salva o contexto atual
-            ctx.fillStyle = '#BD2C2C';
-            ctx.font = 'bold 22px poppins';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(dados[2] + "% " + labels[2], centerX, centerY); // Texto que vai aparecer no meio!
-            ctx.restore(); // restaura o contexto salvo
-        }
-    };
+    //         ctx.save(); // salva o contexto atual
+    //         ctx.fillStyle = '#BD2C2C';
+    //         ctx.font = 'bold 22px poppins';
+    //         ctx.textAlign = 'center';
+    //         ctx.textBaseline = 'middle';
+    //         ctx.fillText(dados[2] + "% " + labels[2], centerX, centerY); // Texto que vai aparecer no meio!
+    //         ctx.restore(); // restaura o contexto salvo
+    //     }
+    // };
 
     const config = {
         type: 'doughnut',
@@ -245,7 +245,7 @@ function plotarGraficoDonut() {
                 }
             }
         },
-        plugins: [textoCentro]
+        //plugins: [textoCentro]
     };
 
     new Chart(
