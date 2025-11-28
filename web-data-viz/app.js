@@ -20,9 +20,10 @@ var usuarioRouter = require("./src/routes/usuarios");
 var servidoresRouter = require("./src/routes/servidores");
 var empresasRouter = require("./src/routes/empresas");
 var componentesRouter = require("./src/routes/componentes");
-var dashboardTemperaturaRouter = require("./src/routes/dashboardTemperatura")
+var dashboardTemperaturaRouter = require("./src/routes/dashboardTemperatura");
 var dashboardNearRouter = require("./src/routes/dashboardNear");
-var dashboardRede = require("./src/routes/dashboardRede")
+var dashboardRede = require("./src/routes/dashboardRede");
+var dashboardHistorcio = require("./src/routes/dashboardHistorico");
 
 app.use(cors());
 
@@ -39,6 +40,7 @@ app.use("/dashboardTemperatura", dashboardTemperaturaRouter);
 app.use("/dados", dashboardTemperaturaRouter);
 app.use("/dashboardNear", dashboardNearRouter);
 app.use('/dashboardRede', dashboardRede);
+app.use("/dashboardHistorico", dashboardHistorcio);
 
 app.listen(PORTA_APP, function () {
     console.log(`
