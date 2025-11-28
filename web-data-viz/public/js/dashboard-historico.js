@@ -43,20 +43,36 @@ async function carregarDashboardDoS3() {
 }
 
 
-function inserirDadosTabela(tempo) {
+function montarTabela(resumoTabela) {
+    const map = new Map();
+
+    for(const r of resumoTabela){
+        const id = Number(r.fk_servidor);
+        const atual = map.get(id) || {
+            id,
+            apelido: r.apelido,
+            AlertaCPU: 0,
+            AlertaRAM: 0,
+            AlertaDisco: 0,
+            QuantidadeTotalAlertas: 0
+        };
+
+        atual.AlertaCPU += Number(r.alertasCpu) || 0;
+        atual.AlertaRAM += Number(r.alertasRam) || 0;
+        atual.AlertaDisco += Number(r.alertasDisco) || 0;
+
+        atual.QuantidadeTotalAlertas = Number(r.totalAlertas) || (atual.AlertaCPU + atual.AlertaRAM + atual.AlertaDisco);
+        map.set(id, atual);
+    }
+    return Array.from(map.values());
+}
+
+function  inserirDadosTabela(tempo){
 
     document.getElementById("nome_tabela").innerHTML = `Relatório de alertas X ${tempo} dias`
     const bodyTabela = document.getElementById("bodyTabelaAlerta")
     bodyTabela.innerHTML = "";
-
-    infoTabela = resumoTabela.map(r => ({
-        id: r.fk_servidor,
-        apelido: r.apelido,
-        AlertaCPU: Number(r.alertasCpu),
-        AlertaRAM: Number(r.alertasRam),
-        AlertaDisco: Number(r.alertasDisco),
-        QuantidadeTotalAlertas: Number(r.totalAlertas)
-    }));
+    infoTabela = montarTabela(resumoTabela);
 
     for (const element of infoTabela) {
         bodyTabela.innerHTML += `
@@ -245,7 +261,7 @@ function plotarGraficoDonut() {
                 }
             }
         },
-        //plugins: [textoCentro]
+        plugins: [ChartDataLabels]
     };
 
     new Chart(
@@ -267,9 +283,9 @@ function plotarGraficoBolhas() {
         type: 'bubble',
         data: {
             datasets: [{
-                label: 'Servidores',
+                label: ['ATENÇÃO', 'CRÍTICO'],
                 data: bolhas,
-                backgroundColor: 'rgba(189, 44, 44, 0.5)'
+                backgroundColor: ['rgba(189, 92, 32, 0.5)', 'rgba(189, 44, 44, 0.5)']
             }]
         },
         options: {
