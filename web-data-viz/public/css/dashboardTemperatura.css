@@ -225,6 +225,10 @@ section.header .header-left .container-submenu:hover .submenu {
   margin: 0 10px;
 }
 
+.titulo img {
+  cursor: pointer;
+}
+
 .kpi1>div:last-child,
 .kpi2>div:last-child,
 .kpi3>div:last-child {
@@ -233,6 +237,7 @@ section.header .header-left .container-submenu:hover .submenu {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .kpi3 {
@@ -240,7 +245,7 @@ section.header .header-left .container-submenu:hover .submenu {
 }
 
 .container-eficiencia {
-  width: 80%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -255,11 +260,13 @@ section.header .header-left .container-submenu:hover .submenu {
 
 .container-info-componente {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  width: 55%;
+  align-items: center;
   flex-grow: 1;
   margin-left: 25px;
   min-width: 0;
+  gap: 15px;
 }
 
 .nome-componente {
@@ -276,15 +283,18 @@ section.header .header-left .container-submenu:hover .submenu {
 
 .status-eficiencia {
   display: flex;
-  flex-direction: column;
-  align-items: baseline;
+  flex-direction: row;
+  align-items: center;
   margin-right: 25px;
+  gap: 20px;
 }
 
 .numero-eficiencia {
   font-size: 1.5em;
   font-weight: 900;
   line-height: 1;
+  display: flex;
+  flex-direction: row;
 }
 
 .unidade-eficiencia {
@@ -455,11 +465,72 @@ section.header .header-left .container-submenu:hover .submenu {
   min-width: 0;
   display: flex;
   max-height: 70%;
+  margin-top: 20px;
 }
 
 .grafico-linha-hist canvas {
   width: 100% !important;
   height: 100% !important;
+}
+
+.info-button-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+}
+
+.info-button {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: rgba(230, 225, 200, 0.2);
+  border: 2px solid #e6e1c8;
+  color: #e6e1c8;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.info-button:hover {
+  background-color: rgba(230, 225, 200, 0.4);
+  transform: scale(1.1);
+}
+
+.info-tooltip {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color: rgba(20, 20, 20, 0.95);
+  border: 1px solid #e6e1c8;
+  border-radius: 8px;
+  padding: 12px;
+  min-width: 250px;
+  color: white;
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.info-button-container:hover .info-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.info-tooltip strong {
+  color: #e6e1c8;
+}
+
+.info-tooltip small {
+  color: #aaa;
 }
 
 .grafico-dispersao-temperatura {

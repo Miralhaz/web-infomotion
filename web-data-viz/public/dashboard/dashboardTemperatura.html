@@ -7,6 +7,7 @@
   <title>Dashboard Temperatura - InfoMotion</title>
   <link rel="stylesheet" href="../css/dashboardTemperatura.css">
   <link rel="icon" href="../assets/icon/Infomotion - lupa_branca.svg">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body onload="listarServidores()">
@@ -67,9 +68,9 @@
       Nome do servidor:
       <select name="servidores" id="servidores"></select>
       Tipo de dashboard:
-      <select name="dash" id="dash" class="nome_dash" onchange="trocarDePagina()">
-        <option value="dashboard.html">Dashboard Near-Real-Time</option>
+      <select name="dash" id="dash" class="nome_dash" onchange="trocarDePagina()">`
         <option value="#">Dashboard de Temperatura</option>
+        <option value="dashboard.html">Dashboard Near-Real-Time</option>
         <option value="dashboardRede.html">Dashboard de Rede</option>
       </select>
     </div>
@@ -92,50 +93,73 @@
           <div>
             <canvas id="gaugeDiscoTempChart" style="width: fit-content; height: 160px; padding: 2vh;"></canvas>
           </div>
-          <p id="paragrafo-parametro-disco" style="color: white; margin-top: 3%;"> Parâmetro Atual Temp. Disco: 80°C </p>
+          <p id="paragrafo-parametro-disco" style="color: white; margin-top: 3%;"> Parâmetro Atual Temp. Disco: 80°C
+          </p>
         </div>
         <div class="kpi3">
-          <div class="titulo">
-            <p> Eficiência térmica entre os componentes (última hora): </p>
+          <div class="titulo" style="display: flex; justify-content: center;">
+            <img src="../assets/icon/info.svg" alt="Info" onclick="popUpInfo()">
+            <p> Eficiência térmica entre os componentes: </p>
           </div>
-          <div class="container-eficiencia" style="margin-top: 10px;">
-            <div class="container-info-componente">
-              <p class="nome-componente"> CPU </p>
-              <p class="info-eficiencia"> 78°C • 65% uso </p>
+          <div style="display: flex;
+          justify-content: center; flex-direction: column;">
+            <div class="container-eficiencia" style="margin-top: 10px;">
+              <div class="container-info-componente">
+                <p class="nome-componente"> CPU </p>
+                <p class="info-eficiencia"> 78°C • 65% uso </p>
+              </div>
+              <div class="status-eficiencia">
+                <p class="numero-eficiencia" style="color: #8bc34a"> 1.20 <span class="unidade-eficiencia"> °C/% </span>
+                </p>
+                <p class="status" style="color: #8bc34a;"> Adequado </p>
+              </div>
+              <div class="legenda">
+                <div class="container-legenda">
+                  <div class="legenda-descricao">Excelente</div>
+                  <div class="legenda-valor" style="color: #4caf50;">&lt; 1.0</div>
+                </div>
+                <div class="container-legenda">
+                  <div class="legenda-descricao">Adequado</div>
+                  <div class="legenda-valor" style="color: #8bc34a;">1.0 - 1.5</div>
+                </div>
+                <div class="container-legenda">
+                  <div class="legenda-descricao">Atenção</div>
+                  <div class="legenda-valor" style="color: #ffc107;">1.5 - 2.0</div>
+                </div>
+                <div class="container-legenda">
+                  <div class="legenda-descricao">Crítico</div>
+                  <div class="legenda-valor" style="color: #f44336;">&gt; 2.0</div>
+                </div>
+              </div>
             </div>
-            <div class="status-eficiencia">
-              <p class="numero-eficiencia" style="color: #8bc34a"> 1.20 <span class="unidade-eficiencia"> °C/% </span>
-              </p>
-              <p class="status" style="color: #8bc34a;"> Adequado </p>
-            </div>
-          </div>
-          <div class="container-eficiencia">
-            <div class="container-info-componente">
-              <p class="nome-componente"> Disco </p>
-              <p class="info-eficiencia"> 78°C • 65% uso </p>
-            </div>
-            <div class="status-eficiencia">
-              <p class="numero-eficiencia" style="color: #8bc34a"> 1.20 <span class="unidade-eficiencia"> °C/% </span>
-              </p>
-              <p class="status" style="color: #8bc34a"> Adequado </p>
-            </div>
-          </div>
-          <div class="legenda">
-            <div class="container-legenda">
-              <div class="legenda-descricao">Excelente</div>
-              <div class="legenda-valor" style="color: #4caf50;">&lt; 1.0</div>
-            </div>
-            <div class="container-legenda">
-              <div class="legenda-descricao">Adequado</div>
-              <div class="legenda-valor" style="color: #8bc34a;">1.0 - 1.5</div>
-            </div>
-            <div class="container-legenda">
-              <div class="legenda-descricao">Atenção</div>
-              <div class="legenda-valor" style="color: #ffc107;">1.5 - 2.0</div>
-            </div>
-            <div class="container-legenda">
-              <div class="legenda-descricao">Crítico</div>
-              <div class="legenda-valor" style="color: #f44336;">&gt; 2.0</div>
+            <div class="container-eficiencia">
+              <div class="container-info-componente">
+                <p class="nome-componente"> Disco </p>
+                <p class="info-eficiencia"></p>
+              </div>
+              <div class="status-eficiencia">
+                <p class="numero-eficiencia" style="color: #8bc34a"><span class="unidade-eficiencia"> °C </span>
+                </p>
+                <p class="status" style="color: #8bc34a"></p>
+              </div>
+              <div class="legenda">
+                <div class="container-legenda">
+                  <div class="legenda-descricao">Excelente</div>
+                  <div class="legenda-valor" style="color: #4caf50;">&lt; 45°C</div>
+                </div>
+                <div class="container-legenda">
+                  <div class="legenda-descricao">Adequado</div>
+                  <div class="legenda-valor" style="color: #8bc34a;">45°C - 55°C</div>
+                </div>
+                <div class="container-legenda">
+                  <div class="legenda-descricao">Atenção</div>
+                  <div class="legenda-valor" style="color: #ffc107;">55°C - 65°C</div>
+                </div>
+                <div class="container-legenda">
+                  <div class="legenda-descricao">Crítico</div>
+                  <div class="legenda-valor" style="color: #f44336;">&gt; 65°C</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -146,7 +170,7 @@
       <div class="dashboard-content-graficos-meio">
         <div class="grafico-linha-hist">
           <div class="titulo" style="display: flex; justify-content: space-between; align-items: center;">
-            <p> Uso CPU X Temperatura CPU (última(s) X horas): </p>
+            <p style="font-size: 16px;"> Uso CPU X Temperatura CPU (última(s) X horas): </p>
 
             <div style="display: flex; gap: 1vh;">
 
@@ -180,8 +204,19 @@
             </div>
 
           </div>
-          <div>
+          <div style="position: relative;">
             <canvas id="lineChart" style="width: 600px; height: 220px;"></canvas>
+
+            <div class="info-button-container">
+              <button class="info-button">?</button>
+              <div class="info-tooltip" id="info_tooltip">
+                <strong>Regressão Linear</strong><br>
+                <span id="equacao_regressao">y = mx + b</span><br><br>
+                <strong>R² (Coeficiente de Determinação)</strong><br>
+                <span id="r_quadrado">R² = 0.000</span><br><br>
+                <small>O R² varia de 0 a 1, indicando o quão bem a linha se ajusta aos dados.</small>
+              </div>
+            </div>
           </div>
         </div>
       </div>
