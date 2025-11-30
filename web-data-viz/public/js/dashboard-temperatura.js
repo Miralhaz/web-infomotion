@@ -702,41 +702,87 @@ function graficoLinhaHist(temperaturas, uso, componente) {
     Chart.getChart('lineChart').destroy();
   }
 
+  // log apenas para ver o array de temperaturas e uso que vieram do JSON
   console.log(temperaturas, uso)
 
   const labelUso = componente === 'cpu' ? 'Uso da CPU (%)' : 'Uso do Disco (%)';
 
+  // novo array que mapeia os pontos que vieram de temperatura e uso
+  // cada temperatura que ta no índice 'i' ela tem um uso específico
+  // assim podendo ver onde o ponto se encaixa no gráfico
   const pontos = temperaturas.map((temp, i) => ({
     x: uso[i],
     y: temp
   }));
 
-  const n = pontos.length;
-  const mediaX = pontos.reduce((acc, p) => acc + p.x, 0) / n;
-  const mediaY = pontos.reduce((acc, p) => acc + p.y, 0) / n;
-  const numerador = pontos.reduce((acc, p) => acc + (p.x - mediaX) * (p.y - mediaY), 0);
-  const denominador = pontos.reduce((acc, p) => acc + (p.x - mediaX) ** 2, 0);
-  const slope = numerador / denominador;
-  const intercept = mediaY - slope * mediaX;
+  // cálculo das médias
+    const n = pontos.length;
+
+    // conta para descobrir a media de pontos x e y
+    let somaX = 0;
+    let somaY = 0;
+
+    for(const p of pontos){
+      somaX += p.x;
+      somaY += p.y;
+    }
+
+    const mediaX = somaX / n;
+    const mediaY = somaY / n;
+  // fim da conta
+  
+  // cálculo da inclinação da linha de regressão linear
+    // conta do numerador da fórmula de regressão linear (soma dos produtos)
+    let numerador = 0;
+
+    for(const p of pontos){
+      numerador += (p.x - mediaX) * (p.y - mediaY);
+    }
+    // fim da conta
+
+    // conta do denominador da fórmula de regressão linear (soma dos quadrados)
+    let denominador = 0;
+
+    for(const p of pontos){
+      denominador += (p.x - mediaX) ** 2;
+    }
+    // fim da conta
+
+    const inclinacao = numerador / denominador;
+  // fim do cálculo da inclinação
+
+  // cálculo do intercepto (a da função afim de y = a + bx)
+    const intercepto = mediaY - inclinacao * mediaX;
+  // fim do cálculo do intercepto
 
 
-  const ssTotal = pontos.reduce((acc, p) => acc + (p.y - mediaY) ** 2, 0);
-  const ssResidual = pontos.reduce((acc, p) => {
-    const yPredito = slope * p.x + intercept;
-    return acc + (p.y - yPredito) ** 2;
-  }, 0);
-  const rQuadrado = 1 - (ssResidual / ssTotal);
+  // cálculo do R²
+    let somaTotalQuadrados = 0;
+    
+    for (const p of pontos) {
+      somaTotalQuadrados += (p.y - mediaY) ** 2;
+    }
+
+    let somaTotalResiduos = 0;
+
+    for (const p of pontos) {
+      const yEstimado = inclinacao * p.x + intercepto;
+      somaTotalResiduos += (p.y - yEstimado) ** 2;
+    }
+
+    const rQuadrado = 1 - (somaTotalResiduos / somaTotalQuadrados);
+  // fim do cálculo do R²
 
   document.getElementById('equacao_regressao').textContent = 
-    `y = ${slope.toFixed(3)}x + ${intercept.toFixed(3)}`;
+    `y = ${intercepto.toFixed(3)} + ${inclinacao.toFixed(3)}x`;
   document.getElementById('r_quadrado').textContent = 
-    `R² = ${rQuadrado.toFixed(4)}`;
+    `R² = ${rQuadrado.toFixed(2)}`;
 
   const minX = Math.min(...uso);
   const maxX = Math.max(...uso);
   const linhaRegressao = [
-    { x: minX, y: slope * minX + intercept },
-    { x: maxX, y: slope * maxX + intercept }
+    { x: minX, y: inclinacao * minX + intercepto },
+    { x: maxX, y: inclinacao * maxX + intercepto }
   ];
 
   const configuracao = {

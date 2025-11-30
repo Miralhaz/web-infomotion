@@ -183,7 +183,7 @@ function listarServidoresPorUsuario() {
       return resposta.json();
     })
     .then(function (servidoresDoUsuario) {
-      const idsPermitidos = servidoresDoUsuario.map(s => s.id); 
+      const idsPermitidos = servidoresDoUsuario.map(s => Number(s.id)); 
       console.log("Servidores do usuário (IDs Permitidos):", idsPermitidos);
 
       return fetch('/servidores/status/servidores')
@@ -198,7 +198,7 @@ function listarServidoresPorUsuario() {
                     
           listaServidores = statusTodosServidores
             .filter(servidorStatus => 
-              idsPermitidos.includes(servidorStatus.fk_servidor)
+              idsPermitidos.includes(Number(servidorStatus.fk_servidor))
             )
             .map(s => ({
               id: s.fk_servidor, 
