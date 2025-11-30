@@ -411,7 +411,7 @@ section.header .header-left .container-submenu:hover .submenu {
   background-color: var(--preto);
   border: 1px solid var(--amarelo);
   border-radius: 8px;
-  z-index: 10; /* faz com que a lista sobreponha outros elementos da página */
+  z-index: 9999; /* faz com que a lista sobreponha outros elementos da página */
   overflow: hidden;
   max-height: 0; /* o max-height e o opacity são o que permite que a lista esconda após ela ser "desativada" */
   opacity: 0;
@@ -473,14 +473,14 @@ section.header .header-left .container-submenu:hover .submenu {
   height: 100% !important;
 }
 
-.info-button-container {
+.botao-regressao-container {
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 10;
 }
 
-.info-button {
+.botao-info {
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -496,7 +496,7 @@ section.header .header-left .container-submenu:hover .submenu {
   transition: all 0.3s ease;
 }
 
-.info-button:hover {
+.botao-info:hover {
   background-color: rgba(230, 225, 200, 0.4);
   transform: scale(1.1);
 }
@@ -520,7 +520,7 @@ section.header .header-left .container-submenu:hover .submenu {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
-.info-button-container:hover .info-tooltip {
+.botao-regressao-container:hover .info-tooltip {
   opacity: 1;
   visibility: visible;
 }
