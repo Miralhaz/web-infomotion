@@ -400,6 +400,11 @@ function carregarGraficosLinha(dados) {
   for (let index = 0; index < tamanhoVetor; index++) {
     
     const element = dados[index];
+
+    if (tempo == 1) {
+      element.timeStamp
+    }
+
     labelsData.push(element.timeStamp)
     dadosPacotesEnviados.push(element.packetSent)
     dadosPacotesRecebidos.push(element.packetReceived)
@@ -799,6 +804,15 @@ function popUpInfo() {
     focusConfirm: false
   });
 }
+
+const selectElement = document.getElementById('dash');
+
+selectElement.addEventListener('change', function () {
+    const url = this.value;
+    if (url) {
+        window.location = url;
+    }
+});
 
 window.onload = () => {
   listarServidores()
