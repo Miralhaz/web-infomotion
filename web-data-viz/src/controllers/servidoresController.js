@@ -366,7 +366,7 @@ function receberAlertasPorServidor(req, res) {
         }
       );
 }
-
+//
 async function buscarStatusServidores(req, res) {
   try {
     const nomeArquivo = 'servidores_status_atual.json';
