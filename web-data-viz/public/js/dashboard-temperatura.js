@@ -122,12 +122,12 @@ function buscarParametros(idServidor) {
 
             const tempCPUAdesivo = document.querySelector('.kpi1 p[style*="margin-top: 3%"]');
             if (tempCPUAdesivo) {
-                tempCPUAdesivo.textContent = `Parâmetro Atual Temp. CPU: ${maxAlertaCPU}°C`;
+              tempCPUAdesivo.textContent = `Parâmetro Atual Temp. CPU: ${maxAlertaCPU}°C`;
             }
-            
+
             const tempDiscoAdesivo = document.querySelector('.kpi2 p[style*="margin-top: 3%"]');
             if (tempDiscoAdesivo) {
-                tempDiscoAdesivo.textContent = `Parâmetro Atual Temp. Disco: ${maxAlertaDisco}°C`;
+              tempDiscoAdesivo.textContent = `Parâmetro Atual Temp. Disco: ${maxAlertaDisco}°C`;
             }
 
             carregarDadosCpu(idServidor, maxAlertaCPU);
@@ -208,7 +208,7 @@ function recarregarGraficoLinhasComValoresAtuais(idServidor) {
   const selectServidor = document.getElementById('servidores');
   const nomeServidor = selectServidor.options[selectServidor.selectedIndex].text;
 
-  carregarEAtualizarGraficoLinhas(componenteAtual, periodoAtual, idServidor);
+  carregarEAtualizarGraficoLinhas(componenteAtual, periodoAtual, idServidor, nomeServidor);
   carregarDadosDispersao(idServidor, componenteAtual, nomeServidor);
 }
 
@@ -232,16 +232,16 @@ async function carregarDadosCpu(idServidor, limiteMaximo) {
     graficoGaugeCPUTemperatura(tempCpu, limiteMaximo);
     atualizarKPIsCpu(tempCpu, usoCpu, limiteMaximo);
 
-    console.log(`✅ Dados CPU carregados: ${tempCpu}°C, ${usoCpu}%`);
+    console.log(`Dados CPU carregados: ${tempCpu}°C, ${usoCpu}%`);
 
   } catch (erro) {
-    console.error('❌ Erro ao carregar dados CPU:', erro);
+    console.error('Erro ao carregar dados CPU:', erro);
   }
 }
 
 function atualizarKPIsCpu(tempCPU, usoCPU) {
-  
-  const eficienciaContainerCPU = document.querySelector('.kpi3 .container-eficiencia:nth-child(2)');
+
+  const eficienciaContainerCPU = document.querySelector('.kpi3 .container-eficiencia:nth-child(1)');
 
   if (eficienciaContainerCPU) {
     const infoElement = eficienciaContainerCPU.querySelector('.info-eficiencia');
@@ -252,7 +252,7 @@ function atualizarKPIsCpu(tempCPU, usoCPU) {
     const status = calcularStatus(eficiencia);
 
     if (infoElement && numeroElement && statusElement) {
-      infoElement.textContent = `${tempCPU.toFixed(1)}°C • ${usoCPU.toFixed(1)}% uso`;
+      infoElement.textContent = `${tempCPU}°C • ${usoCPU}% uso`;
       numeroElement.innerHTML = `${eficiencia.toFixed(2)} <span class="unidade-eficiencia"> °C/% </span>`;
       numeroElement.style.color = status.cor;
       statusElement.textContent = status.texto;
@@ -263,7 +263,6 @@ function atualizarKPIsCpu(tempCPU, usoCPU) {
 
 async function carregarDadosDisco(idServidor, limiteMaximo) {
   try {
-    // Busca arquivo de 7 dias para pegar o último registro
     const url = `/dados/disco/${idServidor}/7_dias.json`;
     const resposta = await fetch(url);
     const dados = await resposta.json();
@@ -273,7 +272,6 @@ async function carregarDadosDisco(idServidor, limiteMaximo) {
       return;
     }
 
-    // Pega o último registro (mais recente)
     const ultimoRegistro = dados[dados.length - 1];
     const tempDisco = parseFloat(ultimoRegistro.temperatura_disco);
     const usoDisco = parseFloat(ultimoRegistro.disco_uso);
@@ -281,28 +279,27 @@ async function carregarDadosDisco(idServidor, limiteMaximo) {
     graficoGaugeTemperaturaDisco(tempDisco, limiteMaximo);
     atualizarKPIsDisco(tempDisco, usoDisco, limiteMaximo);
 
-    console.log(`✅ Dados Disco carregados: ${tempDisco}°C, ${usoDisco}%`);
+    console.log(`Dados Disco carregados: ${tempDisco}°C, ${usoDisco}%`);
 
   } catch (erro) {
-    console.error('❌ Erro ao carregar dados Disco:', erro);
+    console.error('Erro ao carregar dados Disco:', erro);
   }
 }
 
-function atualizarKPIsDisco(tempDisco, usoDisco) {
+function atualizarKPIsDisco(tempDisco) {
 
-  const eficienciaContainerDisco = document.querySelector('.kpi3 .container-eficiencia:nth-child(3)');
+  const eficienciaContainerDisco = document.querySelector('.kpi3 .container-eficiencia:nth-child(2)');
 
   if (eficienciaContainerDisco) {
     const infoElement = eficienciaContainerDisco.querySelector('.info-eficiencia');
     const numeroElement = eficienciaContainerDisco.querySelector('.numero-eficiencia');
     const statusElement = eficienciaContainerDisco.querySelector('.status');
 
-    const eficiencia = tempDisco / (usoDisco || 1);
-    const status = calcularStatus(eficiencia);
+    const eficiencia = tempDisco
+    const status = calcularStatusDisco(eficiencia);
 
     if (infoElement && numeroElement && statusElement) {
-      infoElement.textContent = `${tempDisco.toFixed(1)}°C • ${usoDisco.toFixed(1)}% uso`;
-      numeroElement.innerHTML = `${eficiencia.toFixed(2)} <span class="unidade-eficiencia"> °C/% </span>`;
+      numeroElement.innerHTML = `${eficiencia.toFixed(2)} <span class="unidade-eficiencia"> °C </span>`;
       numeroElement.style.color = status.cor;
       statusElement.textContent = status.texto;
       statusElement.style.color = status.cor;
@@ -310,6 +307,7 @@ function atualizarKPIsDisco(tempDisco, usoDisco) {
   }
 }
 
+// função de calcular status apenas de CPU (kpi de eficiência)
 function calcularStatus(eficiencia) {
   if (eficiencia < 1.0) {
     return { texto: 'Excelente', cor: '#4caf50' };
@@ -322,7 +320,21 @@ function calcularStatus(eficiencia) {
   }
 }
 
-async function carregarEAtualizarGraficoLinhas(componente, periodo, idServidor) {
+// função de calcular o status atual do disco (kpi de eficiencia)
+function calcularStatusDisco(eficiencia) {
+  if (eficiencia < 45) {
+    return { texto: 'Excelente', cor: '#4caf50' };
+  } else if (eficiencia >= 45 && eficiencia <= 55) {
+    return { texto: 'Adequado', cor: '#8bc34a' };
+  } else if (eficiencia > 55 && eficiencia <= 65) {
+    return { texto: 'Atenção', cor: '#ffc107' };
+  } else {
+    return { texto: 'Crítico', cor: '#f44336' };
+  }
+}
+
+// carregar e atualizar grafico de dispersão (antes era de linhas)
+async function carregarEAtualizarGraficoLinhas(componente, periodo, idServidor, nomeServidor) {
   try {
     let nomeArquivo;
     let tituloPeriodo;
@@ -352,63 +364,27 @@ async function carregarEAtualizarGraficoLinhas(componente, periodo, idServidor) 
       return;
     }
 
-    const dadosFiltrados = filtrarDadosPorPeriodo(dados, periodo)
-    const timestamps = dadosFiltrados.map(d => d.timestamp);
-
     let temperaturas, usos, tituloGrafico;
 
     if (componente === 'cpu') {
-      temperaturas = dadosFiltrados.map(d => parseFloat(d.temperatura_cpu));
-      usos = dadosFiltrados.map(d => parseFloat(d.cpu_uso));
-      tituloGrafico = `Uso CPU X Temperatura CPU do servidor ${idServidor} ${tituloPeriodo}`;
+      temperaturas = dados.map(d => parseFloat(d.temperatura_cpu));
+      usos = dados.map(d => parseFloat(d.cpu_uso));
+      tituloGrafico = `Uso CPU X Temperatura CPU ${tituloPeriodo}`;
     } else {
-      temperaturas = dadosFiltrados.map(d => parseFloat(d.temperatura_disco));
-      usos = dadosFiltrados.map(d => parseFloat(d.disco_uso));
-      tituloGrafico = `Uso Disco X Temperatura Disco do servidor ${idServidor} ${tituloPeriodo}`;
+      temperaturas = dados.map(d => parseFloat(d.temperatura_disco));
+      usos = dados.map(d => parseFloat(d.disco_uso));
+      tituloGrafico = `Uso Disco X Temperatura Disco ${tituloPeriodo}`;
     }
 
     document.querySelector('.grafico-linha-hist .titulo p').textContent = tituloGrafico + ':';
 
-    graficoLinhaHist(timestamps, temperaturas, usos, componente);
+    graficoLinhaHist(temperaturas, usos, componente);
 
-    console.log(`Gráfico de linhas atualizado: ${dadosFiltrados.length} registros`);
+    console.log(`Gráfico de linhas atualizado: ${dados.length} registros`);
 
   } catch (erro) {
     console.error('Erro ao carregar gráfico de linhas:', erro);
   }
-}
-
-// função para filtrar dados JSON por certo intervalo de captura
-function filtrarDadosPorPeriodo(dados, periodo) {
-  if (!dados || dados.length === 0) {
-    return dados;
-  }
-
-  // intervalo está setado para que seja em minutos !!!
-  let intervalo;
-  // caso seja selecionado tal opção, o intervalo entre timestamp será definido junto
-  if (periodo === '1hora') {
-    intervalo = 5;
-  } else if (periodo === '24horas') {
-    intervalo = 120; // 120 minutos = 2 horas
-  } else if (periodo === 'dias') {
-    intervalo = 480; // 480 minutos = 8 horas
-  } else {
-    return dados;
-  }
-
-  // cria 1 array para cada registro a cada intervalo de captura definido acima
-  const dadosFiltrados = [];
-  for (let i = 0; i < dados.length; i += intervalo) {
-    dadosFiltrados.push(dados[i]);
-  }
-
-  // sempre inclui o registro mais recente do JSON
-  if (dados.length > 0 && dadosFiltrados[dadosFiltrados.length - 1] !== dados[dados.length - 1]) {
-    dadosFiltrados.push(dados[dados.length - 1]);
-  }
-
-  return dadosFiltrados;
 }
 
 // funcao de carregar dados do grafico de dispersao
@@ -720,87 +696,145 @@ function graficoGaugeTemperaturaDisco(temperaturaAtual, limiteMaximo) {
   }
 }
 
-function graficoLinhaHist(timestamp, temperaturas, uso, componente) {
+function graficoLinhaHist(temperaturas, uso, componente) {
+
   if (Chart.getChart('lineChart')) {
     Chart.getChart('lineChart').destroy();
   }
 
+  // log apenas para ver o array de temperaturas e uso que vieram do JSON
+  console.log(temperaturas, uso)
+
   const labelUso = componente === 'cpu' ? 'Uso da CPU (%)' : 'Uso do Disco (%)';
 
-  const dadosDoGrafico = {
-    labels: timestamp,
-    datasets: [
-      {
-        label: 'Temperatura (°C)',
-        data: temperaturas,
-        borderColor: 'rgba(106, 24, 90, 1)',
-        yAxisID: 'temp-y-axis',
-        tension: 0.1
-      },
-      {
-        label: 'Uso (%)',
-        data: uso,
-        borderColor: 'rgba(110, 158, 255, 1)',
-        yAxisID: 'uso-y-axis',
-        tension: 0.1
-      },
-    ]
-  };
+  // novo array que mapeia os pontos que vieram de temperatura e uso
+  // cada temperatura que ta no índice 'i' ela tem um uso específico
+  // assim podendo ver onde o ponto se encaixa no gráfico
+  const pontos = temperaturas.map((temp, i) => ({
+    x: uso[i],
+    y: temp
+  }));
+
+  // cálculo das médias
+    const n = pontos.length;
+
+    // conta para descobrir a media de pontos x e y
+    let somaX = 0;
+    let somaY = 0;
+
+    for(const p of pontos){
+      somaX += p.x;
+      somaY += p.y;
+    }
+
+    const mediaX = somaX / n;
+    const mediaY = somaY / n;
+  // fim da conta
+  
+  // cálculo da inclinação da linha de regressão linear
+    // conta do numerador da fórmula de regressão linear (soma dos produtos)
+    let numerador = 0;
+
+    for(const p of pontos){
+      numerador += (p.x - mediaX) * (p.y - mediaY);
+    }
+    // fim da conta
+
+    // conta do denominador da fórmula de regressão linear (soma dos quadrados)
+    let denominador = 0;
+
+    for(const p of pontos){
+      denominador += (p.x - mediaX) ** 2;
+    }
+    // fim da conta
+
+    const inclinacao = numerador / denominador;
+  // fim do cálculo da inclinação
+
+  // cálculo do intercepto (a da função afim de y = a + bx)
+    const intercepto = mediaY - inclinacao * mediaX;
+  // fim do cálculo do intercepto
+
+
+  // cálculo do R²
+    let somaTotalQuadrados = 0;
+    
+    for (const p of pontos) {
+      somaTotalQuadrados += (p.y - mediaY) ** 2;
+    }
+
+    let somaTotalResiduos = 0;
+
+    for (const p of pontos) {
+      const yEstimado = inclinacao * p.x + intercepto;
+      somaTotalResiduos += (p.y - yEstimado) ** 2;
+    }
+
+    const rQuadrado = 1 - (somaTotalResiduos / somaTotalQuadrados);
+  // fim do cálculo do R²
+
+  document.getElementById('equacao_regressao').textContent = 
+    `y = ${intercepto.toFixed(3)} + ${inclinacao.toFixed(3)}x`;
+  document.getElementById('r_quadrado').textContent = 
+    `R² = ${rQuadrado.toFixed(2)}`;
+
+  const minX = Math.min(...uso);
+  const maxX = Math.max(...uso);
+  const linhaRegressao = [
+    { x: minX, y: inclinacao * minX + intercepto },
+    { x: maxX, y: inclinacao * maxX + intercepto }
+  ];
 
   const configuracao = {
-    type: 'line',
-    data: dadosDoGrafico,
+    type: 'scatter',
+    data: {
+      datasets: [
+        {
+          label: 'Temperatura x Uso',
+          data: pontos,
+          backgroundColor: '#8c6f45',
+          pointRadius: 5
+        },
+        {
+          label: 'Linha de tendência',
+          data: linhaRegressao,
+          type: 'line',
+          borderColor: '#e6e1c8',
+          borderWidth: 2,
+          fill: false,
+          pointRadius: 0
+        }
+      ]
+    },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: {
-          position: 'top',
-        },
+        legend: { position: 'top' },
         title: {
           display: true,
-          text: 'Comparação Uso X Temperatura',
+          text: 'Dispersão: Temperatura x Uso',
           color: 'white',
-          font: {
-            size: 16
-          }
+          font: { size: 16 }
         }
       },
       scales: {
-        'temp-y-axis': {
-          type: 'linear',
-          position: 'left',
-          title: {
-            display: true,
-            text: 'Temperatura (°C)',
-            font: {
-              size: 14
-            },
-            color: 'white'
-          },
-          ticks: {
-            color: 'white'
-          },
+        x: {
+          min: 0,
+          max: 100,
+          title: { display: true, text: labelUso, color: 'white' },
+          ticks: { color: 'white' }
         },
-        'uso-y-axis': {
-          type: 'linear',
-          position: 'right',
-          title: {
-            display: true,
-            text: labelUso,
-            font: {
-              size: 14
-            },
-            color: 'white'
-          },
-          ticks: {
-            color: 'white'
-          },
-          grid: { drawOnChartArea: false }
+        y: {
+          min: 0,
+          max: 140,
+          title: { display: true, text: 'Temperatura (°C)', color: 'white' },
+          ticks: { color: 'white' }
         }
       }
     }
   };
+
 
   const meuGrafico = new Chart(
     document.getElementById('lineChart'),
@@ -817,7 +851,7 @@ function graficoDispersao(intervalos, componente, nomeServidor) {
   const dados = intervalos.map(i => i.count);
 
   const nomeComponente = componente === 'cpu' ? 'CPU' : 'Disco';
-  const titulo = `Dispersão da Temperatura ${nomeComponente} - ${nomeServidor}`;
+  const titulo = `Histograma Temperatura ${nomeComponente} - ${nomeServidor}`;
 
   document.querySelector('.grafico-dispersao-temperatura .titulo p').textContent = titulo + ':';
 
@@ -827,11 +861,11 @@ function graficoDispersao(intervalos, componente, nomeServidor) {
     datasets: [{
       data: dados,
       backgroundColor: componente === 'cpu'
-        ? 'rgba(205, 24, 169, 1)'
-        : 'rgba(54, 162, 235, 1)',
+        ? '#b89360'
+        : '#fffae6',
       borderColor: componente === 'cpu'
-        ? 'rgba(205, 24, 169, 1)'
-        : 'rgb(54, 162, 235)',
+        ? '#b89360'
+        : '#fffae6',
       borderWidth: 1
     }]
   };
@@ -844,7 +878,7 @@ function graficoDispersao(intervalos, componente, nomeServidor) {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display: false 
+          display: false
         }
       },
       scales: {
@@ -866,7 +900,7 @@ function graficoDispersao(intervalos, componente, nomeServidor) {
         x: {
           title: {
             display: true,
-            text: 'Intervalos de Temperatura (°C)',
+            text: 'Temperatura (°C)',
             color: 'white',
             font: {
               size: 14
@@ -886,3 +920,25 @@ function graficoDispersao(intervalos, componente, nomeServidor) {
   );
 }
 
+function popUpInfo() {
+  Swal.fire({
+    title: `<strong>Informações sobre Eficiência Térmica</strong>`,
+    icon: false,
+    html: `
+      
+          <div>
+            <div style="text-align: left;">
+              <p>A eficiência térmica da CPU representa o equilíbrio entre o desempenho do processador e o calor gerado durante seu funcionamento. Quanto menor for o aumento de temperatura em relação ao uso percentual da CPU, mais eficiente é o sistema de resfriamento.</p>
+              <br>
+              <p>Esse indicador é útil para avaliar se o computador está operando de forma saudável, mesmo sob alta carga de trabalho. Uma boa eficiência térmica significa que o processador consegue manter temperaturas seguras sem comprometer o desempenho.</p>
+              <br>
+              <p>Classificações qualitativas como "Excelente", "Bom" ou "Crítico" ajudam a interpretar rapidamente se o sistema está dentro dos padrões ideais ou se há necessidade de ajustes na ventilação ou refrigeração.</p>
+            </div>
+          </div>
+      
+    `,
+    showCloseButton: true,
+    showConfirmButton: false, // Escondemos o botão "OK" padrão
+    focusConfirm: false
+  });
+}
