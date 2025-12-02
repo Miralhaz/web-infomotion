@@ -389,14 +389,12 @@ function plotarGraficoVelocimetroCpu(dadoKpi) {
 
     const ctx = document.getElementById('velocimeterCpuChart');
     if (ctx) {
-        // Destruir gráfico anterior, se existir
         const chartInstance = Chart.getChart(ctx);
         if (chartInstance) chartInstance.destroy();
 
         new Chart(ctx, config);
     }
 
-    // Ajuste de exibição (opcional)
     const chartElems = document.getElementsByClassName('div-chart');
     for (let i = 0; i < chartElems.length; i++) {
         chartElems[i].style.display = 'flex';
