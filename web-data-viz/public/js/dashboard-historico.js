@@ -1,3 +1,5 @@
+//const { color } = require("chart.js/helpers");
+
 let info = []
 let infoExibicao = []
 const tempo = localStorage.getItem("tempoSelecionado");
@@ -46,7 +48,7 @@ async function carregarDashboardDoS3() {
 function montarTabela(resumoTabela) {
     const map = new Map();
 
-    for(const r of resumoTabela){
+    for (const r of resumoTabela) {
         const id = Number(r.fk_servidor);
         const atual = map.get(id) || {
             id,
@@ -54,21 +56,23 @@ function montarTabela(resumoTabela) {
             AlertaCPU: 0,
             AlertaRAM: 0,
             AlertaDisco: 0,
+            AlertaRede: 0,
             QuantidadeTotalAlertas: 0
         };
 
         atual.AlertaCPU += Number(r.alertasCpu) || 0;
         atual.AlertaRAM += Number(r.alertasRam) || 0;
         atual.AlertaDisco += Number(r.alertasDisco) || 0;
+        atual.AlertaRede += Number(r.alertasRede) || 0;
 
-        atual.QuantidadeTotalAlertas = Number(r.totalAlertas) || (atual.AlertaCPU + atual.AlertaRAM + atual.AlertaDisco);
+        atual.QuantidadeTotalAlertas = Number(r.totalAlertas) || (atual.AlertaCPU + atual.AlertaRAM + atual.AlertaDisco + atual.AlertaRede);
         map.set(id, atual);
     }
     return Array.from(map.values());
 }
 
-function  inserirDadosTabela(tempo){
 
+function inserirDadosTabela(tempo) {
     document.getElementById("nome_tabela").innerHTML = `Relatório de alertas X ${tempo} dias`
     const bodyTabela = document.getElementById("bodyTabelaAlerta")
     bodyTabela.innerHTML = "";
@@ -81,6 +85,7 @@ function  inserirDadosTabela(tempo){
             <td>${element.AlertaCPU}</td>
             <td>${element.AlertaRAM}</td>
             <td>${element.AlertaDisco}</td>
+            <td>${element.AlertaRede}</td>
             <td>${element.QuantidadeTotalAlertas}</td>
         </tr>
               `;
@@ -97,7 +102,7 @@ function  inserirDadosTabela(tempo){
 let totalDisco;
 
 function chamarFuncoesServidores(idServidor) {
-    plotarGraficoLinhas(idServidor)
+    plotarGraficoLinhas(idServidor);
 }
 
 
@@ -106,11 +111,12 @@ function ordenarPor(item) {
         document.getElementById(`table_alerta_${item}`).innerHTML += `<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down">`
         jaOrdenado = true
     } else {
-        document.getElementById(`table_alerta_nome`).innerHTML = 'Nome do servidor'
-        document.getElementById(`table_alerta_cpu`).innerHTML = 'CPU'
-        document.getElementById(`table_alerta_ram`).innerHTML = 'RAM'
-        document.getElementById(`table_alerta_disco`).innerHTML = 'Disco'
-        document.getElementById(`table_alerta_risco`).innerHTML = 'Total de alertas'
+        document.getElementById(`table_alerta_nome`).innerHTML = 'Nome do servidor';
+        document.getElementById(`table_alerta_cpu`).innerHTML = 'CPU';
+        document.getElementById(`table_alerta_ram`).innerHTML = 'RAM';
+        document.getElementById(`table_alerta_disco`).innerHTML = 'Disco';
+        document.getElementById(`table_alerta_rede`).innerHTML = 'Rede';
+        document.getElementById(`table_alerta_total`).innerHTML = 'Total de alertas';
 
         document.getElementById(`table_alerta_${item}`).innerHTML += `<img src="../assets/icon/arrow_drop_down.svg" alt="drop_down">`
         jaOrdenado = true
@@ -186,16 +192,16 @@ function ordenarPor(item) {
     }
 
     const bodyTabela = document.getElementById("bodyTabelaAlerta")
-    bodyTabela.innerHTML = ''
+    bodyTabela.innerHTML = '';
     for (let index = 0; index < infoOrdenada.length; index++) {
         const element = infoOrdenada[index];
         bodyTabela.innerHTML += `
         <tr onclick="chamarFuncoesServidores(${element.id})">
-            <tr onclick="(${element.id})">
             <td>${element.apelido}</td>
             <td>${element.AlertaCPU}</td>
             <td>${element.AlertaRAM}</td>
             <td>${element.AlertaDisco}</td>
+            <td>${element.AlertaRede}</td>
             <td>${element.QuantidadeTotalAlertas}</td>
         </tr>`;
     }
@@ -212,22 +218,22 @@ function plotarGraficoDonut() {
     const labels = Object.keys(counts);
     const dados = labels.map(k => counts[k]);
 
-    // const textoCentro = { // obj de pluggin
-    //     id: 'kpiCentro', // chart.js reconhece os pluggins a partir de um id
-    //     afterDraw(chart) { // função do chart.js que roda dps que o gráfico tiver sido plotado
-    //         const ctx = chart.ctx; // contexto de desenho
-    //         const centerX = chart.getDatasetMeta(0).data[0].x; // coordenada x
-    //         const centerY = chart.getDatasetMeta(0).data[0].y; // coordenada y
+    const textoCentro = { // obj de pluggin
+        id: 'kpiCentro', // chart.js reconhece os pluggins a partir de um id
+        afterDraw(chart) { // função do chart.js que roda dps que o gráfico tiver sido plotado
+            const ctx = chart.ctx; // contexto de desenho
+            const centerX = chart.getDatasetMeta(0).data[0].x; // coordenada x
+            const centerY = chart.getDatasetMeta(0).data[0].y; // coordenada y
 
-    //         ctx.save(); // salva o contexto atual
-    //         ctx.fillStyle = '#BD2C2C';
-    //         ctx.font = 'bold 22px poppins';
-    //         ctx.textAlign = 'center';
-    //         ctx.textBaseline = 'middle';
-    //         ctx.fillText(dados[2] + "% " + labels[2], centerX, centerY); // Texto que vai aparecer no meio!
-    //         ctx.restore(); // restaura o contexto salvo
-    //     }
-    // };
+            ctx.save(); // salva o contexto atual
+            ctx.fillStyle = '#BD2C2C';
+            ctx.font = 'bold 22px poppins';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(dados[2] + "% " + labels[2], centerX, centerY); // Texto que vai aparecer no meio!
+            ctx.restore(); // restaura o contexto salvo
+        }
+    };
 
     const config = {
         type: 'doughnut',
@@ -258,10 +264,17 @@ function plotarGraficoDonut() {
                         usePointStyle: true,
                         color: 'white'
                     }
+                },
+                datalabels: {
+                    color: 'white',
+                    font: {
+                        size: 14,
+                        weight: 'bold'
+                    }
                 }
             }
         },
-        plugins: [ChartDataLabels]
+        plugins: [ChartDataLabels, textoCentro]
     };
 
     new Chart(
@@ -271,21 +284,68 @@ function plotarGraficoDonut() {
 
 }
 
+
+let dadosBolhas = [];
+let bubbleChart = null;
+
+const bolhasArquivos = {
+    cpu: "criticidadeCpu.json",
+    ram: "criticidadeRam.json",
+    disco: "criticidadeDisco.json",
+    temp_cpu: "criticidadeTempCpu.json",
+    temp_disco: "criticidadeTempDisco.json",
+    upload: "criticidadeUPLOAD.json",
+    download: "criticidadeDOWNLOAD.json",
+    pckt_rcvd: "criticidadePCKT_RCVD.json",
+    pckt_snt: "criticidadePCKT_SNT.json"
+}
+
+async function carregarBolhas(tipo) {
+    const arq = bolhasArquivos[tipo];
+    
+    if (!arq) {
+        return;
+    }
+
+    dadosBolhas = await carregarJsonS3(arq);
+    plotarGraficoBolhas();
+}
+
+
 function plotarGraficoBolhas() {
 
-    const bolhas = resumoTabela.map(i => ({
-        x: Number(i.apelido),
-        y: Number(i.percentual),
+    if (bubbleChart) bubbleChart.destroy();
+
+    const filtrados = (dadosBolhas).filter(i => {
+        const c = String(i.classificacao).toUpperCase();
+        return c === "ATENCAO" || c === "CRITICO";
+    })
+
+    const bolhas = filtrados.map((i) => ({
+        x: Number(i.fk_servidor),
+        y: Number(i.captura),
         r: Number(i.minutos)
     }));
+
+    console.log("dados bolhas:", dadosBolhas)
+
+    const colors = filtrados.map(i => {
+        const c = (i.classificacao).toUpperCase();
+        if (c == "CRITICO") {
+            return "rgba(189, 44, 44, 0.5)";
+        }
+        if (c == "ATENCAO") {
+            return "rgba(189, 92, 32, 0.5)";
+        }
+    });
 
     const config = {
         type: 'bubble',
         data: {
             datasets: [{
-                label: ['ATENÇÃO', 'CRÍTICO'],
+                label: "classificacao",
                 data: bolhas,
-                backgroundColor: ['rgba(189, 92, 32, 0.5)', 'rgba(189, 44, 44, 0.5)']
+                backgroundColor: colors
             }]
         },
         options: {
@@ -300,7 +360,7 @@ function plotarGraficoBolhas() {
                     },
                     title: {
                         display: true,
-                        text: 'Porcentagem (%)',
+                        text: 'Captura',
                         color: 'white',
                         font: {
                             size: 16
@@ -340,23 +400,22 @@ function plotarGraficoBolhas() {
                         color: 'white'
                     }
                 },
-                tooltip: {
-                    callbacks: {
-                        title: function (context) {
-                            const nivel = context[0].dataset.label;
-                            return `Estado: ${nivel}`;
-                        },
-                        beforeLabel: function (context) {
-                            const servidor = context.parsed.x;
-                            return `Servidor: ${servidor}`;
-                        },
-                        label: function (context) {
-                            const uso = context.parsed.y;
-                            const minutos = context.raw.r;
-                            return `Uso: ${uso}% por ${minutos} minutos`;
-                        }
-                    }
-                }
+                // tooltip: {
+                //     callbacks: {
+                //         title: (ctx) => {
+                //             const item = filtrados[ctx];
+                //             return `Estado: ${item.classificacao}`;
+                //         },
+                //         beforeLabel: (ctx) => {
+                //             const item = filtrados[ctx];
+                //             return `Servidor: ${item.apelido}`;
+                //         },
+                //         label: (ctx) => {
+                //             const item = filtrados[ctx];
+                //             return `Captura: ${item.captura}% por ${item.minutos} minutos`;
+                //         }
+                //     }
+                // }
             }
         }
     };
@@ -389,9 +448,10 @@ function plotarGraficoLinhas(idServidor) {
 
     const labels = dadosServidor.map(d => d.timestamp);
     const cpu = dadosServidor.map(d => Number(d.alertasCpu));
-    let ram = dadosServidor.map(d => Number(d.alertasRam));
-    let disco = dadosServidor.map(d => Number(d.alertasDisco));
-    let nomeServidor = dadosServidor[0]?.apelido;
+    const ram = dadosServidor.map(d => Number(d.alertasRam));
+    const disco = dadosServidor.map(d => Number(d.alertasDisco));
+    const rede = dadosServidor.map(d => Number(d.alertasRede));
+    const nomeServidor = dadosServidor[0]?.apelido;
 
     const titulo = tempo > 1
         ? `Quantidade de alertas dos últimos ${tempo} dias do servidor: ${nomeServidor}`
@@ -421,6 +481,14 @@ function plotarGraficoLinhas(idServidor) {
             {
                 label: 'DISCO',
                 data: disco,
+                fill: false,
+                backgroundColor: '#FAFF00',
+                borderColor: '#FAFF00',
+                tension: 0.1
+            },
+            {
+                label: 'REDE',
+                data: rede,
                 fill: false,
                 backgroundColor: '#FAFF00',
                 borderColor: '#FAFF00',
