@@ -93,7 +93,9 @@
                   src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
               <th scope="col" onclick="ordenarPor('disco')" id="table_alerta_disco">Disco<img
                   src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
-              <th scope="col" onclick="ordenarPor('risco')" id="table_alerta_risco">Total de alertas<img
+              <th scope="col" onclick="ordenarPor('rede')" id="table_alerta_rede">Rede<img
+                  src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
+              <th scope="col" onclick="ordenarPor('total')" id="table_alerta_total">Total de alertas<img
                   src="../assets/icon/arrow_drop_down.svg" alt="drop_down"></th>
             </tr>
           </thead>
@@ -136,6 +138,9 @@
                 <button onclick="selecionar('CPU')">CPU</button>
                 <button onclick="selecionar('RAM')">RAM</button>
                 <button onclick="selecionar('DISCO')">DISCO</button>
+                <button onclick="selecionar('REDE')">REDE</button>
+                <button onclick="selecionar('TEMP_CPU')">TEMPERATURA DE CPU</button>
+                <button onclick="selecionar('TEMP_DISCO')">TEMPERATURA DE DISCO</button>
               </div>
             </div>
           </div>
@@ -148,15 +153,12 @@
       </div>
     </div>
   </div>
-
   </div>
-
-
-
 </body>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../js/dashboard-historico.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 <script>
   const idUsuario = sessionStorage.getItem("ID_USUARIO")
 
@@ -177,7 +179,7 @@
   window.onload = async function () {
     selecionarTempo();
     await carregarDashboardDoS3();
+    await carregarBolhas("CPU");
   }
 </script>
-
 </html>
