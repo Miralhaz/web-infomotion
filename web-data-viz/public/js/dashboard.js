@@ -795,6 +795,46 @@ function formatarValorComUnidade(componente, valorBruto) {
     return valorBruto;
 }
 
+// Função auxiliar para extrair texto de description
+function extrairTextoDescription(desc) {
+    if (!desc) return "";
+    if (typeof desc === "string") return desc;
+
+    // Suporte a ADF (Atlassian Document Format)
+    if (typeof desc === "object" && desc.type === "doc" && Array.isArray(desc.content)) {
+        let texto = "";
+        const extrair = (nodo) => {
+            if (nodo && typeof nodo === "object") {
+                if (nodo.text) texto += nodo.text;
+                if (Array.isArray(nodo.content)) nodo.content.forEach(extrair);
+            }
+        };
+        desc.content.forEach(extrair);
+        return texto;
+    }
+
+    return String(desc);
+}
+
+function extrairTextoDescription(desc) {
+  if (!desc) return "";
+  if (typeof desc === "string") return desc;
+
+  if (typeof desc === "object" && desc.type === "doc" && Array.isArray(desc.content)) {
+    let texto = "";
+    const extrair = (nodo) => {
+      if (nodo && typeof nodo === "object") {
+        if (nodo.text) texto += nodo.text;
+        if (Array.isArray(nodo.content)) nodo.content.forEach(extrair);
+      }
+    };
+    desc.content.forEach(extrair);
+    return texto;
+  }
+
+  return String(desc);
+}
+
 function preencherTabelaAlertas(issues) {
   const tabela = document.getElementById("tabela_alertas_corpo");
   if (!tabela) return;
@@ -807,55 +847,43 @@ function preencherTabelaAlertas(issues) {
   }
 
   issues.forEach(issue => {
-    const titulo = issue.fields.summary;
+    const summary = issue.fields.summary;
     const dataCriacao = issue.fields.created;
-    const status = issue.fields.status.name; 
+    const status = issue.fields.status.name;
+    const descricaoBruta = issue.fields.description; 
+    const descricao = extrairTextoDescription(descricaoBruta);
 
-    let classeLinha = "";
     const statusUpper = status.toUpperCase();
-    if (statusUpper === "ABERTO" || statusUpper === "REABERTO") {
-      classeLinha = "linha-critica"; 
-    } else {
-      classeLinha = "linha-alerta"; 
+    const classeLinha = (statusUpper === "ABERTO" || statusUpper === "REABERTO")
+      ? "linha-critica"
+      : "linha-alerta";
+
+    let componente = "Desconhecido";
+    const matchComponente = summary.match(/^Alerta Crítico:\s*(.+?)\s+em\s+/i);
+    if (matchComponente) {
+      componente = matchComponente[1].trim();
     }
 
-    const regex = /^Alerta Crítico:\s*([A-Za-zÀ-ÿ\s]+?)\s+em\s+([^\s]+)/i;
-    const match = titulo.match(regex);
+    let valorNumerico = null;
+    const matchPico = descricao.match(/Pico[^:]*:\s*([0-9.,]+)/i);
+    if (matchPico) {
+      const valorLimpo = matchPico[1].replace(',', '.');
+      const num = parseFloat(valorLimpo);
+      if (!isNaN(num)) valorNumerico = num;
+    }
 
-    let componente, valorFormatado;
-    if (match) {
-      componente = match[1].trim();
-      const valorBruto = match[2];
-
-      let valorLimpo = valorBruto
-        .replace(/[^\d,\.]/g, '')
-        .replace(/,/g, '.');
-      valorLimpo = valorLimpo.replace(/(\.\d*)\./g, '$1');
-
-      const valorNumerico = parseFloat(valorLimpo);
-
-      if (isNaN(valorNumerico)) {
-        valorFormatado = valorBruto;
+    let valorFormatado = "—";
+    if (valorNumerico !== null) {
+      if (componente.includes("°C")) {
+        valorFormatado = `${valorNumerico}°C`;
+      } else if (componente.includes("%")) {
+        valorFormatado = `${valorNumerico}%`;
+      } else if (componente.toLowerCase().includes("rede")) {
+        const mbps = (valorNumerico * 8) / 1_000_000;
+        valorFormatado = `${mbps.toFixed(2)} Mbps`;
       } else {
-        const compLower = componente.toLowerCase();
-
-        if (compLower === "rede") {
-          const mbps = (valorNumerico * 8) / 1_000_000;
-          valorFormatado = `${mbps.toFixed(2)} Mbps`;
-        } else if (compLower.includes("temperatura")) {
-          valorFormatado = `${valorNumerico}°C`;
-        } else if (
-          ["cpu", "ram", "disco"].includes(compLower) ||
-          compLower.includes("uso")
-        ) {
-          valorFormatado = `${valorNumerico}%`;
-        } else {
-          valorFormatado = valorBruto;
-        }
+        valorFormatado = `${valorNumerico}`;
       }
-    } else {
-      componente = "Desconhecido";
-      valorFormatado = "—";
     }
 
     const dataFormatada = new Date(dataCriacao).toLocaleString('pt-BR', {
@@ -868,7 +896,7 @@ function preencherTabelaAlertas(issues) {
     });
 
     const tr = document.createElement("tr");
-    tr.className = classeLinha; 
+    tr.className = classeLinha;
     tr.innerHTML = `
       <td>${componente}</td>
       <td>${valorFormatado}</td>
@@ -878,15 +906,6 @@ function preencherTabelaAlertas(issues) {
   });
 }
 
-const selectElement = document.getElementById('dash');
-
-selectElement.addEventListener('change', function () {
-    const url = this.value;
-    if (url) {
-        window.location = url;
-    }
-});
-
 window.onload = () => {
     carregarDashboardInicial();
     const select = document.getElementById('servidores');
@@ -894,7 +913,9 @@ window.onload = () => {
         const opcao = e.target.selectedOptions[0];
         const idServidor = opcao.dataset.id;
         if (!idServidor) return;
+        sessionStorage.setItem("ID_SERVIDOR_SELECIONADO", idServidor);
         obterDadosKpi(idServidor);
+        obterAlertas();
     });
 
     let chart = document.getElementsByClassName('div-chart');
@@ -909,6 +930,6 @@ window.onload = () => {
 
 setInterval(() => {
     const idServidor = sessionStorage.ID_SERVIDOR_SELECIONADO;
-        obterDadosKpi(idServidor);
-        obterAlertas();
+    obterDadosKpi(idServidor);
+    obterAlertas();
 }, 120000);

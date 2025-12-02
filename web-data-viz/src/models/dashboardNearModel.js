@@ -41,16 +41,13 @@ function obterDados(idServidor) {
 async function obterAlertas(idServidor) {
   try {
 
-    const jql = `
-      project = ${JIRA_PROJECT_KEY}
-      AND summary ~ "SERVIDOR ${idServidor}"
-      ORDER BY created DESC
+    const jql = `project = ${JIRA_PROJECT_KEY} AND summary ~ "Servidor ${idServidor}" AND created >= -7d ORDER BY created DESC
     `;
 
     const body = {
       jql,
       fieldsByKeys: true,
-      fields: ["summary", "created", "status"],
+      fields: ["summary", "created", "status", "description"],
     };
 
     const response = await axios.post(
