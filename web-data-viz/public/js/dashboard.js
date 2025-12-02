@@ -545,33 +545,19 @@ function plotarGraficoStackBarDisco(dadosKpi) {
     const corMinima = 60;
     const corMaxima = 0;
 
-    /* 
-    Verde: em torno de 120
-    Amarelo: em torno de 60 a 30
-    Vermelho: 0
-    */
 
-    // se a quantidade usada for maior que o parâmetro, já é vermelho direto
     if (usado >= parametro) {
         corUsada = `hsl(${corMaxima}, 80%, 50%)`;
     } else {
-        // deixa o ponto de mudanca = 50, que é a % intermediária para mudança de cor em relação ao uso 
         const pontoInicialMudanca = 50;
 
         if (usado < pontoInicialMudanca) {
-            // cor usada começa a ficar mais esverdeada ou se mantém em perto do amarelo
             corUsada = `hsl(${corMinima}, 80%, 50%)`;
         } else {
-            // rangeUso é para definir em que intervalo de uso irá mudar do amarelo ao vermelho 
-            // Se parametro for 80, irá variar entre 30 pontos percentuais (80 - 50)
-            // rangeCor é a cor (60 e 0) para ver qual entr amarelo e vermelho irá ficar
             const rangeUso = parametro - pontoInicialMudanca;
             const rangeCor = corMinima - corMaxima;
 
-            // fator calcula a proporção de quanto o usado percorreu dentro da faixa de uso.
             const fator = (usado - pontoInicialMudanca) / rangeUso;
-            // hue determina a cor intermediária que a cor ficará (talvez mais laranja pro vermelho, laranja mais pro amarelo)
-            // cor varia entre 60 e 0
             const hue = corMinima - (fator * rangeCor);
 
             corUsada = `hsl(${hue}, 80%, 50%)`;
@@ -920,3 +906,9 @@ window.onload = () => {
     listarServidores();
     obterAlertas();
 };
+
+setInterval(() => {
+    const idServidor = sessionStorage.ID_SERVIDOR_SELECIONADO;
+        obterDadosKpi(idServidor);
+        obterAlertas();
+}, 120000);
