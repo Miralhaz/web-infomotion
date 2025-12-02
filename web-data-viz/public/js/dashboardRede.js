@@ -18,8 +18,9 @@ let dadosPacotesRecebidos = []
 let dadosUpload = []
 let dadosDownload = []
 let dadosPacketLoss = []
-let parametroPacotes = 20000
-let parametroPacketLoss = parametroPacotes * 0.01
+let parametroPacotesRecebidos = 20000
+let parametroPacotesEnviados = 20000
+let parametroPacketLoss = (parametroPacotesRecebidos / parametroPacotesEnviados) * 0.01
 
 let unidadeMedidaDown = '...'
 let unidadeMedidaUp = '...'
@@ -48,19 +49,25 @@ function kpiInternet()  {
           maintainAspectRatio: false,
           plugins: { legend: { display: false },
             datalabels: {
-              color: '#1e0f0fff', // cor do texto
+              color: (context) => {
+                const value = context.dataset.data[context.dataIndex];
+                if (value > parametro_up * 1000000 * 2) {
+                  return 'green'
+                } else if (value > parametro_up * 1000000){
+                  return 'yellow'
+                } else return 'red'
+              }, 
               font: {
                 weight: 'bold',
                 size: 14
               },
-              // Exibe o valor numérico da barra
+              
               formatter: (value, context) => {
-                return `${value.toFixed(1)} ${unidadeMedidaUp}`; // ou `${value} unidades`, etc.
+                return `${value.toFixed(1)} ${unidadeMedidaUp}`; 
               },
-              // Posição: 'top', 'bottom', 'center', 'inside', etc.
-              anchor: 'center', // fixa no topo da barra
-              align: 'right',  // alinha acima da barra
-              offset: -10,    // ajuste fino (negativo puxa pra dentro)
+              anchor: 'center', 
+              align: 'right',  
+              offset: -10,    
             }
           },
           scales: {
@@ -86,13 +93,21 @@ function kpiInternet()  {
           maintainAspectRatio: false,
           plugins: { legend: { display: false },
           datalabels: {
-              color: '#ffffffff', // cor do texto
+              color: (context) => {
+                const value = context.dataset.data[context.dataIndex];
+                if (value > parametro_down  * 2) {
+                  return 'green'
+                } else if (value > parametro_down){
+                  return 'yellow'
+                } else return 'red'
+              }, 
               font: {
                 weight: 'bold',
                 size: 14
               },
               
               formatter: (value, context) => {
+              
                 return `${value.toFixed(1)} ${unidadeMedidaDown}`; 
               },
               
@@ -125,8 +140,8 @@ function graficoLinhaPrincipal() {
         
         backgroundColor: (context) => {
             const valor = context.raw;
-            if (valor > (parametroPacotes * 2)) return '#0cff03ff'; 
-            else if (valor > parametroPacotes) return '#fffb00ff';   
+            if (valor > (parametroPacotesEnviados * 2)) return '#0cff03ff'; 
+            else if (valor > parametroPacotesEnviados) return '#fffb00ff';   
             return 'red';                      
         },
         borderColor: 'fffae6', 
@@ -135,9 +150,9 @@ function graficoLinhaPrincipal() {
               
               if (!ctx.p1 || !ctx.p1.parsed) return 'gray';
               const valor = ctx.p1.parsed.y; 
-              if (valor > 20) {
+              if (valor > parametroPacotesEnviados * 2) {
                   return '#0cff03ff'; 
-              } else if (valor > 10) {
+              } else if (valor > parametroPacotesEnviados) {
                   return '#fffb00ff';   
               } else {
                   return 'red';       
@@ -151,8 +166,8 @@ function graficoLinhaPrincipal() {
         data: dadosPacotesRecebidos,
         backgroundColor: (context) => {
             const valor = context.raw;
-            if (valor > (parametroPacotes * 2)) return '#0cff03ff'; 
-            else if (valor > parametroPacotes) return '#fffb00ff';  
+            if (valor > (parametroPacotesRecebidos * 2)) return '#0cff03ff'; 
+            else if (valor > parametroPacotesRecebidos) return '#fffb00ff';  
             return 'red';                      
         },
         borderColor: 'fffae6', 
@@ -161,9 +176,9 @@ function graficoLinhaPrincipal() {
               
               if (!ctx.p1 || !ctx.p1.parsed) return 'gray';
               const valor = ctx.p1.parsed.y; 
-              if (valor > (parametroPacotes * 2)) {
+              if (valor > (parametroPacotesRecebidos * 2)) {
                   return '#0cff03ff'; 
-              } else if (valor > parametroPacotes) {
+              } else if (valor > parametroPacotesRecebidos) {
                   return '#fffb00ff';   
               } else {
                   return 'red';       
@@ -184,7 +199,7 @@ function graficoLinhaPrincipal() {
         position: 'top',
         labels: {
           color: '#E2E1DE',
-          font: { size: 12 },     // <- diminuir aqui (ex: 12)
+          font: { size: 12 },    
           boxWidth: 24,
           padding: 8,
           generateLabels: function(chart) {
@@ -204,7 +219,7 @@ function graficoLinhaPrincipal() {
     },
     scales: {
       x: {
-        ticks: {display: false}
+        ticks: {display: true}
       },
       y: {
         ticks: { color: '#E2E1DE', font: { size: 10 } } 
@@ -289,32 +304,27 @@ function graficoLinhaSecundario() {
 function listarServidores() {
   
     
-    let idServidor = null
-    let idEmpresa = sessionStorage.ID_EMPRESA;
+    let ID_USUARIO = sessionStorage.getItem('ID_USUARIO');
 
-    fetch(`/servidores/listarServidores/${idEmpresa}`)
+    fetch(`/servidores/listarServidoresPorUsuario/${ID_USUARIO}`)
         .then(function (resposta) {
 
             if (resposta.ok) {
                 resposta.json().then(function (resposta) {
 
-                    for (let index = 0; index < resposta.length; index++) {
-                      if (resposta[index].idServidor == idServidorSelecionado) {
-                        idServidor = index
-                        break;
-                      }}
+            
 
                     const select = document.getElementById('select_servidores');
                     
-                    let frase = `<option value="escolha_op">Escolha um servidor</option>`;
-                    if (idServidor != null){
-                      frase += `<option value="" selected disabled>${resposta[idServidor].apelido}</option>`
-                    }
+                    let frase =  `<option value="" selected disabled>${resposta[idServidorSelecionado].apelido}</option>`
+                  
 
                     for (let i = 0; i < resposta.length; i++) {
+                      if (resposta[i].idServidor != idServidorSelecionado) {
                         frase += `
-                                <option value="${resposta[i].idServidor}" data-id="${resposta[i].idServidor}">${resposta[i].apelido}</option>
+                        <option value="${resposta[i].idServidor}" data-id="${resposta[i].idServidor}">${resposta[i].apelido}</option>
                         `;
+                      }
                     }
 
                     select.innerHTML = frase;
@@ -332,7 +342,7 @@ function listarServidores() {
 }
 
 async function carregarDadosRede() {
-    const nomeArquivoRede = `jsonRede_14_${tempo}.json`;
+    const nomeArquivoRede = `jsonRede_${idServidorSelecionado}_${tempo}.json`;
 
     const resposta = await fetch(`/dashboardRede/rede/${nomeArquivoRede}`);
     if (!resposta.ok) {
@@ -349,7 +359,7 @@ async function carregarDadosRede() {
 }
 
 async function carregarDadosConexao() {
-    const nomeArquivoRede = `conexoes11.json`;
+    const nomeArquivoRede = `conexoes${idServidorSelecionado}.json`;
 
     const resposta = await fetch(`/dashboardRede/conexoes/${nomeArquivoRede}`);
     if (!resposta.ok) {
@@ -382,10 +392,11 @@ function carregarGraficosLinha(dados) {
     'Minimo': 0
   }
 
-  parametroPacotes = dados[1].parametroPacotesEnviados
-  parametroPacketLoss = parametroPacotes * 0.01
+  parametroPacotesEnviados = dados[1].parametroPacotesEnviados
+  parametroPacotesRecebidos = dados[1].parametroPacotesRecebidos
+  parametroPacketLoss = parametroPacotesEnviados * 0.01
   
-  document.getElementById("parametroGraficoLinhaPrincipal").innerHTML = `Paramêtro minimo: ${parametroPacotes} pacotes(enviados e recebidos)`
+  document.getElementById("parametroGraficoLinhaPrincipal").innerHTML = `Paramêtros minimo de pacotes: enviados:${parametroPacotesEnviados}, recebidos: ${parametroPacotesRecebidos}`
 
   let stringTempo
   if(tempo == 1){
@@ -478,9 +489,22 @@ function carregarGraficosLinha(dados) {
 
   document.getElementById('parametro_up').innerHTML = parametro_up
   document.getElementById('baixo_upload').innerHTML = `${(upload.Media).toFixed(1)} Mbps`
+  document.getElementById('baixo_upload').style.fontWeight = `1000`
+  if (upload.Media < parametro_up * 2) {
+    document.getElementById('baixo_upload').style.color = `yellow`
+  } else if (upload.Media < parametro_up){
+    document.getElementById('baixo_upload').style.color = `red`
+  } else document.getElementById('baixo_upload').style.color = `green`
+
 
   document.getElementById('parametro_down').innerHTML = parametro_down
   document.getElementById('baixo_download').innerHTML = `${(download.Media).toFixed(1)} Mbps`
+  document.getElementById('baixo_upload').style.fontWeight = `1000`
+  if (download.Media < parametro_down * 2) {
+    document.getElementById('baixo_download').style.color = `yellow`
+  } else if (download.Media < parametro_down){
+    document.getElementById('baixo_download').style.color = `red`
+  } else document.getElementById('baixo_download').style.color = `green`
 
   dadosUpload.push(upload.Pico)
   dadosUpload.push(upload.Media)
@@ -562,7 +586,7 @@ async function contarTicketsPorTermo(termo) {
         
         
         
-        const termoServidor = `SERVIDOR 10`.toUpperCase();
+        const termoServidor = `SERVIDOR ${idServidorSelecionado}`.toUpperCase();
         if (summary.includes('REDE') && summary.includes(termoServidor)) {
         
           if((element.fields.status.name).toUpperCase() == "aberto".toUpperCase() || (element.fields.status.name).toUpperCase() == "reaberto".toUpperCase()){
@@ -612,139 +636,148 @@ function selecionarTempo() {
 }
 
 function popUpLista() {
+  const tamanhoVetor = typeof dadosConexoes !== 'undefined' ? dadosConexoes.length : 0;
 
   Swal.fire({
     title: false,
     icon: false,
     width: '90vw',
-    padding: '2rem',
-    background: '#f5f5f5',
+    padding: '0', // Removi o padding do container principal para o card ocupar tudo
+    background: 'transparent', // Fundo transparente para deixar o border-radius do card mandar
     showCloseButton: true,
     showConfirmButton: false,
     customClass: {
-        popup: 'popup-tabela-conexoes',
-        closeButton: 'close-button-custom'
+        popup: 'swal2-popup-custom', // Classe customizada para não afetar outros alerts
+        closeButton: 'swal2-close-custom'
     },
     html: `
       <style>
-        .popup-tabela-conexoes {
-          border-radius: 12px;
-        }
-
-        .close-button-custom {
-          font-size: 2rem;
-          color: #666;
-        }
-
-        .cardDashRede.tabelaRede {
+        /* Estilos EXCLUSIVOS do PopUp - Isolados do CSS principal */
+        
+        /* Container principal do card no popup */
+        .popup-tabela-card {
           background: white;
-          border-radius: 8px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          border-radius: 12px;
           overflow: hidden;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+          display: flex;
+          flex-direction: column;
+          height: 80vh; /* Altura fixa grande para o popup */
         }
 
-        .cardDashRede .cardHeader.cardDashRedeT {
+        /* Cabeçalho do Card */
+        .popup-tabela-header {
           padding: 1.5rem 2rem;
           background: white;
-          border-bottom: 1px solid #e0e0e0;
+          border-bottom: 2px solid #f0f0f0;
           display: flex;
           justify-content: space-between;
           align-items: center;
         }
 
-        .cardDashRede .cardHeader p {
+        .popup-tabela-header h3 {
           margin: 0;
-          font-size: 1.1rem;
-          font-weight: 500;
+          font-size: 1.25rem;
+          font-weight: 600;
           color: #333;
+          font-family: "Poppins", sans-serif;
         }
 
-        .cardDashRede .cardHeader img {
-          cursor: pointer;
-          width: 20px;
-          height: 20px;
-          opacity: 0.6;
-          transition: opacity 0.2s;
+        .popup-tabela-header .btn-close-fake {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #999;
         }
 
-        .cardDashRede .cardHeader img:hover {
-          opacity: 1;
-        }
-
-        .dashboardRede .tabelaRede .tableScroll {
-          max-height: 70vh;            
+        /* Área de Scroll da Tabela */
+        .popup-table-scroll {
+          flex: 1; /* Ocupa todo o espaço restante */
           overflow-y: auto;
-          -webkit-overflow-scrolling: touch;
+          overflow-x: hidden;
         }
 
-        .dashboardRede .tabelaRede .tableScroll::-webkit-scrollbar {
+        /* Estilização da Scrollbar */
+        .popup-table-scroll::-webkit-scrollbar {
           width: 8px;
         }
-
-        .dashboardRede .tabelaRede .tableScroll::-webkit-scrollbar-track {
+        .popup-table-scroll::-webkit-scrollbar-track {
           background: #f1f1f1;
         }
-
-        .dashboardRede .tabelaRede .tableScroll::-webkit-scrollbar-thumb {
-          background: #888;
+        .popup-table-scroll::-webkit-scrollbar-thumb {
+          background: #ccc;
           border-radius: 4px;
         }
-
-        .dashboardRede .tabelaRede .tableScroll::-webkit-scrollbar-thumb:hover {
-          background: #555;
+        .popup-table-scroll::-webkit-scrollbar-thumb:hover {
+          background: #999;
         }
 
-        .dashboardRede .tabelaRede table {
+        /* A Tabela em si */
+        .popup-tabela {
           width: 100%;
           border-collapse: collapse;
-          border-spacing: 0;
-          margin: 0;
-          font-size: 0.95rem;
+          font-family: "Poppins", sans-serif;
         }
 
-        .dashboardRede .tabelaRede thead th {
+        /* Cabeçalho da Tabela (Sticky) */
+        .popup-tabela thead th {
           position: sticky;
           top: 0;
-          background: #fff;
-          z-index: 5;
-          padding: 1rem 1.5rem;
+          background: white;
+          z-index: 10;
           text-align: left;
-          font-weight: 500;
-          color: #666;
-          font-size: 0.9rem;
+          padding: 1rem 2rem;
+          font-weight: 600;
+          color: #555;
+          font-size: 0.95rem;
           border-bottom: 2px solid #e0e0e0;
+          box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1); /* Sombra sutil ao rolar */
         }
 
-        .dashboardRede .tabelaRede tbody tr {
-          background: #1a1a1a;
+        /* Linhas do Corpo */
+        .popup-tabela tbody tr {
+          background-color: #1c1c1c; /* Fundo ESCURO conforme sua imagem de referência */
           transition: background 0.2s;
+          border-bottom: 1px solid #333;
         }
 
-        .dashboardRede .tabelaRede tbody tr:hover {
-          background: #2a2a2a;
+        .popup-tabela tbody tr:hover {
+          background-color: #2a2a2a; /* Hover ligeiramente mais claro */
         }
 
-        .dashboardRede .tabelaRede tbody td {
-          padding: 1rem 1.5rem;
-          color: white;
-          text-align: left;
-          border-bottom: 1px solid #2a2a2a;
+        .popup-tabela tbody td {
+          padding: 1rem 2rem;
+          color: #fff; /* Texto BRANCO */
+          font-size: 0.9rem;
+          vertical-align: middle;
         }
 
-        .dashboardRede .tabelaRede tbody tr:last-child td {
-          border-bottom: none;
+        /* Ajuste fino para a primeira coluna (Nome) */
+        .popup-tabela tbody td:first-child {
+          font-weight: 500;
+          color: #fff;
         }
+        
+        /* Ajuste do botão de fechar nativo do SweetAlert */
+        .swal2-close-custom {
+            z-index: 20 !important;
+            color: #333 !important;
+        }
+        
+        .swal2-popup-custom {
+            border-radius: 12px !important;
+        }
+
       </style>
 
-      <div class="cardDashRede tabelaRede dashboardRede">
-        <div class="cardHeader cardDashRedeT">
-          <p id="tabela_conexoes">Tabela conexões (11 ativas no momento)</p>
-          <img src="../assets/icon/fullscreen.svg" alt="FullScreen" onclick="popUpLista()">
-        </div>
-        <div class="tableScroll">
-          <table>
+      <div class="popup-tabela-card">
+        <div class="popup-tabela-header">
+          <h3>Tabela conexões (${tamanhoVetor} ativas no momento)</h3>
+          </div>
+        
+        <div class="popup-table-scroll">
+          <table class="popup-tabela">
             <thead>
-              <tr class="cabecalho">
+              <tr>
                 <th>Nome</th>
                 <th>Local adress</th>
                 <th>Remote adress</th>
@@ -752,38 +785,34 @@ function popUpLista() {
                 <th>Proc ID</th>
               </tr>
             </thead>
-            <tbody id="tableConexao">
-              
-            </tbody>
+            <tbody id="popupTableBody">
+              </tbody>
           </table>
         </div>
       </div>
-
-      <script>
-        carregarTabelaPopUp()
-      </script>
     `,
-})
-}
-
-function carregarTabelaPopUp() {
-  const tamanhoVetor = dadosConexoes.length
-        const tabela = document.getElementById('tableConexao')
-
-        document.getElementById('tabela_conexoes').innerHTML = `Tabela conexões (${tamanhoVetor} ativas no momento)`
-        for (let index = 0; index < dadosConexoes.length; index++) {
-          const element = dadosConexoes[index];
-          
-          tabela.innerHTML += `
+    didOpen: () => {
+        // Função do Swal que roda assim que o popup abre
+        // Aqui injetamos os dados sem precisar de função externa
+        const tbody = document.getElementById('popupTableBody');
+        
+        if (typeof dadosConexoes !== 'undefined' && dadosConexoes.length > 0) {
+            dadosConexoes.forEach(element => {
+                tbody.innerHTML += `
                     <tr>
-                      <td>${element.nome_processo}</td>
-                      <td>${element.laddr}</td>
-                      <td>${element.raddr}</td>
-                      <td>${element.status}</td>
-                      <td>${element.idProcessoConexao}</td>
+                      <td>${element.nome_processo || '-'}</td>
+                      <td>${element.laddr || '-'}</td>
+                      <td>${element.raddr || '-'}</td>
+                      <td>${element.status || '-'}</td>
+                      <td>${element.idProcessoConexao || '-'}</td>
                     </tr>
-          `
+                `;
+            });
+        } else {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 2rem;">Nenhuma conexão ativa encontrada.</td></tr>`;
         }
+    }
+  });
 }
 
 function popUpInfo() {
@@ -810,7 +839,7 @@ const selectElement = document.getElementById('dash');
 selectElement.addEventListener('change', function () {
     const url = this.value;
     if (url) {
-        window.location = url;
+        window.location.href = url;
     }
 });
 

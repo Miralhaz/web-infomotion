@@ -372,7 +372,7 @@ body {
 
 .dashboardRede .graficoLinhaSecundario {
   height: auto;
-  width: 35vw;
+  width: 41vw;
   background-color: var(--cinzaDash);
 }
 
@@ -380,4 +380,9 @@ body {
   height: auto;
   width: 35vw;
   background-color: var(--cinzaDash);
+}
+
+.parametrosGraficoLinhaPrincipal {
+  display: flex;
+  justify-self: center;
 }
