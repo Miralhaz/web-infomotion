@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Disco</title>
-    <link rel="stylesheet" href="../css/styleDashDisco.css">
+    <link rel="stylesheet" href="../css/dashDisco.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -69,10 +69,7 @@
                         <div class="kpi-status-operacao">
                             <img id="img_status" src="../assets/icon/alerta_estadoDisco.png" alt="Status Operação">
 
-                            <h3 id="txt_status_operacao">Carregando...</h3>
-                        </div>
-                        <div class="kpi-footer">
-                            <button class="btn-acao" onclick="sinalizarProblema()">Sinalizar Problema</button>
+                            <h3 id="txt_status_operacao"></h3>
                         </div>
                     </div>
                 </div>
@@ -85,50 +82,58 @@
                         <div><span>ontem x hoje</span></div>
                     </div>
                     <div class="kpi-body">
-                        <span class="op-status-passado">33</span>
+                        <span id="saidaAlertasHoje" class="op-status-passado">33</span>
                     </div>
                     <div class="kpi-footer">
-                        <p>10 a menos que ontem</p>
+                        <p id="saidaAlertasOntem">10 a menos que ontem</p>
                     </div>
                 </div>
 
                 <!--lista-->
+                <!-- <div class="kpi lista">
+    <div class="box-esquerda">
+    <div class="titulo-card">Últimos Alertas</div>
+        <div class="container-tabela-grande">
+            <table class="tabela-alertas-historico">
+                <thead>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Valor Máximo</th>
+                        <th>Data e Hora</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela_alertas_corpo">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div> -->
                 <div class="kpi lista">
                     <div class="kpi-header">
-                        <h2>Disco em Alerta de espaço</h2>
-                    </div>
-                    <div class="organizador_lista">
-                        <div class="pesquisa"><Span>Pesquisar</Span> <img src="../assets/imgs-dashboard/mdi_search.png"
-                                alt="iconePesquisa"></div>
-
+                        <h2>Disco em Alerta de espaço</h2> 
                     </div>
                     <div class="estado-listagem">
                         <div class="estados_lista">
                             <span class="moderado">Moderado </span>
-                            <span class="risco">Alto Risco</span>
-
+                            <span class="risco">Alto Risco</span>   
                         </div>
-                        <div class="kpi-body">
+                        <div id="listatop5" class="kpi-body">
                             <div class="para-status">
-                                <p id="item-lista1">HD-01: 1TB - 90%</p>
+                                <p id="itemlista1"></p>
                             </div>
                             <div class="para-status">
-                                <p id="item-lista2">NVME-01: 3TB - 85%</p>
+                                <p id="itemlista2"></p>
                             </div>
                             <div class="para-status">
-                                <p id="item-lista3">SSD-01: 5TB - 75%</p>
+                                <p id="itemlista3"></p>
                             </div>
                             <div class="para-status">
-                                <p id="item-lista4">HD-01: 200GB - 55%</p>
+                                <p id="itemlista4"></p>
                             </div>
                             <div class="para-status">
-                                <p id="item-lista5">HD-01: 200GB - 55%</p>
+                                <p id="itemlista5"></p>
                             </div>
                         </div>
-                    </div>
-                    <div class="kpi-footer">
-                        <p>selecione um disco e preveja</p>
-                        <button class="btn-acao" onclick="MudarPeriodokpi()">ver tendencia no gráfico</button>
                     </div>
                 </div>
 
@@ -140,13 +145,13 @@
 
                     <div class="kpi-body">
                         <div class="tudo">
-                            <div class="importancia"> muito importante</div>
+                            <div class="importancia"> <Span>% de uso dos processos</Span></div>
                             <div class="discos">
                                 <p>Relevância para operação</p>
                                 <div class="listagem">
-                                    <p>HD-03: 2TB - 90%</p>
-                                    <p>HD-04: 2TB - 70%</p>
-                                    <p>HD-01: 2TB - 40%</p>
+                                    <p id="discoRequisicao1"></p>
+                                    <p id="discoRequisicao2"></p>
+                                    <p id="discoRequisicao3"></p>
                                 </div>
                             </div>
                         </div>
@@ -154,20 +159,21 @@
                 </div>
                 <div class="kpi vida">
                     <div class="kpi-header">
-                        <p>Discos com risco de falha</p>
-                        <h2>(classificado por tempo de operação)</h2>
+                        <p>Discos em alerta de alta Temperatura</p>
                     </div>
 
                     <div class="kpi-body">
                         <div class="classificacao">
-                            <p>Riscos de falhas</p>
-                            <p>Zona de preocupação</p>
+                            <p>Há mais de 1 minutos</p>
+                            <p>oscilando</p>
                         </div>
                         <div class="discos">
-                            <p>HD-03: Servidor-2</p>
-                            <p>HD-05: Servidor-2</p>
-                            <p>HD-07: Servidor-2</p>
-
+                            <p id="parametro_temp" class="parametro">Parâmetro: 65°</p>
+                            <div class="listagem">
+                                <p id="discotemp1"></p>
+                                <p id="discotemp2"></p>
+                                <p id="discotemp3"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -185,7 +191,7 @@
                 </div>
                 <div class="dashboard chart2">
                     <div class="kpi-header">
-                        <h2>Previsão de Tendência de espaço (Discos em Risco)</h2>
+                        <h2>Gráfico de linha do tempo (Discos na lista de alertas)</h2>
                     </div>
 
                     <div class="kpi-body">
