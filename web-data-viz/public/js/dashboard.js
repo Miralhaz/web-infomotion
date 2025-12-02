@@ -1,3 +1,5 @@
+Chart.register(ChartDataLabels);
+
 let graficoStackBarDisco;
 let graficoParticaoDisco;
 
@@ -301,35 +303,28 @@ function obterDadosKpi(idServidor) {
 function plotarGraficoVelocimetroCpu(dadoKpi) {
     const usoCpu = dadoKpi.uso_cpu;
     const restante = (100 - usoCpu);
-    const parametro = dadoKpi.max_cpu
+    const parametro = dadoKpi.max_cpu;
 
     let corUsada;
-    let hueFinal;
-
     const corMinima = 120;
     const corMaxima = 0;
 
     if (usoCpu >= parametro) {
-        hueFinal = corMaxima
         corUsada = `hsl(${corMaxima}, 80%, 50%)`;
     } else {
         const pontoInicialMudanca = 60;
-
         if (usoCpu < pontoInicialMudanca) {
-            hueFinal = corMinima
             corUsada = `hsl(${corMinima}, 80%, 50%)`;
         } else {
             const rangeUso = parametro - pontoInicialMudanca;
             const rangeCor = corMinima - corMaxima;
-
             const fator = (usoCpu - pontoInicialMudanca) / rangeUso;
-            hueFinal = corMinima - (fator * rangeCor);
-
-            corUsada = `hsl(${hueFinal}, 80%, 50%)`;
+            const hue = corMinima - (fator * rangeCor);
+            corUsada = `hsl(${hue}, 80%, 50%)`;
         }
     }
 
-    const corRestante = '#c0c0c0ff'
+    const corRestante = '#c0c0c0ff';
 
     const textCenter = {
         id: 'textCenter',
@@ -348,14 +343,6 @@ function plotarGraficoVelocimetroCpu(dadoKpi) {
             ctx.textBaseline = 'middle';
             ctx.fillText(text, textX, textY);
 
-            const labelText = '';
-            const labelFontSize = (height / 100).toFixed(2);
-            const labelY = (bottom + top) / 1.8;
-
-            ctx.font = `lighter ${labelFontSize}em sans-serif`;
-            ctx.fillStyle = 'gray';
-            ctx.fillText(labelText, textX, labelY);
-
             ctx.restore();
         }
     };
@@ -367,14 +354,8 @@ function plotarGraficoVelocimetroCpu(dadoKpi) {
             datasets: [{
                 label: 'Uso da CPU (%)',
                 data: [usoCpu, restante],
-                backgroundColor: [
-                    corUsada,
-                    corRestante
-                ],
-                borderColor: [
-                    corUsada,
-                    corRestante
-                ],
+                backgroundColor: [corUsada, corRestante],
+                borderColor: [corUsada, corRestante],
                 borderWidth: 1
             }]
         },
@@ -385,15 +366,16 @@ function plotarGraficoVelocimetroCpu(dadoKpi) {
             responsive: true,
             maintainAspectRatio: true,
             plugins: {
-                legend: {
-                    display: false
-                },
+                legend: { display: false },
                 tooltip: {
                     callbacks: {
                         label: function (context) {
                             return context.label + ': ' + context.formattedValue + '%';
                         }
                     }
+                },
+                datalabels: {
+                    display: false
                 }
             },
             elements: {
@@ -405,25 +387,28 @@ function plotarGraficoVelocimetroCpu(dadoKpi) {
         plugins: [textCenter]
     };
 
-    new Chart(
-        document.getElementById('velocimeterCpuChart'),
-        config
-    );
+    const ctx = document.getElementById('velocimeterCpuChart');
+    if (ctx) {
+        // Destruir gráfico anterior, se existir
+        const chartInstance = Chart.getChart(ctx);
+        if (chartInstance) chartInstance.destroy();
 
-    let chart = document.getElementsByClassName('div-chart');
+        new Chart(ctx, config);
+    }
 
-    for (let i = 0; i < chart.length; i++) {
-        chart[i].style.display = 'flex';
+    // Ajuste de exibição (opcional)
+    const chartElems = document.getElementsByClassName('div-chart');
+    for (let i = 0; i < chartElems.length; i++) {
+        chartElems[i].style.display = 'flex';
     }
 }
 
 function plotarGraficoVelocimetroRam(dadoKpi) {
     const usoRam = dadoKpi.uso_ram;
     const restante = (100 - usoRam);
-    const parametro = dadoKpi.max_ram
+    const parametro = dadoKpi.max_ram;
 
     let corUsada;
-
     const corMinima = 120;
     const corMaxima = 0;
 
@@ -431,21 +416,18 @@ function plotarGraficoVelocimetroRam(dadoKpi) {
         corUsada = `hsl(${corMaxima}, 80%, 50%)`;
     } else {
         const pontoInicialMudanca = 60;
-
         if (usoRam < pontoInicialMudanca) {
             corUsada = `hsl(${corMinima}, 80%, 50%)`;
         } else {
             const rangeUso = parametro - pontoInicialMudanca;
             const rangeCor = corMinima - corMaxima;
-
             const fator = (usoRam - pontoInicialMudanca) / rangeUso;
             const hue = corMinima - (fator * rangeCor);
-
             corUsada = `hsl(${hue}, 80%, 50%)`;
         }
     }
 
-    const corRestante = '#c0c0c0ff'
+    const corRestante = '#c0c0c0ff';
 
     const textCenter = {
         id: 'textCenter',
@@ -479,9 +461,9 @@ function plotarGraficoVelocimetroRam(dadoKpi) {
     const config = {
         type: 'doughnut',
         data: {
-            labels: ['Uso da CPU', 'Ocioso'],
+            labels: ['Uso da RAM', 'Ocioso'],
             datasets: [{
-                label: 'Uso da CPU (%)',
+                label: 'Uso da RAM (%)',
                 data: [usoRam, restante],
                 backgroundColor: [
                     corUsada,
@@ -510,6 +492,10 @@ function plotarGraficoVelocimetroRam(dadoKpi) {
                             return context.label + ': ' + context.formattedValue + '%';
                         }
                     }
+                },
+                
+                datalabels: {
+                    display: false
                 }
             },
             elements: {
@@ -518,7 +504,7 @@ function plotarGraficoVelocimetroRam(dadoKpi) {
                 }
             }
         },
-        plugins: [textCenter]
+        plugins: [textCenter] 
     };
 
     new Chart(
@@ -527,39 +513,33 @@ function plotarGraficoVelocimetroRam(dadoKpi) {
     );
 
     let chart = document.getElementsByClassName('div-chart');
-
     for (let i = 0; i < chart.length; i++) {
         chart[i].style.display = 'flex';
     }
 }
 
 function plotarGraficoStackBarDisco(dadosKpi) {
-    console.log("dados Grafico Bar: " + dadosKpi)
+    console.log("dados Grafico Bar: " + dadosKpi);
     const usado = dadosKpi.uso_disco;
     const parametro = dadosKpi.max_disco;
     const total = 100;
     const livre = total - usado;
 
     let corUsada;
-
     const corMinima = 60;
     const corMaxima = 0;
-
 
     if (usado >= parametro) {
         corUsada = `hsl(${corMaxima}, 80%, 50%)`;
     } else {
         const pontoInicialMudanca = 50;
-
         if (usado < pontoInicialMudanca) {
             corUsada = `hsl(${corMinima}, 80%, 50%)`;
         } else {
             const rangeUso = parametro - pontoInicialMudanca;
             const rangeCor = corMinima - corMaxima;
-
             const fator = (usado - pontoInicialMudanca) / rangeUso;
             const hue = corMinima - (fator * rangeCor);
-
             corUsada = `hsl(${hue}, 80%, 50%)`;
         }
     }
@@ -578,7 +558,6 @@ function plotarGraficoStackBarDisco(dadosKpi) {
                 {
                     label: 'Usado',
                     data: [usado],
-                    color: 'white',
                     backgroundColor: corUsada,
                     order: 1,
                     barThickness: 30
@@ -586,7 +565,6 @@ function plotarGraficoStackBarDisco(dadosKpi) {
                 {
                     label: 'Livre',
                     data: [livre],
-                    color: 'white',
                     backgroundColor: 'rgba(220, 220, 220, 1)',
                     order: 2,
                     barThickness: 30
@@ -599,15 +577,20 @@ function plotarGraficoStackBarDisco(dadosKpi) {
             aspectRatio: 4,
             plugins: {
                 legend: {
-                    display: true,
-                    position: 'top',
-                    labels: {
-                        usePointStyle: true,
-                        color: 'white',
-                        font: {
-                            size: 15
-                        }
-                    }
+                    display: false 
+                },
+                datalabels: {
+                    color: '#ffffff',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    },
+                    formatter: (value, context) => {
+                        return `${value.toFixed(1)}%`;
+                    },
+                    anchor: 'center',
+                    align: 'right',
+                    offset: -10
                 },
                 title: {
                     display: true,
@@ -665,7 +648,6 @@ function plotarGraficoParticaoDisco(dadosKpiDiscoParticao) {
 
     for (let i = 0; i < dadosKpiDiscoParticao.particoes.length; i++) {
         const p = dadosKpiDiscoParticao.particoes[i];
-
         labels.push(`Partição ${p.nome}:/`);
         usados.push(p.uso);
         livres.push(100 - p.uso);
@@ -702,24 +684,31 @@ function plotarGraficoParticaoDisco(dadosKpiDiscoParticao) {
             responsive: true,
             aspectRatio: 4,
             plugins: {
+                // ✅ Tudo em um só plugins
                 legend: {
-                    display: true,
-                    labels: {
-                        usePointStyle: true,
-                        color: 'white',
-                        font: {
-                            size: 15
-                        }
-                    }
+                    display: false
+                },
+                datalabels: {
+                    color: '#ffffff',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    },
+                    formatter: (value, context) => {
+                        return `${value.toFixed(1)}%`; // disco é em %
+                    },
+                    anchor: 'center',
+                    align: 'right',
+                    offset: -10
                 },
                 title: {
                     display: true,
-                    font: {
-                        size: 18
-                    },
                     text: 'Uso de Disco por Partição (%)',
                     color: 'white',
-                },
+                    font: {
+                        size: 18
+                    }
+                }
             },
             scales: {
                 x: {
@@ -817,93 +806,93 @@ function extrairTextoDescription(desc) {
 }
 
 function extrairTextoDescription(desc) {
-  if (!desc) return "";
-  if (typeof desc === "string") return desc;
+    if (!desc) return "";
+    if (typeof desc === "string") return desc;
 
-  if (typeof desc === "object" && desc.type === "doc" && Array.isArray(desc.content)) {
-    let texto = "";
-    const extrair = (nodo) => {
-      if (nodo && typeof nodo === "object") {
-        if (nodo.text) texto += nodo.text;
-        if (Array.isArray(nodo.content)) nodo.content.forEach(extrair);
-      }
-    };
-    desc.content.forEach(extrair);
-    return texto;
-  }
+    if (typeof desc === "object" && desc.type === "doc" && Array.isArray(desc.content)) {
+        let texto = "";
+        const extrair = (nodo) => {
+            if (nodo && typeof nodo === "object") {
+                if (nodo.text) texto += nodo.text;
+                if (Array.isArray(nodo.content)) nodo.content.forEach(extrair);
+            }
+        };
+        desc.content.forEach(extrair);
+        return texto;
+    }
 
-  return String(desc);
+    return String(desc);
 }
 
 function preencherTabelaAlertas(issues) {
-  const tabela = document.getElementById("tabela_alertas_corpo");
-  if (!tabela) return;
+    const tabela = document.getElementById("tabela_alertas_corpo");
+    if (!tabela) return;
 
-  tabela.innerHTML = "";
+    tabela.innerHTML = "";
 
-  if (!issues || issues.length === 0) {
-    tabela.innerHTML = `<tr><td colspan="3" style="text-align:center;">Nenhum alerta encontrado</td></tr>`;
-    return;
-  }
-
-  issues.forEach(issue => {
-    const summary = issue.fields.summary;
-    const dataCriacao = issue.fields.created;
-    const status = issue.fields.status.name;
-    const descricaoBruta = issue.fields.description; 
-    const descricao = extrairTextoDescription(descricaoBruta);
-
-    const statusUpper = status.toUpperCase();
-    const classeLinha = (statusUpper === "ABERTO" || statusUpper === "REABERTO")
-      ? "linha-critica"
-      : "linha-alerta";
-
-    let componente = "Desconhecido";
-    const matchComponente = summary.match(/^Alerta Crítico:\s*(.+?)\s+em\s+/i);
-    if (matchComponente) {
-      componente = matchComponente[1].trim();
+    if (!issues || issues.length === 0) {
+        tabela.innerHTML = `<tr><td colspan="3" style="text-align:center;">Nenhum alerta encontrado</td></tr>`;
+        return;
     }
 
-    let valorNumerico = null;
-    const matchPico = descricao.match(/Pico[^:]*:\s*([0-9.,]+)/i);
-    if (matchPico) {
-      const valorLimpo = matchPico[1].replace(',', '.');
-      const num = parseFloat(valorLimpo);
-      if (!isNaN(num)) valorNumerico = num;
-    }
+    issues.forEach(issue => {
+        const summary = issue.fields.summary;
+        const dataCriacao = issue.fields.created;
+        const status = issue.fields.status.name;
+        const descricaoBruta = issue.fields.description;
+        const descricao = extrairTextoDescription(descricaoBruta);
 
-    let valorFormatado = "—";
-    if (valorNumerico !== null) {
-      if (componente.includes("°C")) {
-        valorFormatado = `${valorNumerico}°C`;
-      } else if (componente.includes("%")) {
-        valorFormatado = `${valorNumerico}%`;
-      } else if (componente.toLowerCase().includes("rede")) {
-        const mbps = (valorNumerico * 8) / 1_000_000;
-        valorFormatado = `${mbps.toFixed(2)} Mbps`;
-      } else {
-        valorFormatado = `${valorNumerico}`;
-      }
-    }
+        const statusUpper = status.toUpperCase();
+        const classeLinha = (statusUpper === "ABERTO" || statusUpper === "REABERTO")
+            ? "linha-critica"
+            : "linha-alerta";
 
-    const dataFormatada = new Date(dataCriacao).toLocaleString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
+        let componente = "Desconhecido";
+        const matchComponente = summary.match(/^Alerta Crítico:\s*(.+?)\s+em\s+/i);
+        if (matchComponente) {
+            componente = matchComponente[1].trim();
+        }
 
-    const tr = document.createElement("tr");
-    tr.className = classeLinha;
-    tr.innerHTML = `
+        let valorNumerico = null;
+        const matchPico = descricao.match(/Pico[^:]*:\s*([0-9.,]+)/i);
+        if (matchPico) {
+            const valorLimpo = matchPico[1].replace(',', '.');
+            const num = parseFloat(valorLimpo);
+            if (!isNaN(num)) valorNumerico = num;
+        }
+
+        let valorFormatado = "—";
+        if (valorNumerico !== null) {
+            if (componente.includes("°C")) {
+                valorFormatado = `${valorNumerico}°C`;
+            } else if (componente.includes("%")) {
+                valorFormatado = `${valorNumerico}%`;
+            } else if (componente.toLowerCase().includes("rede")) {
+                const mbps = (valorNumerico * 8) / 1_000_000;
+                valorFormatado = `${mbps.toFixed(2)} Mbps`;
+            } else {
+                valorFormatado = `${valorNumerico}`;
+            }
+        }
+
+        const dataFormatada = new Date(dataCriacao).toLocaleString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+
+        const tr = document.createElement("tr");
+        tr.className = classeLinha;
+        tr.innerHTML = `
       <td>${componente}</td>
       <td>${valorFormatado}</td>
       <td>${dataFormatada}</td>
     `;
-    tabela.appendChild(tr);
-  });
+        tabela.appendChild(tr);
+    });
 }
 
 window.onload = () => {
