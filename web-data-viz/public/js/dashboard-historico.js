@@ -11,6 +11,11 @@ let jaOrdenado = true;
 let resumoTabela = [];
 let serieLinhas = [];
 
+let dadosDonut = [];
+let donutChart = null;
+let dadosBolhas = [];
+let bubbleChart = null;
+
 async function carregarJsonS3(nomeArquivo) {
     const resp = await fetch(`/dashboardHistorico/dados/${nomeArquivo}`);
     if (!resp.ok) throw new Error(`Falha ao carregar ${nomeArquivo}`);
@@ -22,13 +27,15 @@ async function carregarDashboardDoS3() {
 
     const arqTabela = `historicoAlertas_${tempo}.json`;
     const arqLinhas = `historicoAlertasLinhas_${tempo}.json`;
+    const arqDonut = "nivelCriticidadeDonut.json";
 
     console.log("Buscando:", arqTabela, arqLinhas);
 
     try {
-        [resumoTabela, serieLinhas] = await Promise.all([
+        [resumoTabela, serieLinhas, dadosDonut] = await Promise.all([
             carregarJsonS3(arqTabela),
-            carregarJsonS3(arqLinhas)
+            carregarJsonS3(arqLinhas),
+            carregarJsonS3(arqDonut)
         ]);
 
         console.log("resumoTabela len:", resumoTabela?.length, resumoTabela);
@@ -39,6 +46,8 @@ async function carregarDashboardDoS3() {
         if (resumoTabela.length > 0) {
             chamarFuncoesServidores(resumoTabela[0].fk_servidor);
         }
+
+        await carregarBolhas("cpu");
     } catch (e) {
         console.error(e);
     }
@@ -93,7 +102,6 @@ function inserirDadosTabela(tempo) {
 
     if (resumoTabela.length > 0) {
         plotarGraficoDonut();
-        plotarGraficoBolhas();
         chamarFuncoesServidores(resumoTabela[0].fk_servidor);
     }
 }
@@ -207,11 +215,17 @@ function ordenarPor(item) {
     }
 }
 
+
 function plotarGraficoDonut() {
+    
+    if(donutChart){
+        donutChart.destroy();
+    }
+
     const counts = { OK: 0, ATENCAO: 0, CRITICO: 0 };
 
-    for (const i of resumoTabela) {
-        const c = (i.classificacao) || "OK";
+    for (const i of dadosDonut) {
+        const c = (i.classificacao) || "";
         if (counts[c] != null) counts[c]++;
     }
 
@@ -277,16 +291,13 @@ function plotarGraficoDonut() {
         plugins: [ChartDataLabels, textoCentro]
     };
 
-    new Chart(
+    donutChart = new Chart(
         document.getElementById(`pieChart`),
         config
     );
 
 }
 
-
-let dadosBolhas = [];
-let bubbleChart = null;
 
 const bolhasArquivos = {
     cpu: "criticidadeCpu.json",
@@ -309,6 +320,7 @@ async function carregarBolhas(tipo) {
 
     dadosBolhas = await carregarJsonS3(arq);
     plotarGraficoBolhas();
+    document.getElementById('menu')?.classList.remove('show');
 }
 
 
@@ -317,7 +329,7 @@ function plotarGraficoBolhas() {
     if (bubbleChart) bubbleChart.destroy();
 
     const filtrados = (dadosBolhas).filter(i => {
-        const c = String(i.classificacao).toUpperCase();
+        const c = String(i.classificacao || "").toUpperCase();
         return c === "ATENCAO" || c === "CRITICO";
     })
 
@@ -400,27 +412,26 @@ function plotarGraficoBolhas() {
                         color: 'white'
                     }
                 },
-                // tooltip: {
-                //     callbacks: {
-                //         title: (ctx) => {
-                //             const item = filtrados[ctx];
-                //             return `Estado: ${item.classificacao}`;
-                //         },
-                //         beforeLabel: (ctx) => {
-                //             const item = filtrados[ctx];
-                //             return `Servidor: ${item.apelido}`;
-                //         },
-                //         label: (ctx) => {
-                //             const item = filtrados[ctx];
-                //             return `Captura: ${item.captura}% por ${item.minutos} minutos`;
-                //         }
-                //     }
-                // }
+                tooltip: {
+                    callbacks: {
+                        title: (ctx) => {
+                            const item = filtrados[ctx];
+                            return `Estado: ${item.classificacao}`;
+                        },
+                        beforeLabel: (ctx) => {
+                            const item = filtrados[ctx];
+                            return `Servidor: ${item.apelido}`;
+                        },
+                        label: (ctx) => {
+                            const item = filtrados[ctx];
+                            return `Captura: ${item.captura}% por ${item.minutos} minutos`;
+                        }
+                    }
+                }
             }
         }
-    };
-
-    new Chart(document.getElementById('bubbleChart'), config);
+    }
+    bubbleChart = new Chart(document.getElementById('bubbleChart'), config);
 }
 
 

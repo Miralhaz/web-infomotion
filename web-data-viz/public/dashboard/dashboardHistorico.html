@@ -135,12 +135,11 @@
 
             <div class="filtro-menu" id="menu">
               <div class="opcoes-menu">
-                <button onclick="selecionar('CPU')">CPU</button>
-                <button onclick="selecionar('RAM')">RAM</button>
-                <button onclick="selecionar('DISCO')">DISCO</button>
-                <button onclick="selecionar('REDE')">REDE</button>
-                <button onclick="selecionar('TEMP_CPU')">TEMPERATURA DE CPU</button>
-                <button onclick="selecionar('TEMP_DISCO')">TEMPERATURA DE DISCO</button>
+                <button onclick="carregarBolhas('cpu')">CPU</button>
+                <button onclick="carregarBolhas('ram')">RAM</button>
+                <button onclick="carregarBolhas('disco')">DISCO</button>
+                <button onclick="carregarBolhas('temp_cpu')">TEMPERATURA DE CPU</button>
+                <button onclick="carregarBolhas('temp_disco')">TEMPERATURA DE DISCO</button>
               </div>
             </div>
           </div>
@@ -156,9 +155,9 @@
   </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="../js/dashboard-historico.js"></script>
 <script
   src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
+  <script src="../js/dashboard-historico.js"></script>
 <script>
   const idUsuario = sessionStorage.getItem("ID_USUARIO")
 
@@ -179,7 +178,6 @@
   window.onload = async function () {
     selecionarTempo();
     await carregarDashboardDoS3();
-    await carregarBolhas("CPU");
   }
 </script>
 </html>
