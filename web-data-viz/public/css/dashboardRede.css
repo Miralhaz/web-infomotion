@@ -161,7 +161,7 @@ body {
 
 .dashboardRede .kpiInternet .cardHeader .internetDown .parametro{
   justify-self: center;
-  width: 100%;
+  width: 105%;
   font-size: 0.95rem;
   grid-column: 2;
   grid-row: 1 / -1;
@@ -254,6 +254,23 @@ body {
   justify-self: center;
 }
 
+.cardDashRede.graficoLinhaPrincipal .cardHeader, .cardDashRede.graficoLinhaSecundario .cardHeader{
+  display: flex;
+  justify-content: space-between;
+}
+
+.cardDashRede.graficoLinhaPrincipal .cardHeader img, .cardDashRede.graficoLinhaSecundario .cardHeader img{
+  margin-right: 1vw;
+  cursor: pointer;
+}
+
+.cardDashRede img {
+  transition: ease 0.3s;
+}
+
+.cardDashRede img:hover{
+  transform: scale(1.1);
+}
 
 .dashboardRede .parteBaixo{
   grid-column: 1 / -1;
@@ -330,13 +347,19 @@ body {
   text-align: center;
 }
 
+
+
 .dashboardRede .tabelaRede tbody tr {
   background-image: linear-gradient(to right, #fff 100%, rgba(255,255,255,0) 0);
   background-repeat: no-repeat;
   background-position: bottom center;
   background-size: 90% 1px; 
+  transition: all ease 0.3s;
 }
 
+.dashboardRede .tabelaRede tbody tr:hover{
+  background-color: rgba(255, 255, 255, 0.164);
+}
 
 .dashboardRede .tabelaRede tbody tr td {
   background: transparent;

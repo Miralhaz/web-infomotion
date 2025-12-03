@@ -1,8 +1,8 @@
 Chart.register(ChartDataLabels);
 
-const tempo = 168
+let tempo = 168
 if (sessionStorage.getItem('TEMPO_SELECIONADO')) {
-  const tempo = sessionStorage.getItem('TEMPO_SELECIONADO')
+  tempo = sessionStorage.getItem('TEMPO_SELECIONADO')
 } 
 
 const JIRA_BASE_URL = "https://sentinela-grupo-3.atlassian.net";
@@ -51,11 +51,11 @@ function kpiInternet()  {
             datalabels: {
               color: (context) => {
                 const value = context.dataset.data[context.dataIndex];
-                if (value > parametro_up * 1000000 * 2) {
-                  return 'green'
-                } else if (value > parametro_up * 1000000){
+                if (value < parametro_up * 2) {
                   return 'yellow'
-                } else return 'red'
+                } else if (value < parametro_up){
+                  return 'red'
+                } else return 'green'
               }, 
               font: {
                 weight: 'bold',
@@ -95,11 +95,11 @@ function kpiInternet()  {
           datalabels: {
               color: (context) => {
                 const value = context.dataset.data[context.dataIndex];
-                if (value > parametro_down  * 2) {
-                  return 'green'
-                } else if (value > parametro_down){
+                if (value < parametro_down  * 2) {
                   return 'yellow'
-                } else return 'red'
+                } else if (value < parametro_down){
+                  return 'red'
+                } else return 'green'
               }, 
               font: {
                 weight: 'bold',
@@ -343,6 +343,8 @@ function listarServidores() {
 
 async function carregarDadosRede() {
     const nomeArquivoRede = `jsonRede_${idServidorSelecionado}_${tempo}.json`;
+    console.log('nomeArquivoRede', nomeArquivoRede);
+    
 
     const resposta = await fetch(`/dashboardRede/rede/${nomeArquivoRede}`);
     if (!resposta.ok) {
@@ -396,7 +398,7 @@ function carregarGraficosLinha(dados) {
   parametroPacotesRecebidos = dados[1].parametroPacotesRecebidos
   parametroPacketLoss = parametroPacotesEnviados * 0.01
   
-  document.getElementById("parametroGraficoLinhaPrincipal").innerHTML = `Paramêtros minimo de pacotes: enviados:${parametroPacotesEnviados}, recebidos: ${parametroPacotesRecebidos}`
+  document.getElementById("parametroGraficoLinhaPrincipal").innerHTML = `Paramêtros minimo de pacotes: enviados: ${parametroPacotesEnviados}, recebidos: ${parametroPacotesRecebidos}`
 
   let stringTempo
   if(tempo == 1){
@@ -411,10 +413,6 @@ function carregarGraficosLinha(dados) {
   for (let index = 0; index < tamanhoVetor; index++) {
     
     const element = dados[index];
-
-    if (tempo == 1) {
-      element.timeStamp
-    }
 
     labelsData.push(element.timeStamp)
     dadosPacotesEnviados.push(element.packetSent)
@@ -432,15 +430,15 @@ function carregarGraficosLinha(dados) {
     downloadSoma += (element.downloadByte / 1048576) 
     uploadSoma += (element.uploadByte / 1048576) 
 
-    if(element.downloadByte > download.Pico){
+    if(element.downloadByte / 1048576 > download.Pico){
       download.Pico = element.downloadByte / 1048576;
-    } else if (element.downloadByte < download.Minimo){
+    } else if (element.downloadByte / 1048576 < download.Minimo){
       download.Minimo = element.downloadByte / 1048576;
     }
 
-    if (element.uploadByte > upload.Pico){
+    if (element.uploadByte / 1048576 > upload.Pico){
       upload.Pico =( element.uploadByte / 1048576);
-    } else if (element.uploadByte < upload.Minimo){
+    } else if (element.uploadByte / 1048576 < upload.Minimo){
       upload.Minimo =( element.uploadByte / 1048576);
     }
 
@@ -641,7 +639,7 @@ function popUpLista() {
   Swal.fire({
     title: false,
     icon: false,
-    width: '90vw',
+    width: '50vw',
     padding: '0', // Removi o padding do container principal para o card ocupar tudo
     background: 'transparent', // Fundo transparente para deixar o border-radius do card mandar
     showCloseButton: true,
@@ -724,7 +722,7 @@ function popUpLista() {
           top: 0;
           background: white;
           z-index: 10;
-          text-align: left;
+          text-align: start;
           padding: 1rem 2rem;
           font-weight: 600;
           color: #555;
@@ -745,7 +743,7 @@ function popUpLista() {
         }
 
         .popup-tabela tbody td {
-          padding: 1rem 2rem;
+          padding: 0.5rem 1.25rem;
           color: #fff; /* Texto BRANCO */
           font-size: 0.9rem;
           vertical-align: middle;
@@ -817,19 +815,50 @@ function popUpLista() {
 
 function popUpInfo() {
   Swal.fire({
-    title: `<strong>Informações da tabela de conexões</strong>`,
-    icon: false,
+    title: `<span style="font-size: 1.2rem">Escopo da Tabela de Conexões</span>`,
+    icon: 'info',
+    iconColor: '#ffc47b',
+    width: '500px', // Largura ajustada para este conteúdo
     html: `
-      
-          <div>
-            <div>
-              Esta tabela mostra somente conexões externas atualmente ativas
-            </div>
-          </div>
-      
+      <style>
+        .info-tab-container {
+          text-align: left;
+          font-family: 'Poppins', sans-serif;
+          font-size: 0.95rem;
+          line-height: 1.6;
+          color: #333;
+        }
+        .highlight {
+          font-weight: 600;
+          color: #000;
+        }
+        .info-note {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: #555;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #17a2b8; /* Cor azul informativa */
+            border-radius: 4px;
+        }
+      </style>
+
+      <div class="info-tab-container">
+        <p>
+          Esta tabela foi projetada para oferecer visibilidade sobre a comunicação do servidor com o ambiente externo.
+        </p>
+        
+        <p>
+          Ela exibe exclusivamente as <span class="highlight">conexões de rede externas</span> geradas por processos que estão <span class="highlight">ativos</span> no momento exato da consulta.
+        </p>
+
+        <div class="info-note">
+            <b>Filtro Aplicado:</b> Processos inativos ou conexões puramente locais (localhost) são ocultados para facilitar o diagnóstico de tráfego.
+        </div>
+      </div>
     `,
     showCloseButton: true,
-    showConfirmButton: false, // Escondemos o botão "OK" padrão
+    showConfirmButton: false,
     focusConfirm: false
   });
 }
@@ -842,6 +871,66 @@ selectElement.addEventListener('change', function () {
         window.location.href = url;
     }
 });
+
+function popUpInfoGraf() {
+  Swal.fire({
+    title: `<span style="font-size: 1.2rem">Metodologia de Exibição de Dados</span>`,
+    icon: 'info',
+    iconColor: '#ffc47b', 
+    width: '600px', 
+    html: `
+      <style>
+        .info-graf-container {
+          text-align: left;
+          font-family: 'Poppins', sans-serif; /* Ou a fonte do seu projeto */
+          font-size: 0.95rem;
+          line-height: 1.6;
+          color: #333;
+        }
+        .info-graf-subtitle {
+          font-weight: 600;
+          color: #222;
+          margin-top: 15px;
+          display: block;
+          margin-bottom: 5px;
+        }
+        .info-graf-list {
+          margin: 0;
+          padding-left: 20px;
+          margin-bottom: 15px;
+        }
+        .info-graf-list li {
+          margin-bottom: 5px;
+        }
+        .highlight {
+          font-weight: 600;
+          color: #000;
+        }
+      </style>
+
+      <div class="info-graf-container">
+        <p>
+          Este gráfico utiliza uma lógica de <b>amostragem inteligente</b> fundamentada em práticas de <i>Site Reliability Engineering (SRE)</i> do Google, visando reduzir o ruído visual e focar em tendências reais.
+        </p>
+
+        <span class="info-graf-subtitle">Granularidade Padrão:</span>
+        <ul class="info-graf-list">
+          <li><span class="highlight">1 Hora:</span> 1 registro por minuto (mín. 60 pontos).</li>
+          <li><span class="highlight">24 Horas:</span> 1 registro a cada 15 min (mín. 96 pontos).</li>
+          <li><span class="highlight">7 Dias:</span> 1 registro por hora (mín. 168 pontos).</li>
+        </ul>
+
+        <span class="info-graf-subtitle">Exceção de Criticidade:</span>
+        <p>
+          Para garantir a rastreabilidade de incidentes, qualquer variação superior a <span class="highlight">20%</span> (pico ou queda abrupta) entre capturas ignora a amostragem e é registrada imediatamente. Isso assegura que anomalias críticas jamais sejam ocultadas.
+        </p>
+      </div>
+    `,
+    showCloseButton: true,
+    showConfirmButton: false, 
+    focusConfirm: false
+  });
+}
 
 window.onload = () => {
   listarServidores()
