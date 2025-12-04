@@ -13,23 +13,15 @@ function listarRegioes() {
   fetch(`/servidores/listarRegioes/${empresaId}`)
     .then(res => res.json())
     .then(regioes => {
-      console.log("Regiões recebidas:", regioes);
-      let regioes = regioes.map(item => item.id);
+      let listarRegioesDaEmpresa = regioes.map(item => item);
 
+      console.log(listarRegioesDaEmpresa)
     })
     .catch(err => {
       console.error("Erro ao carregar regiões:", err);
       select.innerHTML = "<option>Erro ao carregar regiões</option>";
     });
 }
-
-
-
-
-
-
-
-
 
 
 
