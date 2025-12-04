@@ -446,8 +446,8 @@ function carregarGraficosLinha(dados) {
     'Minimo': 0
   }
 
-  parametroPacotesEnviados = dados[1].parametroPacotesEnviados
-  parametroPacotesRecebidos = dados[1].parametroPacotesRecebidos
+  parametroPacotesEnviados = dados[0].parametroPacotesEnviados
+  parametroPacotesRecebidos = dados[0].parametroPacotesRecebidos
   parametroPacketLoss = parametroPacotesEnviados * 0.01
   
   document.getElementById("parametroGraficoLinhaPrincipal").innerHTML = `Paramêtros minimo de pacotes: enviados: ${parametroPacotesEnviados}, recebidos: ${parametroPacotesRecebidos}`
@@ -518,21 +518,21 @@ function carregarGraficosLinha(dados) {
 
 
   let parametro_up = `...`;
-  if (dados[1].parametroUp > 1000000) {
-    parametro_up = `Paramêtro máximo: ${(dados[1].parametroUp / 1000000).toFixed(1)}Mbps`
-  } else if (dados[1].parametroUp > 1000) {
-    parametro_up = `Paramêtro máximo: ${(dados[1].parametroUp / 1000).toFixed(1)}Kbps`
+  if (dados[0].parametroUp > 1000000) {
+    parametro_up = `Paramêtro máximo: ${(dados[0].parametroUp / 1000000).toFixed(1)}Mbps`
+  } else if (dados[0].parametroUp > 1000) {
+    parametro_up = `Paramêtro máximo: ${(dados[0].parametroUp / 1000).toFixed(1)}Kbps`
   } else {
-    parametro_up = `Paramêtro máximo: ${(dados[1].parametroUp).toFixed(1)}Bps`
+    parametro_up = `Paramêtro máximo: ${(dados[0].parametroUp).toFixed(1)}Bps`
   }
 
   let parametro_down = `...`;
-  if (dados[1].parametroUp > 1000000) {
-    parametro_down = `Paramêtro máximo: ${(dados[1].parametroUp / 1000000).toFixed(1)}Mbps`
-  } else if (dados[1].parametroUp > 1000) {
-    parametro_down = `Paramêtro máximo: ${(dados[1].parametroUp / 1000).toFixed(1)}Kbps`
+  if (dados[0].parametroUp > 1000000) {
+    parametro_down = `Paramêtro máximo: ${(dados[0].parametroUp / 1000000).toFixed(1)}Mbps`
+  } else if (dados[0].parametroUp > 1000) {
+    parametro_down = `Paramêtro máximo: ${(dados[0].parametroUp / 1000).toFixed(1)}Kbps`
   } else {
-    parametro_down = `Paramêtro máximo: ${(dados[1].parametroUp).toFixed(1)}Bps`
+    parametro_down = `Paramêtro máximo: ${(dados[0].parametroUp).toFixed(1)}Bps`
   }
 
 
