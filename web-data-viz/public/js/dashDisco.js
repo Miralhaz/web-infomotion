@@ -38,18 +38,6 @@ function kpiComparativaAlertas() {
         .catch(erro => console.error("Erro:", erro));
 }
 
- fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
-        .then(resposta => {
-            if (!resposta.ok) throw "Erro na requisição";
-            return resposta.json();
-        })
-        .then(dados => {
-            plotarGraficoLinha(dados, '7d');
-            
-        })
-        .catch(erro => console.error("Erro:", erro));
-
-
 
 function definirStatusOperacao() {
     fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
@@ -296,26 +284,53 @@ function atualizarGraficoBarras(dados) {
 
 
 
+let graficoBarras = null;
+
+
+window.onload = () => {
+    fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
+        .then(resposta => {
+            if (!resposta.ok) throw "Erro na requisição";
+            return resposta.json();
+        })
+        .then(dados => {
+            dadosGlobais = dados; // salva para uso em mudarPeriodo()
+            definirStatusOperacao()
+            DiscosComMaiorRiscoDeFalha()
+            puxarQuantidadeAlertaPorServidor();
+            DiscosQueRecebemMaisRequisicoes()
+            kpiComparativaAlertas()
+            ListagemDosDiscosEmAlerta()
+            plotarGraficoLinha(dados, '7d');
+        })
+        .catch(erro => console.error("Erro:", erro));
+};
+
 // tudo para funcionamento do gráfico de linha
 
+// Variável global para controlar o gráfico de linhas (adicione no topo do seu JS)
+let graficoLinhas = null;
+
 function plotarGraficoLinha(dados, periodo = '24h') {
-    // 1. Define o período em milissegundos
+    const cores = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+
     const periodos = {
         '1h': 1 * 60 * 60 * 1000,
         '24h': 24 * 60 * 60 * 1000,
         '7d': 7 * 24 * 60 * 60 * 1000
     };
+
     const agora = new Date();
     const limiteMs = periodos[periodo] || periodos['24h'];
     const limite = new Date(agora.getTime() - limiteMs);
 
-    // 2. Pega os TOP 5 servidores por uso (no momento atual)
+    // Top 5 servidores
     const top5Ids = dados.servidores
         .sort((a, b) => b.disco - a.disco)
         .slice(0, 5)
         .map(s => s.fk_servidor);
 
-    // 3. Filtra o histórico: só top5 + dentro do período
+    // Histórico filtrado
     const historicoFiltrado = dados.historico
         .filter(r => {
             const ts = new Date(r.timestamp);
@@ -323,7 +338,7 @@ function plotarGraficoLinha(dados, periodo = '24h') {
         })
         .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
-    // 4. Agrupa por servidor
+    // Agrupa por servidor
     const dadosPorServidor = {};
     historicoFiltrado.forEach(reg => {
         if (!dadosPorServidor[reg.fk_servidor]) {
@@ -337,39 +352,37 @@ function plotarGraficoLinha(dados, periodo = '24h') {
         dadosPorServidor[reg.fk_servidor].valores.push(reg.disco);
     });
 
-    // 5. Prepara datasets para o Chart.js
+    // Datasets
     const datasets = Object.keys(dadosPorServidor).map((fk_servidor, i) => {
-        // Encontra o nome/apelido do servidor
         const servidor = dados.servidores.find(s => s.fk_servidor == fk_servidor);
-        const nome = servidor ? servidor.apelidoDisco || servidor.nomeMaquina : `Servidor ${fk_servidor}`;
+        const nome = servidor 
+            ? (servidor.apelidoDisco || servidor.nomeMaquina) 
+            : `Servidor ${fk_servidor}`;
 
         return {
             label: nome,
             data: dadosPorServidor[fk_servidor].valores,
             borderColor: cores[i % cores.length],
-            borderWidth: 2,
-            tension: 0.3,
-            fill: false
+            backgroundColor: 'transparent',
+            borderWidth: 1,
+            tension: 1,
+            fill: false,
+            pointRadius: 2
         };
     });
 
-    // 6. Define cores (adicione isso antes do Chart)
-    const cores = [
-        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'
-    ];
-
-    // 7. Pega labels (do primeiro servidor)
-    const labels = datasets.length > 0
-        ? dadosPorServidor[Object.keys(dadosPorServidor)[0]].labels
+    const labels = datasets.length > 0 
+        ? dadosPorServidor[Object.keys(dadosPorServidor)[0]].labels 
         : [];
 
-    // 8. Destroi gráfico anterior (evita sobreposição)
-    if (window.graficoDisco) {
-        window.graficoDisco.destroy();
+    // Destroi instância anterior
+    if (graficoLinhas) {
+        graficoLinhas.destroy();
     }
-    console.log(datasets)
-    window.graficoDisco = new Chart(
-        document.getElementById('graficolinhas'), // seu <canvas id="graficolinhas">
+
+    // Cria gráfico de linhas
+    graficoLinhas = new Chart(
+        document.getElementById('graficolinhas'),
         {
             type: 'line',
             data: {
@@ -377,42 +390,25 @@ function plotarGraficoLinha(dados, periodo = '24h') {
                 datasets: datasets
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: 'white' // texto da legenda branco
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: { color: 'white' },
-                        title: {
-                            display: true,
-                            text: '% Uso do Disco',
-                            color: 'white'
-                        }
-                    },
-                    x: {
-                        ticks: { color: 'white' }
-                    }
-                }
-            }
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            labels: {
+                color: 'white',
+                font: { size: 12 }
+            },
+            onClick: null   // ✅ desativa o toggle da legenda
+        },
+        tooltip: {
+            mode: 'index',
+            intersect: false
+        }
+    },
+    // resto das opções...
+}
         }
     );
 }
 
 // final gráfico linha
-
-window.onload = () => {
-    definirStatusOperacao()
-    DiscosComMaiorRiscoDeFalha()
-    puxarQuantidadeAlertaPorServidor();
-    DiscosQueRecebemMaisRequisicoes()
-    kpiComparativaAlertas()
-    ListagemDosDiscosEmAlerta()
-};
