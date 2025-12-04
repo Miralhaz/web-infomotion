@@ -13,6 +13,33 @@ function obterDados(req, res) {
     });
 }
 
+function buscarAlertasHoje(req, res) {
+var idEmpresa = req.params.idEmpresa;
+
+  dashboardDiscoModel.buscarAlertasHoje(idEmpresa).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
+function buscarAlertasOntem(req, res) {
+var idEmpresa = req.params.idEmpresa;
+
+  dashboardDiscoModel.buscarAlertasOntem(idEmpresa).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
+function alertasPorServidor(req, res) {
+var idEmpresa = req.params.idEmpresa;
+
+  dashboardDiscoModel.alertasPorServidor(idEmpresa).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
 module.exports = {
-  obterDados
+  obterDados,
+  buscarAlertasHoje,
+  buscarAlertasOntem,
+  alertasPorServidor
 };

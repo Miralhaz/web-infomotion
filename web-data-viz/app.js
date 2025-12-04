@@ -24,6 +24,7 @@ var dashboardTemperaturaRouter = require("./src/routes/dashboardTemperatura");
 var dashboardNearRouter = require("./src/routes/dashboardNear");
 var dashboardRede = require("./src/routes/dashboardRede");
 var dashboardHistorcio = require("./src/routes/dashboardHistorico");
+var dashboardDisco = require("./src/routes/dashboardDisco")
 
 app.use(cors());
 
@@ -41,6 +42,7 @@ app.use("/dados", dashboardTemperaturaRouter);
 app.use("/dashboardNear", dashboardNearRouter);
 app.use('/dashboardRede', dashboardRede);
 app.use("/dashboardHistorico", dashboardHistorcio);
+app.use('/dashboardDisco', dashboardDisco);
 
 app.listen(PORTA_APP, function () {
     console.log(`

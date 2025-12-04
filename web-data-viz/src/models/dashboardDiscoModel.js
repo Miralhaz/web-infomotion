@@ -1,4 +1,5 @@
 const AWS = require("aws-sdk");
+var database = require("../database/config");
 
 const s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -75,6 +76,57 @@ function obterDados(idEmpresa) {
     });
 }
 
+
+function buscarAlertasHoje(idEmpresa) {
+  var instrucaoSql = `
+select 
+a.dt_registro,
+p.max
+from alertas as a
+inner join parametro_alerta as p on a.fk_parametro = p.id
+inner join componentes as c on p.fk_componente = c.id
+inner join servidor as s on c.fk_servidor = s.id
+inner join empresa as e on s.fk_empresa = e.id
+where c.tipo = "DISCO" AND DATE(a.dt_registro) = CURDATE() and e.id = ${idEmpresa};`;
+
+  return database.executar(instrucaoSql);
+}
+
+function buscarAlertasOntem(idEmpresa) {
+  var instrucaoSql = `
+select 
+a.dt_registro,
+p.max
+from alertas as a
+inner join parametro_alerta as p on a.fk_parametro = p.id
+inner join componentes as c on p.fk_componente = c.id
+inner join servidor as s on c.fk_servidor = s.id
+inner join empresa as e on s.fk_empresa = e.id
+where c.tipo = "DISCO" AND DATE(a.dt_registro) = CURDATE() - INTERVAL 1 DAY and e.id = ${idEmpresa};`;
+
+  return database.executar(instrucaoSql);
+}
+
+function alertasPorServidor(idEmpresa) {
+  var instrucaoSql = `
+select 
+s.apelido,
+a.dt_registro,
+p.max as valorParametro,
+a.max as valorAlerta
+from alertas as a
+inner join parametro_alerta as p on a.fk_parametro = p.id
+inner join componentes as c on p.fk_componente = c.id
+inner join servidor as s on c.fk_servidor = s.id
+inner join empresa as e on s.fk_empresa = e.id
+where c.tipo = "DISCO" AND DATE(a.dt_registro) = CURDATE() and e.id = ${idEmpresa};`;
+
+  return database.executar(instrucaoSql);
+}
+
 module.exports = {
-    obterDados
+    obterDados,
+    buscarAlertasHoje,
+    buscarAlertasOntem,
+    alertasPorServidor
 };
