@@ -920,3 +920,16 @@ setInterval(() => {
     obterDadosKpi(idServidor);
     obterAlertas();
 }, 120000);
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const selectElement = document.getElementById('dash'); 
+
+    if (selectElement) {
+      selectElement.addEventListener('change', function () {
+        const url = this.value;
+        if (url && url !== '#') {
+          window.location.href = url;
+        }
+      });
+    }
+  });
