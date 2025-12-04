@@ -9,9 +9,9 @@ function kpiComparativaAlertas() {
             return resposta.json();
         })
         .then(dados => {
-            var dadosHoje = dados.length
+            dadosHoje = dados.length
             saidaAlertasHoje.innerHTML = dadosHoje;
-
+            console.log(`total de alertas hoje ${dadosHoje}`)
         })
         .catch(erro => console.error("Erro:", erro));
 
@@ -22,16 +22,32 @@ function kpiComparativaAlertas() {
         })
         .then(dados => {
             var dadosOntem = dados.length
+            let calculo = 0
+            console.log(`total de alertas ontem ${dadosOntem}`)
             if (dadosHoje < dadosOntem) {
-                saidaAlertasOntem.innerHTML = `${dadosOntem - dadosHoje}  a mais que hoje`;
-            }else if(dadosHoje > dadosOntem){
-                 saidaAlertasOntem.innerHTML = `${dadosOntem - dadosHoje}  a menos que hoje`;
-            }else if(dadosHoje == dadosOntem){
-                 saidaAlertasOntem.innerHTML = `${dadosOntem}  mesma quantidade`;
+                calculo = (dadosOntem - dadosHoje)
+                saidaAlertasOntem.innerHTML = `${calculo} a menos que ontem`;
+            } else if (dadosHoje > dadosOntem) {
+                calculo = (dadosHoje - dadosOntem)
+                saidaAlertasOntem.innerHTML = `${calculo} a mais que ontem`;
+            } else if (dadosHoje == dadosOntem) {
+                calculo = dadosHoje
+                saidaAlertasOntem.innerHTML = `${calculo} mesma quantidade que ontem`;
             }
         })
         .catch(erro => console.error("Erro:", erro));
 }
+
+ fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
+        .then(resposta => {
+            if (!resposta.ok) throw "Erro na requisição";
+            return resposta.json();
+        })
+        .then(dados => {
+            plotarGraficoLinha(dados, '7d');
+            
+        })
+        .catch(erro => console.error("Erro:", erro));
 
 
 
@@ -106,7 +122,7 @@ function ListagemDosDiscosEmAlerta() {
             servidoresOrdenados.forEach((servidor, i) => {
                 if (elementos[i]) {
                     // Formato: "NomeMaquina: XX.XX%"
-                    elementos[i].innerHTML = `${servidor.nomeMaquina}: ${servidor.disco.toFixed(2)}%`;
+                    elementos[i].innerHTML = `${servidor.apelidoDisco}: ${servidor.disco.toFixed(2)}%`;
                     const limite = dados.parametrosAlerta[servidor.fk_servidor]?.limiteDisco || 80;
                     const cor = servidor.disco > limite ? "corRisco" : "corModerado";
                     elementos[i].className = cor; // suas classes CSS já existem!
@@ -122,6 +138,7 @@ function ListagemDosDiscosEmAlerta() {
 const discoRequisicao1 = document.getElementById("discoRequisicao1");
 const discoRequisicao2 = document.getElementById("discoRequisicao2");
 const discoRequisicao3 = document.getElementById("discoRequisicao3");
+
 function DiscosQueRecebemMaisRequisicoes() {
     fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
         .then(resposta => {
@@ -150,7 +167,7 @@ function DiscosQueRecebemMaisRequisicoes() {
                     const totalGB = (s.atividade / 1e9).toFixed(0);
                     const unidade = s.atividade >= 1e12 ? `${totalTB} TB` : `${totalGB} GB`;
 
-                    el.innerHTML = `${s.nomeMaquina}: ${unidade}`;
+                    el.innerHTML = `${s.apelidoDisco}: ${unidade}`;
                 } else {
                     el.innerHTML = "Sem dados";
                 }
@@ -181,7 +198,7 @@ function DiscosComMaiorRiscoDeFalha() {
             elementos.forEach((el, i) => {
                 if (top3Temp[i]) {
                     // Formato: "NomeMaquina: XX.XX°C"
-                    el.innerHTML = `${top3Temp[i].nomeMaquina}: ${top3Temp[i].temperatura_disco.toFixed(1)}°C`;
+                    el.innerHTML = `${top3Temp[i].apelidoDisco}: ${top3Temp[i].temperatura_disco.toFixed(1)}°C`;
                 } else {
                     el.innerHTML = "Sem dados";
                 }
@@ -228,9 +245,9 @@ function puxarQuantidadeAlertaPorServidor() {
 function atualizarGraficoBarras(dados) {
     const labels = dados.map(d => d.nome);
     const valores = dados.map(d => d.quantidade);
-    const cores = valores.map(v => 
-        v > 10 ? "#ff3b30" : 
-        v > 5 ? "#ff9500" : "#ffd966"
+    const cores = valores.map(v =>
+        v > 10 ? "#ff3b30" :
+            v > 5 ? "#ff9500" : "#ffd966"
     );
 
     if (window.graficoBarras) window.graficoBarras.destroy();
@@ -251,19 +268,19 @@ function atualizarGraficoBarras(dados) {
             indexAxis: "y",
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { 
+            plugins: {
                 legend: { display: false },
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
+                        label: function (context) {
                             return `Alertas: ${context.raw}`;
                         }
                     }
                 }
             },
             scales: {
-                x: { 
-                    beginAtZero: true, 
+                x: {
+                    beginAtZero: true,
                     ticks: { color: "white" },
                     title: {
                         display: true,
@@ -277,69 +294,125 @@ function atualizarGraficoBarras(dados) {
     });
 }
 
-async function plotarGraficoLinha(periodo = '7d') {
-    // 1. Busca o JSON de HISTÓRICO
-    const historicoRes = await fetch(`/s3/tratamento_willian/DiscoHistoricoEmpresa_${idEmpresa}.json`);
-    const historico = await historicoRes.json();
 
-    // 2. Busca os TOP 5 servidores (do JSON principal)
-    const dadosRes = await fetch(`/dashboardDisco/obterDados/${idEmpresa}`);
-    const dados = await dadosRes.json();
+
+// tudo para funcionamento do gráfico de linha
+
+function plotarGraficoLinha(dados, periodo = '24h') {
+    // 1. Define o período em milissegundos
+    const periodos = {
+        '1h': 1 * 60 * 60 * 1000,
+        '24h': 24 * 60 * 60 * 1000,
+        '7d': 7 * 24 * 60 * 60 * 1000
+    };
+    const agora = new Date();
+    const limiteMs = periodos[periodo] || periodos['24h'];
+    const limite = new Date(agora.getTime() - limiteMs);
+
+    // 2. Pega os TOP 5 servidores por uso (no momento atual)
     const top5Ids = dados.servidores
         .sort((a, b) => b.disco - a.disco)
         .slice(0, 5)
         .map(s => s.fk_servidor);
 
-    // 3. Filtra histórico por período e top5
-    const agora = new Date();
-    const periodos = { '1h': 3600000, '7d': 604800000, '30d': 2592000000 };
-    const limite = agora - (periodos[periodo] || periodos['7d']);
-
-    const filtrado = historico
-        .filter(r => new Date(r.timestamp).getTime() >= limite && top5Ids.includes(r.fk_servidor))
+    // 3. Filtra o histórico: só top5 + dentro do período
+    const historicoFiltrado = dados.historico
+        .filter(r => {
+            const ts = new Date(r.timestamp);
+            return ts >= limite && top5Ids.includes(r.fk_servidor);
+        })
         .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
-    // 4. Prepara dados para o gráfico
-    const labels = filtrado.map(r => {
-        const dt = new Date(r.timestamp);
-        return periodo === '1h' ?
-            `${dt.getHours()}:${String(dt.getMinutes()).padStart(2, '0')}` :
-            `${dt.getDate()}/${dt.getMonth() + 1}`;
-    });
-    const valores = filtrado.map(r => r.disco);
+    // 4. Agrupa por servidor
+    const dadosPorServidor = {};
+    historicoFiltrado.forEach(reg => {
+        if (!dadosPorServidor[reg.fk_servidor]) {
+            dadosPorServidor[reg.fk_servidor] = { labels: [], valores: [] };
+        }
+        const label = periodo === '1h'
+            ? new Date(reg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            : new Date(reg.timestamp).toLocaleDateString();
 
-    // 5. Renderiza
-    if (window.graficoDisco) window.graficoDisco.destroy();
-    window.graficoDisco = new Chart(document.getElementById('graficolinhas'), {
-        type: 'line',
-        data: {
-            labels,
-            datasets: [{
-                data: valores,
-                borderColor: '#D2B080',
-                borderWidth: 2,
-                tension: 0.3
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { beginAtZero: true, ticks: { color: 'white' } },
-                x: { ticks: { color: 'white' } }
+        dadosPorServidor[reg.fk_servidor].labels.push(label);
+        dadosPorServidor[reg.fk_servidor].valores.push(reg.disco);
+    });
+
+    // 5. Prepara datasets para o Chart.js
+    const datasets = Object.keys(dadosPorServidor).map((fk_servidor, i) => {
+        // Encontra o nome/apelido do servidor
+        const servidor = dados.servidores.find(s => s.fk_servidor == fk_servidor);
+        const nome = servidor ? servidor.apelidoDisco || servidor.nomeMaquina : `Servidor ${fk_servidor}`;
+
+        return {
+            label: nome,
+            data: dadosPorServidor[fk_servidor].valores,
+            borderColor: cores[i % cores.length],
+            borderWidth: 2,
+            tension: 0.3,
+            fill: false
+        };
+    });
+
+    // 6. Define cores (adicione isso antes do Chart)
+    const cores = [
+        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'
+    ];
+
+    // 7. Pega labels (do primeiro servidor)
+    const labels = datasets.length > 0
+        ? dadosPorServidor[Object.keys(dadosPorServidor)[0]].labels
+        : [];
+
+    // 8. Destroi gráfico anterior (evita sobreposição)
+    if (window.graficoDisco) {
+        window.graficoDisco.destroy();
+    }
+    console.log(datasets)
+    window.graficoDisco = new Chart(
+        document.getElementById('graficolinhas'), // seu <canvas id="graficolinhas">
+        {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white' // texto da legenda branco
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { color: 'white' },
+                        title: {
+                            display: true,
+                            text: '% Uso do Disco',
+                            color: 'white'
+                        }
+                    },
+                    x: {
+                        ticks: { color: 'white' }
+                    }
+                }
             }
         }
-    });
+    );
 }
 
+// final gráfico linha
+
 window.onload = () => {
-    plotarGraficoLinha()
     definirStatusOperacao()
     DiscosComMaiorRiscoDeFalha()
     puxarQuantidadeAlertaPorServidor();
     DiscosQueRecebemMaisRequisicoes()
     kpiComparativaAlertas()
     ListagemDosDiscosEmAlerta()
-
 };
