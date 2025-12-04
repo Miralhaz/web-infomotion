@@ -2,6 +2,80 @@ var regiao = "";
 
 
 
+listarRegioes()
+
+
+function listarRegioes() {
+  const empresaId = sessionStorage.getItem('ID_EMPRESA')
+  console.log("Empresa ID= " + empresaId)
+  const select = document.getElementById("select_regiao")
+
+  fetch(`/servidores/listarRegioes/${empresaId}`)
+    .then(res => res.json())
+    .then(regioes => {
+      let listarRegioesDaEmpresa = regioes.map(item => item);
+
+      console.log(listarRegioesDaEmpresa)
+    })
+    .catch(err => {
+      console.error("Erro ao carregar regiões:", err);
+      select.innerHTML = "<option>Erro ao carregar regiões</option>";
+    });
+}
+
+
+
+
+
+
+function buscarParametros() {
+
+  fetch(`/dashboardRegiao/buscarParametro/${idRegiao}`)
+    .then(function (resposta) {
+      if (resposta.ok) {
+        resposta.json().then(function (dados) {
+          const paragrafoParametroCPU = document.getElementById('paragrafo-parametro-cpu');
+          const paragrafoParametroDisco = document.getElementById('paragrafo-parametro-disco');
+
+          let maxAlertaCPU, maxAlertaDisco;
+
+          if (dados.length > 0) {
+
+            const parametroCPU = dados.find(item =>
+              item.tipo_componente && item.tipo_componente.toUpperCase() === 'CPU'
+            );
+
+            const parametroDisco = dados.find(item =>
+              item.tipo_componente && item.tipo_componente.toUpperCase() === 'DISCO'
+            )
+
+            if (parametroCPU) {
+              maxAlertaCPU = parametroCPU.max_alerta;
+              paragrafoParametroCPU.innerHTML = `Parâmetro Atual Temp. CPU: ${maxAlertaCPU}°C`;
+            }
+
+            if (parametroDisco) {
+              maxAlertaDisco = parametroDisco.max_alerta;
+              paragrafoParametroDisco.innerHTML = `Parâmetro Atual Temp. Disco: ${maxAlertaDisco}°C`
+            }
+
+            const tempCPUAdesivo = document.querySelector('.kpi1 p[style*="margin-top: 3%"]');
+            if (tempCPUAdesivo) {
+              tempCPUAdesivo.textContent = `Parâmetro Atual Temp. CPU: ${maxAlertaCPU}°C`;
+            }
+
+            const tempDiscoAdesivo = document.querySelector('.kpi2 p[style*="margin-top: 3%"]');
+            if (tempDiscoAdesivo) {
+              tempDiscoAdesivo.textContent = `Parâmetro Atual Temp. Disco: ${maxAlertaDisco}°C`;
+            }
+
+            carregarDadosCpu(idServidor, maxAlertaCPU);
+            carregarDadosDisco(idServidor, maxAlertaDisco);
+          }
+        })
+      }
+    })
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const ctx = document.getElementById('grafico-barra-previsao');

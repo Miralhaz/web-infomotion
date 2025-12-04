@@ -215,7 +215,7 @@ function receberRegiao(idServer){
 }
 
 function listarRegioes(empresaId){
-  var instrucaoSql = `SELECT id, codigo_postal, pais, cidade FROM regiao WHERE fk_empresa = ${empresaId};`
+  var instrucaoSql = `SELECT id, nome, codigo_postal, pais, cidade FROM regiao WHERE fk_empresa = ${empresaId};`
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
