@@ -49,7 +49,7 @@ function definirStatusOperacao() {
             // Exemplo: status baseado no maior uso de disco
             const maiorUso = Math.max(...dados.servidores.map(s => s.disco));
             let status = "Normal";
-            if (maiorUso > 90) status = "Crítico";
+            if (maiorUso > 90) status = "Há discos em estado de alerta";
             else if (maiorUso > 75) status = "Atenção";
 
             txt_status_operacao.innerHTML = status;
@@ -88,94 +88,138 @@ async function kpiAlertas() {
             `${alertasOntem - alertasHoje} a menos que ontem`;
 }
 
-function ListagemDosDiscosEmAlerta() {
-    fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
-        .then(resposta => {
-            if (!resposta.ok) throw "Erro na requisição";
-            return resposta.json();
-        })
-        .then(dados => {
-            // Ordena servidores por uso de disco (do maior para o menor)
-            const servidoresOrdenados = dados.servidores
-                .sort((a, b) => b.disco - a.disco)
-                .slice(0, 5); // Pega os top 5
+//lista de disco por uso de armazenamento
+function ListagemDosDiscosEmAlerta(dados) {
+    const tbody = document.getElementById("corpo-tabela-discos");
+    if (!tbody) {
+        console.error("Elemento #corpo-tabela-discos não encontrado!");
+        return;
+    }
 
-            // Atualiza cada item da lista
-            const elementos = [itemlista1, itemlista2, itemlista3, itemlista4, itemlista5];
+    // Ordena TODOS os servidores por uso de disco (maior primeiro)
+    const servidoresOrdenados = dados.servidores
+        .sort((a, b) => b.disco - a.disco);
 
-            // Limpa os elementos primeiro
-            elementos.forEach(el => el.innerHTML = "");
+    // Limpa a tabela
+    tbody.innerHTML = "";
 
-            // Preenche com os dados reais
-            servidoresOrdenados.forEach((servidor, i) => {
-                if (elementos[i]) {
-                    // Formato: "NomeMaquina: XX.XX%"
-                    elementos[i].innerHTML = `${servidor.apelidoDisco}: ${servidor.disco.toFixed(2)}%`;
-                    const limite = dados.parametrosAlerta[servidor.fk_servidor]?.limiteDisco || 80;
-                    const cor = servidor.disco > limite ? "corRisco" : "corModerado";
-                    elementos[i].className = cor; // suas classes CSS já existem!
-                }
-            });
-        })
-        .catch(erro => {
-            console.error("Erro ao carregar lista de discos:", erro);
-            // Opcional: mostrar mensagem de erro no HTML
-            itemlista1.innerHTML = "Erro ao carregar dados";
-        });
-}
-const discoRequisicao1 = document.getElementById("discoRequisicao1");
-const discoRequisicao2 = document.getElementById("discoRequisicao2");
-const discoRequisicao3 = document.getElementById("discoRequisicao3");
+    // Preenche cada linha
+    servidoresOrdenados.forEach(servidor => {
+        // Pega o parâmetro de alerta
+        const parametro = dados.parametrosAlerta[servidor.fk_servidor];
+        const limiteDisco = parametro ? parametro.limiteDisco : 80; // fallback
+        const estaEmAlerta = servidor.disco > limiteDisco;
 
-function DiscosQueRecebemMaisRequisicoes() {
-    fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
-        .then(resposta => {
-            if (!resposta.ok) throw "Erro na requisição";
-            return resposta.json();
-        })
-        .then(dados => {
-            // Calcula "atividade total" = bytes_lidos + bytes_escritos
-            const servidoresComAtividade = dados.servidores.map(serv => {
-                const atividade = (serv.bytes_lidos || 0) + (serv.bytes_escritos || 0);
-                return { ...serv, atividade };
-            });
+        // Cria a linha
+        const tr = document.createElement("tr");
+        tr.className = estaEmAlerta ? "linha-alerta" : "";
 
-            // Ordena por atividade (maior primeiro) e pega top 3
-            const top3Atividade = servidoresComAtividade
-                .sort((a, b) => b.atividade - a.atividade)
-                .slice(0, 3);
+        // Coluna 1: Apelido do disco
+        const tdApelido = document.createElement("td");
+        tdApelido.textContent = servidor.apelidoDisco || "Desconhecido";
 
-            // Atualiza os elementos
-            const elementos = [discoRequisicao1, discoRequisicao2, discoRequisicao3];
-            elementos.forEach((el, i) => {
-                if (top3Atividade[i]) {
-                    const s = top3Atividade[i];
-                    // Converte bytes para TB/GB para exibir
-                    const totalTB = (s.atividade / 1e12).toFixed(2);
-                    const totalGB = (s.atividade / 1e9).toFixed(0);
-                    const unidade = s.atividade >= 1e12 ? `${totalTB} TB` : `${totalGB} GB`;
+        // Coluna 2: Capacidade (MOCK por enquanto)
+        const tdCapacidade = document.createElement("td");
+        tdCapacidade.textContent = "512GB"; // 🔜 substitua por servidor.capacidade depois
 
-                    el.innerHTML = `${s.apelidoDisco}: ${unidade}`;
-                } else {
-                    el.innerHTML = "Sem dados";
-                }
-            });
-        })
-        .catch(erro => {
-            console.error("Erro ao carregar atividade de disco:", erro);
-            discoRequisicao1.innerHTML = "Erro";
-            discoRequisicao2.innerHTML = "";
-            discoRequisicao3.innerHTML = "";
-        });
+        // Coluna 3: Uso atual (%)
+        const tdUso = document.createElement("td");
+        tdUso.textContent = `${servidor.disco.toFixed(2)}%`;
+        if (estaEmAlerta) tdUso.classList.add("texto-alerta");
+
+        // Coluna 4: Parâmetro (%)
+        const tdParametro = document.createElement("td");
+        tdParametro.textContent = `${limiteDisco.toFixed(2)}%`;
+        if (estaEmAlerta) tdParametro.classList.add("texto-alerta");
+
+        // Coluna 5: Nome do servidor
+        const tdServidor = document.createElement("td");
+        tdServidor.textContent = servidor.nomeMaquina || `Servidor ${servidor.fk_servidor}`;
+        if (estaEmAlerta) tdServidor.classList.add("texto-alerta");
+
+        // Monta a linha
+        tr.appendChild(tdApelido);
+        tr.appendChild(tdCapacidade);
+        tr.appendChild(tdUso);
+        tr.appendChild(tdParametro);
+        tr.appendChild(tdServidor);
+
+        tbody.appendChild(tr);
+    });
 }
 
-function DiscosComMaiorRiscoDeFalha() {
-    fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
-        .then(resposta => {
-            if (!resposta.ok) throw "Erro na requisição";
-            return resposta.json();
-        })
-        .then(dados => {
+function DiscosQueRecebemMaisRequisicoes(dados) {
+    const tbody = document.getElementById("corpo-tabela-discos-operacao");
+    if (!tbody) {
+        console.error("Elemento #corpo-tabela-discos-operacao não encontrado!");
+        return;
+    }
+
+    // Calcula atividade total (bytes_lidos + bytes_escritos) e ordena
+    const servidoresComAtividade = dados.servidores
+        .map(serv => ({
+            ...serv,
+            atividadeTotal: (serv.bytes_lidos || 0) + (serv.bytes_escritos || 0)
+        }))
+        .sort((a, b) => b.atividadeTotal - a.atividadeTotal); // maior primeiro
+
+    // Limpa a tabela
+    tbody.innerHTML = "";
+
+    // Preenche cada linha
+    servidoresComAtividade.forEach(serv => {
+        const tr = document.createElement("tr");
+
+        // Coluna 1: Apelido
+        const tdApelido = document.createElement("td");
+        tdApelido.textContent = serv.apelidoDisco || "Desconhecido";
+
+        // Coluna 2: Capacidade (MOCK por enquanto)
+        const tdCapacidade = document.createElement("td");
+        tdCapacidade.textContent = "512GB"; // 🔜 substitua por serv.capacidade depois
+
+        // Coluna 3: Processos
+        const tdProcessos = document.createElement("td");
+        tdProcessos.textContent = serv.quantidade_processos || 0;
+
+        // Coluna 4: Leitura (bytes_lidos → MB/s ou KB/s)
+        const tdLeitura = document.createElement("td");
+        const leituraMB = (serv.bytes_lidos || 0) / (1024 * 1024);
+        if (leituraMB >= 1) {
+            tdLeitura.textContent = `${leituraMB.toFixed(2)} MB/s`;
+        } else {
+            const leituraKB = leituraMB * 1024;
+            tdLeitura.textContent = `${leituraKB.toFixed(2)} KB/s`;
+        }
+
+        // Coluna 5: Escrita (bytes_escritos → MB/s ou KB/s)
+        const tdEscrita = document.createElement("td");
+        const escritaMB = (serv.bytes_escritos || 0) / (1024 * 1024);
+        if (escritaMB >= 1) {
+            tdEscrita.textContent = `${escritaMB.toFixed(2)} MB/s`;
+        } else {
+            const escritaKB = escritaMB * 1024;
+            tdEscrita.textContent = `${escritaKB.toFixed(2)} KB/s`;
+        }
+
+        // Coluna 6: Servidor
+        const tdServidor = document.createElement("td");
+        tdServidor.textContent = serv.nomeMaquina || `Servidor ${serv.fk_servidor}`;
+
+        // Monta a linha
+        tr.appendChild(tdApelido);
+        tr.appendChild(tdCapacidade);
+        tr.appendChild(tdProcessos);
+        tr.appendChild(tdLeitura);
+        tr.appendChild(tdEscrita);
+        tr.appendChild(tdServidor);
+
+        tbody.appendChild(tr);
+    });
+}
+
+function DiscosComMaiorRiscoDeFalha(dados) {
+   
             // Ordena servidores por temperatura (do maior para o menor)
             const top3Temp = dados.servidores
                 .sort((a, b) => b.temperatura_disco - a.temperatura_disco)
@@ -191,13 +235,7 @@ function DiscosComMaiorRiscoDeFalha() {
                     el.innerHTML = "Sem dados";
                 }
             });
-        })
-        .catch(erro => {
-            console.error("Erro ao carregar temperatura:", erro);
-            discotemp1.innerHTML = "Erro";
-            discotemp2.innerHTML = "";
-            discotemp3.innerHTML = "";
-        });
+       
 }
 
 
@@ -287,24 +325,6 @@ function atualizarGraficoBarras(dados) {
 let graficoBarras = null;
 
 
-window.onload = () => {
-    fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
-        .then(resposta => {
-            if (!resposta.ok) throw "Erro na requisição";
-            return resposta.json();
-        })
-        .then(dados => {
-            dadosGlobais = dados; // salva para uso em mudarPeriodo()
-            definirStatusOperacao()
-            DiscosComMaiorRiscoDeFalha()
-            puxarQuantidadeAlertaPorServidor();
-            DiscosQueRecebemMaisRequisicoes()
-            kpiComparativaAlertas()
-            ListagemDosDiscosEmAlerta()
-            plotarGraficoLinha(dados, '7d');
-        })
-        .catch(erro => console.error("Erro:", erro));
-};
 
 // tudo para funcionamento do gráfico de linha
 
@@ -412,3 +432,22 @@ function plotarGraficoLinha(dados, periodo = '24h') {
 }
 
 // final gráfico linha
+
+window.onload = () => {
+    fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
+        .then(resposta => {
+            if (!resposta.ok) throw "Erro na requisição";
+            return resposta.json();
+        })
+        .then(dados => {
+            dadosGlobais = dados; // salva para uso em mudarPeriodo()
+            definirStatusOperacao()
+            DiscosComMaiorRiscoDeFalha(dados)
+            puxarQuantidadeAlertaPorServidor();
+            DiscosQueRecebemMaisRequisicoes(dados)
+            kpiComparativaAlertas()
+            ListagemDosDiscosEmAlerta(dados)
+            plotarGraficoLinha(dados, '7d');
+        })
+        .catch(erro => console.error("Erro:", erro));
+};

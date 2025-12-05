@@ -58,130 +58,137 @@
     </section>
 
     <div class="container">
-        <div class="dashboard-container">
-            <div class="kpis">
-                <div class="kpi operacao">
-                    <div class="kpi-header">
-                        <div class="titulo"><p>Status Operação</p></div>
-                    </div>
-                    <div class="kpi-body">
-                        <div class="kpi-status-operacao">
-                            <img id="img_status" src="../assets/icon/alerta_estadoDisco.png" alt="Status Operação">
-
-                            <h3 id="txt_status_operacao"></h3>
-                        </div>
+        <div class="parte_de_cima">
+            <!--kpi de operação-->
+            <div class="kpi operacao">
+                <div class="kpi-header">
+                    <div class="titulo">
+                        <p>Situação dos discos</p>
                     </div>
                 </div>
-
-                <div class="kpi alertas">
-                    <div class="kpi-header">
-                        <div class="titulo"><p>Alertas de Discos</p></div>
-                    </div>
-                    <div class="status_alertas">
-                        <div><span>total alertas hoje</span></div>
-                    </div>
-                    <div class="kpi-body"> 
-                        <span id="saidaAlertasHoje" class="op-status-passado"></span>
-                    </div>
-                    <div class="kpi-footer">
-                        <p id="saidaAlertasOntem"></p>
-                    </div>
-                </div>
-
-                <!--lista-->
-            
-                <div class="kpi lista">
-                    <div class="kpi-header"> 
-                        <div class="titulo"><p>Discos que estão em alerta de armazenamento</p></div>
-                    </div>
-                    <div class="estado-listagem">
-                        <div class="estados_lista">
-                            <span class="moderado">Moderado </span>
-                            <span class="risco">Alto Risco</span>   
-                        </div>
-                        <div id="listatop5" class="kpi-body">
-                            <div class="para-status">
-                                <p id="itemlista1"></p>
-                            </div>
-                            <div class="para-status">
-                                <p id="itemlista2"></p>
-                            </div>
-                            <div class="para-status">
-                                <p id="itemlista3"></p>
-                            </div>
-                            <div class="para-status">
-                                <p id="itemlista4"></p>
-                            </div>
-                            <div class="para-status">
-                                <p id="itemlista5"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="kpi impacto">
-                    <div class="kpi-header">
-                        <div class="titulo"><p>Discos que estão processando mais informações</p></div>
-                    </div>
-
-                    <div class="kpi-body">
-                        <div class="tudo">
-                            <div class="importancia"> <Span>% de uso dos processos</Span></div>
-                            <div class="discos">
-                                <p>Relevância para operação</p>
-                                <div class="listagem">
-                                    <p id="discoRequisicao1"></p>
-                                    <p id="discoRequisicao2"></p>
-                                    <p id="discoRequisicao3"></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="kpi vida">
-                    <div class="kpi-header">
-                         <div class="titulo"><p>Discos em alerta de alta Temperatura</p></div>
-                    </div>
-
-                    <div class="kpi-body">
-                        <div class="classificacao">
-                            <p>Há mais de 1 minutos</p>
-                            <p>oscilando</p>
-                        </div>
-                        <div class="discos">
-                            <p id="parametro_temp" class="parametro">Parâmetro: 65°</p>
-                            <div class="listagem">
-                                <p id="discotemp1"></p>
-                                <p id="discotemp2"></p>
-                                <p id="discotemp3"></p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="kpi-body">
+                    <h3 id="txt_status_operacao">Há discos em estado de alerta</h3>
                 </div>
             </div>
-            <div class="dashboards">
-                <div class="dashboard chart1">
-                    <div class="kpi-header">
-                        <div class="titulo"><p>Top 5 Servidores com mais alertas de disco</p></div>
-                    </div>
 
-                    <div class="kpi-body">
-                        <canvas id="graficobarras"></canvas>
+
+            <!--kpi de alertas-->
+            <div class="kpi alertas">
+                <div class="kpi-header">
+                    <div class="titulo">
+                        <p>Alertas de Discos</p>
                     </div>
                 </div>
-                <div class="dashboard chart2">
-                    <div class="kpi-header">
-                        <div class="titulo"><h2>Gráfico de linha do tempo (Discos na lista de alertas de espaço)</p></div>
+                <div class="status_alertas">
+                    <div><span>total alertas hoje</span></div>
+                </div>
+                <div class="kpi-body">
+                    <span id="saidaAlertasHoje" class="op-status-passado"></span>
+                </div>
+                <div class="kpi-footer">
+                    <p id="saidaAlertasOntem"></p>
+                </div>
+            </div>
+
+
+
+            <!--kpi de temperatura-->
+            <div class="kpi temperatura">
+                <div class="kpi-header">
+                    <div class="titulo">
+                        <p>Top 3 Discos temperatura elevada</p>
+                        
                     </div>
+                </div>
 
-                    <div class="kpi-body">
-
-                        <canvas id="graficolinhas"></canvas>
+                <div class="kpi-body">
+                    <div class="classificacao">
+                        <!-- <p>5 registros seguidos com temperatura elevada</p> -->
+                    </div>
+                    <div class="discos">
+                        <!-- <p id="parametro_temp" class="parametro">Parâmetro = p</p> -->
+                        <div class="listagem">
+                            <p id="discotemp1"></p>
+                            <p id="discotemp2"></p>
+                            <p id="discotemp3"></p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="parte_do_meio">
+
+            <!--grafico de linhas-->
+            <div class="dashboard chart1">
+                <div class="kpi-header">
+                    <div class="titulo">
+                        <p>Gráfico de linha do tempo (Discos em Alerta)</p>
+                    </div>
+                </div>
+                <div class="grafico-body">
+                    <canvas id="graficolinhas"></canvas>
+                </div>
+            </div>
+
+
+            <!-- Lista-->
+            <table>
+        <caption>Disco em Alerta por ultrapassar o parâmetro de uso</caption>
+        
+        <thead>
+            <tr>
+                <th>Apelido</th>
+                <th>capacidade</th>
+                <th>utilizando</th>
+                <th>% parâmetro</th>
+                <th>servidor</th>
+            </tr>
+        </thead>
+        
+        <tbody id="corpo-tabela-discos">
+            
+        </tbody>
+    </table>
+
+        </div>
+
+        <div class="parte_final">
+            <!--grafico de barras-->
+            <div class="dashboard chart2">
+                <div class="kpi-header">
+                    <div class="titulo">
+                        <p>Top 5 Servidores com mais alertas de disco</p>
+                    </div>
+                </div>
+                <div class="grafico-body">
+                    <canvas id="graficobarras"></canvas>
+                </div>
+            </div>
+
+            <!-- lista de servidores que estão trabalhando mais-->
+
+            <table>
+        <caption>Discos que estão lendo e gravando mais arquivos</caption>
+        
+        <thead>
+            <tr>
+                <th>Apelido</th>
+                <th>capacidade</th>
+                <th>processos</th>
+                <th colspan="2" class="leitura-escrita-header">leitura / escrita</th>
+                <th>servidor</th>
+            </tr>
+            </thead>
+        
+        <tbody id="corpo-tabela-discos-operacao">
+          
+            <!--terá muitos outros, melhor precaver com póssivel scrool-->
+           
+        </tbody>
+    </table>
+        </div>
+
+        <!-- fim -->
     </div>
 </body>
 <script src="../js/dashDisco.js"></script>

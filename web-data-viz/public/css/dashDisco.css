@@ -1,94 +1,101 @@
 @import url("https://use.typekit.net/iom7tmt.css");
 
 :root {
-    --amarelo: #ffc64b;
-    --amareloOpacityLow: #ffc64bb7;
-    --cinza: #E2E1DE;
-    --branco: #ffff;
-    --preto: #000;
-    --cinzaEscuro: #1c1c1c;
-    --cinzaHeader: #222;
-    --cinzaDash: #181818;
+  --amarelo: #ffc64b;
+  --amareloOpacityLow: #ffc64bb7;
+  --cinza: #E2E1DE;
+  --branco: #fff;
+  --preto: #000;
+  --cinzaEscuro: #1c1c1c;
+  --cinzaHeader: #222;
+  --cinzaDash: #353535f3;
 }
 
 * {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 body {
-    background-color: var(--cinza);
-    font-family: "poppins", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    scroll-behavior: smooth;
+  background-color: var(--cinza);
+  font-family: "poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  scroll-behavior: smooth;
+  display: flex;
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  color: white;
 }
 
-/* Header */
+.header {
+  width: 250px;
+}
 
 section.header .header-left {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    height: 100%;
-    width: 230px;
-    background-color: var(--cinzaHeader);
-    padding: 20px 0;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 1000;
+  height: 100%;
+  width: 230px;
+  background-color: var(--cinzaHeader);
+  padding: 20px 0;
+  text-align: center;
 }
 
 section.header .header-left .parte-cima {
-    padding: 40% 0;
+  padding: 40% 0;
 }
 
 section.header .header-left .parte-baixo {
-    padding: 10% 0
+  padding: 10% 0
 }
 
 section.header .header-left .icone {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    padding: 7% 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 7% 0;
 }
 
 section.header .header-left .descricao-icone {
-    color: var(--branco);
-    align-content: center;
-    padding: 0 10px;
+  color: var(--branco);
+  align-content: center;
+  padding: 0 10px;
 }
 
 section.header .header-left .icone img {
-    height: 25px;
-    width: auto;
-    display: flex;
-    padding: 0 15px;
-    transition: all 0.3s ease-in-out;
+  height: 25px;
+  width: auto;
+  display: flex;
+  padding: 0 15px;
+  transition: all 0.3s ease-in-out;
 }
 
 section.header .header-left .icone a {
-    width: 100%;
-    text-decoration: none;
-    font-weight: 100;
-    font-size: 18px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 10px;
-    align-items: center;
-    transition: all 0.3s ease-in-out;
+  width: 100%;
+  text-decoration: none;
+  font-weight: 100;
+  font-size: 18px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
 }
 
 section.header .header-left .icone a:hover {
-    background-color: var(--amarelo);
-    color: var(--preto);
-    padding: 10px;
+  background-color: var(--amarelo);
+  color: var(--preto);
+  padding: 10px;
 }
 
 section.header .header-left .icone a:hover img {
-    filter: brightness(0);
+  filter: brightness(0);
 }
-
 
 section.header .header-left .container-submenu {
   position: relative;
@@ -102,7 +109,7 @@ section.header .header-left .container-submenu {
   background-color: var(--cinzaHeader);
   border: 1px solid var(--amarelo);
   width: 250px;
-  z-index: 10;
+  z-index: 9999;
   padding: 10px 0;
   opacity: 0;
   visibility: hidden;
@@ -133,27 +140,63 @@ section.header .header-left .container-submenu:hover .submenu {
   visibility: visible;
 }
 
-* { box-sizing: border-box; }
 
-
-/* Reset básico */
+/* --- Estilos globais --- */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Segoe UI', 'Roboto', 'Open Sans', sans-serif;
-  background-color: #f5f7fa;
-  color: #333;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  /* min-height: 100vh; */
+
+
+/* --- Área principal (depois do header fixo de 230px) --- */
+.container {
+  padding: 24px;
+  min-height: 100vh;
+  margin-left: 230px;
 }
 
-/* copia de header titulo */
+/* --- Layout flexível das partes --- */
+.parte_de_cima,
+.parte_do_meio,
+.parte_final {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 32px;
+  justify-content: space-between;
+  
+}
+
+/* --- Estilo comum para KPIs e dashboards --- */
+.kpi {
+  max-height: 130px; /* <<--- REDUZA AQUI (era ~250px ou mais) */
+}
+
+.dashboard {
+
+  max-height: 350px; /* <<--- AJUSTE AQUI (gráficos podem ser um pouco maiores) */
+
+}
+
+
+.kpi,
+.dashboard,
+table {
+  background-color: #000; /* fundo preto */
+  border-radius: 12px;
+  padding: 0px;
+  flex: 1 1 300px; /* responsivo: cresce, mas com largura mínima */
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 300px;
+}
+
+
+
 .titulo {
   width: 100%;
   background-color: var(--branco);
@@ -168,201 +211,125 @@ body {
   color: var(--preto);
   margin: 0 10px;
 }
-/* final copia header */
 
-
-.container {
-    margin-left: 230px;
-    padding: 24px;
-    width: calc(100% - 230px);
+/* --- Corpo dos KPIs --- */
+.kpi-body,
+.grafico-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.container {
-  flex: 1;
-  padding: 24px;
+.kpi-body h3 {
+  font-size: 18px;
+  color: #ffc64b; /* destaque amarelo suave */
+}
+
+/* --- Estilos para tabelas --- */
+table {
+  padding: 0;
+}
+
+table caption {
+  width: 100%;
+  background-color: var(--branco);
+  padding: 10px;
+  text-align: center;
+  box-sizing: border-box;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  color: black;
+}
+
+table thead {
+  background-color: #111;
+}
+
+table th,
+table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #333;
+}
+
+table tbody {
+  max-height: 300px;
+  overflow-y: auto;
+  display: block;
+}
+
+table thead tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+   height: 10%;
+}
+
+table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+   height: 10%;
+}
+
+/* Cabeçalhos da tabela */
+table th {
+  padding: 6px 8px; /* reduza o padding (especialmente vertical) */
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+/* Células do corpo da tabela */
+table td {
+  padding: 6px 8px; /* mesmo padding para alinhar */
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.texto-alerta {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+.leitura-escrita-header {
+  text-align: center;
+}
+
+/* --- Gráficos (Chart.js) --- */
+.grafico-body {
+  min-height: 280px;
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 
-/* Container do dashboard */
-.dashboard-container {
-  width: 100%;
-  max-width: 1600px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.grafico-body canvas {
+  width: 100% !important;
+  max-height: 300px;
 }
 
-/* BLOCO 1: KPIs (grade de cards) */
-.kpis {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: space-between;
-}
-
-.kpi {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  padding: 20px;
-  flex: 1 1 calc(33% - 20px); /* 3 colunas em telas grandes */
-  display: flex;
-  flex-direction: column;
-  min-width: 280px;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.kpi:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-}
-
-.kpi-header h2,
-.kpi-header p {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 16px;
-  color: #2c3e50;
-}
-
-.kpi-body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* Estilos específicos para conteúdo interno */
-.kpi-status-operacao {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.kpi-status-operacao img {
-  width: 40px;
-  height: 40px;
-}
-
-.kpi-status-operacao h3 {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-/* Estilos para alertas */
-.moderado {
-  background-color: #fff3cd;
-  color: #856404;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.risco {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.estado-listagem {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.estados_lista {
-  display: flex;
-  gap: 10px;
-}
-
-.para-status p {
-  margin: 4px 0;
-  font-size: 15px;
-  color: #495057;
-}
-
-/* Bloco de "impacto" e "vida" */
-.tudo {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.discos p:first-child {
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #2c3e50;
-}
-
-.listagem p {
-  margin: 4px 0;
-  font-size: 15px;
-  color: #495057;
-}
-
-.classificacao {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  font-size: 14px;
-  color: #6c757d;
-}
-
-.parametro {
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 8px;
-}
-
-/* BLOCO 2: Dashboards (gráficos) */
-.dashboards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-}
-
-.dashboard {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  padding: 20px;
-  flex: 1 1 calc(50% - 20px);
-  min-width: 300px;
-  display: flex;
-  flex-direction: column;
-}
-
-.dashboard .kpi-header {
-  margin-bottom: 16px;
-}
-
-.dashboard .kpi-header h2,
-.dashboard .kpi-header p {
-  font-size: 18px;
-  font-weight: 600;
-  color: #2c3e50;
-}
-
-/* Responsividade */
+/* --- Responsividade --- */
 @media (max-width: 1100px) {
-  .kpi {
-    flex: 1 1 calc(50% - 20px);
+  .parte_de_cima > *,
+  .parte_do_meio > *,
+  .parte_final > * {
+    flex: 1 1 100%;
   }
 }
 
 @media (max-width: 768px) {
-  .kpi,
-  .dashboard {
-    flex: 1 1 100%;
+  .container {
+    margin-left: 0;
+    padding: 16px;
   }
+}
 
-  .kpis,
-  .dashboards {
-    flex-direction: column;
-  }
+.linha-alerta {
+    background-color: rgba(255, 60, 48, 0.15); /* vermelho suave */
+}
+
+.texto-alerta {
+    color: #ff3b30; /* vermelho */
+    font-weight: bold;
 }
