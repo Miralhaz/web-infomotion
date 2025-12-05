@@ -303,8 +303,10 @@ section.header .header-left .container-submenu:hover .submenu {
 #table_alerta_cpu,
 #table_alerta_ram,
 #table_alerta_disco,
-#table_alerta_risco {
+#table_alerta_rede,
+#table_alerta_total {
     cursor: pointer;
+    font-size: 1.4vh;
 }
 
 .dashboard_historico .tabela_alerta_servidores .nome_tabela {
@@ -319,7 +321,7 @@ section.header .header-left .container-submenu:hover .submenu {
     line-height: var(--title-h);
     color: #000;
     font-weight: 600;
-    font-size: 2.3vh;
+    font-size: 2vh;
 }
 
 .dashboard_historico .tabela_alerta_servidores table {
@@ -343,8 +345,9 @@ section.header .header-left .container-submenu:hover .submenu {
 .dashboard_historico .tabela_alerta_servidores thead th:nth-child(2),
 .dashboard_historico .tabela_alerta_servidores thead th:nth-child(3),
 .dashboard_historico .tabela_alerta_servidores thead th:nth-child(4),
-.dashboard_historico .tabela_alerta_servidores thead th:nth-child(5) {
-    width: 18.75%;
+.dashboard_historico .tabela_alerta_servidores thead th:nth-child(5),
+.dashboard_historico .tabela_alerta_servidores thead th:nth-child(6)  {
+    width: 18%;
     align-content: center;
 }
 
@@ -529,8 +532,8 @@ section.header .header-left .container-submenu:hover .submenu {
     flex-direction: row;
     justify-content: center;
     gap: 2vh;
-    margin-bottom: 1vh;
-    font-size: 1.5rem;
+    margin-bottom: 2vh;
+    font-size: 1.3rem;
     text-align: center;
 }
 

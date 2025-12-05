@@ -1,5 +1,3 @@
-//const { color } = require("chart.js/helpers");
-
 let info = []
 let infoExibicao = []
 const tempo = localStorage.getItem("tempoSelecionado");
@@ -181,6 +179,21 @@ function ordenarPor(item) {
                     infoOrdenada.push(element)
                 }
             } else infoOrdenada.push(element)
+        } else if (item == 'rede'){
+            if (infoOrdenada.length > 0) {
+                let inserido = false
+                for (let j = 0; j < infoOrdenada.length; j++) {
+                    const elemento = infoOrdenada[j];
+                    if (Number(element.alertasRede) > Number(elemento.alertasRede)) {
+                        infoOrdenada.splice(j, 0, element)
+                        inserido = true
+                        break;
+                    }
+                }
+                if (!inserido) {
+                    infoOrdenada.push(element)
+                }
+            } else infoOrdenada.push(element)
         } else {
             if (infoOrdenada.length > 0) {
                 let inserido = false
@@ -222,15 +235,10 @@ function plotarGraficoDonut() {
         donutChart.destroy();
     }
 
-    const counts = { OK: 0, ATENCAO: 0, CRITICO: 0 };
-
-    for (const i of dadosDonut) {
-        const c = (i.classificacao) || "";
-        if (counts[c] != null) counts[c]++;
-    }
-
-    const labels = Object.keys(counts);
-    const dados = labels.map(k => counts[k]);
+    const labels = dadosDonut.map(i => i.classificacao);
+    const dados = dadosDonut.map(i => Number(i.quantidade));
+    const critico = dadosDonut.find(i => i.classificacao === "CRITICO");
+    const criticoTexto = critico ? `${critico.percentual.toFixed(0)}% CRÍTICO` : "0% CRÍTICO";
 
     const textoCentro = { // obj de pluggin
         id: 'kpiCentro', // chart.js reconhece os pluggins a partir de um id
@@ -244,10 +252,10 @@ function plotarGraficoDonut() {
             ctx.font = 'bold 22px poppins';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(dados[2] + "% " + labels[2], centerX, centerY); // Texto que vai aparecer no meio!
+            ctx.fillText(criticoTexto, centerX, centerY); // Texto que vai aparecer no meio!
             ctx.restore(); // restaura o contexto salvo
         }
-    };
+    }
 
     const config = {
         type: 'doughnut',
@@ -284,12 +292,15 @@ function plotarGraficoDonut() {
                     font: {
                         size: 14,
                         weight: 'bold'
+                    },
+                    display: function(context){
+                        return context.dataset.data[context.dataIndex] !== 0;
                     }
                 }
             }
         },
         plugins: [ChartDataLabels, textoCentro]
-    };
+    }
 
     donutChart = new Chart(
         document.getElementById(`pieChart`),
@@ -300,15 +311,15 @@ function plotarGraficoDonut() {
 
 
 const bolhasArquivos = {
-    cpu: "criticidadeCpu.json",
-    ram: "criticidadeRam.json",
-    disco: "criticidadeDisco.json",
-    temp_cpu: "criticidadeTempCpu.json",
-    temp_disco: "criticidadeTempDisco.json",
-    upload: "criticidadeUPLOAD.json",
-    download: "criticidadeDOWNLOAD.json",
-    pckt_rcvd: "criticidadePCKT_RCVD.json",
-    pckt_snt: "criticidadePCKT_SNT.json"
+    cpu: "bolhas_CPU_%.json",
+    ram: "bolhas_RAM_%.json",
+    disco: "bolhas_DISCO_%.json",
+    temp_cpu: "bolhas_CPU_C.json",
+    temp_disco: "bolhas_DISCO_C.json",
+    upload: "bolhas_REDE_UPLOAD.json",
+    download: "bolhas_REDE_DOWNLOAD.json",
+    pckt_rcvd: "bolhas_REDE_PCKT_RCVD.json",
+    pckt_snt: "bolhas_REDE_PCKT_SNT.json"
 }
 
 async function carregarBolhas(tipo) {
@@ -474,16 +485,16 @@ function plotarGraficoLinhas(idServidor) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'RAM',
-                data: ram,
+                label: 'CPU',
+                data: cpu,
                 fill: false,
-                backgroundColor: '#FFB000',
-                borderColor: '#FFB000',
+                backgroundColor: '#d9b98a',
+                borderColor: '#d9b98a',
                 tension: 0.1
             },
             {
-                label: 'CPU',
-                data: cpu,
+                label: 'RAM',
+                data: ram,
                 fill: false,
                 backgroundColor: '#E2E2E2',
                 borderColor: '#E2E2E2',
@@ -493,16 +504,16 @@ function plotarGraficoLinhas(idServidor) {
                 label: 'DISCO',
                 data: disco,
                 fill: false,
-                backgroundColor: '#FAFF00',
-                borderColor: '#FAFF00',
+                backgroundColor: '#BD953F',
+                borderColor: '#BD953F',
                 tension: 0.1
             },
             {
                 label: 'REDE',
                 data: rede,
                 fill: false,
-                backgroundColor: '#FAFF00',
-                borderColor: '#FAFF00',
+                backgroundColor: '#8c6f45',
+                borderColor: '#8c6f45',
                 tension: 0.1
             }]
         },
