@@ -221,6 +221,18 @@ table {
   gap: 12px;
 }
 
+.alertas .status_alertas, .kpi-body, .kpi-footer{
+  display: flex;
+  margin: 0;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
+ .status_alertas{
+  font-size: 12px;
+}
+
 .kpi-body h3 {
   font-size: 18px;
   color: #ffc64b; /* destaque amarelo suave */
