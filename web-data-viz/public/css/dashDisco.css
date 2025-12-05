@@ -1,94 +1,101 @@
 @import url("https://use.typekit.net/iom7tmt.css");
 
 :root {
-    --amarelo: #ffc64b;
-    --amareloOpacityLow: #ffc64bb7;
-    --cinza: #E2E1DE;
-    --branco: #ffff;
-    --preto: #000;
-    --cinzaEscuro: #1c1c1c;
-    --cinzaHeader: #222;
-    --cinzaDash: #181818;
+  --amarelo: #ffc64b;
+  --amareloOpacityLow: #ffc64bb7;
+  --cinza: #E2E1DE;
+  --branco: #fff;
+  --preto: #000;
+  --cinzaEscuro: #1c1c1c;
+  --cinzaHeader: #222;
+  --cinzaDash: #353535f3;
 }
 
 * {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 body {
-    background-color: var(--cinza);
-    font-family: "poppins", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    scroll-behavior: smooth;
+  background-color: var(--cinza);
+  font-family: "poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  scroll-behavior: smooth;
+  display: flex;
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  color: white;
 }
 
-/* Header */
+.header {
+  width: 250px;
+}
 
 section.header .header-left {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    height: 100%;
-    width: 230px;
-    background-color: var(--cinzaHeader);
-    padding: 20px 0;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 1000;
+  height: 100%;
+  width: 230px;
+  background-color: var(--cinzaHeader);
+  padding: 20px 0;
+  text-align: center;
 }
 
 section.header .header-left .parte-cima {
-    padding: 40% 0;
+  padding: 40% 0;
 }
 
 section.header .header-left .parte-baixo {
-    padding: 10% 0
+  padding: 10% 0
 }
 
 section.header .header-left .icone {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    padding: 7% 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 7% 0;
 }
 
 section.header .header-left .descricao-icone {
-    color: var(--branco);
-    align-content: center;
-    padding: 0 10px;
+  color: var(--branco);
+  align-content: center;
+  padding: 0 10px;
 }
 
 section.header .header-left .icone img {
-    height: 25px;
-    width: auto;
-    display: flex;
-    padding: 0 15px;
-    transition: all 0.3s ease-in-out;
+  height: 25px;
+  width: auto;
+  display: flex;
+  padding: 0 15px;
+  transition: all 0.3s ease-in-out;
 }
 
 section.header .header-left .icone a {
-    width: 100%;
-    text-decoration: none;
-    font-weight: 100;
-    font-size: 18px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 10px;
-    align-items: center;
-    transition: all 0.3s ease-in-out;
+  width: 100%;
+  text-decoration: none;
+  font-weight: 100;
+  font-size: 18px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
 }
 
 section.header .header-left .icone a:hover {
-    background-color: var(--amarelo);
-    color: var(--preto);
-    padding: 10px;
+  background-color: var(--amarelo);
+  color: var(--preto);
+  padding: 10px;
 }
 
 section.header .header-left .icone a:hover img {
-    filter: brightness(0);
+  filter: brightness(0);
 }
-
 
 section.header .header-left .container-submenu {
   position: relative;
@@ -102,7 +109,7 @@ section.header .header-left .container-submenu {
   background-color: var(--cinzaHeader);
   border: 1px solid var(--amarelo);
   width: 250px;
-  z-index: 10;
+  z-index: 9999;
   padding: 10px 0;
   opacity: 0;
   visibility: hidden;
@@ -133,404 +140,208 @@ section.header .header-left .container-submenu:hover .submenu {
   visibility: visible;
 }
 
-* { box-sizing: border-box; }
+
+/* --- Estilos globais --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 
+
+/* --- Área principal (depois do header fixo de 230px) --- */
 .container {
-    margin-left: 230px;    
-    width: calc(100% - 230px);
-    height: 100vh;
-    padding: 20px;
-   
+  padding: 24px;
+  min-height: 100vh;
+  margin-left: 230px;
 }
 
-
-.dashboard-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;            
-    overflow: hidden;
-    padding: 0;
+/* --- Layout flexível das partes --- */
+.parte_de_cima,
+.parte_do_meio,
+.parte_final {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 32px;
+  justify-content: space-between;
+  
 }
 
-
-.kpis { 
-    display: grid;
-    grid-template-columns: 30% 30% 35%;
-    grid-template-rows: 140px 140px;
-    gap: 24px;     
-    width: 100%;
-}
-
-
-.lista { 
-    grid-column: 3;
-    grid-row: 1 / span 2;
-}
-
-.operacao { grid-column: 1; grid-row: 1; }
-.alertas  { grid-column: 2; grid-row: 1; }
-.impacto  { grid-column: 1; grid-row: 2; }
-.vida     { grid-column: 2; grid-row: 2; }
-
+/* --- Estilo comum para KPIs e dashboards --- */
 .kpi {
-    background-color: black;
-    border-radius: 12px;
-    padding: 12px;
-}
-
-
-.dashboards {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    width: 100%;
-    padding: 0;
-    height: calc(100% -  (140px * 2) - 40px); 
-    min-height: 220px;
+  max-height: 130px; /* <<--- REDUZA AQUI (era ~250px ou mais) */
 }
 
 .dashboard {
-    background-color: black;
-    width: 50%;
-    height: 100%;
-    border-radius: 12px;
-    overflow: hidden;
-}
 
-.chart1{
-    background-color: black;
-    width: 45%;
-    height: 100%;
-    border-radius: 12px;
-    overflow: hidden;
-}
+  max-height: 350px; /* <<--- AJUSTE AQUI (gráficos podem ser um pouco maiores) */
 
-/* conteudo operação */
-
-.kpi {
-    background-color: black;
-    border-radius: 12px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    color: #f3f3f3;
-}
-
-.kpi-header {
-    background-color: #f3f3f3;
-    padding: 10px 10px;
-}
-
-.kpi-header h2 {
-    display: flex;
-    justify-content: center;
-    color: #000;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.kpi-header p {
-    display: flex;
-    justify-content: center;
-    color: #000;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.operacao .kpi-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;   
-    margin-top: 15px;
-}
-
-.kpi-status-operacao{
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-    justify-items: center;
 }
 
 
-.kpi-body img {
-    width: 60px;
-    height: 60px;
+.kpi,
+.dashboard,
+table {
+  background-color: #000; /* fundo preto */
+  border-radius: 12px;
+  padding: 0px;
+  flex: 1 1 300px; /* responsivo: cresce, mas com largura mínima */
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 300px;
+}
+
+
+
+.titulo {
+  width: 100%;
+  background-color: var(--branco);
+  padding: 10px;
+  text-align: center;
+  box-sizing: border-box;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.titulo p {
+  color: var(--preto);
+  margin: 0 10px;
+}
+
+/* --- Corpo dos KPIs --- */
+.kpi-body,
+.grafico-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.alertas .status_alertas, .kpi-body, .kpi-footer{
+  display: flex;
+  margin: 0;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
+ .status_alertas{
+  font-size: 12px;
 }
 
 .kpi-body h3 {
-    font-size: 18px;
-    font-weight: 700;
+  font-size: 18px;
+  color: #ffc64b; /* destaque amarelo suave */
 }
 
-.kpi-footer {
-    flex-direction: column;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* --- Estilos para tabelas --- */
+table {
+  padding: 0;
 }
 
-
-.lista .kpi-footer {
-    flex-direction: column;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
+table caption {
+  width: 100%;
+  background-color: var(--branco);
+  padding: 10px;
+  text-align: center;
+  box-sizing: border-box;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  color: black;
 }
 
-
-.kpi-footer p{
-    font-size: 12px;
-    margin-bottom: -2px;
+table thead {
+  background-color: #111;
 }
 
-.lista .btn-acao {
-    width:45%;
-    padding: 6px 0;
-    border-radius: 8px;
-    border: none;
-    background-color: #f3f3f3;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    color: #000;
-    transition: 0.3s;
+table th,
+table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #333;
 }
 
-.btn-acao {
-    width:35%;
-    padding: 6px 0;
-    border-radius: 8px;
-    border: none;
-    background-color: #f3f3f3;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    color: #000;
-    transition: 0.3s;
+table tbody {
+  max-height: 300px;
+  overflow-y: auto;
+  display: block;
 }
 
-.btn-acao:hover {
-    background-color: #ffdb82;
+table thead tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+   height: 10%;
 }
 
-
-
-.kpi {
-    background-color: black;
-    border-radius: 12px;
-    padding: 0; 
-    overflow: hidden; 
+table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+   height: 10%;
 }
 
-
-/* conteudo kpi alertas */
-
-.status_alertas{
-    display: flex;
-    margin: 0;
-    justify-content: center;
+/* Cabeçalhos da tabela */
+table th {
+  padding: 6px 8px; /* reduza o padding (especialmente vertical) */
+  font-size: 12px;
+  line-height: 1.2;
 }
 
-.alertas .kpi-body{
-    display: flex;
-    justify-content: center;
-    margin: 0;
-    padding: 0;
-    gap: 0;
-}
- 
-.alertas .kpi-body span{
-   font-size: 40px;
+/* Células do corpo da tabela */
+table td {
+  padding: 6px 8px; /* mesmo padding para alinhar */
+  font-size: 12px;
+  line-height: 1.2;
 }
 
-.alertas .kpi-footer{
-    margin-top: -12px;
-}
-/* conteudo lista */
-.organizador_lista{
-    display: flex;
-    flex-direction: column;
-    align-items: end;
+.texto-alerta {
+  color: #ff6b6b;
+  font-weight: bold;
 }
 
-.estados_lista{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
+.leitura-escrita-header {
+  text-align: center;
 }
 
-.estados_lista span{
-margin: 0px 0px 0px 10px;
+/* --- Gráficos (Chart.js) --- */
+.grafico-body {
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.estado-listagem{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
+.grafico-body canvas {
+  width: 100% !important;
+  max-height: 300px;
 }
 
-.lista .moderado{
-    font-size: 14px;
-    background-color: #bd953f;
-    border-radius: 10px;
-    width: 25%;
-    display: flex;
-    justify-content: center;
+/* --- Responsividade --- */
+@media (max-width: 1100px) {
+  .parte_de_cima > *,
+  .parte_do_meio > *,
+  .parte_final > * {
+    flex: 1 1 100%;
+  }
 }
 
-.corRisco {
-color: red;
+@media (max-width: 768px) {
+  .container {
+    margin-left: 0;
+    padding: 16px;
+  }
 }
 
-.corModerado {
-color: #bd953f;
+.linha-alerta {
+    background-color: rgba(255, 60, 48, 0.15); /* vermelho suave */
 }
 
-.lista .risco{
-    font-size: 14px;
-    background-color: red;
-    border-radius: 10px;
-    width: 25%;
-    display: flex;
-    justify-content: center;
+.texto-alerta {
+    color: #ff3b30; /* vermelho */
+    font-weight: bold;
 }
-
-.lista .kpi-body{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0px;
-}
-
-.lista .kpi-body div{
-    padding: 0;
-    margin: 0;
-}
-
-.lista .kpi-body p{
-    padding: 2px;
-
-}
-
-/* kpi impacto */
-.impacto .kpi-body{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-}
-
-.impacto .tudo{
-    display: flex;
-    flex-direction: row-reverse;
-}
-
-.impacto .importancia{
-    font-size: 10px;
-    margin-top: 30px;
-
-}
-
-.impacto .discos{
-    font-size: 14px;
-}
-
-.impacto .listagem{
-    margin-left: 20px;
-    font-size: 13px;
-}
-
-.vida .kpi-body{
-justify-content: center;
-display: flex;
-flex-direction: row-reverse;
-gap: 15px;
-}
-
-.vida .classificacao{
-    font-size: 11px;
-    margin-top: 15px;
-}
-
-.vida .parametro{
-font-size: 11px;
-}
-
-.vida .listagem{
-    margin-left: 7px;
-    font-size: 13px;
-}
-
-
-
-.vida .discos{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    justify-items: center;
-    align-items: center;
-    font-size: 14px;
-    margin-right: 25px;
-    padding: 4px;
-    width: 80%;
-}
-
-/* gráfico de linha */
-.dashboards .chart2 .kpi-body {
-    background: black;
-    padding: 20px;
-
-    border: 1px solid #444;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    width: 100%;
-    height: 90%;
-}
-
-#graficolinhas {
-    width: 100%;
-}
-
-/* grafico barras  */
-
-#graficobarras {
-    width: 100%;
-}
-
-.dashboards .chart1 .kpi-body {
-    background: black;
-    padding: 20px;
-    border: 1px solid #444;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    width: 100%;
-    height: 90%;
-}
-
-.chart1 .kpi-header h2 {
-    display: flex;
-    justify-content: center;
-    color: #000;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.chart1 .kpi-header {
-    background-color: #f3f3f3;
-    margin: 0;
-    padding: 0;
-}
-
-
-
-
-
