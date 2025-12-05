@@ -1,8 +1,8 @@
 var regiao = "";
-
-
-
 listarRegioes()
+
+
+
 
 
 function listarRegioes() {
@@ -14,8 +14,9 @@ function listarRegioes() {
     .then(res => res.json())
     .then(regioes => {
       let listarRegioesDaEmpresa = regioes.map(item => item);
-
       console.log(listarRegioesDaEmpresa)
+      criarListaRegiao(listarRegioesDaEmpresa)
+      
     })
     .catch(err => {
       console.error("Erro ao carregar regiões:", err);
@@ -23,6 +24,27 @@ function listarRegioes() {
     });
 }
 
+function criarListaRegiao(lista){
+html = ""
+
+
+for(i = 0; i < lista.length; i++){
+  regiao = lista[i];
+  nome =  regiao.nome
+  pais = regiao.pais
+  id = regiao.id
+  html+= `
+<div class="container-card-regiao" onclick="trocarRegiao(${id})">
+<div class="card-regiao">
+<p>${nome}<b> / </b>${pais}<b> / </b>${id}</p>    
+</div>    
+</div>
+`
+
+id_lista_regiao.innerHTML = html
+}
+
+}
 
 
 
