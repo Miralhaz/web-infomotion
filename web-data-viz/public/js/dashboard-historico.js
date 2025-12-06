@@ -11,8 +11,6 @@ let serieLinhas = [];
 
 let dadosDonut = [];
 let donutChart = null;
-let dadosBolhas = [];
-let bubbleChart = null;
 
 async function carregarJsonS3(nomeArquivo) {
     const resp = await fetch(`/dashboardHistorico/dados/${nomeArquivo}`);
@@ -45,7 +43,6 @@ async function carregarDashboardDoS3() {
             chamarFuncoesServidores(resumoTabela[0].fk_servidor);
         }
 
-        await carregarBolhas("cpu");
     } catch (e) {
         console.error(e);
     }
@@ -109,6 +106,7 @@ let totalDisco;
 
 function chamarFuncoesServidores(idServidor) {
     plotarGraficoLinhas(idServidor);
+    plotarGraficoBarra(idServidor);
 }
 
 
@@ -179,7 +177,7 @@ function ordenarPor(item) {
                     infoOrdenada.push(element)
                 }
             } else infoOrdenada.push(element)
-        } else if (item == 'rede'){
+        } else if (item == 'rede') {
             if (infoOrdenada.length > 0) {
                 let inserido = false
                 for (let j = 0; j < infoOrdenada.length; j++) {
@@ -230,8 +228,8 @@ function ordenarPor(item) {
 
 
 function plotarGraficoDonut() {
-    
-    if(donutChart){
+
+    if (donutChart) {
         donutChart.destroy();
     }
 
@@ -293,7 +291,7 @@ function plotarGraficoDonut() {
                         size: 14,
                         weight: 'bold'
                     },
-                    display: function(context){
+                    display: function (context) {
                         return context.dataset.data[context.dataIndex] !== 0;
                     }
                 }
@@ -310,140 +308,6 @@ function plotarGraficoDonut() {
 }
 
 
-const bolhasArquivos = {
-    cpu: "bolhas_CPU_%.json",
-    ram: "bolhas_RAM_%.json",
-    disco: "bolhas_DISCO_%.json",
-    temp_cpu: "bolhas_CPU_C.json",
-    temp_disco: "bolhas_DISCO_C.json",
-    upload: "bolhas_REDE_UPLOAD.json",
-    download: "bolhas_REDE_DOWNLOAD.json",
-    pckt_rcvd: "bolhas_REDE_PCKT_RCVD.json",
-    pckt_snt: "bolhas_REDE_PCKT_SNT.json"
-}
-
-async function carregarBolhas(tipo) {
-    const arq = bolhasArquivos[tipo];
-    
-    if (!arq) {
-        return;
-    }
-
-    dadosBolhas = await carregarJsonS3(arq);
-    plotarGraficoBolhas();
-    document.getElementById('menu')?.classList.remove('show');
-}
-
-
-function plotarGraficoBolhas() {
-
-    if (bubbleChart) bubbleChart.destroy();
-
-    const filtrados = (dadosBolhas).filter(i => {
-        const c = String(i.classificacao || "").toUpperCase();
-        return c === "ATENCAO" || c === "CRITICO";
-    })
-
-    const bolhas = filtrados.map((i) => ({
-        x: Number(i.fk_servidor),
-        y: Number(i.captura),
-        r: Number(i.minutos)
-    }));
-
-    console.log("dados bolhas:", dadosBolhas)
-
-    const colors = filtrados.map(i => {
-        const c = (i.classificacao).toUpperCase();
-        if (c == "CRITICO") {
-            return "rgba(189, 44, 44, 0.5)";
-        }
-        if (c == "ATENCAO") {
-            return "rgba(189, 92, 32, 0.5)";
-        }
-    });
-
-    const config = {
-        type: 'bubble',
-        data: {
-            datasets: [{
-                label: "classificacao",
-                data: bolhas,
-                backgroundColor: colors
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        color: 'white',
-                        font: {
-                            size: 15
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Captura',
-                        color: 'white',
-                        font: {
-                            size: 16
-                        }
-                    },
-                    grid: {
-                        color: 'rgba(153, 153, 153, 0.2)',
-                        display: true,
-                        drawTicks: false
-                    }
-                },
-                x: {
-                    ticks: {
-                        color: 'white',
-                        font: {
-                            size: 15
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Apelido dos servidores',
-                        color: 'white',
-                        font: {
-                            size: 16
-                        }
-                    },
-                    grid: {
-                        drawOnChartArea: true
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        color: 'white'
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        title: (ctx) => {
-                            const item = filtrados[ctx];
-                            return `Estado: ${item.classificacao}`;
-                        },
-                        beforeLabel: (ctx) => {
-                            const item = filtrados[ctx];
-                            return `Servidor: ${item.apelido}`;
-                        },
-                        label: (ctx) => {
-                            const item = filtrados[ctx];
-                            return `Captura: ${item.captura}% por ${item.minutos} minutos`;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    bubbleChart = new Chart(document.getElementById('bubbleChart'), config);
-}
 
 
 function plotarGraficoLinhas(idServidor) {
@@ -462,11 +326,6 @@ function plotarGraficoLinhas(idServidor) {
         return;
     }
 
-    const widthPx = window.innerWidth * 0.6;  // 60vw
-    canvas.width = widthPx;
-
-    const heightPx = window.innerHeight * 0.30; // 35vh
-    canvas.height = heightPx;
 
     const labels = dadosServidor.map(d => d.timestamp);
     const cpu = dadosServidor.map(d => Number(d.alertasCpu));
@@ -519,7 +378,7 @@ function plotarGraficoLinhas(idServidor) {
         },
 
         options: {
-            responsive: false,
+            responsive: true,
             maintainAspectRatio: false,
             scales: {
                 y: {
@@ -528,7 +387,7 @@ function plotarGraficoLinhas(idServidor) {
                         color: 'white',
                         stepSize: 1,
                         font: {
-                            size: 18
+                            size: 12
                         }
                     },
                     title: {
@@ -536,7 +395,7 @@ function plotarGraficoLinhas(idServidor) {
                         text: 'Quantidade de alertas',
                         color: 'white',
                         font: {
-                            size: 20
+                            size: 14
                         }
                     },
                     grid: {
@@ -549,7 +408,7 @@ function plotarGraficoLinhas(idServidor) {
                     ticks: {
                         color: 'white',
                         font: {
-                            size: 18
+                            size: 12
                         }
                     },
                     title: {
@@ -557,7 +416,7 @@ function plotarGraficoLinhas(idServidor) {
                         text: 'Tempo',
                         color: 'white',
                         font: {
-                            size: 20
+                            size: 14
                         }
                     },
                     grid: {
@@ -577,9 +436,9 @@ function plotarGraficoLinhas(idServidor) {
                         usePointStyle: true,
                         color: 'white',
                         font: {
-                            size: 18
+                            size: 12
                         }
-                    }
+                    },
                 }
             }
         }
@@ -588,6 +447,86 @@ function plotarGraficoLinhas(idServidor) {
     new Chart(canvas, config);
 
 }
+
+
+function plotarGraficoBarra(idServidor) {
+
+    const canvas = document.getElementById('barChart');
+    const existing = Chart.getChart(canvas);
+    if (existing) existing.destroy();
+
+    const srv = infoTabela.find(s => String(s.id) === String(idServidor));
+
+    if (!srv) {
+        return;
+    }
+
+    const cpu = Number(srv.AlertaCPU) || 0;
+    const ram = Number(srv.AlertaRAM) || 0;
+    const disco = Number(srv.AlertaDisco) || 0;
+    const rede = Number(srv.AlertaRede) || 0;
+    const total = cpu + ram + disco + rede;
+
+    const tempoSel = Number(localStorage.getItem("tempoSelecionado")) || 1;
+    const titulo = tempoSel > 1
+        ? `Alertas por componente (últimos ${tempoSel} dias) — ${srv.apelido} | Total: ${total}`
+        : `Alertas por componente (último dia) — ${srv.apelido} | Total: ${total}`;
+
+    document.getElementById("nome_gráfico_linhas2").innerHTML = titulo;
+
+    const config = {
+        type: "bar",
+        data: {
+            labels: [" "],
+            datasets: [
+                {label: "CPU", data: [cpu], backgroundColor: "#d9b98a"},
+                {label: "RAM", data: [ram], backgroundColor: "#E2E2E2"},
+                {label: "DISCO", data: [disco], backgroundColor: "#BD953F"},
+                {label: "REDE", data: [rede], backgroundColor: "#8c6f45"}
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            scales: {
+                y: { 
+                    stacked: true, 
+                    ticks: {color: "white"}, 
+                    grid: {display: false} 
+                },
+                x: {stacked: true, 
+                    beginAtZero: true, 
+                    ticks: {color: "white"}, 
+                    grid: {color: "rgba(153, 153, 153, 0.2)"}
+                }
+            },
+            plugins: {
+                legend: { 
+                    position: "bottom", 
+                    labels: { 
+                        usePointStyle: true, 
+                        color: "white" 
+                    } 
+                },
+                tooltip: {
+                    callbacks: {
+                        label: (ctx) => {
+                            const v = Number(ctx.raw) || 0;
+                            const p = total > 0 ? (v * 100 / total) : 0;
+                            return `${ctx.dataset.label}: ${v} (${p.toFixed(1)}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    barChart = new Chart(canvas, config);
+}
+
+
+
 
 
 function acionarFiltro() {

@@ -277,7 +277,7 @@ section.header .header-left .container-submenu:hover .submenu {
 }
 
 .dashboard_historico .tabela_alerta_servidores {
-    width: 50vw;
+    width: 46vw;
     height: 35vh;
     background-color: var(--branco);
     color: #fff;
@@ -458,6 +458,24 @@ section.header .header-left .container-submenu:hover .submenu {
     gap: 2%;
 }
 
+.div-table-grafico .gráfico_chart_bar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--cinzaDash);
+    width: 66vh;
+    height: 30vh;
+    color: var(--branco);
+    padding: 2.88vh 1.5vw;
+    border-radius: 2vh;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.div-bar_chart{
+    width: 100%;
+}
+
 .dashboard_historico .alerta_tempo_e_grafico_bolhas {
     display: flex;
     flex-direction: row;
@@ -475,7 +493,7 @@ section.header .header-left .container-submenu:hover .submenu {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.div-pie-chart {
+.alerta_tempo_e_grafico_bolhas .div-pie-chart {
     align-self: center;
     width: 40%;
 }
@@ -494,7 +512,7 @@ section.header .header-left .container-submenu:hover .submenu {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.gráfico_chart {
+.alerta_tempo_e_grafico_bolhas .gráfico_chart {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -508,24 +526,20 @@ section.header .header-left .container-submenu:hover .submenu {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.dashboard_historico .grafico_bubble {
+.gráfico_chart_donut {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: var(--cinzaDash);
+    width: 66vh;
+    height: 36vh;
     color: var(--branco);
     padding: 2.88vh 1.5vw;
     border-radius: 2vh;
-    width: 33.5vw;
-    height: 42vh;
-    padding: 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
-.grafico_bubble .div-bubble-chart {
-    width: 85%;
-}
 
 .dashboard_historico .nome_gráfico {
     display: flex;
@@ -543,5 +557,5 @@ section.header .header-left .container-submenu:hover .submenu {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 20vh;
+    height: 30vh;
 }
