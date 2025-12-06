@@ -71,7 +71,7 @@
                 </div>
             </div>
 
- 
+
             <!--kpi de alertas-->
             <div class="kpi alertas">
                 <div class="kpi-header">
@@ -97,7 +97,7 @@
                 <div class="kpi-header">
                     <div class="titulo">
                         <p>Top 3 Discos temperatura elevada</p>
-                        
+
                     </div>
                 </div>
 
@@ -116,45 +116,72 @@
                 </div>
             </div>
         </div>
-        <div class="parte_do_meio">
 
+
+        <div class="parte_do_meio">
             <!--grafico de linhas-->
-            <div class="dashboard chart1">
-                <div class="kpi-header">
-                    <div class="titulo">
-                        <p>Gráfico de linha do tempo (Discos em Alerta)</p>
+            <div class="grafico-linha-hist">
+                <div class="titulo" style="display: flex; justify-content: space-between; align-items: center;">
+                    <p style="font-size: 16px;"> Historico de utilização do armazenamento do Disco </p>
+                    <div style="display: flex; gap: 1vh;">
+                        <!-- Período -->
+                        <div class="select-grafico">
+                            <div class="container-select" id="select_display">
+                                1 hora
+                                <span class="seta"> &#9660; </span>
+                            </div>
+                            <ul class="lista-opcoes hidden" id="lista_opcoes">
+                                <li data-value="1hora">1 hora</li>
+                                <li data-value="24horas">24 horas</li>
+                                <li data-value="dias">7 dias</li>
+                            </ul>
+                            <input type="hidden" id="select_value" value="1hora">
+                        </div>
+
+                        <!-- Disco -->
+                        <div class="select-grafico">
+                            <div class="container-select" id="select_display_discos">
+                                Selecione um disco
+                                <span class="seta"> &#9660; </span>
+                            </div>
+                            <ul class="lista-opcoes hidden" id="lista_opcoes_discos">
+                                <!-- Preenchido pelo JS -->
+                            </ul>
+                            <input type="hidden" id="select_value_disco" value="">
+                        </div>
                     </div>
                 </div>
-                <div class="grafico-body">
-                    <canvas id="graficolinhas"></canvas>
+
+                <div style="position: relative;">
+                    <canvas id="graficolinhas" style="width: 100%; height: 220px;"></canvas>
                 </div>
             </div>
-
+            <!-- fim cópia -->
 
             <!-- Lista-->
             <table>
-        <caption>Disco em Alerta por ultrapassar o parâmetro de uso</caption>
-        
-        <thead>
-            <tr>
-                <th>Apelido</th>
-                <th>capacidade</th>
-                <th>utilizando</th>
-                <th>% parâmetro</th>
-                <th>servidor</th>
-            </tr>
-        </thead>
-        
-        <tbody id="corpo-tabela-discos">
-            
-        </tbody>
-    </table>
+                <caption>Disco em Alerta por ultrapassar o parâmetro de uso</caption>
+
+                <thead>
+                    <tr>
+                        <th>Apelido</th>
+                        <th>capacidade</th>
+                        <th>utilizando</th>
+                        <th>% parâmetro</th>
+                        <th>servidor</th>
+                    </tr>
+                </thead>
+
+                <tbody id="corpo-tabela-discos">
+
+                </tbody>
+            </table>
 
         </div>
 
         <div class="parte_final">
             <!--grafico de barras-->
-            <div class="dashboard chart2">
+            <div class="chart2">
                 <div class="kpi-header">
                     <div class="titulo">
                         <p>Top 5 Servidores com mais alertas de disco</p>
@@ -166,26 +193,25 @@
             </div>
 
             <!-- lista de servidores que estão trabalhando mais-->
+            <div class="listaOperacional">
+                <table>
+                    <caption>Discos que estão lendo e gravando mais arquivos</caption>
 
-            <table>
-        <caption>Discos que estão lendo e gravando mais arquivos</caption>
-        
-        <thead>
-            <tr>
-                <th>Apelido</th>
-                <th>capacidade</th>
-                <th>processos</th>
-                <th colspan="2" class="leitura-escrita-header">leitura / escrita</th>
-                <th>servidor</th>
-            </tr>
-            </thead>
-        
-        <tbody id="corpo-tabela-discos-operacao">
-          
-            <!--terá muitos outros, melhor precaver com póssivel scrool-->
-           
-        </tbody>
-    </table>
+                    <thead>
+                        <tr>
+                            <th>Apelido</th>
+                            <th>capacidade</th>
+                            <th>processos</th>
+                            <th colspan="2" class="leitura-escrita-header">leitura / escrita</th>
+                            <th>servidor</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="corpo-tabela-discos-operacao">
+
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- fim -->

@@ -120,7 +120,7 @@ function ListagemDosDiscosEmAlerta(dados) {
 
         // Coluna 2: Capacidade (MOCK por enquanto)
         const tdCapacidade = document.createElement("td");
-        tdCapacidade.textContent = "512GB"; // 🔜 substitua por servidor.capacidade depois
+        tdCapacidade.textContent = servidor.capacidade; // 🔜 substitua por servidor.capacidade depois
 
         // Coluna 3: Uso atual (%)
         const tdUso = document.createElement("td");
@@ -176,7 +176,7 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
 
         // Coluna 2: Capacidade (MOCK por enquanto)
         const tdCapacidade = document.createElement("td");
-        tdCapacidade.textContent = "512GB"; // 🔜 substitua por serv.capacidade depois
+        tdCapacidade.textContent = serv.capacidade; // 🔜 substitua por serv.capacidade depois
 
         // Coluna 3: Processos
         const tdProcessos = document.createElement("td");
@@ -324,130 +324,195 @@ function atualizarGraficoBarras(dados) {
 
 let graficoBarras = null;
 
+// interação com periodo e discos
 
+document.addEventListener('click', function(e) {
 
-// tudo para funcionamento do gráfico de linha
-
-// Variável global para controlar o gráfico de linhas (adicione no topo do seu JS)
-let graficoLinhas = null;
-
-function plotarGraficoLinha(dados, periodo = '24h') {
-    const cores = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
-
-    const periodos = {
-        '1h': 1 * 60 * 60 * 1000,
-        '24h': 24 * 60 * 60 * 1000,
-        '7d': 7 * 24 * 60 * 60 * 1000
-    };
-
-    const agora = new Date();
-    const limiteMs = periodos[periodo] || periodos['24h'];
-    const limite = new Date(agora.getTime() - limiteMs);
-
-    // Top 5 servidores
-    const top5Ids = dados.servidores
-        .sort((a, b) => b.disco - a.disco)
-        .slice(0, 5)
-        .map(s => s.fk_servidor);
-
-    // Histórico filtrado
-    const historicoFiltrado = dados.historico
-        .filter(r => {
-            const ts = new Date(r.timestamp);
-            return ts >= limite && top5Ids.includes(r.fk_servidor);
-        })
-        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-
-    // Agrupa por servidor
-    const dadosPorServidor = {};
-    historicoFiltrado.forEach(reg => {
-        if (!dadosPorServidor[reg.fk_servidor]) {
-            dadosPorServidor[reg.fk_servidor] = { labels: [], valores: [] };
-        }
-        const label = periodo === '1h'
-            ? new Date(reg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            : new Date(reg.timestamp).toLocaleDateString();
-
-        dadosPorServidor[reg.fk_servidor].labels.push(label);
-        dadosPorServidor[reg.fk_servidor].valores.push(reg.disco);
-    });
-
-    // Datasets
-    const datasets = Object.keys(dadosPorServidor).map((fk_servidor, i) => {
-        const servidor = dados.servidores.find(s => s.fk_servidor == fk_servidor);
-        const nome = servidor 
-            ? (servidor.apelidoDisco || servidor.nomeMaquina) 
-            : `Servidor ${fk_servidor}`;
-
-        return {
-            label: nome,
-            data: dadosPorServidor[fk_servidor].valores,
-            borderColor: cores[i % cores.length],
-            backgroundColor: 'transparent',
-            borderWidth: 1,
-            tension: 1,
-            fill: false,
-            pointRadius: 2
-        };
-    });
-
-    const labels = datasets.length > 0 
-        ? dadosPorServidor[Object.keys(dadosPorServidor)[0]].labels 
-        : [];
-
-    // Destroi instância anterior
-    if (graficoLinhas) {
-        graficoLinhas.destroy();
+    // --- SELECT DO PERÍODO ---
+    if (e.target.closest('#select_display')) {
+        document.getElementById('lista_opcoes').classList.toggle('visible');
+        return;
     }
 
-    // Cria gráfico de linhas
-    graficoLinhas = new Chart(
-        document.getElementById('graficolinhas'),
-        {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: datasets
-            },
-            options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: {
-            labels: {
-                color: 'white',
-                font: { size: 12 }
-            },
-            onClick: null   // ✅ desativa o toggle da legenda
-        },
-        tooltip: {
-            mode: 'index',
-            intersect: false
-        }
-    },
-    // resto das opções...
-}
-        }
-    );
+    if (e.target.closest('#lista_opcoes li')) {
+        const li = e.target.closest('li');
+        const valor = li.getAttribute('data-value');
+        const texto = li.textContent;
+
+        document.getElementById('select_value').value = valor;
+        document.getElementById('select_display').innerHTML = texto + ' <span class="seta"> &#9660; </span>';
+
+        document.getElementById('lista_opcoes').classList.remove('visible');
+        atualizarGrafico();
+        return;
+    }
+
+    // --- SELECT DOS DISCOS ---
+    if (e.target.closest('#select_display_discos')) {
+        document.getElementById('lista_opcoes_discos').classList.toggle('visible');
+        return;
+    }
+
+    if (e.target.closest('#lista_opcoes_discos li')) {
+        const li = e.target.closest('li');
+        const valor = li.getAttribute('data-value');
+        const texto = li.textContent;
+
+        document.getElementById('select_value_disco').value = valor;
+        document.getElementById('select_display_discos').innerHTML = texto + ' <span class="seta"> &#9660; </span>';
+
+        document.getElementById('lista_opcoes_discos').classList.remove('visible');
+        atualizarGrafico();
+        return;
+    }
+
+    // --- FECHAR AO CLICAR FORA ---
+    if (!e.target.closest('.select-grafico')) {
+        document.getElementById('lista_opcoes').classList.remove('visible');
+        document.getElementById('lista_opcoes_discos').classList.remove('visible');
+    }
+});
+
+
+// tudo pra funcionamento do gráfico de linhas 
+function filtrarPorPeriodo(historico, periodo) {
+    const agora = new Date();
+    let limite;
+
+    switch (periodo) {
+        case "1h":  limite = new Date(agora - 1 * 60 * 60 * 1000); break;
+        case "24h": limite = new Date(agora - 24 * 60 * 60 * 1000); break;
+        default:    limite = new Date(agora - 7 * 24 * 60 * 60 * 1000); break;
+    }
+
+    return historico.filter(item => new Date(item.timestamp) >= limite);
 }
 
-// final gráfico linha
+function amostrarDados(dados, maxPontos = 7) {
+    if (dados.length <= maxPontos) return dados;
+
+    const resultado = [];
+    const passo = Math.floor(dados.length / (maxPontos - 1));
+    
+    resultado.push(dados[0]);
+
+    for (let i = 1; i < maxPontos - 1; i++) {
+        const idx = Math.min(i * passo, dados.length - 2);
+        resultado.push(dados[idx]);
+    }
+
+    resultado.push(dados[dados.length - 1]);
+    return resultado;
+}
+
+/* ================================
+         GRÁFICO DE LINHA
+================================ */
+let graficoLinhas = null;
+let dadosGlobais = null;
+
+function plotarGrafico(historicoFiltrado, periodo) {
+    const dadosAmostrados = amostrarDados(historicoFiltrado);
+
+    const labels = dadosAmostrados.map(item => {
+        const data = new Date(item.timestamp);
+        return (periodo === "1h")
+            ? data.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            : `${data.getDate()}/${data.getMonth() + 1}`;
+    });
+
+    const valores = dadosAmostrados.map(item => item.disco);
+
+    if (graficoLinhas) graficoLinhas.destroy();
+
+    graficoLinhas = new Chart(document.getElementById('graficolinhas'), {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Uso do Disco (%)',
+                data: valores,
+                borderColor: '#D2B080',
+                backgroundColor: 'rgba(210, 176, 128, 0.1)',
+                borderWidth: 2,
+                tension: 0.3,
+                pointRadius: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true, max: 100, ticks: { color: "white" } },
+                x: { ticks: { color: "white" } }
+            }
+        }
+    });
+}
+
+/* ================================
+       FUNÇÃO CENTRAL DO GRÁFICO
+================================ */
+function atualizarGrafico() {
+    const periodo = document.getElementById("select_value").value;
+    const discoId = document.getElementById("select_value_disco").value;
+
+    if (!dadosGlobais || !discoId) return;
+
+    const historicoDisco = dadosGlobais.historico.filter(
+        item => item.fk_servidor == discoId
+    );
+
+    const filtrado = filtrarPorPeriodo(historicoDisco, periodo);
+
+    if (filtrado.length > 0) plotarGrafico(filtrado, periodo);
+    else if (graficoLinhas) graficoLinhas.destroy();
+}
+
+
 
 window.onload = () => {
     fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
-        .then(resposta => {
-            if (!resposta.ok) throw "Erro na requisição";
-            return resposta.json();
-        })
+        .then(res => res.json())
         .then(dados => {
-            dadosGlobais = dados; // salva para uso em mudarPeriodo()
-            definirStatusOperacao()
-            DiscosComMaiorRiscoDeFalha(dados)
+
+            console.log("Principal:", dados);
+            console.log("Histórico:", dados.historico);
+
+            dadosGlobais = dados;
+
+            /* --- Preenche select de discos --- */
+            const lista = document.getElementById("lista_opcoes_discos");
+            lista.innerHTML = "";
+
+            dados.servidores.forEach(serv => {
+                const li = document.createElement("li");
+                li.textContent = `${serv.apelidoDisco || serv.nomeMaquina} (${serv.disco}%)`;
+                li.dataset.value = serv.fk_servidor;
+                lista.appendChild(li);
+            });
+
+            // Define o primeiro disco automaticamente
+            if (dados.servidores.length > 0) {
+                const primeira = dados.servidores[0];
+                document.getElementById("select_value_disco").value = primeira.fk_servidor;
+                document.getElementById("select_display_discos").innerHTML =
+                    `${primeira.apelidoDisco || primeira.nomeMaquina} (${primeira.disco}%) <span class='seta'>&#9660;</span>`;
+            }
+
+            // Período padrão (7 dias)
+            document.getElementById("select_value").value = "7d";
+            document.getElementById("select_display").innerHTML =
+                "7 dias <span class='seta'>&#9660;</span>";
+
+            atualizarGrafico();
+
+            definirStatusOperacao();
+            DiscosComMaiorRiscoDeFalha(dados);
             puxarQuantidadeAlertaPorServidor();
-            DiscosQueRecebemMaisRequisicoes(dados)
-            kpiComparativaAlertas()
-            ListagemDosDiscosEmAlerta(dados)
-            plotarGraficoLinha(dados, '7d');
+            DiscosQueRecebemMaisRequisicoes(dados);
+            kpiComparativaAlertas();
+            ListagemDosDiscosEmAlerta(dados);
         })
-        .catch(erro => console.error("Erro:", erro));
+        .catch(err => console.error("Erro:", err));
 };
