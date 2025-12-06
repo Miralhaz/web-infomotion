@@ -21,6 +21,8 @@ let dadosPacketLoss = []
 let parametroPacotesRecebidos = 20000
 let parametroPacotesEnviados = 20000
 let parametroPacketLoss = (parametroPacotesRecebidos / parametroPacotesEnviados) * 0.01
+let parametro_down = 50000
+let parametro_up = 0
 
 let unidadeMedidaDown = '...'
 let unidadeMedidaUp = '...'
@@ -57,7 +59,7 @@ function kpiInternet()  {
               color: (context) => {
                 const value = context.dataset.data[context.dataIndex];
                 if (value < parametro_up * 2) {
-                  return 'yellow'
+                  return '#f59e0b'
                 } else if (value < parametro_up){
                   return 'red'
                 } else return 'green'
@@ -100,9 +102,13 @@ function kpiInternet()  {
           datalabels: {
               color: (context) => {
                 const value = context.dataset.data[context.dataIndex];
-                if (value < parametro_down  * 2) {
+                console.log('value', value);
+                console.log('parametro_down', parametro_down, 'a');
+                
+                
+                if (value < (parametro_down * 1000000)  * 2) {
                   return 'yellow'
-                } else if (value < parametro_down){
+                } else if (value < parametro_down  * 1000000){
                   return 'red'
                 } else return 'green'
               }, 
@@ -263,19 +269,21 @@ function graficoLinhaSecundario() {
         backgroundColor: (context) => {
           const valor = context.raw;
           const valorCorrespondente = ((dadosPacotesEnviados[context.dataIndex] + dadosPacotesRecebidos[context.dataIndex]) * 0.01);
+          const parametroCorrespondente = valorCorrespondente * 0.01
 
-          if (valor > (valorCorrespondente * 2)) return 'red';
-          else if (valor > valorCorrespondente) return '#fffb00ff';
+          if (valor > parametroCorrespondente) return 'red';
+          else if (valor > (parametroCorrespondente * 2)) return '#fffb00ff';
           return '#0cff03ff';
         },
         segment: {
           borderColor: (ctx) => {
             const valorCorrespondente = ((dadosPacotesEnviados[ctx.p1DataIndex] + dadosPacotesRecebidos[ctx.p1DataIndex]) * 0.01);
+            const parametroCorrespondente = valorCorrespondente * 0.01
             if (!ctx.p1 || !ctx.p1.parsed) return 'gray';
             const valor = ctx.p1.parsed.y;
-            if (valor > (valorCorrespondente * 2)) {
+            if (valor >  parametroCorrespondente) {
               return 'red';
-            } else if (valor > valorCorrespondente) {
+            } else if (valor > (parametroCorrespondente * 2)) {
               return '#fffb00ff';
             } else {
               return '#0cff03ff';
@@ -394,7 +402,11 @@ function atualizarDadosServidorSelecionado() {
 }
 
 async function carregarDadosRede() {
-    const nomeArquivoRede = `jsonRede_${idServidorSelecionado}_${tempo}.json`;
+
+    let nomeArquivoRede = `jsonRede_${idServidorSelecionado}_${tempo}.json`;
+    if (idServidorSelecionado == 5) {
+      nomeArquivoRede = `jsonRede_${tempo}.json`
+    }
     console.log('nomeArquivoRede', nomeArquivoRede);
     
 
@@ -430,6 +442,8 @@ async function carregarDadosConexao() {
 }
 
 function carregarGraficosLinha(dados) {
+  console.log('dados', dados);
+  
 
   const tamanhoVetor = dados.length
   let downloadSoma = 0
@@ -515,45 +529,46 @@ function carregarGraficosLinha(dados) {
     unidadeMedidaDown = 'Mbps'
   } else unidadeMedidaDown = 'Kbps'
 
+  parametro_down = dados[0].parametroDown
+  parametro_up = dados[0].parametroUp
 
-
-  let parametro_up = `...`;
+  let parametro_upString = `...`;
   if (dados[0].parametroUp > 1000000) {
-    parametro_up = `Paramêtro máximo: ${(dados[0].parametroUp / 1000000).toFixed(1)}Mbps`
+    parametro_upString = `Paramêtro máximo: ${(dados[0].parametroUp / 1000000).toFixed(1)}Mbps`
   } else if (dados[0].parametroUp > 1000) {
-    parametro_up = `Paramêtro máximo: ${(dados[0].parametroUp / 1000).toFixed(1)}Kbps`
+    parametro_upString = `Paramêtro máximo: ${(dados[0].parametroUp / 1000).toFixed(1)}Kbps`
   } else {
-    parametro_up = `Paramêtro máximo: ${(dados[0].parametroUp).toFixed(1)}Bps`
+    parametro_upString = `Paramêtro máximo: ${(dados[0].parametroUp).toFixed(1)}Bps`
   }
 
-  let parametro_down = `...`;
+  let parametro_downString = `...`;
   if (dados[0].parametroUp > 1000000) {
-    parametro_down = `Paramêtro máximo: ${(dados[0].parametroUp / 1000000).toFixed(1)}Mbps`
+    parametro_downString = `Paramêtro máximo: ${(dados[0].parametroUp / 1000000).toFixed(1)}Mbps`
   } else if (dados[0].parametroUp > 1000) {
-    parametro_down = `Paramêtro máximo: ${(dados[0].parametroUp / 1000).toFixed(1)}Kbps`
+    parametro_downString = `Paramêtro máximo: ${(dados[0].parametroUp / 1000).toFixed(1)}Kbps`
   } else {
-    parametro_down = `Paramêtro máximo: ${(dados[0].parametroUp).toFixed(1)}Bps`
+    parametro_downString = `Paramêtro máximo: ${(dados[0].parametroUp).toFixed(1)}Bps`
   }
 
 
 
 
 
-  document.getElementById('parametro_up').innerHTML = parametro_up
+  document.getElementById('parametro_up').innerHTML = parametro_upString
   document.getElementById('baixo_upload').innerHTML = `${(upload.Media).toFixed(1)} Mbps`
   document.getElementById('baixo_upload').style.fontWeight = `1000`
   if (upload.Media < parametro_up * 2) {
-    document.getElementById('baixo_upload').style.color = `yellow`
+    document.getElementById('baixo_upload').style.color = `#f59e0b`
   } else if (upload.Media < parametro_up) {
     document.getElementById('baixo_upload').style.color = `red`
   } else document.getElementById('baixo_upload').style.color = `green`
 
 
-  document.getElementById('parametro_down').innerHTML = parametro_down
+  document.getElementById('parametro_down').innerHTML = parametro_downString
   document.getElementById('baixo_download').innerHTML = `${(download.Media).toFixed(1)} Mbps`
-  document.getElementById('baixo_upload').style.fontWeight = `1000`
+  document.getElementById('baixo_download').style.fontWeight = `1000`
   if (download.Media < parametro_down * 2) {
-    document.getElementById('baixo_download').style.color = `yellow`
+    document.getElementById('baixo_download').style.color = `#f59e0b`
   } else if (download.Media < parametro_down) {
     document.getElementById('baixo_download').style.color = `red`
   } else document.getElementById('baixo_download').style.color = `green`
