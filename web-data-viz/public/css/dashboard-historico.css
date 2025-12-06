@@ -541,7 +541,7 @@ section.header .header-left .container-submenu:hover .submenu {
 }
 
 
-.dashboard_historico .nome_gráfico {
+.nome_gráfico {
     display: flex;
     flex-direction: row;
     justify-content: center;

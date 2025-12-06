@@ -23,7 +23,7 @@ async function carregarDashboardDoS3() {
 
     const arqTabela = `historicoAlertas_${tempo}.json`;
     const arqLinhas = `historicoAlertasLinhas_${tempo}.json`;
-    const arqDonut = "nivelCriticidadeDonut.json";
+    const arqDonut = `nivelCriticidadeDonut_${tempo}.json`;
 
     console.log("Buscando:", arqTabela, arqLinhas);
 
@@ -229,9 +229,16 @@ function ordenarPor(item) {
 
 function plotarGraficoDonut() {
 
-    if (donutChart) {
-        donutChart.destroy();
-    }
+    const tempo = Number(localStorage.getItem("tempoSelecionado"));
+
+    const canvas = document.getElementById('pieChart');
+    const existingChart = Chart.getChart(canvas);
+    if (existingChart) existingChart.destroy();
+
+    const titulo = tempo > 1
+        ? `Situação dos servidores dos últimos ${tempo} dias`
+        : `Situação dos servidores do último dia`;
+    document.getElementById("nome_gráfico_donut").innerHTML = titulo;
 
     const labels = dadosDonut.map(i => i.classificacao);
     const dados = dadosDonut.map(i => Number(i.quantidade));
@@ -300,10 +307,7 @@ function plotarGraficoDonut() {
         plugins: [ChartDataLabels, textoCentro]
     }
 
-    donutChart = new Chart(
-        document.getElementById(`pieChart`),
-        config
-    );
+    new Chart(canvas, config);
 
 }
 
@@ -316,18 +320,21 @@ function plotarGraficoLinhas(idServidor) {
     const existingChart = Chart.getChart(canvas);
     if (existingChart) existingChart.destroy();
 
-    const tempo = Number(localStorage.getItem("tempoSelecionado"));
     const dadosServidor = serieLinhas
         .filter(d => String(d.fk_servidor) === String(idServidor))
-        .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
+        .sort((a, b) => new Date(a.timestamp.replace(' ', 'T')) - new Date(b.timestamp.replace(' ', 'T')));
+
+    const tempo = Number(localStorage.getItem("tempoSelecionado"));
+
+    const labels = dadosServidor.map(d =>
+        tempo != 1 ? formatarBR(d.timestamp) : (d.timestamp)
+    );
 
     if (dadosServidor.length === 0) {
         console.log("Sem dados de linhas para esse servidor.");
         return;
     }
 
-
-    const labels = dadosServidor.map(d => d.timestamp);
     const cpu = dadosServidor.map(d => Number(d.alertasCpu));
     const ram = dadosServidor.map(d => Number(d.alertasRam));
     const disco = dadosServidor.map(d => Number(d.alertasDisco));
@@ -479,10 +486,10 @@ function plotarGraficoBarra(idServidor) {
         data: {
             labels: [" "],
             datasets: [
-                {label: "CPU", data: [cpu], backgroundColor: "#d9b98a"},
-                {label: "RAM", data: [ram], backgroundColor: "#E2E2E2"},
-                {label: "DISCO", data: [disco], backgroundColor: "#BD953F"},
-                {label: "REDE", data: [rede], backgroundColor: "#8c6f45"}
+                { label: "CPU", data: [cpu], backgroundColor: "#d9b98a" },
+                { label: "RAM", data: [ram], backgroundColor: "#E2E2E2" },
+                { label: "DISCO", data: [disco], backgroundColor: "#BD953F" },
+                { label: "REDE", data: [rede], backgroundColor: "#8c6f45" }
             ]
         },
         options: {
@@ -490,24 +497,25 @@ function plotarGraficoBarra(idServidor) {
             maintainAspectRatio: false,
             indexAxis: 'y',
             scales: {
-                y: { 
-                    stacked: true, 
-                    ticks: {color: "white"}, 
-                    grid: {display: false} 
+                y: {
+                    stacked: true,
+                    ticks: { color: "white" },
+                    grid: { display: false }
                 },
-                x: {stacked: true, 
-                    beginAtZero: true, 
-                    ticks: {color: "white"}, 
-                    grid: {color: "rgba(153, 153, 153, 0.2)"}
+                x: {
+                    stacked: true,
+                    beginAtZero: true,
+                    ticks: { color: "white" },
+                    grid: { color: "rgba(153, 153, 153, 0.2)" }
                 }
             },
             plugins: {
-                legend: { 
-                    position: "bottom", 
-                    labels: { 
-                        usePointStyle: true, 
-                        color: "white" 
-                    } 
+                legend: {
+                    position: "bottom",
+                    labels: {
+                        usePointStyle: true,
+                        color: "white"
+                    }
                 },
                 tooltip: {
                     callbacks: {
@@ -538,4 +546,9 @@ function acionarFiltro() {
     } else {
         menu.classList.add("show");
     }
+}
+
+function formatarBR(ts) {
+    const d = new Date(ts.replace(' ', 'T'));
+    return d.toLocaleDateString('pt-BR');
 }
