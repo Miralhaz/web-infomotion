@@ -104,14 +104,15 @@
         </table>
       </div>
 
-      <div class="gráfico_chart">
-        <div class="nome_gráfico" id="titulo">
-          <a>Situação dos servidores</a>
+      <div class="gráfico_chart_bar">
+        <div class="nome_gráfico" id="nome_gráfico_linhas2">
+          <a>Situação do servidor</a>
         </div>
-        <div class="div-pie-chart">
-          <canvas id="pieChart" class="grafico_alertas_tempo"></canvas>
+        <div class="div-bar_chart">
+          <canvas id="barChart" class="grafico_alertas_tempo" style="width: 60%;"></canvas>
         </div>
       </div>
+      
     </div>
 
 
@@ -123,37 +124,19 @@
           <a>Situação dos servidores</a>
         </div>
         <div class="div-line-historico">
-          <canvas id="lineChartHistorico" class="grafico_alertas_tempo" style="width: 100%;"></canvas>
+          <canvas id="lineChartHistorico" class="grafico_alertas_tempo" style="width: 50%;"></canvas>
         </div>
       </div>
 
-      <div class="grafico_bubble">
-        <div class="nome_gráfico" id="nome_gráfico">
-
-          <div class="filtro-wrapper">
-            <img src="../assets/imgs-dashboard/mynaui_filter_white.png" class="img-filtro" onclick="acionarFiltro()">
-
-            <div class="filtro-menu" id="menu">
-              <div class="opcoes-menu">
-                <button onclick="carregarBolhas('cpu')">CPU</button>
-                <button onclick="carregarBolhas('ram')">RAM</button>
-                <button onclick="carregarBolhas('disco')">DISCO</button>
-                <button onclick="carregarBolhas('temp_cpu')">TEMPERATURA DE CPU</button>
-                <button onclick="carregarBolhas('temp_disco')">TEMPERATURA DE DISCO</button>
-                <button onclick="carregarBolhas('upload')">REDE - UPLOAD</button>
-                <button onclick="carregarBolhas('download')">REDE - DOWNLOAD</button>
-                <button onclick="carregarBolhas('pckt_rcvd')">REDE - Pacotes recebidos</button>
-                <button onclick="carregarBolhas('pckt_snt')">REDE - Pacotes enviados</button>
-              </div>
-            </div>
-          </div>
-
-          <a>Criticidade de componentes</a>
+      <div class="gráfico_chart_donut">
+        <div class="nome_gráfico" id="nome_gráfico_donut">
+          <a>Situação dos servidores</a>
         </div>
-        <div class="div-bubble-chart">
-          <canvas id="bubbleChart" class="grafico_alertas_tempo"></canvas>
+        <div class="div-pie-chart">
+          <canvas id="pieChart" class="grafico_alertas_tempo"></canvas>
         </div>
       </div>
+      
     </div>
   </div>
   </div>
