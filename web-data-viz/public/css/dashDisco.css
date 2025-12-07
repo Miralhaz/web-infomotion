@@ -5,7 +5,7 @@
   --amareloOpacityLow: #ffc64bb7;
   --cinza: #E2E1DE;
   --branco: #fff;
-  --preto: #000;
+  --preto: #181818;
   --cinzaEscuro: #1c1c1c;
   --cinzaHeader: #222;
   --cinzaDash: #353535f3; 
@@ -337,7 +337,7 @@ section.header .header-left .container-submenu:hover .submenu {
 .kpi,
 .dashboard,
 table {
-  background-color: #000; /* fundo preto */
+  background-color: #181818; /* fundo preto */
   border-radius: 12px;
   padding: 0px;
   flex: 1 1 300px; /* responsivo: cresce, mas com largura mínima */
@@ -358,6 +358,7 @@ table {
   box-sizing: border-box;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  font-size: 2.5vh;
 }
 
 .titulo p {
@@ -405,6 +406,7 @@ table caption {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   color: black;
+  font-size: 2.5vh;
 }
 
 table thead {

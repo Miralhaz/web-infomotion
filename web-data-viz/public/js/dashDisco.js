@@ -312,40 +312,65 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
 }
 
 function DiscosComMaiorRiscoDeFalha(dados) {
-    const servidoresComParametro = [];
+    // 1. Prepara lista com distância do parâmetro
+    const discosComDistancia = [];
     
     for (let i = 0; i < dados.servidores.length; i++) {
         const servidor = dados.servidores[i];
         const parametro = dados.parametrosAlerta[servidor.fk_servidor];
-        const limiteTemp = parametro ? parametro.limiteTemperatura : 45.0;
+        const limiteTemp = parametro ? parseFloat(parametro.limiteTemperatura) : 45.0;
         
-        servidoresComParametro.push({
+        // Calcula distância (pode ser negativa se ultrapassou)
+        const distancia = limiteTemp - servidor.temperatura_disco;
+        
+        discosComDistancia.push({
             apelido: servidor.apelidoDisco || servidor.nomeMaquina,
             temperatura: servidor.temperatura_disco,
-            parametro: limiteTemp
+            parametro: limiteTemp,
+            distancia: distancia // negativo = já ultrapassou
         });
     }
     
-    for (let i = 0; i < servidoresComParametro.length; i++) {
-        for (let j = i + 1; j < servidoresComParametro.length; j++) {
-            if (servidoresComParametro[i].temperatura < servidoresComParametro[j].temperatura) {
-                const temp = servidoresComParametro[i];
-                servidoresComParametro[i] = servidoresComParametro[j];
-                servidoresComParametro[j] = temp;
+    // 2. Ordena por distância (menor primeiro)
+    // Quem tem distância negativa (ultrapassou) vem primeiro
+    // Depois quem está mais próximo (distância pequena positiva)
+    for (let i = 0; i < discosComDistancia.length; i++) {
+        for (let j = i + 1; j < discosComDistancia.length; j++) {
+            const distA = discosComDistancia[i].distancia;
+            const distB = discosComDistancia[j].distancia;
+            
+            // Se A ultrapassou e B não, A vem primeiro
+            if (distA < 0 && distB >= 0) {
+                continue; // A já está na frente
+            }
+            // Se B ultrapassou e A não, troca
+            else if (distB < 0 && distA >= 0) {
+                const temp = discosComDistancia[i];
+                discosComDistancia[i] = discosComDistancia[j];
+                discosComDistancia[j] = temp;
+            }
+            // Se ambos ultrapassaram ou ambos não, ordena por distância (menor primeiro)
+            else if (distA > distB) {
+                const temp = discosComDistancia[i];
+                discosComDistancia[i] = discosComDistancia[j];
+                discosComDistancia[j] = temp;
             }
         }
     }
     
+    // 3. Atualiza os elementos
     const elementos = [discotemp1, discotemp2, discotemp3];
     
+    // Limpa
     for (let i = 0; i < elementos.length; i++) {
         elementos[i].innerHTML = "Sem dados";
-        elementos[i].className = ""; 
+        elementos[i].className = "";
     }
     
-    for (let i = 0; i < Math.min(3, servidoresComParametro.length); i++) {
-        const disco = servidoresComParametro[i];
-        const ultrapassou = disco.temperatura > disco.parametro;
+    // Preenche top 3
+    for (let i = 0; i < Math.min(3, discosComDistancia.length); i++) {
+        const disco = discosComDistancia[i];
+        const ultrapassou = disco.distancia < 0;
         
         elementos[i].innerHTML = 
             `${disco.apelido}: ${disco.temperatura.toFixed(1)}°C / Parâmetro: ${disco.parametro.toFixed(1)}°C`;
