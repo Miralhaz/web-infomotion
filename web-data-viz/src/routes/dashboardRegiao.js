@@ -1,14 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const dashboardTemperaturaController = require('../controllers/dashboardTemperaturaController');
+const dashboardRegiaoController = require('../controllers/dashboardRegiaoController');
 
-router.get('/:componente/:idServidor/:periodo', dashboardTemperaturaController.lerArquivoPorServidor);
+router.get('/lerArquivoHorario/:idRegiao', dashboardRegiaoController.lerArquivoHorario);
 
-router.get('/processos/:arquivo', dashboardTemperaturaController.lerArquivoProcessos);
+router.get('/lerArquivoPrevisao/:idRegiao', dashboardRegiaoController.lerArquivoPrevisao);
 
-router.get("/buscarParametro/:idServidor", function (req, res){
-  dashboardTemperaturaController.buscarParametros(req, res);
-});
+router.get('/lerArquivoKpi/:idRegiao', dashboardRegiaoController.lerArquivoPrevisao);
 
 module.exports = router;
