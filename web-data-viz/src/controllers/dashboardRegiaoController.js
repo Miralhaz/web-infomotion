@@ -12,6 +12,8 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
+
+
 async function lerArquivoHorario(req, res) {
   try {
     
@@ -31,7 +33,6 @@ async function lerArquivoHorario(req, res) {
     const textoArquivo = dados.Body.toString('utf-8');
 
     const dadosJson = JSON.parse(textoArquivo);
-    console.log(dadosJson )
     res.json(dadosJson);
 
   } catch (erro) {
@@ -78,7 +79,7 @@ async function lerArquivoKpi(req, res) {
     const idRegiao = req.params.idRegiao; 
 
 
-    let pastaS3 = `/DashBoard_Regiao/RegiaoKpi${idRegiao}.json`;
+    let pastaS3 = `DashBoard_Regiao/RegiaoKpi${idRegiao}.json`;
 
     console.log(pastaS3)
   
@@ -93,6 +94,7 @@ async function lerArquivoKpi(req, res) {
     const textoArquivo = dados.Body.toString('utf-8');
 
     const dadosJson = JSON.parse(textoArquivo);
+
 
     res.json(dadosJson);
 

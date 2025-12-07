@@ -236,8 +236,8 @@ function plotarGraficoDonut() {
     if (existingChart) existingChart.destroy();
 
     const titulo = tempo > 1
-        ? `Situação dos servidores que tiveram alertas nos últimos ${tempo} dias`
-        : `Situação dos servidores que tiveram alertas no último dia`;
+        ? `Situação dos servidores nos últimos ${tempo} dias`
+        : `Situação dos servidores no último dia`;
     document.getElementById("nome_gráfico_donut").innerHTML = titulo;
 
     const labels = dadosDonut.map(i => i.classificacao);

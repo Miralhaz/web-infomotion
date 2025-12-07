@@ -7,6 +7,10 @@ router.get("/receberRegiao/:idServer", function (req, res) {
   servidoresController.receberRegiao(req, res);
 });
 
+router.get('/buscarRamRegiao/:idRegiao',function (req, res) {
+    servidoresController.buscarRamRegiao(req, res);
+});
+
 router.get("/listarRegioes/:empresaId", function (req, res) {
     servidoresController.listarRegioes(req, res);
 });

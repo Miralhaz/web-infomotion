@@ -7,6 +7,7 @@ router.get('/lerArquivoHorario/:idRegiao', dashboardRegiaoController.lerArquivoH
 
 router.get('/lerArquivoPrevisao/:idRegiao', dashboardRegiaoController.lerArquivoPrevisao);
 
-router.get('/lerArquivoKpi/:idRegiao', dashboardRegiaoController.lerArquivoPrevisao);
+router.get('/lerArquivoKpi/:idRegiao', dashboardRegiaoController.lerArquivoKpi);
+
 
 module.exports = router;
