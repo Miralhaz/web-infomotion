@@ -71,7 +71,7 @@
                                 <canvas id="grafico-barra-previsao"></canvas>
                             </div>
                             <div class="container-canva">
-                                <canvas id = "grafico-linha-previsao"></canvas>
+                                <canvas id ="grafico-linha-previsao"></canvas>
                             </div>
                         </div>
                     </div>
@@ -82,9 +82,9 @@
                             <h2>Lista de Regiões</h2>
                             <div style="display: flex; flex-direction: row; gap: 10px; "> 
                             <p>NOME</p>
-                            <p>\</p>
+                            <p>/</p>
                             <p>PAIS</p>
-                            <p>\</p>
+                            <p>/</p>
                             <p>ID</p>
                             </div>
                         </div>
@@ -102,31 +102,23 @@
 
                     <div class="grafico-horarioDePico">
                         <div class="card-dash">
-                            <h3>Requisições estimadas por hora do dia</h3>
+                            <h3>Requisições por horario da ultima semana</h3>
                         </div>
                         <div class="container-canva">
                             <canvas id="grafico-barra-horarioDePico"></canvas>
                         </div>
                     </div>
 
-                    <div class="container-kpi-mini">
-                        <div class="kpi">
-                            <div class="card-dash-kpi">Dia com maior risco</div>
-                        </div>
-                        <div class="kpi">
-                            <div  class="card-dash-kpi">Risco uso excessivo de RAM</div>
-                        </div>
-                      
-                        <div class="kpi">
-                            <div class="card-dash-kpi">Quantidade de RAM indicada</div>
-                        </div>
-                    </div>
-
+                
                     <div class="descicao-regiao">
-                        <div class="card-dash">
-                            <h3>Informações de região</h3>
+                        <div class="card-dash"><h3>Informações de região</h3></div>
+                        <div class="card-info">
+                            <p id="id_total_ram" >Quantidade de <span>RAM</span> total: </p>
+                            <p id="id_ram_prevista">pico de <span>RAM</span> Prevista:  </p>  
+                            <p id="id_estado">Estado: </p>
+                            <p id="id_cep">Cep: </p>
+                            <p id="id_zona">Zona: </p>
                         </div>
-                        <div></div>
                     </div>
 
                 </div>

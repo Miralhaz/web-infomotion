@@ -4,15 +4,62 @@ listarRegioes()
 
 function listarRegioes() {
   const empresaId = sessionStorage.getItem('ID_EMPRESA')
-  console.log("Empresa ID= " + empresaId)
   const select = document.getElementById("select_regiao")
 
   fetch(`/servidores/listarRegioes/${empresaId}`)
     .then(res => res.json())
     .then(regioes => {
-      let listarRegioesDaEmpresa = regioes.map(item => item);
-      console.log(listarRegioesDaEmpresa)
+      let listarRegioesDaEmpresa = regioes.map(item => item)
       criarListaRegiao(listarRegioesDaEmpresa)
+      
+    })
+    .catch(err => {
+      console.error("Erro ao carregar regiões:", err);
+      select.innerHTML = "<option>Erro ao carregar regiões</option>";
+    });
+}
+
+
+function buscarRamRegiao(idRegiao){
+ fetch(`/servidores/buscarRamRegiao/${idRegiao}`)
+    .then(res => res.json())
+    .then(resposta => {
+      let total = resposta[0].totalRam
+      id_total_ram.innerHTML = `Quantidade de <span>RAM</span> total: ${total.toFixed(2)} GB`
+    })
+    .catch(err => {
+      console.error("Erro ao carregar regiões:", err);
+      select.innerHTML = "<option>Erro ao carregar regiões</option>";
+    });
+
+
+
+
+
+
+}
+
+function buscarInfo(idRegiao) {
+  const empresaId = sessionStorage.getItem('ID_EMPRESA')
+  const select = document.getElementById("select_regiao")
+
+  fetch(`/servidores/listarRegioes/${empresaId}`)
+    .then(res => res.json())
+    .then(regioes => {
+      
+
+      for(i = 0; i < regioes.length; i++){
+        if(regioes[i].id == idRegiao){
+          let cep = regioes[i].codigo_postal 
+          let estado = regioes[i].estado
+          let zona = regioes[i].zona
+          id_cep.innerHTML = `Cep: ${cep}`
+          id_estado.innerHTML = `Estado: ${estado}`
+         id_zona.innerHTML = `Zona: ${zona}`
+        }
+
+        
+      }
       
     })
     .catch(err => {
@@ -28,6 +75,7 @@ for(i = 0; i < lista.length; i++){
   nome =  regiao.nome
   pais = regiao.pais
   id = regiao.id
+  cep = regiao.codigo_postal
   html+= `
 <div class="container-card-regiao" onclick="buscarParametros(${id})">
 <div class="card-regiao">
@@ -35,15 +83,17 @@ for(i = 0; i < lista.length; i++){
 </div>    
 </div>
 `
+}
+buscarParametros(lista[0].id) 
 id_lista_regiao.innerHTML = html
 }
 
-}
-
  function buscarParametros(idRegiao) {
-  lerArquivoPrevisao(idRegiao)
- // lerArquivoHorario(idRegiao)
- // lerArquivoKpi(idRegiao)
+ lerArquivoPrevisao(idRegiao)
+ lerArquivoHorario(idRegiao)
+ lerArquivoKpi(idRegiao)
+ buscarInfo(idRegiao)
+ buscarRamRegiao(idRegiao)
 }
 
 async function lerArquivoHorario(idRegiao) {
@@ -51,13 +101,13 @@ async function lerArquivoHorario(idRegiao) {
     const url = `/dashboardRegiao/lerArquivoHorario/${idRegiao}`;
     const resposta = await fetch(url);
     
-    const dados = resposta.json();
+    const dados = await resposta.json();
 
-    console.log('dados' + dados)
-    if (!Array.isArray(dados) || dados.length === 0) {
-      console.log('Sem dados');
-      return;
-    }
+    let horas = dados.map(dados => dados.Hora)
+    let requisicoes = dados.map(dados => dados.Requsicoes)
+
+    criarGraficoDeHorario(horas,requisicoes)
+
 
   } catch (erro) {
     console.error('Erro ao carregar dados CPU:', erro);
@@ -88,14 +138,12 @@ async function lerArquivoKpi(idRegiao) {
 try {
     const url = `/dashboardRegiao/lerArquivoKpi/${idRegiao}`;
     const resposta = await fetch(url);
-    const dados = resposta.json();
+    const dadosKPI = await resposta.json();
 
-    if (!Array.isArray(dados) || dados.length === 0) {
-      console.log('Sem dados');
-      return;
-    }else{
+    let maiorPrevisaoDeRam = dadosKPI.map(dados => dados.UsoDeRam)
 
-    }
+    id_ram_prevista.innerHTML = `pico de <span>RAM</span> Prevista: ${maiorPrevisaoDeRam} GB `
+
 
   } catch (erro) {
     console.error('Erro ao carregar dados CPU:', erro);
@@ -241,12 +289,12 @@ function criarGraficoDeHorario(horarios,req){
   new Chart(ctxPico, graficoPico = {
     type: 'bar',
     data: {
-      labels: [horarios],
+      labels: horarios,
       datasets: [
         {
           type: 'bar',
           label: 'Requisições',
-          data: [req],
+          data: req,
           backgroundColor: ['#ffe09cff'],
           yAxisID: 'y',
           xAxisID: 'x'

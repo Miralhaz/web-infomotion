@@ -215,7 +215,7 @@ function receberRegiao(idServer){
 }
 
 function listarRegioes(empresaId){
-  var instrucaoSql = `SELECT id, nome, codigo_postal, pais, cidade FROM regiao WHERE fk_empresa = ${empresaId};`
+  var instrucaoSql = `SELECT * FROM regiao WHERE fk_empresa = ${empresaId};`
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
   return database.executar(instrucaoSql);
@@ -231,6 +231,19 @@ function atualizarRegiao(idServidor, idRegiao) {
   console.log("Executando SQL:", instrucaoSql);
   return database.executar(instrucaoSql);
 }
+
+
+function buscarRamRegiao(idRegiao){
+  var instrucaoSql = `select sum(ec.valor) as totalRam from especificacao_componente as ec 
+inner join componentes as c on ec.fk_componente = c.id
+inner join servidor as s on c.fk_servidor = s.id 
+inner join regiao as r on s.fk_regiao = r.id
+where r.id = "${idRegiao}" and ec.nome_especificacao = "Ram total (GB)"; `
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  return database.executar(instrucaoSql);
+}
+
 
 async function buscartickets(idServidor, tempo, termo){
   try {
@@ -281,5 +294,6 @@ module.exports = {
   atualizarRegiao,
   cadastrarRede,
   receberAlertasPorServidor,
-  buscartickets
+  buscartickets,
+  buscarRamRegiao
 }
