@@ -8,7 +8,7 @@
   --preto: #000;
   --cinzaEscuro: #1c1c1c;
   --cinzaHeader: #222;
-  --cinzaDash: #353535f3; 
+  --cinzaDash: #181818; 
 }
 
 * {
@@ -152,7 +152,7 @@ section.header .header-left .container-submenu:hover .submenu {
   margin-left: 50%;
   margin-top: 15px;
   padding: 10px;
-  color: black;
+  color: var(--cinzaDash);
 }
 
 .div-selects {
@@ -219,7 +219,7 @@ section.header .header-left .container-submenu:hover .submenu {
 /*kpi de alertas inicio*/
 
 .kpi.alertas .kpi-header h2 {
-    color: black;
+    color: var(--cinzaDash);
     background-color: white;
     font-size: 1rem;
     text-align: center;
@@ -286,7 +286,7 @@ section.header .header-left .container-submenu:hover .submenu {
     font-weight: bold;
 }
 .parte_final .listaOperacional{
-  background-color: #000; 
+  background-color: var(--cinzaDash); 
   border-radius: 12px;
   padding: 0px;
   flex: 1 1 300px; /* responsivo: cresce, mas com largura mínima */
@@ -299,7 +299,7 @@ section.header .header-left .container-submenu:hover .submenu {
 .parte_final .chart2{
   height: 300px;
 
-  background-color: var(--preto);
+  background-color: var(--cinzaDash);
   opacity: 1;
   border-radius: 8px;
   display: flex;
@@ -337,7 +337,7 @@ section.header .header-left .container-submenu:hover .submenu {
 .kpi,
 .dashboard,
 table {
-  background-color: #000; /* fundo preto */
+  background-color: var(--cinzaDash); /* fundo preto */
   border-radius: 12px;
   padding: 0px;
   flex: 1 1 300px; /* responsivo: cresce, mas com largura mínima */
@@ -578,7 +578,7 @@ table td {
 }
 
 .grafico-linha-hist {
-  background-color: var(--preto);
+  background-color: var(--cinzaDash);
   opacity: 1;
   border-radius: 8px;
   display: flex;

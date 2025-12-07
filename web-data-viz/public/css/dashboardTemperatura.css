@@ -8,7 +8,7 @@
   --preto: #000;
   --cinzaEscuro: #1c1c1c;
   --cinzaHeader: #222;
-  --cinzaDash: #353535f3;
+  --cinzaDash: #181818;
 }
 
 * {
@@ -203,7 +203,7 @@ section.header .header-left .container-submenu:hover .submenu {
   width: 23%;
   display: flex;
   flex-direction: column;
-  background-color: var(--preto);
+  background-color: var(--cinzaDash);
   border-radius: 8px;
   align-items: center;
   padding: 0 0 10px 0;
@@ -444,7 +444,7 @@ section.header .header-left .container-submenu:hover .submenu {
 .grafico-linha-curto-prazo,
 .grafico-dispersao-temperatura,
 .top-processos {
-  background-color: var(--preto);
+  background-color: var(--cinzaDash);
   opacity: 1;
   border-radius: 8px;
   display: flex;
