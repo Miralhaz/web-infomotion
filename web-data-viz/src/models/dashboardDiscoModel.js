@@ -87,7 +87,7 @@ inner join parametro_alerta as p on a.fk_parametro = p.id
 inner join componentes as c on p.fk_componente = c.id
 inner join servidor as s on c.fk_servidor = s.id
 inner join empresa as e on s.fk_empresa = e.id
-where c.tipo = "DISCO" AND DATE(a.dt_registro) = CURDATE() and e.id = ${idEmpresa};`;
+where c.tipo = "DISCO" AND DATE(a.dt_alerta) = CURDATE() and e.id = ${idEmpresa};`;
 
   return database.executar(instrucaoSql);
 }
@@ -102,7 +102,7 @@ inner join parametro_alerta as p on a.fk_parametro = p.id
 inner join componentes as c on p.fk_componente = c.id
 inner join servidor as s on c.fk_servidor = s.id
 inner join empresa as e on s.fk_empresa = e.id
-where c.tipo = "DISCO" AND DATE(a.dt_registro) = CURDATE() - INTERVAL 1 DAY and e.id = ${idEmpresa};`;
+where c.tipo = "DISCO" AND DATE(a.dt_alerta) = CURDATE() - INTERVAL 1 DAY and e.id = ${idEmpresa};`;
 
   return database.executar(instrucaoSql);
 }
@@ -119,7 +119,7 @@ inner join parametro_alerta as p on a.fk_parametro = p.id
 inner join componentes as c on p.fk_componente = c.id
 inner join servidor as s on c.fk_servidor = s.id
 inner join empresa as e on s.fk_empresa = e.id
-where c.tipo = "DISCO" and e.id = ${idEmpresa} and DATE(a.dt_registro) = CURDATE();`;
+where c.tipo = "DISCO" and e.id = ${idEmpresa} and DATE(a.dt_alerta) = CURDATE();`;
 
   return database.executar(instrucaoSql);
 }

@@ -1,9 +1,6 @@
 var regiao = "";
 
-
-
 listarRegioes()
-
 
 function listarRegioes() {
   const empresaId = sessionStorage.getItem('ID_EMPRESA')
@@ -14,8 +11,9 @@ function listarRegioes() {
     .then(res => res.json())
     .then(regioes => {
       let listarRegioesDaEmpresa = regioes.map(item => item);
-
       console.log(listarRegioesDaEmpresa)
+      criarListaRegiao(listarRegioesDaEmpresa)
+      
     })
     .catch(err => {
       console.error("Erro ao carregar regiões:", err);
@@ -23,76 +21,104 @@ function listarRegioes() {
     });
 }
 
+function criarListaRegiao(lista){
+html = ""
+for(i = 0; i < lista.length; i++){
+  regiao = lista[i];
+  nome =  regiao.nome
+  pais = regiao.pais
+  id = regiao.id
+  html+= `
+<div class="container-card-regiao" onclick="buscarParametros(${id})">
+<div class="card-regiao">
+<p>${nome}<b> / </b>${pais}<b> / </b>${id}</p>    
+</div>    
+</div>
+`
 
-
-
-
-
-function buscarParametros() {
-
-  fetch(`/dashboardRegiao/buscarParametro/${idRegiao}`)
-    .then(function (resposta) {
-      if (resposta.ok) {
-        resposta.json().then(function (dados) {
-          const paragrafoParametroCPU = document.getElementById('paragrafo-parametro-cpu');
-          const paragrafoParametroDisco = document.getElementById('paragrafo-parametro-disco');
-
-          let maxAlertaCPU, maxAlertaDisco;
-
-          if (dados.length > 0) {
-
-            const parametroCPU = dados.find(item =>
-              item.tipo_componente && item.tipo_componente.toUpperCase() === 'CPU'
-            );
-
-            const parametroDisco = dados.find(item =>
-              item.tipo_componente && item.tipo_componente.toUpperCase() === 'DISCO'
-            )
-
-            if (parametroCPU) {
-              maxAlertaCPU = parametroCPU.max_alerta;
-              paragrafoParametroCPU.innerHTML = `Parâmetro Atual Temp. CPU: ${maxAlertaCPU}°C`;
-            }
-
-            if (parametroDisco) {
-              maxAlertaDisco = parametroDisco.max_alerta;
-              paragrafoParametroDisco.innerHTML = `Parâmetro Atual Temp. Disco: ${maxAlertaDisco}°C`
-            }
-
-            const tempCPUAdesivo = document.querySelector('.kpi1 p[style*="margin-top: 3%"]');
-            if (tempCPUAdesivo) {
-              tempCPUAdesivo.textContent = `Parâmetro Atual Temp. CPU: ${maxAlertaCPU}°C`;
-            }
-
-            const tempDiscoAdesivo = document.querySelector('.kpi2 p[style*="margin-top: 3%"]');
-            if (tempDiscoAdesivo) {
-              tempDiscoAdesivo.textContent = `Parâmetro Atual Temp. Disco: ${maxAlertaDisco}°C`;
-            }
-
-            carregarDadosCpu(idServidor, maxAlertaCPU);
-            carregarDadosDisco(idServidor, maxAlertaDisco);
-          }
-        })
-      }
-    })
+}
+buscarParametros(lista[0].id) 
+id_lista_regiao.innerHTML = html
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const ctx = document.getElementById('grafico-barra-previsao');
+ function buscarParametros(idRegiao) {
+ lerArquivoPrevisao(idRegiao)
+ lerArquivoHorario(idRegiao)
+ lerArquivoKpi(idRegiao)
+}
 
-  const graficoPrevisaoBarra = {
+async function lerArquivoHorario(idRegiao) {
+   try {
+    const url = `/dashboardRegiao/lerArquivoHorario/${idRegiao}`;
+    const resposta = await fetch(url);
+    
+    const dados = await resposta.json();
+
+    let horas = dados.map(dados => dados.Hora)
+    let requisicoes = dados.map(dados => dados.Requsicoes)
+
+    criarGraficoDeHorario(horas,requisicoes)
+
+
+  } catch (erro) {
+    console.error('Erro ao carregar dados CPU:', erro);
+  }
+}
+
+async function lerArquivoPrevisao(idRegiao) {
+try {
+    const url = `/dashboardRegiao/lerArquivoPrevisao/${idRegiao}`;
+    const resposta = await fetch(url);
+    console.log(resposta + "resposta")
+    const dados = await resposta.json();
+    let data = dados.map(dados => dados.Data)
+    let chance = dados.map(dados => dados.ChanceDeAlteracao)
+    let qtdReq = dados.map(dados => dados.Requsicoes)
+    let porcentagem = dados.map(dados => dados.PorcentagemDeAumento)
+
+    criarGraficoBarrasPrevisao(data,qtdReq)
+    criarGraficoLinhasPrevisao(data,porcentagem,chance)
+   
+
+  } catch (erro) {
+    console.error('Erro :', erro);
+  }
+}
+
+async function lerArquivoKpi(idRegiao) {
+try {
+    const url = `/dashboardRegiao/lerArquivoKpi/${idRegiao}`;
+    const resposta = await fetch(url);
+    const dados = await resposta.json();
+
+   let data = dados.map(dados => dados.Data)
+    let chance = dados.map(dados => dados.ChanceDeAlteracao)
+    let qtdReq = dados.map(dados => dados.Requsicoes)
+    let porcentagem = dados.map(dados => dados.PorcentagemDeAumento)
+    let maiorPrevisaoDeRam = dados.map(dados => dados.UsoDeRam)
+
+
+
+  } catch (erro) {
+    console.error('Erro ao carregar dados CPU:', erro);
+  }
+}
+
+function criarGraficoBarrasPrevisao(datas,dados) {  
+  const ctx = document.getElementById('grafico-barra-previsao').getContext('2d');
+  new Chart(ctx, {   
     type: 'bar',
     data: {
-      labels: ['24/11/25', '25/11/25', '26/11/25', '27/11/25', '28/11/25', '29/11/25', '3O/11/25', '31/11/25', '01/12/25', '02/12/25', '03/12/25', '04/12/25', '05/12/25', '06/12/25', '07/12/25', '08/12/25', '09/12/25'],
+      labels: datas,
       datasets: [
         {
-          type: 'bar',
           label: 'Requisições',
-          data: [45000, 30000, 15000, 15000, 15000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000],
+          data: dados,
           backgroundColor: ['#ffe09cff'],
+          color: '#ffffff',
           yAxisID: 'y',
           xAxisID: 'x'
-        },
+        }
       ]
     },
     options: {
@@ -100,73 +126,68 @@ document.addEventListener('DOMContentLoaded', () => {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display: true, scales: false, title: {
+          display: true,
+          title: {
             display: true,
-            text: 'Quantidade de requisições previstas nos proximos 16 dias',
+            text: 'Quantidade de requisições previstas nos próximos 16 dias',
             color: '#ffffff',
             font: {
-              size: 24,
+              size: 24
             }
           },
-          labels: { usePointStyle: true }
+          labels: {
+            usePointStyle: true,
+          color: '#ffffff',
+          }
         }
       },
       scales: {
         x: {
-          grid: {
-            display: false
-          },
-          bounds: 'data'
+          grid: { display: false },
+          bounds: 'data',
+          color: '#ffffff'
         },
         y: {
           type: 'linear',
           position: 'left',
-          display: true,
           beginAtZero: true,
-          grid: {
-            color: '#a1a1a1b7'
-          }
-        },
+          color: '#ffffff',
+          grid: { color: '#ffffffb7' }
+        }
       }
     }
-  };
+  }); 
+} 
 
-  new Chart(ctx, graficoPrevisaoBarra);
-})
-
-document.addEventListener('DOMContentLoaded', () => {
+function criarGraficoLinhasPrevisao(datas,previsao,chance) {
   const ctx = document.getElementById('grafico-linha-previsao');
 
-  const graficoPrevisaoLinha = {
+  new Chart(ctx, {
     type: 'line',
     data: {
-      labels: ['24/11/25', '25/11/25', '26/11/25', '27/11/25', '28/11/25', '29/11/25', '3O/11/25', '31/11/25', '01/12/25', '02/12/25', '03/12/25', '04/12/25', '05/12/25', '06/12/25', '07/12/25', '08/12/25', '09/12/25'],
+      labels: datas,
       datasets: [
         {
-          type: 'line',
           label: 'Estimativa percentual de aumento nas requisições',
-          data: [25.2, 23.1, 12.3, 13.8, 34.3, 54.43, 23.1, 32.2, 12.3, 34.2, 12.1, 12.3, 17.2, 23.2, 18.4, 20.3, 32.9],
+          data: previsao,
           borderWidth: 3,
-          borderColor: ['#fdf076ff'],
-          pointBackgroundColor: ['black'],
+          borderColor: '#fdf076ff',
+          backgroundColor: 'transparent',
+          pointBackgroundColor: 'black',
           pointHitRadius: 5,
-          yAxisID: 'y',
-          xAxisID: 'x'
+          yAxisID: 'y'
         },
         {
-          type: 'line',
-          label: 'Probabilidade de interferencia climatica nas requisições %',
-          data: [32.0, 30.0, 21.0, 15.0, 15.5, 20.3, 23.3, 25.5, 39.8, 44.5, 45.2, 20.3, 22, 3, 21.2, 23.4, 43.4, 12.3],
-          backgroundColor: ['#48b9db48'],
-          borderColor: ['#5dabdfff'],
-          fill: true,
-          pointBackgroundColor: ['white'],
-          pointHitRadius: 5,
+          label: 'Probabilidade de interferência climática nas requisições %',
+          data: chance,
           borderWidth: 3,
-          yAxisID: 'y',
-          xAxisID: 'x'
-        },
-     
+          borderColor: '#5dabdfff',
+          backgroundColor: 'rgba(72, 185, 219, 0.3)', 
+          fill: true,
+          pointBackgroundColor: 'a1a1a1b7',
+          pointHitRadius: 5,
+          yAxisID: 'y'
+        }
       ]
     },
     options: {
@@ -174,64 +195,64 @@ document.addEventListener('DOMContentLoaded', () => {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display: true, scales: false, title: {
+          display: true,
+         
+          labels: {
+            usePointStyle: true,
+            color: 'white',
+
+          },
+          title: {
             display: true,
             text: 'Probabilidade de aumento no número de requisições nos próximos 16 dias',
             color: '#ffffff',
             font: {
-              size: 24,
+              size: 24
             }
-          },
-          labels: { usePointStyle: true }
+          }
         }
       },
       scales: {
         x: {
           grid: {
             offset: false,
-            color: '#a1a1a1b7',
+            color: '#a1a1a1b7'
           },
           bounds: 'data',
-          color: '#ffffff',
-          font: {
-            size: 24,
+          ticks: {
+            color: '#a1a1a1b7',
+            font: { size: 12 }
           }
         },
         y: {
           type: 'linear',
           position: 'left',
-          display: true,
           beginAtZero: true,
           grid: {
             color: '#a1a1a1b7'
           }
-        },
-
-
-
+        }
       }
     }
-  };
+  });
+}
 
-  new Chart(ctx, graficoPrevisaoLinha);
-})
-
-document.addEventListener('DOMContentLoaded', () => {
+function criarGraficoDeHorario(horarios,req){
   const ctxPico = document.getElementById('grafico-barra-horarioDePico');
 
-  const graficoPico = {
+  new Chart(ctxPico, graficoPico = {
     type: 'bar',
     data: {
-      labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00',],
+      labels: horarios,
       datasets: [
         {
           type: 'bar',
           label: 'Requisições',
-          data: [93238, 13332, 22321, 32321, 32323, 13232, 53323, 23242, 53323, 23242, 32321, 32323, 13232, 53323, 23242, 53323, 23242, 23242, 32321, 32323, 13232, 53323, 23242, 53323, 23242],
+          data: req,
           backgroundColor: ['#ffe09cff'],
           yAxisID: 'y',
           xAxisID: 'x'
-        },
+        }
       ]
     },
     options: {
@@ -250,7 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       scales: {
         x: {
-
           grid: {
             offset: false
           },
@@ -266,55 +286,11 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           color: '#ffffff',
           font: {
-            size: 24,
-          }
-        },
-      }
-    }
-  };
-
-  new Chart(ctxPico, graficoPico);
-})
-
-document.addEventListener('DOMContentLoaded', () => {
-  const ctx = document.getElementById('grafico_uso_de_disco_total_regiao');
-
-  const graficoDiscoTotal = {
-    type: 'doughnut',
-    data: {
-      labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00',],
-      datasets: [
-        {
-          type: 'doughnut',
-          label: 'Requisições',
-          data: [230,570 ],
-          backgroundColor: [
-                    '#ffffffff',
-                    '#e9c67aff'
-                ],
-                borderColor: [
-                    '#ffffffff',
-                    '#e9c67aff'
-                ],
-                borderWidth: 1
-        },
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          display: false,
-          position: 'bottom',
-          labels: {
-            usePointStyle: true,
-            color: 'white'
+            size: 24
           }
         }
-      },
+      }
     }
-  };
-
-  new Chart(ctx, graficoDiscoTotal);
-})
+  });
+}
 

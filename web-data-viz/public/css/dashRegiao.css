@@ -169,12 +169,12 @@ section.header .header-left .container-submenu:hover .submenu {
 }
 
 .container-kpi-mini{
-    width: 30%;
+    width: 20%;
     height: 95%;
-    display: grid;
-    grid-template-columns: 1fr 1fr; 
-    margin: 5px;
+    display: flex;
+   flex-direction: column-reverse;
     gap: 10px;
+    margin: 5px;
 }
 
 .container-canva{
@@ -222,14 +222,76 @@ font-size: small;
     border-radius: 20px;
 }
 
+.card-lista-regiao{
+     border-radius: 20px;
+     border-top-left-radius: 0%;
+      border-top-right-radius: 0%;
+     
+     width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: start;
+    justify-content: start;
+     display: flex; 
+     flex-direction: column;
+    overflow-x: auto; 
+    width: 100%;
+}
+.container-card-regiao {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+  justify-content: center;
+  text-align: justify;
+  background-color: #181818;
+  transition: background-color 0.3s ease;
+  border-bottom: 2px solid #e2e1de9c;
+  border-top: 2px solid #e2e1de9c;
+  color: #E2E1DE;
+    overflow-x: auto; 
+  white-space: nowrap; 
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.container-card-regiao:hover {
+  width: 100%;
+  height: 65px;
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+  justify-content: center;
+  text-align: justify;
+  background-color: #815f1565;
+  border-bottom: 2px solid #ffc64b;
+  border-top: 2px solid #ffc64b;
+  color: #E2E1DE;
+    overflow-x: auto; 
+  white-space: nowrap; 
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+  
+
+
+.container-card-regiao p{
+   margin-left: 10px;
+}
 
 
 .lista-regiao{
     width: 20%;
-    height: 95%;
+    height: 100%;
       margin: 10px;
     background-color: var(--cinzaDash);
        border-radius: 20px;
+       display: flex;
+       flex-direction: column;
 }
 .kpi{
     width: 100%;
@@ -242,7 +304,7 @@ font-size: small;
 
 
 .grafico-horarioDePico{
- width: 50%;
+ width: 60%;
     height: 95%;
       margin: 10px;
     background-color: var(--cinzaDash);
@@ -267,11 +329,11 @@ font-size: small;
     border-bottom-left-radius: 0px ;
     border-bottom-right-radius: 0px ;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center var(--cinzaDash);
 }
-
 
 .card-dash-kpi{
     background-color: #fff;

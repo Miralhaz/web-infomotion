@@ -102,13 +102,21 @@ function buscarParametros(idServidor) {
 
           if (dados.length > 0) {
 
-            const parametroCPU = dados.find(item =>
-              item.tipo_componente && item.tipo_componente.toUpperCase() === 'CPU'
-            );
+            let parametroCPU, parametroDisco;
 
-            const parametroDisco = dados.find(item =>
-              item.tipo_componente && item.tipo_componente.toUpperCase() === 'DISCO'
-            )
+            for (let item of dados) {
+              if (item.tipo_componente && item.tipo_componente.toUpperCase() === 'CPU') {
+                parametroCPU = item;
+                break;
+              }
+            }
+
+            for (let item of dados) {
+              if (item.tipo_componente && item.tipo_componente.toUpperCase() === 'DISCO') {
+                parametroDisco = item;
+                break;
+              }
+            }
 
             if (parametroCPU) {
               maxAlertaCPU = parametroCPU.max_alerta;
@@ -145,7 +153,7 @@ function listarServidores() {
     .then(function (resposta) {
       if (resposta.ok) {
         resposta.json().then(function (dados) {
-          console.log("✅ Servidores carregados:", dados);
+          console.log("Servidores carregados:", dados);
 
           const select = document.getElementById('servidores');
           let opcoes = `<option value="escolha_op">Escolha um servidor</option>`;
@@ -161,15 +169,16 @@ function listarServidores() {
           if (idServidorSelecionadoAnteriormente) {
             select.value = idServidorSelecionadoAnteriormente;
             recarregarTodosGraficosComServidorSelecionado();
+            reccaregarACada2Minutos();
           }
 
         });
       } else {
-        console.error("❌ Erro ao listar servidores");
+        console.error("Erro ao listar servidores");
       }
     })
     .catch(function (erro) {
-      console.error("❌ Erro:", erro);
+      console.error("Erro:", erro);
     });
 }
 
@@ -177,6 +186,7 @@ function listarServidores() {
 // com as informações daquele servidor selecionado
 document.getElementById('servidores').addEventListener('change', () => {
   recarregarTodosGraficosComServidorSelecionado();
+  reccaregarACada2Minutos();
 });
 
 // função que recarrega a dashboard com dados daquele servidor em específico
@@ -185,7 +195,7 @@ function recarregarTodosGraficosComServidorSelecionado() {
   const idServidor = selectServidor.value;
 
   if (idServidor === 'escolha_op') {
-    console.log('⚠️ Nenhum servidor selecionado');
+    console.log('Nenhum servidor selecionado');
     limparListaProcessos();
     return;
   }
@@ -193,7 +203,7 @@ function recarregarTodosGraficosComServidorSelecionado() {
   const nomeServidor = selectServidor.options[selectServidor.selectedIndex].text;
   const componenteAtual = document.getElementById('select_value_componentes').value;
 
-  console.log(`🔄 Carregando dados do servidor ${idServidor}...`);
+  console.log(`Carregando dados do servidor ${idServidor}...`);
 
   buscarParametros(idServidor);
   recarregarGraficoLinhasComValoresAtuais(idServidor);
@@ -268,7 +278,7 @@ async function carregarDadosDisco(idServidor, limiteMaximo) {
     const dados = await resposta.json();
 
     if (!Array.isArray(dados) || dados.length === 0) {
-      console.log('⚠️ Sem dados de Disco');
+      console.log('Sem dados de Disco');
       return;
     }
 
@@ -401,6 +411,7 @@ async function carregarDadosDispersao(idServidor, componente, nomeServidor) {
     }
 
     let temperaturas;
+    
     if (componente === 'cpu') {
       temperaturas = dados.map(d => parseFloat(d.temperatura_cpu));
     } else {
@@ -813,7 +824,7 @@ function graficoLinhaHist(temperaturas, uso, componente) {
         legend: { position: 'top' },
         title: {
           display: true,
-          text: 'Dispersão: Temperatura x Uso',
+          text: 'Regressão Linear: Temperatura x Uso',
           color: 'white',
           font: { size: 16 }
         }
@@ -941,4 +952,17 @@ function popUpInfo() {
     showConfirmButton: false, // Escondemos o botão "OK" padrão
     focusConfirm: false
   });
+}
+
+function reccaregarACada2Minutos() {
+  setInterval(() => {
+    const selectServidor = document.getElementById('servidores');
+    const idServidor = selectServidor.value; 
+
+    if (idServidor && idServidor !== 'escolha_op') {
+      recarregarTodosGraficosComServidorSelecionado();
+    } else {
+      console.log('Nenhum servidor selecionado para recarregar dados.');
+    }
+  }, 120000); 
 }
