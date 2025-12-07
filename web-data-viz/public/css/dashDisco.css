@@ -165,6 +165,12 @@ section.header .header-left .container-submenu:hover .submenu {
 }
 .listagem{
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+}
+.esquerda, .meio, .direita{
+  margin-left: 18px;
 }
 .div-selects p {
   text-align: center;
@@ -282,6 +288,17 @@ section.header .header-left .container-submenu:hover .submenu {
   justify-content: space-between;
   width: 100%;
 }
+
+/* kpi de temperatura Renan*/
+.div-graph {
+  width: 5vh;
+  height: 16vh;
+  background: #C89C00;
+  background: linear-gradient(360deg, rgba(200, 156, 0, 1) 0%, rgba(148, 0, 0, 1) 100%);
+  border-radius: 1vh;
+  display: flex;
+  justify-content: center;
+}
 /* Estilo para discos com temperatura acima do parâmetro */
 .temperatura-alerta {
     color: #ff5252; /* vermelho */
@@ -355,7 +372,7 @@ table {
   box-sizing: border-box;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .titulo p {
@@ -385,7 +402,7 @@ table {
 }
 
 .kpi-body h3 {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 /* --- Estilos para tabelas --- */

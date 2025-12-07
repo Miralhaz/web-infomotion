@@ -1,6 +1,43 @@
 
 var idEmpresa = sessionStorage.ID_EMPRESA;
 
+function definirStatusOperacao(dados) {
+    let temAlertaDisco = false;
+    let temAlertaTemperatura = false;
+
+    for (let i = 0; i < dados.servidores.length; i++) {
+        const servidor = dados.servidores[i];
+        const parametro = dados.parametrosAlerta[servidor.fk_servidor];
+        if (parametro) {
+            if (servidor.disco > parametro.limiteDisco) {
+                temAlertaDisco = true;
+            }
+            if (servidor.temperatura_disco > parametro.limiteTemperatura) {
+                temAlertaTemperatura = true;
+            }
+        }
+    }
+
+    let status;
+    if (temAlertaDisco && temAlertaTemperatura) {
+        status = "Há discos com uso e temperatura acima do parâmetro";
+    } else if (temAlertaDisco) {
+        status = "Há discos com uso acima do parâmetro";
+    } else if (temAlertaTemperatura) {
+        status = "Há discos com temperatura acima do parâmetro";
+    } else {
+        status = "Operação normal";
+    }
+
+    if (temAlertaDisco || temAlertaTemperatura) {
+        txt_status_operacao.style.color = "#ff5252"; // vermelho
+    } else {
+        txt_status_operacao.style.color = "white"; // ou a cor padrão
+    }
+
+    txt_status_operacao.innerHTML = status;
+}
+
 function kpiComparativaAlertas() {
     var dadosHoje = 0
     fetch(`/dashboardDisco/alertasHoje/${idEmpresa}`)
@@ -28,50 +65,18 @@ function kpiComparativaAlertas() {
             console.log(`total de alertas ontem ${dadosOntem}`)
             if (dadosHoje < dadosOntem) {
                 calculo = (dadosOntem - dadosHoje)
-                saidaAlertasOntem.innerHTML = `${calculo} a menos que ontem`;
+                saidaAlertasOntem.innerHTML = `${calculo} alertas a menos que ontem`;
                 numeroHoje.classList.add('melhor');
             } else if (dadosHoje > dadosOntem) {
                 calculo = (dadosHoje - dadosOntem)
-                saidaAlertasOntem.innerHTML = `${calculo} a mais que ontem`;
+                saidaAlertasOntem.innerHTML = `${calculo} alertas a mais que ontem`;
                 numeroHoje.classList.add('pior');
             } else if (dadosHoje == dadosOntem) {
                 calculo = dadosHoje
-                saidaAlertasOntem.innerHTML = `${calculo} mesma quantidade que ontem`;
+                saidaAlertasOntem.innerHTML = `mesma quantidade que ontem`;
             }
         })
         .catch(erro => console.error("Erro:", erro));
-}
-
-
-function definirStatusOperacao(dados) {
-    let temAlertaDisco = false;
-    let temAlertaTemperatura = false;
-    
-    for (let i = 0; i < dados.servidores.length; i++) {
-        const servidor = dados.servidores[i];
-        const parametro = dados.parametrosAlerta[servidor.fk_servidor];
-        if (parametro) {
-            if (servidor.disco > parametro.limiteDisco) {
-                temAlertaDisco = true;
-            }
-            if (servidor.temperatura_disco > parametro.limiteTemperatura) {
-                temAlertaTemperatura = true;
-            }
-        }
-    }
-    
-    let status;
-    if (temAlertaDisco && temAlertaTemperatura) {
-        status = "Há discos com uso e temperatura acima do parâmetro";
-    } else if (temAlertaDisco) {
-        status = "Há discos com uso acima do parâmetro";
-    } else if (temAlertaTemperatura) {
-        status = "Há discos com temperatura acima do parâmetro";
-    } else {
-        status = "Operação normal";
-    }
-    
-    txt_status_operacao.innerHTML = status;
 }
 
 async function kpiAlertas() {
@@ -264,8 +269,8 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
 
     // 3. Limpa e preenche a tabela
     tbody.innerHTML = "";
- const limite = Math.min(5, servidoresComScore.length);
-for (let i = 0; i < limite; i++) {
+    const limite = Math.min(5, servidoresComScore.length);
+    for (let i = 0; i < limite; i++) {
         const item = servidoresComScore[i];
         const serv = item.servidor;
 
@@ -464,7 +469,7 @@ function atualizarGraficoBarras(dados) {
                     beginAtZero: true,
                     ticks: {
                         color: "white",
-                        stepSize: 1   
+                        stepSize: 1
                     },
                     title: {
                         display: true,
@@ -582,7 +587,13 @@ let graficoLinhas = null;
 
 function plotarGrafico(listaFiltrada, periodo) {
 
+    // 1️⃣ Ordena antes de amostrar
+    listaFiltrada.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
     const dados = amostrarDados(listaFiltrada);
+
+    // 2️⃣ Ordena DE NOVO após amostrar (evita pontos fora da ordem)
+    dados.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
     const labels = [];
     const valores = [];
@@ -597,7 +608,13 @@ function plotarGrafico(listaFiltrada, periodo) {
                 data.getMinutes().toString().padStart(2, "0")
             );
         } else {
-            labels.push(data.getDate() + "/" + (data.getMonth() + 1));
+            const dia = data.getDate().toString().padStart(2, "0");
+            const mes = (data.getMonth() + 1).toString().padStart(2, "0");
+            const hora = data.getHours().toString().padStart(2, "0");
+            const min = data.getMinutes().toString().padStart(2, "0");
+
+            labels.push(`${dia}/${mes} ${hora}:${min}`);
+
         }
 
         valores.push(item.disco);
@@ -629,6 +646,7 @@ function plotarGrafico(listaFiltrada, periodo) {
         }
     });
 }
+
 
 
 function atualizarGrafico() {
