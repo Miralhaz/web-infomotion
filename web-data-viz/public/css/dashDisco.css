@@ -8,7 +8,7 @@
   --preto: #000;
   --cinzaEscuro: #1c1c1c;
   --cinzaHeader: #222;
-  --cinzaDash: #353535f3;
+  --cinzaDash: #353535f3; 
 }
 
 * {
@@ -140,6 +140,57 @@ section.header .header-left .container-submenu:hover .submenu {
   visibility: visible;
 }
 
+/* section para escolher a dashboard*/
+.organizador-section{
+  width: 100%;
+  height: 5%;
+  display: flex;
+  justify-content: end;
+  justify-items: end;
+  align-items: end;
+  Flex-direction: column-reverse;
+  margin-left: 50%;
+  margin-top: 15px;
+  padding: 10px;
+  color: black;
+}
+
+.div-selects {
+  Flex-direction: column-reverse;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.5fr 1fr;
+  justify-items: center;
+
+}
+
+.div-selects select {
+  text-align: center;
+  width: 13vw;
+  padding: 1vh;
+  background-color: var(--preto);
+  color: white;
+  border-radius: 2vh;
+  margin: 1px;
+  grid-row: 2;
+  font-family: "poppins", sans-serif;
+  font-size: 1rem;
+}
+
+.div-selects .nome_dash{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14vw;
+  padding: 1vh;
+  background-color: var(--preto);
+  color: white;
+  border-radius: 2vh;
+  margin: 1px;
+}
+
+
 
 /* --- Estilos globais --- */
 * {
@@ -149,15 +200,12 @@ section.header .header-left .container-submenu:hover .submenu {
 }
 
 
-
-/* --- Área principal (depois do header fixo de 230px) --- */
 .container {
   padding: 24px;
   min-height: 100vh;
   margin-left: 230px;
 }
 
-/* --- Layout flexível das partes --- */
 .parte_de_cima{
   width: 83%;
   display: flex;
@@ -167,6 +215,53 @@ section.header .header-left .container-submenu:hover .submenu {
   flex-direction: row;
   margin-left: 8%;
 }
+
+/*kpi de alertas inicio*/
+
+.kpi.alertas .kpi-header h2 {
+    color: black;
+    background-color: white;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.kpi.alertas .kpi-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.alertas-numero {
+    font-size: 2.5rem;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+    color: white;
+}
+
+
+.alertas-numero.melhor {
+    color: #4CAF50;
+}
+
+
+.alertas-numero.pior {
+    color: #FF5252;
+}
+
+
+.alertas-numero.igual {
+    color: #FFD740; 
+}
+
+
+.alertas-comparacao {
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 0.5rem;
+    color: white;
+}
+/* kpi de alerta final */
 
 
 .parte_do_meio {
@@ -185,9 +280,13 @@ section.header .header-left .container-submenu:hover .submenu {
   justify-content: space-between;
   width: 100%;
 }
-
+/* Estilo para discos com temperatura acima do parâmetro */
+.temperatura-alerta {
+    color: #ff5252; /* vermelho */
+    font-weight: bold;
+}
 .parte_final .listaOperacional{
-  background-color: #000; /* fundo preto */
+  background-color: #000; 
   border-radius: 12px;
   padding: 0px;
   flex: 1 1 300px; /* responsivo: cresce, mas com largura mínima */
@@ -289,7 +388,7 @@ table {
 
 .kpi-body h3 {
   font-size: 18px;
-  color: #ffc64b; /* destaque amarelo suave */
+  color: #ffc64b;
 }
 
 /* --- Estilos para tabelas --- */
@@ -339,33 +438,27 @@ table tbody tr {
    height: 10%;
 }
 
-/* Cabeçalhos da tabela */
 table th {
-  padding: 6px 8px; /* reduza o padding (especialmente vertical) */
+  padding: 6px 8px; 
   font-size: 12px;
   line-height: 1.2;
 }
 
-/* Células do corpo da tabela */
 table td {
-  padding: 6px 8px; /* mesmo padding para alinhar */
+  padding: 6px 8px; 
   font-size: 12px;
   line-height: 1.2;
 }
-.linha-alta-atividade {
-    background-color: rgba(58, 150, 221, 0.15); /* azul suave */
-}
-/* Para "próximo do limite" */
-.linha-proximo {
-    background-color: rgba(255, 193, 7, 0.15); /* amarelo suave */
-}
 
+.linha-proximo {
+    background-color: rgba(255, 193, 7, 0.15);
+}
+ 
 .texto-proximo {
-    color: #ffc107; /* amarelo */
+    color: #ffc107; 
     font-weight: bold;
 }
 
-/* Seu estilo de alerta (vermelho) já deve existir */
 .linha-alerta {
     background-color: rgba(255, 60, 48, 0.15);
 }
@@ -378,7 +471,6 @@ table td {
   text-align: center;
 }
 
-/* --- Gráficos (Chart.js) --- */
 .grafico-body {
   min-height: 280px;
   display: flex;
@@ -391,7 +483,6 @@ table td {
   max-height: 300px;
 }
 
-/* --- Responsividade --- */
 @media (max-width: 1100px) {
   .parte_de_cima > *,
   .parte_do_meio > *,
@@ -408,22 +499,18 @@ table td {
 }
 
 .linha-alerta {
-    background-color: rgba(255, 60, 48, 0.15); /* vermelho suave */
+    background-color: rgba(255, 60, 48, 0.15);
 }
 
 .texto-alerta {
-    color: #ff3b30; /* vermelho */
+    color: #ff3b30;
     font-weight: bold;
 }
 
-
-/* grafico de linhas miralha */
-
-
 .select-grafico {
-  position: relative; /* relativo pois vai ser necessário para que as opções apareçam certas depois com o JS */
-  display: inline-block; /* praticamente deixa como um texto e permite que blocos ou containers sejam colocados do lado */
-  min-width: 150px; /* permite que apenas tenha uma largura de no mínimo 150px */
+  position: relative;
+  display: inline-block;
+  min-width: 150px;
   font-size: 14px;
 }
 
@@ -442,7 +529,7 @@ table td {
 
 .container-select:hover {
   background-color: var(--cinzaDash);
-  box-shadow: 0 0 8px var(--amareloOpacityLow); /* hover de box shadow (deixa a borda com um efeito de neon amarelo em volta) */
+  box-shadow: 0 0 8px var(--amareloOpacityLow); 
 }
 
 .seta {
@@ -451,8 +538,8 @@ table td {
 }
 
 .lista-opcoes {
-  position: absolute; /* aqui onde permite que a lista apareça debaixo do container que deixamos como relative */
-  top: 100%; /* aparecer bem junto ao container quando for clicado */
+  position: absolute; 
+  top: 100%; 
   left: 0;
   right: 0;
   margin-top: 5px;
@@ -461,21 +548,21 @@ table td {
   background-color: var(--preto);
   border: 1px solid var(--amarelo);
   border-radius: 8px;
-  z-index: 9999; /* faz com que a lista sobreponha outros elementos da página */
+  z-index: 9999; 
   overflow: auto;
-  max-height: 0; /* o max-height e o opacity são o que permite que a lista esconda após ela ser "desativada" */
+  max-height: 0; 
   opacity: 0;
   transition: max-height 0.4s ease-in-out, opacity 0.3s ease;
 }
 
-/* esta classe só vai ser usada quando o JS for chamar ela */
-.lista-opcoes.visible /* exibe a lista */ {
+
+.lista-opcoes.visible {
   max-height: 200px; 
   opacity: 1;
 }
 
 .container-select.open .seta {
-  transform: rotate(180deg); /* faz com que na hora de abrir a lista a seta gira para baixo */
+  transform: rotate(180deg);
 }
 
 .lista-opcoes li {
@@ -629,16 +716,10 @@ table td {
 
 .col-nome {
   flex-basis: 55%;
-  /* ocupar mais espaço na listagem */
   text-align: left;
-  /* alinhar a esquerda da listagem */
   white-space: nowrap;
-  /* não permitir a quebra de linha, mantendo tudo na mesma linha */
   overflow: hidden;
-  /* sem scroll */
   text-overflow: ellipsis;
-  /* coloca os ... caso o nome do processo seja longo demais ao 
-  container (ponto de transbordamento do nome) */
 }
 
 .col-cpu,

@@ -58,6 +58,16 @@
     </section>
 
     <div class="container">
+        <div class="organizador-section">
+            <div class="div-selects">
+                Tipo de dashboard:
+                <select name="dash" id="dash" class="nome_dash" onchange="trocarDePagina()">`
+                    <option value="#">Disco dos servidores</option>
+                    <option value="dashboardHistorico.html">Histórico</option>
+                    <option value="dashboardRegiao.html">Região</option>
+                </select>
+            </div>
+        </div>
         <div class="parte_de_cima">
             <!--kpi de operação-->
             <div class="kpi operacao">
@@ -74,23 +84,18 @@
 
             <!--kpi de alertas-->
             <div class="kpi alertas">
-                <div class="kpi-header">
-                    <div class="titulo">
-                        <p>Alertas de Discos</p>
-                    </div>
-                </div>
-                <div class="status_alertas">
-                    <span>total alertas hoje</span>
-                </div>
-                <div class="kpi-body">
-                    <span id="saidaAlertasHoje" class="op-status-passado"></span>
-                </div>
-                <div class="kpi-footer">
-                    <p id="saidaAlertasOntem"></p>
-                </div>
-            </div>
-
-
+    <div class="kpi-header">
+         <div class="titulo">
+        <h2>Alertas de Discos</h2>
+        </div>
+    </div>
+    <div class="kpi-body">
+        <div class="alertas-numero" id="saidaAlertasHoje">0</div>
+        <div class="alertas-comparacao" id="saidaAlertasOntem">
+            Carregando...
+        </div>
+    </div>
+</div>
 
             <!--kpi de temperatura-->
             <div class="kpi temperatura">
@@ -103,10 +108,10 @@
 
                 <div class="kpi-body">
                     <div class="classificacao">
-                        <!-- <p>5 registros seguidos com temperatura elevada</p> -->
+ 
                     </div>
                     <div class="discos">
-                        <!-- <p id="parametro_temp" class="parametro">Parâmetro = p</p> -->
+
                         <div class="listagem">
                             <p id="discotemp1"></p>
                             <p id="discotemp2"></p>
@@ -219,5 +224,4 @@
 </body>
 <script src="../js/dashDisco.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </html>

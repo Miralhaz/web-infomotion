@@ -1,3 +1,14 @@
+// função caso, no select da esquerda, o usuário queira trocar para outra dashboard
+function trocarDePagina() {
+    var select_dashboards = document.getElementById('dash');
+    var select_selecionado = select_dashboards.value;
+
+    if (select_selecionado !== '#' && select_selecionado !== '') {
+        window.location.href = select_selecionado;
+    }
+}
+// final da iteração
+
 
 var idEmpresa = sessionStorage.ID_EMPRESA;
 
@@ -21,15 +32,19 @@ function kpiComparativaAlertas() {
             return resposta.json();
         })
         .then(dados => {
+            const numeroHoje = document.getElementById('saidaAlertasHoje');
+            numeroHoje.className = 'alertas-numero';
             var dadosOntem = dados.length
             let calculo = 0
             console.log(`total de alertas ontem ${dadosOntem}`)
             if (dadosHoje < dadosOntem) {
                 calculo = (dadosOntem - dadosHoje)
                 saidaAlertasOntem.innerHTML = `${calculo} a menos que ontem`;
+                numeroHoje.classList.add('melhor');
             } else if (dadosHoje > dadosOntem) {
                 calculo = (dadosHoje - dadosOntem)
                 saidaAlertasOntem.innerHTML = `${calculo} a mais que ontem`;
+                numeroHoje.classList.add('pior'); 
             } else if (dadosHoje == dadosOntem) {
                 calculo = dadosHoje
                 saidaAlertasOntem.innerHTML = `${calculo} mesma quantidade que ontem`;
@@ -97,12 +112,12 @@ function ListagemDosDiscosEmAlerta(dados) {
 
     // 1. Categoriza e ordena servidores por gravidade
     const servidoresComGravidade = [];
-    
+
     for (let i = 0; i < dados.servidores.length; i++) {
         const servidor = dados.servidores[i];
         const parametro = dados.parametrosAlerta[servidor.fk_servidor];
         const limiteDisco = parametro ? parametro.limiteDisco : 80;
-        
+
         let gravidade;
         if (servidor.disco > limiteDisco) {
             gravidade = 3; // Ultrapassou (vermelho)
@@ -111,7 +126,7 @@ function ListagemDosDiscosEmAlerta(dados) {
         } else {
             gravidade = 1; // Normal
         }
-        
+
         servidoresComGravidade.push({
             servidor: servidor,
             limite: limiteDisco,
@@ -125,7 +140,7 @@ function ListagemDosDiscosEmAlerta(dados) {
         for (let j = i + 1; j < servidoresComGravidade.length; j++) {
             const a = servidoresComGravidade[i];
             const b = servidoresComGravidade[j];
-            
+
             if (a.gravidade !== b.gravidade) {
                 // Ordena por gravidade (3 > 2 > 1)
                 if (a.gravidade < b.gravidade) {
@@ -227,7 +242,7 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
         const bytesTotal = (serv.bytes_lidos || 0) + (serv.bytes_escritos || 0);
         const operacoesTotal = (serv.numero_leituras || 0) + (serv.numero_escritas || 0);
         const score = bytesTotal + (operacoesTotal * PESO_OPERACAO);
-        
+
         servidoresComScore.push({
             servidor: serv,
             score: score
@@ -297,23 +312,48 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
 }
 
 function DiscosComMaiorRiscoDeFalha(dados) {
-   
-            // Ordena servidores por temperatura (do maior para o menor)
-            const top3Temp = dados.servidores
-                .sort((a, b) => b.temperatura_disco - a.temperatura_disco)
-                .slice(0, 3);
-
-            // Atualiza os elementos
-            const elementos = [discotemp1, discotemp2, discotemp3];
-            elementos.forEach((el, i) => {
-                if (top3Temp[i]) {
-                    // Formato: "NomeMaquina: XX.XX°C"
-                    el.innerHTML = `${top3Temp[i].apelidoDisco}: ${top3Temp[i].temperatura_disco.toFixed(1)}°C`;
-                } else {
-                    el.innerHTML = "Sem dados";
-                }
-            });
-       
+    const servidoresComParametro = [];
+    
+    for (let i = 0; i < dados.servidores.length; i++) {
+        const servidor = dados.servidores[i];
+        const parametro = dados.parametrosAlerta[servidor.fk_servidor];
+        const limiteTemp = parametro ? parametro.limiteTemperatura : 45.0;
+        
+        servidoresComParametro.push({
+            apelido: servidor.apelidoDisco || servidor.nomeMaquina,
+            temperatura: servidor.temperatura_disco,
+            parametro: limiteTemp
+        });
+    }
+    
+    for (let i = 0; i < servidoresComParametro.length; i++) {
+        for (let j = i + 1; j < servidoresComParametro.length; j++) {
+            if (servidoresComParametro[i].temperatura < servidoresComParametro[j].temperatura) {
+                const temp = servidoresComParametro[i];
+                servidoresComParametro[i] = servidoresComParametro[j];
+                servidoresComParametro[j] = temp;
+            }
+        }
+    }
+    
+    const elementos = [discotemp1, discotemp2, discotemp3];
+    
+    for (let i = 0; i < elementos.length; i++) {
+        elementos[i].innerHTML = "Sem dados";
+        elementos[i].className = ""; 
+    }
+    
+    for (let i = 0; i < Math.min(3, servidoresComParametro.length); i++) {
+        const disco = servidoresComParametro[i];
+        const ultrapassou = disco.temperatura > disco.parametro;
+        
+        elementos[i].innerHTML = 
+            `${disco.apelido}: ${disco.temperatura.toFixed(1)}°C / Parâmetro: ${disco.parametro.toFixed(1)}°C`;
+        
+        if (ultrapassou) {
+            elementos[i].className = "temperatura-alerta";
+        }
+    }
 }
 
 
@@ -324,25 +364,24 @@ function puxarQuantidadeAlertaPorServidor() {
             return resposta.json();
         })
         .then(alertas => {
-            // Conta quantos alertas cada servidor teve
+
             const contagem = {};
             alertas.forEach(alerta => {
                 const servidor = alerta.apelido;
                 contagem[servidor] = (contagem[servidor] || 0) + 1;
             });
 
-            // Converte para array de { nome, quantidade }
+
             const dadosGrafico = Object.entries(contagem)
                 .map(([nome, qtd]) => ({ nome, quantidade: qtd }))
-                .sort((a, b) => b.quantidade - a.quantidade) // ordem decrescente
-                .slice(0, 5); // top 5
+                .sort((a, b) => b.quantidade - a.quantidade) 
+                .slice(0, 5);
 
-            // Atualiza o gráfico
+       
             atualizarGraficoBarras(dadosGrafico);
         })
         .catch(erro => {
             console.error("Erro ao carregar alertas:", erro);
-            // Opcional: exibir mensagem de erro no gráfico
         });
 }
 
@@ -403,11 +442,8 @@ function atualizarGraficoBarras(dados) {
 
 let graficoBarras = null;
 
-// interação com periodo e discos
+document.addEventListener('click', function (e) {
 
-document.addEventListener('click', function(e) {
-
-    // --- SELECT DO PERÍODO ---
     if (e.target.closest('#select_display')) {
         document.getElementById('lista_opcoes').classList.toggle('visible');
         return;
@@ -426,7 +462,6 @@ document.addEventListener('click', function(e) {
         return;
     }
 
-    // --- SELECT DOS DISCOS ---
     if (e.target.closest('#select_display_discos')) {
         document.getElementById('lista_opcoes_discos').classList.toggle('visible');
         return;
@@ -444,8 +479,6 @@ document.addEventListener('click', function(e) {
         atualizarGrafico();
         return;
     }
-
-    // --- FECHAR AO CLICAR FORA ---
     if (!e.target.closest('.select-grafico')) {
         document.getElementById('lista_opcoes').classList.remove('visible');
         document.getElementById('lista_opcoes_discos').classList.remove('visible');
@@ -459,9 +492,9 @@ function filtrarPorPeriodo(historico, periodo) {
     let limite;
 
     switch (periodo) {
-        case "1h":  limite = new Date(agora - 1 * 60 * 60 * 1000); break;
+        case "1h": limite = new Date(agora - 1 * 60 * 60 * 1000); break;
         case "24h": limite = new Date(agora - 24 * 60 * 60 * 1000); break;
-        default:    limite = new Date(agora - 7 * 24 * 60 * 60 * 1000); break;
+        default: limite = new Date(agora - 7 * 24 * 60 * 60 * 1000); break;
     }
 
     return historico.filter(item => new Date(item.timestamp) >= limite);
@@ -472,7 +505,7 @@ function amostrarDados(dados, maxPontos = 7) {
 
     const resultado = [];
     const passo = Math.floor(dados.length / (maxPontos - 1));
-    
+
     resultado.push(dados[0]);
 
     for (let i = 1; i < maxPontos - 1; i++) {
@@ -484,9 +517,6 @@ function amostrarDados(dados, maxPontos = 7) {
     return resultado;
 }
 
-/* ================================
-         GRÁFICO DE LINHA
-================================ */
 let graficoLinhas = null;
 let dadosGlobais = null;
 
@@ -529,9 +559,6 @@ function plotarGrafico(historicoFiltrado, periodo) {
     });
 }
 
-/* ================================
-       FUNÇÃO CENTRAL DO GRÁFICO
-================================ */
 function atualizarGrafico() {
     const periodo = document.getElementById("select_value").value;
     const discoId = document.getElementById("select_value_disco").value;
@@ -548,12 +575,10 @@ function atualizarGrafico() {
     else if (graficoLinhas) graficoLinhas.destroy();
 }
 
-/* ================================
-      EVENTOS DOS SELECTS (únicos)
-================================ */
+
 document.addEventListener("click", (e) => {
 
-    // ---------- PERÍODO ----------
+    // seleção de periodo
     if (e.target.closest("#select_display")) {
         document.getElementById("lista_opcoes").classList.toggle("hidden");
         return;
@@ -578,7 +603,7 @@ document.addEventListener("click", (e) => {
         return;
     }
 
-    // ---------- DISCO ----------
+    // selecao dos discos
     if (e.target.closest("#select_display_discos")) {
         document.getElementById("lista_opcoes_discos").classList.toggle("hidden");
         return;
