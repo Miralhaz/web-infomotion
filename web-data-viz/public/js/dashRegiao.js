@@ -4,15 +4,62 @@ listarRegioes()
 
 function listarRegioes() {
   const empresaId = sessionStorage.getItem('ID_EMPRESA')
-  console.log("Empresa ID= " + empresaId)
   const select = document.getElementById("select_regiao")
 
   fetch(`/servidores/listarRegioes/${empresaId}`)
     .then(res => res.json())
     .then(regioes => {
-      let listarRegioesDaEmpresa = regioes.map(item => item);
-      console.log(listarRegioesDaEmpresa)
+      let listarRegioesDaEmpresa = regioes.map(item => item)
       criarListaRegiao(listarRegioesDaEmpresa)
+      
+    })
+    .catch(err => {
+      console.error("Erro ao carregar regiões:", err);
+      select.innerHTML = "<option>Erro ao carregar regiões</option>";
+    });
+}
+
+
+function buscarRamRegiao(idRegiao){
+ fetch(`/servidores/buscarRamRegiao/${idRegiao}`)
+    .then(res => res.json())
+    .then(resposta => {
+      let total = resposta[0].totalRam
+      id_total_ram.innerHTML = `Quantidade de <span>RAM</span> total: ${total.toFixed(2)} GB`
+    })
+    .catch(err => {
+      console.error("Erro ao carregar regiões:", err);
+      select.innerHTML = "<option>Erro ao carregar regiões</option>";
+    });
+
+
+
+
+
+
+}
+
+function buscarInfo(idRegiao) {
+  const empresaId = sessionStorage.getItem('ID_EMPRESA')
+  const select = document.getElementById("select_regiao")
+
+  fetch(`/servidores/listarRegioes/${empresaId}`)
+    .then(res => res.json())
+    .then(regioes => {
+      
+
+      for(i = 0; i < regioes.length; i++){
+        if(regioes[i].id == idRegiao){
+          let cep = regioes[i].codigo_postal 
+          let estado = regioes[i].estado
+          let zona = regioes[i].zona
+          id_cep.innerHTML = `Cep: ${cep}`
+          id_estado.innerHTML = `Estado: ${estado}`
+         id_zona.innerHTML = `Zona: ${zona}`
+        }
+
+        
+      }
       
     })
     .catch(err => {
@@ -28,6 +75,7 @@ for(i = 0; i < lista.length; i++){
   nome =  regiao.nome
   pais = regiao.pais
   id = regiao.id
+  cep = regiao.codigo_postal
   html+= `
 <div class="container-card-regiao" onclick="buscarParametros(${id})">
 <div class="card-regiao">
@@ -35,7 +83,6 @@ for(i = 0; i < lista.length; i++){
 </div>    
 </div>
 `
-
 }
 buscarParametros(lista[0].id) 
 id_lista_regiao.innerHTML = html
@@ -45,6 +92,8 @@ id_lista_regiao.innerHTML = html
  lerArquivoPrevisao(idRegiao)
  lerArquivoHorario(idRegiao)
  lerArquivoKpi(idRegiao)
+ buscarInfo(idRegiao)
+ buscarRamRegiao(idRegiao)
 }
 
 async function lerArquivoHorario(idRegiao) {
@@ -89,14 +138,11 @@ async function lerArquivoKpi(idRegiao) {
 try {
     const url = `/dashboardRegiao/lerArquivoKpi/${idRegiao}`;
     const resposta = await fetch(url);
-    const dados = await resposta.json();
+    const dadosKPI = await resposta.json();
 
-   let data = dados.map(dados => dados.Data)
-    let chance = dados.map(dados => dados.ChanceDeAlteracao)
-    let qtdReq = dados.map(dados => dados.Requsicoes)
-    let porcentagem = dados.map(dados => dados.PorcentagemDeAumento)
-    let maiorPrevisaoDeRam = dados.map(dados => dados.UsoDeRam)
+    let maiorPrevisaoDeRam = dadosKPI.map(dados => dados.UsoDeRam)
 
+    id_ram_prevista.innerHTML = `pico de <span>RAM</span> Prevista: ${maiorPrevisaoDeRam} GB `
 
 
   } catch (erro) {

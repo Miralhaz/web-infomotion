@@ -313,6 +313,20 @@ function receberRegiao(req, res) {
   });
 }
 
+function buscarRamRegiao(req, res){
+   const idRegiao = req.params.idRegiao; 
+
+  servidorModel.buscarRamRegiao(idRegiao)
+        .then((resultado) => {
+            if (resultado.length > 0) res.status(200).json(resultado);
+            else res.status(204).send([]);
+        })
+        .catch((erro) => {
+            console.log("Erro em buscar Ram: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
 function listarRegioes(req, res) {
     var empresaId = req.params.empresaId;
 
@@ -408,5 +422,6 @@ module.exports = {
   atualizarRegiao,
   cadastrarRede,
   receberAlertasPorServidor,
-  buscarStatusServidores
+  buscarStatusServidores,
+  buscarRamRegiao
 }
