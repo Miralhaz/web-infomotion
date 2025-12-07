@@ -182,7 +182,7 @@ function ordenarPor(item) {
                 let inserido = false
                 for (let j = 0; j < infoOrdenada.length; j++) {
                     const elemento = infoOrdenada[j];
-                    if (Number(element.alertasRede) > Number(elemento.alertasRede)) {
+                    if (Number(element.AlertaRede) > Number(elemento.AlertaRede)) {
                         infoOrdenada.splice(j, 0, element)
                         inserido = true
                         break;
@@ -236,8 +236,8 @@ function plotarGraficoDonut() {
     if (existingChart) existingChart.destroy();
 
     const titulo = tempo > 1
-        ? `Situação dos servidores dos últimos ${tempo} dias`
-        : `Situação dos servidores do último dia`;
+        ? `Situação dos servidores que tiveram alertas nos últimos ${tempo} dias`
+        : `Situação dos servidores que tiveram alertas no último dia`;
     document.getElementById("nome_gráfico_donut").innerHTML = titulo;
 
     const labels = dadosDonut.map(i => i.classificacao);
