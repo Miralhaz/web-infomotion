@@ -210,6 +210,10 @@ section.header .header-left .container-submenu:hover .submenu {
   max-width: 50vw;
 }
 
+.op-status-passado{
+  font-size: 12px;
+}
+
 .grafico-body {
   flex-grow: 1;
   padding: 24px;
@@ -348,12 +352,28 @@ table td {
   font-size: 12px;
   line-height: 1.2;
 }
-
-.texto-alerta {
-  color: #ff6b6b;
-  font-weight: bold;
+.linha-alta-atividade {
+    background-color: rgba(58, 150, 221, 0.15); /* azul suave */
+}
+/* Para "próximo do limite" */
+.linha-proximo {
+    background-color: rgba(255, 193, 7, 0.15); /* amarelo suave */
 }
 
+.texto-proximo {
+    color: #ffc107; /* amarelo */
+    font-weight: bold;
+}
+
+/* Seu estilo de alerta (vermelho) já deve existir */
+.linha-alerta {
+    background-color: rgba(255, 60, 48, 0.15);
+}
+
+.texto-alerta {
+    color: #ff3b30;
+    font-weight: bold;
+}
 .leitura-escrita-header {
   text-align: center;
 }

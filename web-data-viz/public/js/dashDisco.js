@@ -88,7 +88,6 @@ async function kpiAlertas() {
             `${alertasOntem - alertasHoje} a menos que ontem`;
 }
 
-//lista de disco por uso de armazenamento
 function ListagemDosDiscosEmAlerta(dados) {
     const tbody = document.getElementById("corpo-tabela-discos");
     if (!tbody) {
@@ -96,46 +95,110 @@ function ListagemDosDiscosEmAlerta(dados) {
         return;
     }
 
-    // Ordena TODOS os servidores por uso de disco (maior primeiro)
-    const servidoresOrdenados = dados.servidores
-        .sort((a, b) => b.disco - a.disco);
+    // 1. Categoriza e ordena servidores por gravidade
+    const servidoresComGravidade = [];
+    
+    for (let i = 0; i < dados.servidores.length; i++) {
+        const servidor = dados.servidores[i];
+        const parametro = dados.parametrosAlerta[servidor.fk_servidor];
+        const limiteDisco = parametro ? parametro.limiteDisco : 80;
+        
+        let gravidade;
+        if (servidor.disco > limiteDisco) {
+            gravidade = 3; // Ultrapassou (vermelho)
+        } else if (servidor.disco > limiteDisco * 0.9) {
+            gravidade = 2; // Próximo (amarelo)
+        } else {
+            gravidade = 1; // Normal
+        }
+        
+        servidoresComGravidade.push({
+            servidor: servidor,
+            limite: limiteDisco,
+            gravidade: gravidade,
+            diferenca: limiteDisco - servidor.disco // para ordenar dentro da mesma gravidade
+        });
+    }
 
-    // Limpa a tabela
+    // 2. Ordena por: gravidade (desc) → diferença (asc)
+    for (let i = 0; i < servidoresComGravidade.length; i++) {
+        for (let j = i + 1; j < servidoresComGravidade.length; j++) {
+            const a = servidoresComGravidade[i];
+            const b = servidoresComGravidade[j];
+            
+            if (a.gravidade !== b.gravidade) {
+                // Ordena por gravidade (3 > 2 > 1)
+                if (a.gravidade < b.gravidade) {
+                    // Troca
+                    const temp = servidoresComGravidade[i];
+                    servidoresComGravidade[i] = servidoresComGravidade[j];
+                    servidoresComGravidade[j] = temp;
+                }
+            } else {
+                // Mesma gravidade: ordena por quem está mais próximo do limite
+                if (a.diferenca > b.diferenca) {
+                    // Troca
+                    const temp = servidoresComGravidade[i];
+                    servidoresComGravidade[i] = servidoresComGravidade[j];
+                    servidoresComGravidade[j] = temp;
+                }
+            }
+        }
+    }
+
+    // 3. Limpa a tabela
     tbody.innerHTML = "";
 
-    // Preenche cada linha
-    servidoresOrdenados.forEach(servidor => {
-        // Pega o parâmetro de alerta
-        const parametro = dados.parametrosAlerta[servidor.fk_servidor];
-        const limiteDisco = parametro ? parametro.limiteDisco : 80; // fallback
-        const estaEmAlerta = servidor.disco > limiteDisco;
+    // 4. Preenche com `for` tradicional
+    for (let i = 0; i < servidoresComGravidade.length; i++) {
+        const item = servidoresComGravidade[i];
+        const servidor = item.servidor;
+        const limiteDisco = item.limite;
+        const estaEmAlerta = item.gravidade === 3;
+        const estaProximo = item.gravidade === 2;
 
         // Cria a linha
         const tr = document.createElement("tr");
-        tr.className = estaEmAlerta ? "linha-alerta" : "";
+        if (estaEmAlerta) {
+            tr.className = "linha-alerta"; // vermelho de fundo
+        } else if (estaProximo) {
+            tr.className = "linha-proximo"; // fundo amarelo suave (você cria no CSS)
+        }
 
-        // Coluna 1: Apelido do disco
+        // Coluna 1: Apelido
         const tdApelido = document.createElement("td");
         tdApelido.textContent = servidor.apelidoDisco || "Desconhecido";
 
-        // Coluna 2: Capacidade (MOCK por enquanto)
+        // Coluna 2: Capacidade
         const tdCapacidade = document.createElement("td");
-        tdCapacidade.textContent = servidor.capacidade; // 🔜 substitua por servidor.capacidade depois
+        tdCapacidade.textContent = servidor.capacidade || "Desconhecido";
 
-        // Coluna 3: Uso atual (%)
+        // Coluna 3: Uso atual
         const tdUso = document.createElement("td");
         tdUso.textContent = `${servidor.disco.toFixed(2)}%`;
-        if (estaEmAlerta) tdUso.classList.add("texto-alerta");
+        if (estaEmAlerta) {
+            tdUso.classList.add("texto-alerta"); // vermelho
+        } else if (estaProximo) {
+            tdUso.classList.add("texto-proximo"); // amarelo (você cria no CSS)
+        }
 
-        // Coluna 4: Parâmetro (%)
+        // Coluna 4: Parâmetro
         const tdParametro = document.createElement("td");
         tdParametro.textContent = `${limiteDisco.toFixed(2)}%`;
-        if (estaEmAlerta) tdParametro.classList.add("texto-alerta");
+        if (estaEmAlerta) {
+            tdParametro.classList.add("texto-alerta");
+        } else if (estaProximo) {
+            tdParametro.classList.add("texto-proximo");
+        }
 
-        // Coluna 5: Nome do servidor
+        // Coluna 5: Servidor
         const tdServidor = document.createElement("td");
         tdServidor.textContent = servidor.nomeMaquina || `Servidor ${servidor.fk_servidor}`;
-        if (estaEmAlerta) tdServidor.classList.add("texto-alerta");
+        if (estaEmAlerta) {
+            tdServidor.classList.add("texto-alerta");
+        } else if (estaProximo) {
+            tdServidor.classList.add("texto-proximo");
+        }
 
         // Monta a linha
         tr.appendChild(tdApelido);
@@ -145,7 +208,7 @@ function ListagemDosDiscosEmAlerta(dados) {
         tr.appendChild(tdServidor);
 
         tbody.appendChild(tr);
-    });
+    }
 }
 
 function DiscosQueRecebemMaisRequisicoes(dados) {
@@ -155,67 +218,82 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
         return;
     }
 
-    // Calcula atividade total (bytes_lidos + bytes_escritos) e ordena
-    const servidoresComAtividade = dados.servidores
-        .map(serv => ({
-            ...serv,
-            atividadeTotal: (serv.bytes_lidos || 0) + (serv.bytes_escritos || 0)
-        }))
-        .sort((a, b) => b.atividadeTotal - a.atividadeTotal); // maior primeiro
+    const PESO_OPERACAO = 10000; // 1 operação = 10 KB
+    const servidoresComScore = [];
 
-    // Limpa a tabela
+    // 1. Calcula score para cada servidor
+    for (let i = 0; i < dados.servidores.length; i++) {
+        const serv = dados.servidores[i];
+        const bytesTotal = (serv.bytes_lidos || 0) + (serv.bytes_escritos || 0);
+        const operacoesTotal = (serv.numero_leituras || 0) + (serv.numero_escritas || 0);
+        const score = bytesTotal + (operacoesTotal * PESO_OPERACAO);
+        
+        servidoresComScore.push({
+            servidor: serv,
+            score: score
+        });
+    }
+
+    // 2. Ordena com bubble sort (maior score primeiro)
+    for (let i = 0; i < servidoresComScore.length; i++) {
+        for (let j = i + 1; j < servidoresComScore.length; j++) {
+            if (servidoresComScore[i].score < servidoresComScore[j].score) {
+                const temp = servidoresComScore[i];
+                servidoresComScore[i] = servidoresComScore[j];
+                servidoresComScore[j] = temp;
+            }
+        }
+    }
+
+    // 3. Limpa e preenche a tabela
     tbody.innerHTML = "";
+    for (let i = 0; i < servidoresComScore.length; i++) {
+        const item = servidoresComScore[i];
+        const serv = item.servidor;
 
-    // Preenche cada linha
-    servidoresComAtividade.forEach(serv => {
         const tr = document.createElement("tr");
+        // Destaque para alto score (ex: > 100 GB em equivalente)
+        if (item.score > 100 * 1024 * 1024 * 1024) {
+            tr.className = "linha-alta-atividade";
+        }
 
-        // Coluna 1: Apelido
+        // Apelido
         const tdApelido = document.createElement("td");
         tdApelido.textContent = serv.apelidoDisco || "Desconhecido";
 
-        // Coluna 2: Capacidade (MOCK por enquanto)
+        // Capacidade
         const tdCapacidade = document.createElement("td");
-        tdCapacidade.textContent = serv.capacidade; // 🔜 substitua por serv.capacidade depois
+        tdCapacidade.textContent = serv.capacidade || "Desconhecido";
 
-        // Coluna 3: Processos
+        // Processos
         const tdProcessos = document.createElement("td");
         tdProcessos.textContent = serv.quantidade_processos || 0;
 
-        // Coluna 4: Leitura (bytes_lidos → MB/s ou KB/s)
+        // Leitura (formatação honesta: só MB/KB, sem "/s")
         const tdLeitura = document.createElement("td");
         const leituraMB = (serv.bytes_lidos || 0) / (1024 * 1024);
         if (leituraMB >= 1) {
-            tdLeitura.textContent = `${leituraMB.toFixed(2)} MB/s`;
+            tdLeitura.textContent = `${leituraMB.toFixed(2)} MB`;
         } else {
-            const leituraKB = leituraMB * 1024;
-            tdLeitura.textContent = `${leituraKB.toFixed(2)} KB/s`;
+            tdLeitura.textContent = `${(leituraMB * 1024).toFixed(2)} KB`;
         }
 
-        // Coluna 5: Escrita (bytes_escritos → MB/s ou KB/s)
+        // Escrita
         const tdEscrita = document.createElement("td");
         const escritaMB = (serv.bytes_escritos || 0) / (1024 * 1024);
         if (escritaMB >= 1) {
-            tdEscrita.textContent = `${escritaMB.toFixed(2)} MB/s`;
+            tdEscrita.textContent = `${escritaMB.toFixed(2)} MB`;
         } else {
-            const escritaKB = escritaMB * 1024;
-            tdEscrita.textContent = `${escritaKB.toFixed(2)} KB/s`;
+            tdEscrita.textContent = `${(escritaMB * 1024).toFixed(2)} KB`;
         }
 
-        // Coluna 6: Servidor
+        // Servidor
         const tdServidor = document.createElement("td");
         tdServidor.textContent = serv.nomeMaquina || `Servidor ${serv.fk_servidor}`;
 
-        // Monta a linha
-        tr.appendChild(tdApelido);
-        tr.appendChild(tdCapacidade);
-        tr.appendChild(tdProcessos);
-        tr.appendChild(tdLeitura);
-        tr.appendChild(tdEscrita);
-        tr.appendChild(tdServidor);
-
+        tr.append(tdApelido, tdCapacidade, tdProcessos, tdLeitura, tdEscrita, tdServidor);
         tbody.appendChild(tr);
-    });
+    }
 }
 
 function DiscosComMaiorRiscoDeFalha(dados) {
@@ -287,6 +365,7 @@ function atualizarGraficoBarras(dados) {
                 data: valores,
                 backgroundColor: cores,
                 borderColor: "#333",
+                maxBarThickness: 30,
                 borderWidth: 1
             }]
         },
@@ -469,8 +548,64 @@ function atualizarGrafico() {
     else if (graficoLinhas) graficoLinhas.destroy();
 }
 
+/* ================================
+      EVENTOS DOS SELECTS (únicos)
+================================ */
+document.addEventListener("click", (e) => {
 
+    // ---------- PERÍODO ----------
+    if (e.target.closest("#select_display")) {
+        document.getElementById("lista_opcoes").classList.toggle("hidden");
+        return;
+    }
 
+    if (e.target.closest("#lista_opcoes li")) {
+        const li = e.target.closest("li");
+        const valor = li.dataset.value;
+
+        const map = {
+            "1hora": "1h",
+            "24horas": "24h",
+            "dias": "7d"
+        };
+
+        document.getElementById("select_value").value = map[valor];
+        document.getElementById("select_display").innerHTML =
+            li.textContent + " <span class='seta'>&#9660;</span>";
+
+        document.getElementById("lista_opcoes").classList.add("hidden");
+        atualizarGrafico();
+        return;
+    }
+
+    // ---------- DISCO ----------
+    if (e.target.closest("#select_display_discos")) {
+        document.getElementById("lista_opcoes_discos").classList.toggle("hidden");
+        return;
+    }
+
+    if (e.target.closest("#lista_opcoes_discos li")) {
+        const li = e.target.closest("li");
+
+        document.getElementById("select_value_disco").value = li.dataset.value;
+        document.getElementById("select_display_discos").innerHTML =
+            li.textContent + " <span class='seta'>&#9660;</span>";
+
+        document.getElementById("lista_opcoes_discos").classList.add("hidden");
+        atualizarGrafico();
+        return;
+    }
+
+    // Fecha selects ao clicar fora
+    if (!e.target.closest(".select-grafico")) {
+        document.getElementById("lista_opcoes").classList.add("hidden");
+        document.getElementById("lista_opcoes_discos").classList.add("hidden");
+    }
+});
+
+/* ================================
+          WINDOW ONLOAD (ÚNICO)
+================================ */
 window.onload = () => {
     fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
         .then(res => res.json())
@@ -505,8 +640,10 @@ window.onload = () => {
             document.getElementById("select_display").innerHTML =
                 "7 dias <span class='seta'>&#9660;</span>";
 
+            // Primeira renderização
             atualizarGrafico();
 
+            // Seus outros métodos continuam funcionando:
             definirStatusOperacao();
             DiscosComMaiorRiscoDeFalha(dados);
             puxarQuantidadeAlertaPorServidor();
