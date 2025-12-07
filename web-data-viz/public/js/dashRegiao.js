@@ -35,15 +35,16 @@ for(i = 0; i < lista.length; i++){
 </div>    
 </div>
 `
+
+}
+buscarParametros(lista[0].id) 
 id_lista_regiao.innerHTML = html
 }
 
-}
-
  function buscarParametros(idRegiao) {
-  lerArquivoPrevisao(idRegiao)
- // lerArquivoHorario(idRegiao)
- // lerArquivoKpi(idRegiao)
+ lerArquivoPrevisao(idRegiao)
+ lerArquivoHorario(idRegiao)
+ lerArquivoKpi(idRegiao)
 }
 
 async function lerArquivoHorario(idRegiao) {
@@ -51,13 +52,13 @@ async function lerArquivoHorario(idRegiao) {
     const url = `/dashboardRegiao/lerArquivoHorario/${idRegiao}`;
     const resposta = await fetch(url);
     
-    const dados = resposta.json();
+    const dados = await resposta.json();
 
-    console.log('dados' + dados)
-    if (!Array.isArray(dados) || dados.length === 0) {
-      console.log('Sem dados');
-      return;
-    }
+    let horas = dados.map(dados => dados.Hora)
+    let requisicoes = dados.map(dados => dados.Requsicoes)
+
+    criarGraficoDeHorario(horas,requisicoes)
+
 
   } catch (erro) {
     console.error('Erro ao carregar dados CPU:', erro);
@@ -88,14 +89,15 @@ async function lerArquivoKpi(idRegiao) {
 try {
     const url = `/dashboardRegiao/lerArquivoKpi/${idRegiao}`;
     const resposta = await fetch(url);
-    const dados = resposta.json();
+    const dados = await resposta.json();
 
-    if (!Array.isArray(dados) || dados.length === 0) {
-      console.log('Sem dados');
-      return;
-    }else{
+   let data = dados.map(dados => dados.Data)
+    let chance = dados.map(dados => dados.ChanceDeAlteracao)
+    let qtdReq = dados.map(dados => dados.Requsicoes)
+    let porcentagem = dados.map(dados => dados.PorcentagemDeAumento)
+    let maiorPrevisaoDeRam = dados.map(dados => dados.UsoDeRam)
 
-    }
+
 
   } catch (erro) {
     console.error('Erro ao carregar dados CPU:', erro);
@@ -241,12 +243,12 @@ function criarGraficoDeHorario(horarios,req){
   new Chart(ctxPico, graficoPico = {
     type: 'bar',
     data: {
-      labels: [horarios],
+      labels: horarios,
       datasets: [
         {
           type: 'bar',
           label: 'Requisições',
-          data: [req],
+          data: req,
           backgroundColor: ['#ffe09cff'],
           yAxisID: 'y',
           xAxisID: 'x'
