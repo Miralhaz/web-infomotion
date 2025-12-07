@@ -70,8 +70,13 @@ try {
     const resposta = await fetch(url);
     console.log(resposta + "resposta")
     const dados = await resposta.json();
-    console.log(dados + "dados")
+    let data = dados.map(dados => dados.Data)
+    let chance = dados.map(dados => dados.ChanceDeAlteracao)
+    let qtdReq = dados.map(dados => dados.Requsicoes)
+    let porcentagem = dados.map(dados => dados.PorcentagemDeAumento)
 
+    criarGraficoBarrasPrevisao(data,qtdReq)
+    criarGraficoLinhasPrevisao(data,porcentagem,chance)
    
 
   } catch (erro) {
@@ -98,16 +103,17 @@ try {
 }
 
 function criarGraficoBarrasPrevisao(datas,dados) {  
-  const ctx = document.getElementById('meuCanvas').getContext('2d');
+  const ctx = document.getElementById('grafico-barra-previsao').getContext('2d');
   new Chart(ctx, {   
     type: 'bar',
     data: {
-      labels: [datas],
+      labels: datas,
       datasets: [
         {
           label: 'Requisições',
-          data: [dados],
+          data: dados,
           backgroundColor: ['#ffe09cff'],
+          color: '#ffffff',
           yAxisID: 'y',
           xAxisID: 'x'
         }
@@ -128,20 +134,23 @@ function criarGraficoBarrasPrevisao(datas,dados) {
             }
           },
           labels: {
-            usePointStyle: true
+            usePointStyle: true,
+          color: '#ffffff',
           }
         }
       },
       scales: {
         x: {
           grid: { display: false },
-          bounds: 'data'
+          bounds: 'data',
+          color: '#ffffff'
         },
         y: {
           type: 'linear',
           position: 'left',
           beginAtZero: true,
-          grid: { color: '#a1a1a1b7' }
+          color: '#ffffff',
+          grid: { color: '#ffffffb7' }
         }
       }
     }
@@ -154,11 +163,11 @@ function criarGraficoLinhasPrevisao(datas,previsao,chance) {
   new Chart(ctx, {
     type: 'line',
     data: {
-      labels: [datas],
+      labels: datas,
       datasets: [
         {
           label: 'Estimativa percentual de aumento nas requisições',
-          data: [previsao],
+          data: previsao,
           borderWidth: 3,
           borderColor: '#fdf076ff',
           backgroundColor: 'transparent',
@@ -168,12 +177,12 @@ function criarGraficoLinhasPrevisao(datas,previsao,chance) {
         },
         {
           label: 'Probabilidade de interferência climática nas requisições %',
-          data: [chance],
+          data: chance,
           borderWidth: 3,
           borderColor: '#5dabdfff',
           backgroundColor: 'rgba(72, 185, 219, 0.3)', 
           fill: true,
-          pointBackgroundColor: 'white',
+          pointBackgroundColor: 'a1a1a1b7',
           pointHitRadius: 5,
           yAxisID: 'y'
         }
@@ -185,10 +194,11 @@ function criarGraficoLinhasPrevisao(datas,previsao,chance) {
       plugins: {
         legend: {
           display: true,
-          position: 'bottom',
+         
           labels: {
             usePointStyle: true,
-            color: 'white'
+            color: 'white',
+
           },
           title: {
             display: true,
@@ -208,8 +218,8 @@ function criarGraficoLinhasPrevisao(datas,previsao,chance) {
           },
           bounds: 'data',
           ticks: {
-            color: '#ffffff',
-            font: { size: 24 }
+            color: '#a1a1a1b7',
+            font: { size: 12 }
           }
         },
         y: {

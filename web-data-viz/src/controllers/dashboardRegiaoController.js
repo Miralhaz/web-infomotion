@@ -62,7 +62,6 @@ async function lerArquivoPrevisao(req, res) {
   
     const textoArquivo = dados.Body.toString('utf-8');
   
-    
     const dadosJson = JSON.parse(textoArquivo);
     console.log(dadosJson)
     res.json(dadosJson);
