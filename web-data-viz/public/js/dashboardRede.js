@@ -280,7 +280,7 @@ function graficoLinhaSecundario() {
           const parametroCorrespondente = valorCorrespondente * 0.01
 
           if (valor > parametroCorrespondente) return 'red';
-          else if (valor > (parametroCorrespondente * 2)) return '#fffb00ff';
+          else if (valor > (parametroCorrespondente / 2)) return '#fffb00ff';
           return '#0cff03ff';
         },
         segment: {
@@ -291,7 +291,7 @@ function graficoLinhaSecundario() {
             const valor = ctx.p1.parsed.y;
             if (valor > parametroCorrespondente) {
               return 'red';
-            } else if (valor > (parametroCorrespondente * 2)) {
+            } else if (valor > (parametroCorrespondente / 2)) {
               return '#fffb00ff';
             } else {
               return '#0cff03ff';
@@ -460,7 +460,7 @@ function carregarGraficosLinha(dados) {
   parametroPacotesRecebidos = dados[0].parametroPacotesRecebidos
   parametroPacketLoss = parametroPacotesEnviados * 0.01
   
-  document.getElementById("parametroGraficoLinhaPrincipal").innerHTML = `Paramêtros minimo de pacotes: enviados: ${parametroPacotesEnviados}, recebidos: ${parametroPacotesRecebidos}`
+  document.getElementById("parametroGraficoLinhaPrincipal").innerHTML = `Parâmetros minimo de pacotes: enviados: ${parametroPacotesEnviados} | recebidos: ${parametroPacotesRecebidos}`
 
   let stringTempo
   if (tempo == 1) {
