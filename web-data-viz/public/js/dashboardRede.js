@@ -58,12 +58,18 @@ function kpiInternet()  {
             datalabels: {
               color: (context) => {
                 const value = context.dataset.data[context.dataIndex];
-                if (value < parametro_up * 2) {
-                  return '#f59e0b'
-                } else if (value < parametro_up){
+                console.log('value', value * 1000000);
+                console.log('parametro_up', parametro_up);
+                console.log('true or false', Boolean(value * 1000000 < parametro_down));
+                
+                
+                if (value * 1000000 < parametro_up ) {
                   return 'red'
+                } else if (value * 1000000 < parametro_up * 2){
+                  return '#f59e0b'
                 } else return 'green'
               }, 
+
               font: {
                 weight: 'bold',
                 size: 14
@@ -102,14 +108,16 @@ function kpiInternet()  {
           datalabels: {
               color: (context) => {
                 const value = context.dataset.data[context.dataIndex];
-                console.log('value', value);
+                console.log('value', value * 1000000);
                 console.log('parametro_down', parametro_down, 'a');
+                console.log('true or false', Boolean(value * 1000000 < parametro_down));
                 
                 
-                if (value < (parametro_down * 1000000)  * 2) {
-                  return 'yellow'
-                } else if (value < parametro_down  * 1000000){
+                
+                if (value * 1000000 < parametro_down) {
                   return 'red'
+                } else if ( value * 1000000 < parametro_down   * 2){
+                  return 'yellow'
                 } else return 'green'
               }, 
               font: {
@@ -281,7 +289,7 @@ function graficoLinhaSecundario() {
             const parametroCorrespondente = valorCorrespondente * 0.01
             if (!ctx.p1 || !ctx.p1.parsed) return 'gray';
             const valor = ctx.p1.parsed.y;
-            if (valor >  parametroCorrespondente) {
+            if (valor > parametroCorrespondente) {
               return 'red';
             } else if (valor > (parametroCorrespondente * 2)) {
               return '#fffb00ff';
@@ -383,20 +391,8 @@ function atualizarDadosServidorSelecionado() {
 
       idServidorSelecionado = novoIdServidor
 
-      labelsData = []
-      dadosPacotesEnviados = []
-      dadosPacotesRecebidos = []
-      dadosUpload = []
-      dadosDownload = []
-      dadosPacketLoss = []
-      dadosConexoes = []
-
-      document.getElementById('tableConexao').innerHTML = ''
-
-      carregarDadosRede()
-      carregarDadosConexao()
-      contarTicketsPorTermo('Rede')
-      listarServidores()
+      window.location.reload()
+      
     })
   }
 }
@@ -557,9 +553,9 @@ function carregarGraficosLinha(dados) {
   document.getElementById('parametro_up').innerHTML = parametro_upString
   document.getElementById('baixo_upload').innerHTML = `${(upload.Media).toFixed(1)} Mbps`
   document.getElementById('baixo_upload').style.fontWeight = `1000`
-  if (upload.Media < parametro_up * 2) {
+  if (upload.Media * 1000000 < parametro_up * 2) {
     document.getElementById('baixo_upload').style.color = `#f59e0b`
-  } else if (upload.Media < parametro_up) {
+  } else if (upload.Media * 1000000 < parametro_up) {
     document.getElementById('baixo_upload').style.color = `red`
   } else document.getElementById('baixo_upload').style.color = `green`
 
@@ -567,9 +563,9 @@ function carregarGraficosLinha(dados) {
   document.getElementById('parametro_down').innerHTML = parametro_downString
   document.getElementById('baixo_download').innerHTML = `${(download.Media).toFixed(1)} Mbps`
   document.getElementById('baixo_download').style.fontWeight = `1000`
-  if (download.Media < parametro_down * 2) {
+  if (download.Media * 1000000 < parametro_down * 2) {
     document.getElementById('baixo_download').style.color = `#f59e0b`
-  } else if (download.Media < parametro_down) {
+  } else if (download.Media * 1000000 < parametro_down) {
     document.getElementById('baixo_download').style.color = `red`
   } else document.getElementById('baixo_download').style.color = `green`
 
