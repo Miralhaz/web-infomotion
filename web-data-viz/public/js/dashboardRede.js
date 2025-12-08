@@ -84,7 +84,7 @@ function kpiInternet()  {
             }
           },
           scales: {
-            x: { beginAtZero: true },
+            x: { display: false },
             y: { ticks: { color: '#fff' } }
           }
         }
@@ -136,7 +136,7 @@ function kpiInternet()  {
             }
         },
           scales: {
-            x: { beginAtZero: true },
+            x: { display: false },
             y: { ticks: { color: '#fff' } }
           }
         }
@@ -245,7 +245,7 @@ function graficoLinhaPrincipal() {
       },
       scales: {
         x: {
-          ticks: { display: true }
+          ticks: { display: true, color: '#E2E1DE', font: { size: 10 }}
         },
         y: {
           ticks: { color: '#E2E1DE', font: { size: 10 } }
@@ -311,7 +311,11 @@ function graficoLinhaSecundario() {
       plugins: {
         legend: {
           position: 'top',
-          labels: { font: { size: 11 }, color: '#E2E1DE' } // menor legenda
+          labels: { font: { size: 11 }, color: '#E2E1DE',
+          generateLabels: function (chart) {
+              const defaults = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+              return defaults.map(item => ({ ...item, fillStyle: 'transparent' }));
+            }} 
         },
         title: { display: false },
         datalabels: {
@@ -319,7 +323,7 @@ function graficoLinhaSecundario() {
         }
       },
       scales: {
-        x: { display: true },
+        x: { ticks:{ display: true, color: '#E2E1DE', font: { size: 10 }} },
         y: { ticks: { font: { size: 9 }, color: '#E2E1DE' } }
       }
     },
