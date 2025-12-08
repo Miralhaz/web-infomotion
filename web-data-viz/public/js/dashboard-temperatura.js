@@ -234,8 +234,14 @@ async function carregarDadosCpu(idServidor, limiteMaximo) {
       return;
     }
 
+    const ultimoRegistro = dados.reduce((maisRecente, atual) => {
+      const dataMaisRecente = converterTimestamp(maisRecente.timestamp);
+      const dataAtual = converterTimestamp(atual.timestamp);
+
+      return dataAtual > dataMaisRecente ? atual : maisRecente;
+    });
+
     // Pega o último registro (mais recente)
-    const ultimoRegistro = dados[dados.length - 1];
     const tempCpu = parseFloat(ultimoRegistro.temperatura_cpu);
     const usoCpu = parseFloat(ultimoRegistro.cpu_uso);
 
@@ -247,6 +253,12 @@ async function carregarDadosCpu(idServidor, limiteMaximo) {
   } catch (erro) {
     console.error('Erro ao carregar dados CPU:', erro);
   }
+}
+
+function converterTimestamp(timestamp) {
+  const [data, hora] = timestamp.split(' ');
+  const [dia, mes, ano] = data.split('/');
+  return new Date(`${ano}-${mes}-${dia}T${hora}`);
 }
 
 function atualizarKPIsCpu(tempCPU, usoCPU) {
@@ -282,7 +294,13 @@ async function carregarDadosDisco(idServidor, limiteMaximo) {
       return;
     }
 
-    const ultimoRegistro = dados[dados.length - 1];
+    const ultimoRegistro = dados.reduce((maisRecente, atual) => {
+      const dataMaisRecente = converterTimestamp(maisRecente.timestamp);
+      const dataAtual = converterTimestamp(atual.timestamp);
+
+      return dataAtual > dataMaisRecente ? atual : maisRecente;
+    });
+
     const tempDisco = parseFloat(ultimoRegistro.temperatura_disco);
     const usoDisco = parseFloat(ultimoRegistro.disco_uso);
 
