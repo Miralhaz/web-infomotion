@@ -1,16 +1,42 @@
-// função caso, no select da esquerda, o usuário queira trocar para outra dashboard
-function trocarDePagina() {
-    var select_dashboards = document.getElementById('dash');
-    var select_selecionado = select_dashboards.value;
-
-    if (select_selecionado !== '#' && select_selecionado !== '') {
-        window.location.href = select_selecionado;
-    }
-}
-// final da iteração
-
 
 var idEmpresa = sessionStorage.ID_EMPRESA;
+
+function definirStatusOperacao(dados) {
+    let temAlertaDisco = false;
+    let temAlertaTemperatura = false;
+
+    for (let i = 0; i < dados.servidores.length; i++) {
+        const servidor = dados.servidores[i];
+        const parametro = dados.parametrosAlerta[servidor.fk_servidor];
+        if (parametro) {
+            if (servidor.disco > parametro.limiteDisco) {
+                temAlertaDisco = true;
+            }
+            if (servidor.temperatura_disco > parametro.limiteTemperatura) {
+                temAlertaTemperatura = true;
+            }
+        }
+    }
+
+    let status;
+    if (temAlertaDisco && temAlertaTemperatura) {
+        status = "Há discos com uso e temperatura acima do parâmetro";
+    } else if (temAlertaDisco) {
+        status = "Há discos com uso acima do parâmetro";
+    } else if (temAlertaTemperatura) {
+        status = "Há discos com temperatura acima do parâmetro";
+    } else {
+        status = "Operação normal";
+    }
+
+    if (temAlertaDisco || temAlertaTemperatura) {
+        txt_status_operacao.style.color = "#ff5252"; // vermelho
+    } else {
+        txt_status_operacao.style.color = "white"; // ou a cor padrão
+    }
+
+    txt_status_operacao.innerHTML = status;
+}
 
 function kpiComparativaAlertas() {
     var dadosHoje = 0
@@ -39,35 +65,16 @@ function kpiComparativaAlertas() {
             console.log(`total de alertas ontem ${dadosOntem}`)
             if (dadosHoje < dadosOntem) {
                 calculo = (dadosOntem - dadosHoje)
-                saidaAlertasOntem.innerHTML = `${calculo} a menos que ontem`;
+                saidaAlertasOntem.innerHTML = `${calculo} alertas a menos que ontem`;
                 numeroHoje.classList.add('melhor');
             } else if (dadosHoje > dadosOntem) {
                 calculo = (dadosHoje - dadosOntem)
-                saidaAlertasOntem.innerHTML = `${calculo} a mais que ontem`;
-                numeroHoje.classList.add('pior'); 
+                saidaAlertasOntem.innerHTML = `${calculo} alertas a mais que ontem`;
+                numeroHoje.classList.add('pior');
             } else if (dadosHoje == dadosOntem) {
                 calculo = dadosHoje
-                saidaAlertasOntem.innerHTML = `${calculo} mesma quantidade que ontem`;
+                saidaAlertasOntem.innerHTML = `mesma quantidade que ontem`;
             }
-        })
-        .catch(erro => console.error("Erro:", erro));
-}
-
-
-function definirStatusOperacao() {
-    fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
-        .then(resposta => {
-            if (!resposta.ok) throw "Erro na requisição";
-            return resposta.json();
-        })
-        .then(dados => {
-            // Exemplo: status baseado no maior uso de disco
-            const maiorUso = Math.max(...dados.servidores.map(s => s.disco));
-            let status = "Normal";
-            if (maiorUso > 90) status = "Há discos em estado de alerta";
-            else if (maiorUso > 75) status = "Atenção";
-
-            txt_status_operacao.innerHTML = status;
         })
         .catch(erro => console.error("Erro:", erro));
 }
@@ -262,7 +269,8 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
 
     // 3. Limpa e preenche a tabela
     tbody.innerHTML = "";
-    for (let i = 0; i < servidoresComScore.length; i++) {
+    const limite = Math.min(5, servidoresComScore.length);
+    for (let i = 0; i < limite; i++) {
         const item = servidoresComScore[i];
         const serv = item.servidor;
 
@@ -314,15 +322,15 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
 function DiscosComMaiorRiscoDeFalha(dados) {
     // 1. Prepara lista com distância do parâmetro
     const discosComDistancia = [];
-    
+
     for (let i = 0; i < dados.servidores.length; i++) {
         const servidor = dados.servidores[i];
         const parametro = dados.parametrosAlerta[servidor.fk_servidor];
         const limiteTemp = parametro ? parseFloat(parametro.limiteTemperatura) : 45.0;
-        
+
         // Calcula distância (pode ser negativa se ultrapassou)
         const distancia = limiteTemp - servidor.temperatura_disco;
-        
+
         discosComDistancia.push({
             apelido: servidor.apelidoDisco || servidor.nomeMaquina,
             temperatura: servidor.temperatura_disco,
@@ -330,7 +338,7 @@ function DiscosComMaiorRiscoDeFalha(dados) {
             distancia: distancia // negativo = já ultrapassou
         });
     }
-    
+
     // 2. Ordena por distância (menor primeiro)
     // Quem tem distância negativa (ultrapassou) vem primeiro
     // Depois quem está mais próximo (distância pequena positiva)
@@ -338,7 +346,7 @@ function DiscosComMaiorRiscoDeFalha(dados) {
         for (let j = i + 1; j < discosComDistancia.length; j++) {
             const distA = discosComDistancia[i].distancia;
             const distB = discosComDistancia[j].distancia;
-            
+
             // Se A ultrapassou e B não, A vem primeiro
             if (distA < 0 && distB >= 0) {
                 continue; // A já está na frente
@@ -357,24 +365,24 @@ function DiscosComMaiorRiscoDeFalha(dados) {
             }
         }
     }
-    
+
     // 3. Atualiza os elementos
     const elementos = [discotemp1, discotemp2, discotemp3];
-    
+
     // Limpa
     for (let i = 0; i < elementos.length; i++) {
         elementos[i].innerHTML = "Sem dados";
         elementos[i].className = "";
     }
-    
+
     // Preenche top 3
     for (let i = 0; i < Math.min(3, discosComDistancia.length); i++) {
         const disco = discosComDistancia[i];
         const ultrapassou = disco.distancia < 0;
-        
-        elementos[i].innerHTML = 
-            `${disco.apelido}: ${disco.temperatura.toFixed(1)}°C / Parâmetro: ${disco.parametro.toFixed(1)}°C`;
-        
+
+        elementos[i].innerHTML =
+            `${disco.apelido}: ${disco.temperatura.toFixed(1)}°C max: ${disco.parametro.toFixed(1)}°C`;
+
         if (ultrapassou) {
             elementos[i].className = "temperatura-alerta";
         }
@@ -399,10 +407,10 @@ function puxarQuantidadeAlertaPorServidor() {
 
             const dadosGrafico = Object.entries(contagem)
                 .map(([nome, qtd]) => ({ nome, quantidade: qtd }))
-                .sort((a, b) => b.quantidade - a.quantidade) 
+                .sort((a, b) => b.quantidade - a.quantidade)
                 .slice(0, 5);
 
-       
+
             atualizarGraficoBarras(dadosGrafico);
         })
         .catch(erro => {
@@ -411,19 +419,28 @@ function puxarQuantidadeAlertaPorServidor() {
 }
 
 function atualizarGraficoBarras(dados) {
-    const labels = dados.map(d => d.nome);
-    const valores = dados.map(d => d.quantidade);
-    const cores = valores.map(v =>
-        v > 10 ? "#ff3b30" :
-            v > 5 ? "#ff9500" : "#ffd966"
-    );
+
+    const labels = [];
+    const valores = [];
+    const cores = [];
+
+    for (let i = 0; i < dados.length; i++) {
+        const d = dados[i];
+
+        labels.push(d.nome);
+        valores.push(d.quantidade);
+
+        if (d.quantidade > 10) cores.push("#ff3b30");
+        else if (d.quantidade > 5) cores.push("#ff9500");
+        else cores.push("#ffd966");
+    }
 
     if (window.graficoBarras) window.graficoBarras.destroy();
 
     window.graficoBarras = new Chart(document.getElementById('graficobarras'), {
         type: 'bar',
         data: {
-            labels,
+            labels: labels,
             datasets: [{
                 label: 'Quantidade de Alertas (Hoje)',
                 data: valores,
@@ -450,11 +467,18 @@ function atualizarGraficoBarras(dados) {
             scales: {
                 x: {
                     beginAtZero: true,
-                    ticks: { color: "white" },
+                    ticks: {
+                        color: "white",
+                        stepSize: 1
+                    },
                     title: {
                         display: true,
                         text: 'Número de Alertas',
-                        color: 'white'
+                        color: 'white',
+                        font: {
+                            size: 18,
+                            weight: "bold"
+                        }
                     }
                 },
                 y: { ticks: { color: "white" } }
@@ -513,64 +537,103 @@ document.addEventListener('click', function (e) {
 
 // tudo pra funcionamento do gráfico de linhas 
 function filtrarPorPeriodo(historico, periodo) {
+
     const agora = new Date();
     let limite;
 
-    switch (periodo) {
-        case "1h": limite = new Date(agora - 1 * 60 * 60 * 1000); break;
-        case "24h": limite = new Date(agora - 24 * 60 * 60 * 1000); break;
-        default: limite = new Date(agora - 7 * 24 * 60 * 60 * 1000); break;
+    if (periodo === "1h") {
+        limite = new Date(agora - (1 * 60 * 60 * 1000));
+    } else if (periodo === "24h") {
+        limite = new Date(agora - (24 * 60 * 60 * 1000));
+    } else {
+        limite = new Date(agora - (7 * 24 * 60 * 60 * 1000)); // 7 dias
     }
 
-    return historico.filter(item => new Date(item.timestamp) >= limite);
+    const filtrado = [];
+
+    for (let i = 0; i < historico.length; i++) {
+        const dataItem = new Date(historico[i].timestamp);
+        if (dataItem >= limite) {
+            filtrado.push(historico[i]);
+        }
+    }
+
+    return filtrado;
 }
 
-function amostrarDados(dados, maxPontos = 7) {
-    if (dados.length <= maxPontos) return dados;
+
+function amostrarDados(lista, maxPontos = 7) {
+
+    if (lista.length <= maxPontos) return lista;
 
     const resultado = [];
-    const passo = Math.floor(dados.length / (maxPontos - 1));
 
-    resultado.push(dados[0]);
+    const passo = Math.floor(lista.length / (maxPontos - 1));
+
+    resultado.push(lista[0]); // primeiro ponto
 
     for (let i = 1; i < maxPontos - 1; i++) {
-        const idx = Math.min(i * passo, dados.length - 2);
-        resultado.push(dados[idx]);
+        const indice = i * passo;
+        resultado.push(lista[indice]);
     }
 
-    resultado.push(dados[dados.length - 1]);
+    resultado.push(lista[lista.length - 1]); // último ponto
+
     return resultado;
 }
 
+
 let graficoLinhas = null;
-let dadosGlobais = null;
 
-function plotarGrafico(historicoFiltrado, periodo) {
-    const dadosAmostrados = amostrarDados(historicoFiltrado);
+function plotarGrafico(listaFiltrada, periodo) {
 
-    const labels = dadosAmostrados.map(item => {
+    // 1️⃣ Ordena antes de amostrar
+    listaFiltrada.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+    const dados = amostrarDados(listaFiltrada);
+
+    // 2️⃣ Ordena DE NOVO após amostrar (evita pontos fora da ordem)
+    dados.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+    const labels = [];
+    const valores = [];
+
+    for (let i = 0; i < dados.length; i++) {
+        const item = dados[i];
         const data = new Date(item.timestamp);
-        return (periodo === "1h")
-            ? data.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            : `${data.getDate()}/${data.getMonth() + 1}`;
-    });
 
-    const valores = dadosAmostrados.map(item => item.disco);
+        if (periodo === "1h") {
+            labels.push(
+                data.getHours().toString().padStart(2, "0") + ":" +
+                data.getMinutes().toString().padStart(2, "0")
+            );
+        } else {
+            const dia = data.getDate().toString().padStart(2, "0");
+            const mes = (data.getMonth() + 1).toString().padStart(2, "0");
+            const hora = data.getHours().toString().padStart(2, "0");
+            const min = data.getMinutes().toString().padStart(2, "0");
+
+            labels.push(`${dia}/${mes} ${hora}:${min}`);
+
+        }
+
+        valores.push(item.disco);
+    }
 
     if (graficoLinhas) graficoLinhas.destroy();
 
-    graficoLinhas = new Chart(document.getElementById('graficolinhas'), {
-        type: 'line',
+    graficoLinhas = new Chart(document.getElementById("graficolinhas"), {
+        type: "line",
         data: {
-            labels,
+            labels: labels,
             datasets: [{
-                label: 'Uso do Disco (%)',
+                label: "Uso do Disco (%)",
                 data: valores,
-                borderColor: '#D2B080',
-                backgroundColor: 'rgba(210, 176, 128, 0.1)',
+                borderColor: "#D2B080",
+                backgroundColor: "rgba(210,176,128,0.1)",
                 borderWidth: 2,
                 tension: 0.3,
-                pointRadius: 3
+                pointRadius: 2
             }]
         },
         options: {
@@ -584,42 +647,58 @@ function plotarGrafico(historicoFiltrado, periodo) {
     });
 }
 
+
+
 function atualizarGrafico() {
+
     const periodo = document.getElementById("select_value").value;
     const discoId = document.getElementById("select_value_disco").value;
 
     if (!dadosGlobais || !discoId) return;
 
-    const historicoDisco = dadosGlobais.historico.filter(
-        item => item.fk_servidor == discoId
-    );
+    const historicoDisco = [];
+
+    for (let i = 0; i < dadosGlobais.historico.length; i++) {
+        if (dadosGlobais.historico[i].fk_servidor == discoId) {
+            historicoDisco.push(dadosGlobais.historico[i]);
+        }
+    }
 
     const filtrado = filtrarPorPeriodo(historicoDisco, periodo);
 
-    if (filtrado.length > 0) plotarGrafico(filtrado, periodo);
-    else if (graficoLinhas) graficoLinhas.destroy();
+    if (filtrado.length > 0) {
+        plotarGrafico(filtrado, periodo);
+    } else if (graficoLinhas) {
+        graficoLinhas.destroy();
+    }
 }
+
 
 
 document.addEventListener("click", (e) => {
 
-    // seleção de periodo
+    // SELECT PERÍODO
     if (e.target.closest("#select_display")) {
         document.getElementById("lista_opcoes").classList.toggle("hidden");
         return;
     }
 
     if (e.target.closest("#lista_opcoes li")) {
-        const li = e.target.closest("li");
-        const valor = li.dataset.value;
 
-        const map = {
+        const li = e.target.closest("li");
+
+        // converte texto → valor usado no JS
+        const conversion = {
             "1hora": "1h",
             "24horas": "24h",
             "dias": "7d"
         };
 
-        document.getElementById("select_value").value = map[valor];
+        const valor = li.dataset.value;
+        const periodoConvertido = conversion[valor];
+
+        document.getElementById("select_value").value = periodoConvertido;
+
         document.getElementById("select_display").innerHTML =
             li.textContent + " <span class='seta'>&#9660;</span>";
 
@@ -628,16 +707,19 @@ document.addEventListener("click", (e) => {
         return;
     }
 
-    // selecao dos discos
+
+    // SELECT DISCO
     if (e.target.closest("#select_display_discos")) {
         document.getElementById("lista_opcoes_discos").classList.toggle("hidden");
         return;
     }
 
     if (e.target.closest("#lista_opcoes_discos li")) {
+
         const li = e.target.closest("li");
 
         document.getElementById("select_value_disco").value = li.dataset.value;
+
         document.getElementById("select_display_discos").innerHTML =
             li.textContent + " <span class='seta'>&#9660;</span>";
 
@@ -646,16 +728,13 @@ document.addEventListener("click", (e) => {
         return;
     }
 
-    // Fecha selects ao clicar fora
     if (!e.target.closest(".select-grafico")) {
         document.getElementById("lista_opcoes").classList.add("hidden");
         document.getElementById("lista_opcoes_discos").classList.add("hidden");
     }
 });
 
-/* ================================
-          WINDOW ONLOAD (ÚNICO)
-================================ */
+
 window.onload = () => {
     fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
         .then(res => res.json())
@@ -694,7 +773,7 @@ window.onload = () => {
             atualizarGrafico();
 
             // Seus outros métodos continuam funcionando:
-            definirStatusOperacao();
+            definirStatusOperacao(dados);
             DiscosComMaiorRiscoDeFalha(dados);
             puxarQuantidadeAlertaPorServidor();
             DiscosQueRecebemMaisRequisicoes(dados);

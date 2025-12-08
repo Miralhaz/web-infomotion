@@ -58,14 +58,12 @@
     </section>
 
     <div class="container">
-        <div class="organizador-section">
+          <div class="organizador-section">
             <div class="div-selects">
                 Tipo de dashboard:
-                <select name="dash" id="dash" class="nome_dash" onchange="trocarDePagina()">`
+                <p name="dash" id="dash" class="nome_dash" onchange="trocarDePagina()">
                     <option value="#">Disco dos servidores</option>
-                    <option value="dashboardHistorico.html">Histórico</option>
-                    <option value="dashboardRegiao.html">Região</option>
-                </select>
+                </p>
             </div>
         </div>
         <div class="parte_de_cima">
@@ -84,42 +82,49 @@
 
             <!--kpi de alertas-->
             <div class="kpi alertas">
-    <div class="kpi-header">
-         <div class="titulo">
-        <p>Alertas de Discos</p>
-        </div>
-    </div>
-    <div class="kpi-body">
-        <div class="alertas-numero" id="saidaAlertasHoje">0</div>
-        <div class="alertas-comparacao" id="saidaAlertasOntem">
-            Carregando...
-        </div>
-    </div>
-</div>
+                <div class="kpi-header">
+                    <div class="titulo">
+                        <p>Alertas de Discos</p>
+                    </div>
+                </div>
+                <div class="kpi-body">
+                    <div class="alertas-numero" id="saidaAlertasHoje">0</div>
+                    <div class="alertas-comparacao" id="saidaAlertasOntem">
+                        Carregando...
+                    </div>
+                </div>
+            </div>
 
             <!--kpi de temperatura-->
             <div class="kpi temperatura">
                 <div class="kpi-header">
                     <div class="titulo">
-                        <p>Top 3 Discos temperatura elevada</p>
-
+                        <p>3 discos que ultrapassam o parâmetro de C°</p>
                     </div>
                 </div>
-
                 <div class="kpi-body">
                     <div class="classificacao">
- 
                     </div>
                     <div class="discos">
-
                         <div class="listagem">
-                            <p id="discotemp1"></p>
-                            <p id="discotemp2"></p>
-                            <p id="discotemp3"></p>
+
+                            <div class="esquerda">
+
+                                <p id="discotemp1"></p>
+                            </div>
+
+                            <div class="meio">
+                                <p id="discotemp2"></p>
+                            </div>
+
+                            <div class="direita">
+                                <p id="discotemp3"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
 
@@ -127,7 +132,7 @@
             <!--grafico de linhas-->
             <div class="grafico-linha-hist">
                 <div class="titulo" style="display: flex; justify-content: space-between; align-items: center;">
-                    <p style="font-size: 2.5vh;"> Historico de utilização do armazenamento do Disco </p>
+                    <p style="font-size: 16px;"> Historico de utilização do armazenamento do Disco </p>
                     <div style="display: flex; gap: 1vh;">
                         <!-- Período -->
                         <div class="select-grafico">
@@ -166,7 +171,6 @@
             <!-- Lista-->
             <table>
                 <caption>Disco em Alerta por ultrapassar o parâmetro de uso</caption>
-
                 <thead>
                     <tr>
                         <th>Apelido</th>
@@ -176,12 +180,9 @@
                         <th>servidor</th>
                     </tr>
                 </thead>
-
                 <tbody id="corpo-tabela-discos">
-
                 </tbody>
             </table>
-
         </div>
 
         <div class="parte_final">
@@ -200,7 +201,7 @@
             <!-- lista de servidores que estão trabalhando mais-->
             <div class="listaOperacional">
                 <table>
-                    <caption>Discos que estão lendo e gravando mais arquivos</caption>
+                    <caption>5 Discos com Mais Atividade de Leitura/Escrita</caption>
 
                     <thead>
                         <tr>
@@ -224,4 +225,5 @@
 </body>
 <script src="../js/dashDisco.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </html>
