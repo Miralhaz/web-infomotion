@@ -30,9 +30,9 @@ function definirStatusOperacao(dados) {
     }
 
     if (temAlertaDisco || temAlertaTemperatura) {
-        txt_status_operacao.style.color = "#ff5252"; // vermelho
+        txt_status_operacao.style.color = "#ff5252"; 
     } else {
-        txt_status_operacao.style.color = "white"; // ou a cor padrão
+        txt_status_operacao.style.color = "white"; 
     }
 
     txt_status_operacao.innerHTML = status;
@@ -89,7 +89,6 @@ async function kpiAlertas() {
     let alertasHoje = 0;
     let alertasOntem = 0;
 
-    // Conta alertas de HOJE
     for (const reg of dados.servidores) {
         if (reg.timestamp.startsWith(hoje)) {
             const param = dados.parametrosAlerta[reg.fk_servidor];
@@ -117,7 +116,6 @@ function ListagemDosDiscosEmAlerta(dados) {
         return;
     }
 
-    // 1. Categoriza e ordena servidores por gravidade
     const servidoresComGravidade = [];
 
     for (let i = 0; i < dados.servidores.length; i++) {
@@ -127,39 +125,34 @@ function ListagemDosDiscosEmAlerta(dados) {
 
         let gravidade;
         if (servidor.disco > limiteDisco) {
-            gravidade = 3; // Ultrapassou (vermelho)
+            gravidade = 3; 
         } else if (servidor.disco > limiteDisco * 0.9) {
-            gravidade = 2; // Próximo (amarelo)
+            gravidade = 2; 
         } else {
-            gravidade = 1; // Normal
+            gravidade = 1; 
         }
 
         servidoresComGravidade.push({
             servidor: servidor,
             limite: limiteDisco,
             gravidade: gravidade,
-            diferenca: limiteDisco - servidor.disco // para ordenar dentro da mesma gravidade
+            diferenca: limiteDisco - servidor.disco 
         });
     }
 
-    // 2. Ordena por: gravidade (desc) → diferença (asc)
     for (let i = 0; i < servidoresComGravidade.length; i++) {
         for (let j = i + 1; j < servidoresComGravidade.length; j++) {
             const a = servidoresComGravidade[i];
             const b = servidoresComGravidade[j];
 
             if (a.gravidade !== b.gravidade) {
-                // Ordena por gravidade (3 > 2 > 1)
                 if (a.gravidade < b.gravidade) {
-                    // Troca
                     const temp = servidoresComGravidade[i];
                     servidoresComGravidade[i] = servidoresComGravidade[j];
                     servidoresComGravidade[j] = temp;
                 }
             } else {
-                // Mesma gravidade: ordena por quem está mais próximo do limite
                 if (a.diferenca > b.diferenca) {
-                    // Troca
                     const temp = servidoresComGravidade[i];
                     servidoresComGravidade[i] = servidoresComGravidade[j];
                     servidoresComGravidade[j] = temp;
@@ -168,10 +161,8 @@ function ListagemDosDiscosEmAlerta(dados) {
         }
     }
 
-    // 3. Limpa a tabela
     tbody.innerHTML = "";
 
-    // 4. Preenche com `for` tradicional
     for (let i = 0; i < servidoresComGravidade.length; i++) {
         const item = servidoresComGravidade[i];
         const servidor = item.servidor;
@@ -179,32 +170,27 @@ function ListagemDosDiscosEmAlerta(dados) {
         const estaEmAlerta = item.gravidade === 3;
         const estaProximo = item.gravidade === 2;
 
-        // Cria a linha
         const tr = document.createElement("tr");
         if (estaEmAlerta) {
-            tr.className = "linha-alerta"; // vermelho de fundo
+            tr.className = "linha-alerta";
         } else if (estaProximo) {
-            tr.className = "linha-proximo"; // fundo amarelo suave (você cria no CSS)
+            tr.className = "linha-proximo"; 
         }
 
-        // Coluna 1: Apelido
         const tdApelido = document.createElement("td");
         tdApelido.textContent = servidor.apelidoDisco || "Desconhecido";
 
-        // Coluna 2: Capacidade
         const tdCapacidade = document.createElement("td");
         tdCapacidade.textContent = servidor.capacidade || "Desconhecido";
 
-        // Coluna 3: Uso atual
         const tdUso = document.createElement("td");
         tdUso.textContent = `${servidor.disco.toFixed(2)}%`;
         if (estaEmAlerta) {
-            tdUso.classList.add("texto-alerta"); // vermelho
+            tdUso.classList.add("texto-alerta"); 
         } else if (estaProximo) {
-            tdUso.classList.add("texto-proximo"); // amarelo (você cria no CSS)
+            tdUso.classList.add("texto-proximo"); 
         }
 
-        // Coluna 4: Parâmetro
         const tdParametro = document.createElement("td");
         tdParametro.textContent = `${limiteDisco.toFixed(2)}%`;
         if (estaEmAlerta) {
@@ -213,7 +199,6 @@ function ListagemDosDiscosEmAlerta(dados) {
             tdParametro.classList.add("texto-proximo");
         }
 
-        // Coluna 5: Servidor
         const tdServidor = document.createElement("td");
         tdServidor.textContent = servidor.nomeMaquina || `Servidor ${servidor.fk_servidor}`;
         if (estaEmAlerta) {
@@ -222,7 +207,6 @@ function ListagemDosDiscosEmAlerta(dados) {
             tdServidor.classList.add("texto-proximo");
         }
 
-        // Monta a linha
         tr.appendChild(tdApelido);
         tr.appendChild(tdCapacidade);
         tr.appendChild(tdUso);
@@ -240,10 +224,9 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
         return;
     }
 
-    const PESO_OPERACAO = 10000; // 1 operação = 10 KB
+    const PESO_OPERACAO = 10000;
     const servidoresComScore = [];
 
-    // 1. Calcula score para cada servidor
     for (let i = 0; i < dados.servidores.length; i++) {
         const serv = dados.servidores[i];
         const bytesTotal = (serv.bytes_lidos || 0) + (serv.bytes_escritos || 0);
@@ -256,7 +239,6 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
         });
     }
 
-    // 2. Ordena com bubble sort (maior score primeiro)
     for (let i = 0; i < servidoresComScore.length; i++) {
         for (let j = i + 1; j < servidoresComScore.length; j++) {
             if (servidoresComScore[i].score < servidoresComScore[j].score) {
@@ -267,7 +249,6 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
         }
     }
 
-    // 3. Limpa e preenche a tabela
     tbody.innerHTML = "";
     const limite = Math.min(5, servidoresComScore.length);
     for (let i = 0; i < limite; i++) {
@@ -275,24 +256,18 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
         const serv = item.servidor;
 
         const tr = document.createElement("tr");
-        // Destaque para alto score (ex: > 100 GB em equivalente)
         if (item.score > 100 * 1024 * 1024 * 1024) {
             tr.className = "linha-alta-atividade";
         }
 
-        // Apelido
         const tdApelido = document.createElement("td");
         tdApelido.textContent = serv.apelidoDisco || "Desconhecido";
-
-        // Capacidade
         const tdCapacidade = document.createElement("td");
         tdCapacidade.textContent = serv.capacidade || "Desconhecido";
 
-        // Processos
         const tdProcessos = document.createElement("td");
         tdProcessos.textContent = serv.quantidade_processos || 0;
 
-        // Leitura (formatação honesta: só MB/KB, sem "/s")
         const tdLeitura = document.createElement("td");
         const leituraMB = (serv.bytes_lidos || 0) / (1024 * 1024);
         if (leituraMB >= 1) {
@@ -301,7 +276,6 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
             tdLeitura.textContent = `${(leituraMB * 1024).toFixed(2)} KB`;
         }
 
-        // Escrita
         const tdEscrita = document.createElement("td");
         const escritaMB = (serv.bytes_escritos || 0) / (1024 * 1024);
         if (escritaMB >= 1) {
@@ -310,7 +284,6 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
             tdEscrita.textContent = `${(escritaMB * 1024).toFixed(2)} KB`;
         }
 
-        // Servidor
         const tdServidor = document.createElement("td");
         tdServidor.textContent = serv.nomeMaquina || `Servidor ${serv.fk_servidor}`;
 
@@ -320,7 +293,6 @@ function DiscosQueRecebemMaisRequisicoes(dados) {
 }
 
 function DiscosComMaiorRiscoDeFalha(dados) {
-    // 1. Prepara lista com distância do parâmetro
     const discosComDistancia = [];
 
     for (let i = 0; i < dados.servidores.length; i++) {
@@ -328,36 +300,29 @@ function DiscosComMaiorRiscoDeFalha(dados) {
         const parametro = dados.parametrosAlerta[servidor.fk_servidor];
         const limiteTemp = parametro ? parseFloat(parametro.limiteTemperatura) : 45.0;
 
-        // Calcula distância (pode ser negativa se ultrapassou)
         const distancia = limiteTemp - servidor.temperatura_disco;
 
         discosComDistancia.push({
             apelido: servidor.apelidoDisco || servidor.nomeMaquina,
             temperatura: servidor.temperatura_disco,
             parametro: limiteTemp,
-            distancia: distancia // negativo = já ultrapassou
+            distancia: distancia 
         });
     }
 
-    // 2. Ordena por distância (menor primeiro)
-    // Quem tem distância negativa (ultrapassou) vem primeiro
-    // Depois quem está mais próximo (distância pequena positiva)
     for (let i = 0; i < discosComDistancia.length; i++) {
         for (let j = i + 1; j < discosComDistancia.length; j++) {
             const distA = discosComDistancia[i].distancia;
             const distB = discosComDistancia[j].distancia;
 
-            // Se A ultrapassou e B não, A vem primeiro
             if (distA < 0 && distB >= 0) {
-                continue; // A já está na frente
+                continue; 
             }
-            // Se B ultrapassou e A não, troca
             else if (distB < 0 && distA >= 0) {
                 const temp = discosComDistancia[i];
                 discosComDistancia[i] = discosComDistancia[j];
                 discosComDistancia[j] = temp;
             }
-            // Se ambos ultrapassaram ou ambos não, ordena por distância (menor primeiro)
             else if (distA > distB) {
                 const temp = discosComDistancia[i];
                 discosComDistancia[i] = discosComDistancia[j];
@@ -366,22 +331,18 @@ function DiscosComMaiorRiscoDeFalha(dados) {
         }
     }
 
-    // 3. Atualiza os elementos
     const elementos = [discotemp1, discotemp2, discotemp3];
-
-    // Limpa
     for (let i = 0; i < elementos.length; i++) {
         elementos[i].innerHTML = "Sem dados";
         elementos[i].className = "";
     }
 
-    // Preenche top 3
     for (let i = 0; i < Math.min(3, discosComDistancia.length); i++) {
         const disco = discosComDistancia[i];
         const ultrapassou = disco.distancia < 0;
 
         elementos[i].innerHTML =
-            `${disco.apelido}: ${disco.temperatura.toFixed(1)}°C max: ${disco.parametro.toFixed(1)}°C`;
+            `${disco.apelido}: ${disco.temperatura.toFixed(1)}°C parâmetro: ${disco.parametro.toFixed(1)}°C`;
 
         if (ultrapassou) {
             elementos[i].className = "temperatura-alerta";
@@ -534,8 +495,6 @@ document.addEventListener('click', function (e) {
     }
 });
 
-
-// tudo pra funcionamento do gráfico de linhas 
 function filtrarPorPeriodo(historico, periodo) {
 
     const agora = new Date();
@@ -570,14 +529,14 @@ function amostrarDados(lista, maxPontos = 7) {
 
     const passo = Math.floor(lista.length / (maxPontos - 1));
 
-    resultado.push(lista[0]); // primeiro ponto
+    resultado.push(lista[0]); 
 
     for (let i = 1; i < maxPontos - 1; i++) {
         const indice = i * passo;
         resultado.push(lista[indice]);
     }
 
-    resultado.push(lista[lista.length - 1]); // último ponto
+    resultado.push(lista[lista.length - 1]); 
 
     return resultado;
 }
@@ -587,12 +546,10 @@ let graficoLinhas = null;
 
 function plotarGrafico(listaFiltrada, periodo) {
 
-    // 1️⃣ Ordena antes de amostrar
     listaFiltrada.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
     const dados = amostrarDados(listaFiltrada);
 
-    // 2️⃣ Ordena DE NOVO após amostrar (evita pontos fora da ordem)
     dados.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
     const labels = [];
@@ -677,7 +634,6 @@ function atualizarGrafico() {
 
 document.addEventListener("click", (e) => {
 
-    // SELECT PERÍODO
     if (e.target.closest("#select_display")) {
         document.getElementById("lista_opcoes").classList.toggle("hidden");
         return;
@@ -687,7 +643,6 @@ document.addEventListener("click", (e) => {
 
         const li = e.target.closest("li");
 
-        // converte texto → valor usado no JS
         const conversion = {
             "1hora": "1h",
             "24horas": "24h",
@@ -707,8 +662,6 @@ document.addEventListener("click", (e) => {
         return;
     }
 
-
-    // SELECT DISCO
     if (e.target.closest("#select_display_discos")) {
         document.getElementById("lista_opcoes_discos").classList.toggle("hidden");
         return;
@@ -734,51 +687,43 @@ document.addEventListener("click", (e) => {
     }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    atualizarTudo();
+    setInterval(atualizarTudo, 2 * 60 * 1000); 
+});
 
-window.onload = () => {
-    fetch(`/dashboardDisco/obterDados/${idEmpresa}`)
-        .then(res => res.json())
-        .then(dados => {
 
-            console.log("Principal:", dados);
-            console.log("Histórico:", dados.historico);
-
-            dadosGlobais = dados;
-
-            /* --- Preenche select de discos --- */
-            const lista = document.getElementById("lista_opcoes_discos");
-            lista.innerHTML = "";
-
+async function atualizarTudo() {
+    try {
+        const resposta = await fetch(`/dashboardDisco/obterDados/${idEmpresa}`);
+        const dados = await resposta.json();
+        dadosGlobais = dados;
+        const lista = document.getElementById("lista_opcoes_discos");
+        if (lista && lista.children.length === 0) {
             dados.servidores.forEach(serv => {
                 const li = document.createElement("li");
                 li.textContent = `${serv.apelidoDisco || serv.nomeMaquina} (${serv.disco}%)`;
                 li.dataset.value = serv.fk_servidor;
                 lista.appendChild(li);
             });
-
-            // Define o primeiro disco automaticamente
             if (dados.servidores.length > 0) {
                 const primeira = dados.servidores[0];
                 document.getElementById("select_value_disco").value = primeira.fk_servidor;
                 document.getElementById("select_display_discos").innerHTML =
                     `${primeira.apelidoDisco || primeira.nomeMaquina} (${primeira.disco}%) <span class='seta'>&#9660;</span>`;
             }
-
-            // Período padrão (7 dias)
             document.getElementById("select_value").value = "7d";
             document.getElementById("select_display").innerHTML =
                 "7 dias <span class='seta'>&#9660;</span>";
-
-            // Primeira renderização
-            atualizarGrafico();
-
-            // Seus outros métodos continuam funcionando:
-            definirStatusOperacao(dados);
-            DiscosComMaiorRiscoDeFalha(dados);
-            puxarQuantidadeAlertaPorServidor();
-            DiscosQueRecebemMaisRequisicoes(dados);
-            kpiComparativaAlertas();
-            ListagemDosDiscosEmAlerta(dados);
-        })
-        .catch(err => console.error("Erro:", err));
-};
+        }
+        atualizarGrafico();
+        definirStatusOperacao(dados);
+        DiscosComMaiorRiscoDeFalha(dados);
+        puxarQuantidadeAlertaPorServidor();
+        DiscosQueRecebemMaisRequisicoes(dados);
+        kpiComparativaAlertas();
+        ListagemDosDiscosEmAlerta(dados);
+    } catch (err) {
+        console.error("Erro ao atualizar dashboard:", err);
+    }
+}

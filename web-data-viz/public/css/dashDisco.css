@@ -169,6 +169,9 @@ section.header .header-left .container-submenu:hover .submenu {
   align-items: center;
   margin: 0;
 }
+.listagem p{
+  font-size: 14px;
+}
 .esquerda, .meio, .direita{
   margin-left: 18px;
 }
