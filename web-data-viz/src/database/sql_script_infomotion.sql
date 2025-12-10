@@ -40,22 +40,6 @@ CREATE TABLE IF NOT EXISTS infomotion.servidor (
   FOREIGN KEY (fk_regiao) REFERENCES infomotion.regiao (id)
 );
 
-CREATE TABLE IF NOT EXISTS infomotion.registro_servidor (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	fk_servidor INT,
-    uso_cpu DECIMAL(10, 2),
-    uso_ram DECIMAL(10, 2),
-    uso_disco DECIMAL(10, 2),
-    qtd_processos INT,
-    temp_cpu DECIMAL(10, 2),
-    temp_disco DECIMAL(10, 2),
-    upload DECIMAL(10, 2),
-    download DECIMAL(10, 2),
-    dt_registro DATETIME,
-    CONSTRAINT registro_servidor_ibfk_1
-    FOREIGN KEY (fk_servidor) REFERENCES infomotion.servidor (id)
-);
-
 CREATE TABLE IF NOT EXISTS infomotion.componentes (
   id INT NOT NULL AUTO_INCREMENT,
   fk_servidor INT,
@@ -157,7 +141,3 @@ VALUES
 (1, 'Região Europa Sudoeste', 'Lisboa', 'LX', 'Portugal', '1000-001', 'UTC+0'),
 (1, 'Região Oriente Médio', 'Dubai', 'DU', 'Emirados Árabes Unidos', '00000', 'UTC+4'),
 (1, 'Região América Central', 'Cidade do México', 'CDMX', 'México', '01000', 'UTC-6');
-
-alter table servidor alter column fk_regiao set default 1;
-update servidor set fk_regiao = 4 where id = 11;
-

@@ -151,6 +151,11 @@ try {
 }
 
 function criarGraficoBarrasPrevisao(datas,dados) {  
+
+  if (Chart.getChart("grafico-barra-previsao")) {
+    Chart.getChart("grafico-barra-previsao").destroy();
+  }
+
   const ctx = document.getElementById('grafico-barra-previsao').getContext('2d');
   new Chart(ctx, {   
     type: 'bar',
@@ -175,7 +180,7 @@ function criarGraficoBarrasPrevisao(datas,dados) {
           display: true,
           title: {
             display: true,
-            text: 'Quantidade de requisições previstas nos próximos 16 dias',
+            text: 'Quantidade de requisições previstas nos próximos dias',
             color: '#ffffff',
             font: {
               size: 24
@@ -206,6 +211,11 @@ function criarGraficoBarrasPrevisao(datas,dados) {
 } 
 
 function criarGraficoLinhasPrevisao(datas,previsao,chance) {
+
+  if (Chart.getChart("grafico-linha-previsao")) {
+    Chart.getChart("grafico-linha-previsao").destroy();
+  }
+
   const ctx = document.getElementById('grafico-linha-previsao');
 
   new Chart(ctx, {
@@ -250,7 +260,7 @@ function criarGraficoLinhasPrevisao(datas,previsao,chance) {
           },
           title: {
             display: true,
-            text: 'Probabilidade de aumento no número de requisições nos próximos 16 dias',
+            text: 'Probabilidade de aumento no número de requisições nos próximos dias',
             color: '#ffffff',
             font: {
               size: 24
@@ -284,6 +294,11 @@ function criarGraficoLinhasPrevisao(datas,previsao,chance) {
 }
 
 function criarGraficoDeHorario(horarios,req){
+
+  if (Chart.getChart("grafico-barra-horarioDePico")) {
+    Chart.getChart("grafico-barra-horarioDePico").destroy();
+  }
+
   const ctxPico = document.getElementById('grafico-barra-horarioDePico');
 
   new Chart(ctxPico, graficoPico = {

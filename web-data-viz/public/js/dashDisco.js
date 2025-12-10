@@ -49,10 +49,8 @@ function kpiComparativaAlertas() {
             dadosHoje = dados.length
             saidaAlertasHoje.innerHTML = dadosHoje;
             console.log(`total de alertas hoje ${dadosHoje}`)
+            return fetch(`/dashboardDisco/alertasOntem/${idEmpresa}`)
         })
-        .catch(erro => console.error("Erro:", erro));
-
-    fetch(`/dashboardDisco/alertasOntem/${idEmpresa}`)
         .then(resposta => {
             if (!resposta.ok) throw "Erro na requisição";
             return resposta.json();
@@ -707,7 +705,7 @@ async function atualizarTudo() {
                 lista.appendChild(li);
             });
             if (dados.servidores.length > 0) {
-                const primeira = dados.servidores[0];
+                const primeira = dados.servidores[1];
                 document.getElementById("select_value_disco").value = primeira.fk_servidor;
                 document.getElementById("select_display_discos").innerHTML =
                     `${primeira.apelidoDisco || primeira.nomeMaquina} (${primeira.disco}%) <span class='seta'>&#9660;</span>`;
